@@ -85,7 +85,11 @@ public class FXMLCursosController implements Initializable {
     
     private void mostrarCursos(ObservableList<Curso> cursos) {
         for (Curso curso : cursos) {
-            vbxCursos.getChildren().add(new TarjetaCurso(curso));
+            TarjetaCurso tarjeta = new TarjetaCurso(curso);
+            tarjeta.getBotonVerDetalles().setOnAction((event) -> {
+                irAVistaDetallesCurso(academico);
+            });
+            vbxCursos.getChildren().add(tarjeta);
         }
     }
     
@@ -176,6 +180,7 @@ public class FXMLCursosController implements Initializable {
     private void clicAnadirCurso(ActionEvent event) {
         irAVistaFormularioController();
     }
+    
     private void irAVistaFormularioController() {
         try {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLFormularioCurso.fxml"));
@@ -203,6 +208,21 @@ public class FXMLCursosController implements Initializable {
             escenario.setTitle("Formulario Curso");
             escenario.show();
             
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    private void irAVistaDetallesCurso(Academico academico) {
+        try {
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLDetallesCurso.fxml"));
+            Parent vista = accesoControlador.load();
+            FXMLDetallesCursoController controladorDetallesCurso = accesoControlador.getController();
+            controladorDetallesCurso.setUsuario(academico);
+            Stage escenario = (Stage) lbTituloVentana.getScene().getWindow();
+            escenario.setScene(new Scene(vista));
+            escenario.setTitle("Detalles curso");
+            escenario.show();
         } catch (IOException ex) {
             ex.printStackTrace();
         }

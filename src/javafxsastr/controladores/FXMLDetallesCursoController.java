@@ -43,6 +43,7 @@ import javafxsastr.JavaFXSASTR;
 import javafxsastr.modelos.dao.CursoDAO;
 import javafxsastr.modelos.dao.DAOException;
 import javafxsastr.modelos.dao.EstudianteDAO;
+import javafxsastr.modelos.pojo.Academico;
 import javafxsastr.modelos.pojo.Curso;
 import javafxsastr.modelos.pojo.Estudiante;
 import javafxsastr.utils.Utilidades;
@@ -60,7 +61,6 @@ public class FXMLDetallesCursoController implements Initializable {
     private AnchorPane menuContraido;
     @FXML
     private Label lbTituloventana;
-    
     @FXML
     private Circle crlEstadoCurso;
     @FXML
@@ -83,19 +83,24 @@ public class FXMLDetallesCursoController implements Initializable {
     @FXML
     private VBox hbxAlmacenEstdantes;
     
+    private Academico academico;
     private ObservableList<Estudiante> estudiantes;
     private Curso cursoActual;
-
    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       llenarEstudiantes();
-       obtenerDatosCurso();
+        obtenerDatosCurso();
+        obtenerEstudiantesCurso();
+        llenarEstudiantes();
     }
     
-    public void desactivarUSuario(int idUsuario) {
+    public void setUsuario(Academico academico) {
+        this.academico = academico;
+    }
+    
+    public void desactivarUsuario(int idUsuario) {
           Utilidades.mostrarDialogoConfirmacion("Desactivar Estudiante de curso",
-                "¡Estas seguro que deseas desactivar al estudinate del curso!");
+                "¿Estas seguro que deseas desactivar al estudinate del curso?");
     }
     
     public void editarUsuario(int idUsuario) {
@@ -128,11 +133,10 @@ public class FXMLDetallesCursoController implements Initializable {
         
     }
     
-    
     private void cargarDetallesCurso() {
         lbNombreCurso.setText(cursoActual.getNombreCurso());
         lbExpEdu.setText(cursoActual.getExperienciaEducativaCurso());
-        lbPeriodoEsc.setText(cursoActual.getFechaInicioCurso()+"-"+cursoActual.getFinPeriodoEscolar());
+        lbPeriodoEsc.setText(cursoActual.getFechaInicioCurso() + "-" + cursoActual.getFinPeriodoEscolar());
         lbDocente.setText(cursoActual.getAcademicoCurso());
         lbBloque.setText(cursoActual.getBloqueCurso());
         lbNrc.setText(cursoActual.getNrcCurso());
@@ -160,20 +164,20 @@ public class FXMLDetallesCursoController implements Initializable {
     private void llenarEstudiantes() {
         hbxAlmacenEstdantes.setSpacing(20);   
         hbxAlmacenEstdantes.setPadding(new Insets(5));
-       int numFilas = 3;//Math.round(estudiantes.size()/3);
-       int elementosPorFila = 5;       
-       for (int i = 0; i < numFilas; i++) {
+        int numFilas = 3;   //Math.round(estudiantes.size()/3);
+        int elementosPorFila = 5;       
+        for (int i = 0; i < numFilas; i++) {
             HBox fila = new HBox();           
             fila.setSpacing(60);
             for (int j = 0; j < elementosPorFila; j++) {
                 if(j==0 && i == 0) {
                     fila.getChildren().add(new TarjetaAgregarAlumno());
-                }else {                    
+                }else {    
                     fila.getChildren().add(new TarjetaEstudianteCurso("Juan Peres De Girjalva", "juan@homtail.com", i+j));
                 }             
             }
 
-           hbxAlmacenEstdantes.getChildren().add(fila);
+            hbxAlmacenEstdantes.getChildren().add(fila);
         }
     }
     
@@ -192,6 +196,7 @@ public class FXMLDetallesCursoController implements Initializable {
                 throw new AssertionError();
         }
     }
+    
     public void cerrarVentana() {
         Stage escenarioActual = (Stage) lbBloque.getScene().getWindow();
         escenarioActual.close();
@@ -199,7 +204,7 @@ public class FXMLDetallesCursoController implements Initializable {
 
     @FXML
     private void clicBtnRegresar(MouseEvent event) {
-        cerrarVentana();
+        irAVistaCursos();
     }
 
     @FXML
@@ -219,6 +224,21 @@ public class FXMLDetallesCursoController implements Initializable {
     private void clicDesactivarCurso(MouseEvent event) {
         Utilidades.mostrarDialogoConfirmacion("Desactivar Estudiante de curso",
                 "¡Estas seguro que deseas desactivar el curso!");
+    }
+    
+    private void irAVistaCursos() {
+        try {
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLCursos.fxml"));
+            Parent vista = accesoControlador.load();
+            FXMLCursosController controladorVistaCursos = accesoControlador.getController();
+            controladorVistaCursos.setUsuario(academico);
+            Stage escenario = (Stage) lbBloque.getScene().getWindow();
+            escenario.setScene(new Scene(vista));
+            escenario.setTitle("Usuarios");
+            escenario.show();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
     
 }

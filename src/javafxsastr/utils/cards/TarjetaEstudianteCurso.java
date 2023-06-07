@@ -54,7 +54,7 @@ public class TarjetaEstudianteCurso extends Pane{
         lbcorreoEstudinate.setText(correoEstudinate);
         getChildren().addAll(fondo,fondoEitar,crlEstadoUsuario,fondoDesactivar,lbNombreEstudiante,lbcorreoEstudinate);
         
-     imvBtnEditar.setOnMouseClicked(new EventHandler<MouseEvent>() {
+    imvBtnEditar.setOnMouseClicked(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
                 try {
                     FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLDetallesCurso.fxml"));
@@ -69,13 +69,14 @@ public class TarjetaEstudianteCurso extends Pane{
                 }
             }
         });
+     
      imvBtnDesactivar.setOnMouseClicked(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
                  try {
                     FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLDetallesCurso.fxml"));
                     Parent vista = accesoControlador.load();
                     FXMLDetallesCursoController formulario = accesoControlador.getController();            
-                    formulario.desactivarUSuario(idEstudiante);                     
+                    formulario.desactivarUsuario(idEstudiante);                     
                 } catch (IOException ex) {
                     Utilidades.mostrarDialogoSimple("Error","Ocurrio un error al querer desactivar ",
                             Alert.AlertType.ERROR);

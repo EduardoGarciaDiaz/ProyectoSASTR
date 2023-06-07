@@ -53,10 +53,10 @@ public class FXMLUsuariosController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        /*obtenerUsuarios();
+        obtenerUsuarios();
         SortedList<Usuario> sortedList = new SortedList<>(usuarios,
                     Comparator.comparing(Usuario::toString));
-        cargarTarjetasUsuarios(sortedList);*/
+        cargarTarjetasUsuarios(sortedList);
     }   
     
     public void setUsuario(Usuario usuario) {

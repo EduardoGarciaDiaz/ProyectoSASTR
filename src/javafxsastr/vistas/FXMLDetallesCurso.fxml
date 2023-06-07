@@ -42,18 +42,8 @@
                   </ImageView>
                </children>
             </Pane>
-            <AnchorPane fx:id="menuContraido" layoutY="54.0" prefHeight="890.0" prefWidth="75.0" scaleZ="10.0" style="-fx-background-color: #15294f;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="50.0">
-               <rotationAxis>
-                  <Point3D />
-               </rotationAxis>
-            </AnchorPane>
             <Pane layoutX="75.0" layoutY="50.0" prefHeight="63.0" prefWidth="369.0">
                <children>
-                  <ImageView fitHeight="38.0" fitWidth="96.0" layoutX="35.0" layoutY="13.0" onMouseClicked="#clicBtnRegresar" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../recursos/iconos/BACK.JPG" />
-                     </image>
-                  </ImageView>
                   <Label fx:id="lbTituloventana" layoutX="110.0" layoutY="5.0" text="Detalles Curso" textFill="#434343">
                      <font>
                         <Font name="System Bold" size="36.0" />
@@ -61,7 +51,7 @@
                   </Label>
                </children>
             </Pane>
-            <Pane layoutX="129.0" layoutY="119.0" prefHeight="200.0" prefWidth="1574.0" style="-fx-background-color: F4F4F4;">
+            <Pane layoutX="100.0" layoutY="119.0" prefHeight="200.0" prefWidth="1574.0" style="-fx-background-color: F4F4F4;">
                <children>
                   <ImageView fitHeight="185.0" fitWidth="170.0" layoutX="46.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -150,11 +140,16 @@
                   </Label>
                </children>
             </Pane>
-            <ScrollPane fx:id="slpAlamcenEstudinates" layoutX="129.0" layoutY="335.0" maxHeight="588.0" prefWidth="1574.0" style="-fx-background-color: white;">
+            <ScrollPane fx:id="slpAlamcenEstudinates" layoutX="100.0" layoutY="335.0" maxHeight="588.0" prefWidth="1574.0" style="-fx-background-color: white;">
                <content>
                   <VBox fx:id="hbxAlmacenEstdantes" prefWidth="1575.0" style="-fx-background-color: white;" />
                </content>
             </ScrollPane>
+            <ImageView fitHeight="38.0" fitWidth="96.0" layoutX="39.0" layoutY="67.0" onMouseClicked="#clicBtnRegresar" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/BACK.JPG" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
    </children>

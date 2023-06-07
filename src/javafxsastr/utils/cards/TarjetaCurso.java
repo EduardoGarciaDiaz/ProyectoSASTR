@@ -58,6 +58,10 @@ public class TarjetaCurso extends Pane{
                 lbTituloExperienciaEducativa, lbTituloPeriodoEscolar, lbTituloDocente, lbTituloNrc,
                 lbTituloSeccion,lbTituloBloque);
     }
+    
+    public Button getBotonVerDetalles() {
+        return btnVerDetalles;
+    }
 
     private void inicializarElementos() {
         fondoImagen = new Pane();
@@ -273,9 +277,6 @@ public class TarjetaCurso extends Pane{
                 + "-fx-background-radius: 13;"
                 + "-fx-background-color:  #716E6E;"
                 + "-fx-text-fill: white;");
-        btnVerDetalles.setOnAction((event) -> {
-            System.out.println("Clic en ver detalles");
-        });
     }
     
 }

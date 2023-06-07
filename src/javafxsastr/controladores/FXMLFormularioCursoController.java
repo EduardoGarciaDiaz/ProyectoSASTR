@@ -285,8 +285,7 @@ public class FXMLFormularioCursoController implements Initializable {
     private void clicBtnCancelar(ActionEvent event) {
         boolean respuesta = Utilidades.mostrarDialogoConfirmacion("Confirmacion", "¿Estás seguro de que deseas cancelar la creación del curso");
         if (respuesta) {
-            Utilidades.mostrarDialogoSimple("Cancelado", "Cancelado", Alert.AlertType.INFORMATION);
-            //TODO@Daniel: ir a pantalla cursos
+            irAVistaCursos();
         }
     }
 
@@ -305,6 +304,7 @@ public class FXMLFormularioCursoController implements Initializable {
                     Utilidades.mostrarDialogoSimple("Curso registrado.", 
                             "El curso se creó correctamente en el sistema", Alert.AlertType.INFORMATION);
                 }
+                irAVistaCursos();
             } else {
                 lbTituloFormulario.requestFocus();
                 lbMensajeDeError.setText("No puedes seleccionar una fecha de fin de clases posterior a la de fin del periodo");
@@ -484,10 +484,14 @@ public class FXMLFormularioCursoController implements Initializable {
 
     @FXML
     private void clicBtnVolver(MouseEvent event) {
+        irAVistaCursos();
+    }
+    
+    private void irAVistaCursos() {
         try {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLCursos.fxml"));
             Parent vista = accesoControlador.load();
-            FXMLCursosController controladorVistaCursos = accesoControlador.getController();     
+            FXMLCursosController controladorVistaCursos = accesoControlador.getController();
             controladorVistaCursos.setUsuario(academico);
             Stage escenario = (Stage) lbTituloFormulario.getScene().getWindow();
             escenario.setScene(new Scene(vista));
