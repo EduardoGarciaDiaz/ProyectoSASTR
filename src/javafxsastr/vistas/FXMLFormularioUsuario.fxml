@@ -99,7 +99,7 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <Label layoutX="698.0" layoutY="536.0" text="Tipo de usuario">
+      <Label fx:id="lbTipoUsuario" layoutX="698.0" layoutY="536.0" text="Tipo de usuario">
          <font>
             <Font size="24.0" />
          </font>
@@ -151,7 +151,7 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Label fx:id="lbContrasenaVacia" layoutX="103.0" layoutY="644.0" prefHeight="27.0" prefWidth="551.0" textFill="#f50606">
+      <Label fx:id="lbContrasenaVacia" alignment="TOP_LEFT" layoutX="103.0" layoutY="644.0" prefHeight="85.0" prefWidth="500.0" textFill="#f50606" wrapText="true">
          <font>
             <Font size="18.0" />
          </font>

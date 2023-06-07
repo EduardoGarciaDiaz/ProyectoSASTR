@@ -71,9 +71,19 @@ public class Utilidades {
     }
     
     public static boolean matriculaValida(String matricula) {
-        if(matricula != null && !matricula.isEmpty()) {
-            Pattern patronMatricula = Pattern.compile("[sS]\\d{8}");
+        if(matricula != null && !matricula.isEmpty() ) {
+            Pattern patronMatricula = Pattern.compile("^[sS]\\d{8}$");
             Matcher matchPatron = patronMatricula.matcher(matricula); 
+            return matchPatron.find();
+        }else{
+            return false;
+        }
+    }
+    
+    public static boolean contrasenaValida(String contrasena) {
+        if(contrasena != null && !contrasena.isEmpty()) {
+            Pattern patronMatricula = Pattern.compile("^(?=.*[A-Z])(?=.*[\\W_]).{7,16}$");
+            Matcher matchPatron = patronMatricula.matcher(contrasena); 
             return matchPatron.find();
         }else{
             return false;

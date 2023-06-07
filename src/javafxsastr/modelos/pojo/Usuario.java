@@ -53,7 +53,17 @@ public class Usuario {
         this.contraseña = contraseña;
         this.esAdministrador = esAdministrador;
     }
-    
+
+    public Usuario(String nombre, String primerApellido, String segundoApellido, String correoInstitucional,
+            String contraseña, boolean esAdministrador, int idEstadoUsuario) {
+        this.nombre = nombre;
+        this.primerApellido = primerApellido;
+        this.segundoApellido = segundoApellido;
+        this.correoInstitucional = correoInstitucional;
+        this.contraseña = contraseña;
+        this.esAdministrador = esAdministrador;
+        this.idEstadoUsuario = idEstadoUsuario;
+    }
     
 
     public int getIdUsuario() {
