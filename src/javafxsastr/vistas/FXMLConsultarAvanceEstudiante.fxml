@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="940.0" prefWidth="1728.0" style="-fx-background-color: #efefef;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxsastr.controladores.FXMLConsultarAvanceEstudianteController">
+   <children>
+      <Pane prefHeight="50.0" prefWidth="1228.0" style="-fx-background-color: #18529d;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="500.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label layoutX="23.0" layoutY="9.0" text="Sistema de Apoyo al Seguimiento de Proyecto Guiado y Experiencia Recepcional" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane layoutX="1516.0" layoutY="7.0" prefHeight="50.0" prefWidth="500.0" style="-fx-background-color: #28ad56;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label layoutX="57.0" layoutY="6.0" text="Universidad Veracruzana" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="38.0" fitWidth="40.0" layoutX="399.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/perfil-de-usuario.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="30.0" fitWidth="32.0" layoutX="445.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/flecha-para-desplegar.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <ImageView fx:id="clicBtnRegresar" fitHeight="38.0" fitWidth="40.0" layoutX="17.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/iconos/flecha.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="81.0" layoutY="61.0" text="Avance del estudiante">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
+      <Pane layoutX="18.0" layoutY="129.0" prefHeight="199.0" prefWidth="623.0" style="-fx-background-color: white; -fx-background-radius: 15;">
+         <children>
+            <Pane layoutX="19.0" layoutY="23.0" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #C4DAEF; -fx-background-radius: 50;">
+               <children>
+                  <ImageView fitHeight="50.0" fitWidth="49.0" layoutX="15.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../recursos/iconos/estudiante.png" />
+                     </image></ImageView>
+               </children>
+            </Pane>
+            <Label layoutX="116.0" layoutY="22.0" text="Datos generales del estudiante">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <Label layoutX="116.0" layoutY="60.0" text="Nombre:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="116.0" layoutY="87.0" text="Matricula:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="116.0" layoutY="114.0" text="Correo institucional:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="114.0" layoutY="141.0" text="Cursando actualmente:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbNombreEstudiante" layoutX="194.0" layoutY="60.0" prefHeight="27.0" prefWidth="407.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbMatriculaEstudiante" layoutX="205.0" layoutY="86.0" prefHeight="27.0" prefWidth="407.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbCorreoInstitucionalEstudiante" layoutX="294.0" layoutY="114.0" prefHeight="27.0" prefWidth="308.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbCursandoActualmente" layoutX="312.0" layoutY="141.0" prefHeight="27.0" prefWidth="292.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane layoutX="17.0" layoutY="348.0" prefHeight="273.0" prefWidth="623.0" style="-fx-background-color: white; -fx-background-radius: 15;">
+         <children>
+            <Pane layoutX="19.0" layoutY="23.0" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #C4DAEF; -fx-background-radius: 50;">
+               <children>
+                  <ImageView fitHeight="38.0" fitWidth="37.0" layoutX="25.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../recursos/iconos/curso-2.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Label layoutX="116.0" layoutY="22.0" text="Anteproyecto asignado">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <Label layoutX="116.0" layoutY="60.0" text="Título:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="116.0" layoutY="189.0" text="Modalidad:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbNombreTrabajoRecepcional" alignment="TOP_LEFT" layoutX="177.0" layoutY="65.0" prefHeight="121.0" prefWidth="407.0" wrapText="true">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbModalidadAnteproyecto" layoutX="220.0" layoutY="190.0" prefHeight="27.0" prefWidth="361.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Button layoutX="435.0" layoutY="219.0" mnemonicParsing="false" onAction="#clicVerDetallesAnteproyecto" prefHeight="38.0" prefWidth="160.0" style="-fx-background-color: #28AD56; -fx-background-radius: 15;" text="Ver detalles" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+         </children>
+      </Pane>
+      <Pane layoutX="18.0" layoutY="638.0" prefHeight="284.0" prefWidth="623.0" style="-fx-background-color: white; -fx-background-radius: 15;">
+         <children>
+            <Pane layoutX="19.0" layoutY="23.0" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #C4DAEF; -fx-background-radius: 50;">
+               <children>
+                  <ImageView fitHeight="38.0" fitWidth="37.0" layoutX="20.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../recursos/iconos/avance-negro.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Label layoutX="116.0" layoutY="22.0" text="Avance general">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbActividadesCompletadas" layoutX="116.0" layoutY="60.0" prefHeight="27.0" prefWidth="467.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbActividadesNoRealizadas" layoutX="116.0" layoutY="87.0" prefHeight="27.0" prefWidth="479.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbActividadesRestantes" layoutX="116.0" layoutY="114.0" prefHeight="27.0" prefWidth="484.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbAvancesEnviados" layoutX="114.0" layoutY="148.0" prefHeight="27.0" prefWidth="481.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Rectangle arcHeight="25.0" arcWidth="25.0" fill="#efefef" height="91.0" layoutX="23.0" layoutY="180.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="584.0" />
+            <ImageView fitHeight="48.0" fitWidth="52.0" layoutX="35.0" layoutY="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/marcador.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="94.0" layoutY="197.0" text="Recuerda:">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label alignment="TOP_LEFT" layoutX="97.0" layoutY="197.0" prefHeight="68.0" prefWidth="497.0" text="                 el estudiante define las fechas de entrega para cada actividad; las actividades podrían no tener el mismo peso." wrapText="true">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbPorcentaje" layoutX="480.0" layoutY="15.0" prefHeight="103.0" prefWidth="122.0">
+               <font>
+                  <Font size="60.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Label layoutX="668.0" layoutY="86.0" text="Cronograma">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
+      <ScrollPane layoutX="670.0" layoutY="134.0" prefHeight="789.0" prefWidth="1034.0" styleClass="edge-to-edge">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="1007.0">
+               <children>
+                  <VBox fx:id="vbxContenedorTarjetasActividades" prefWidth="1007.0" spacing="20.0" />
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>

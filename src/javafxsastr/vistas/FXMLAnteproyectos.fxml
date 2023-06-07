@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="940.0" prefWidth="1728.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxsastr.controladores.FXMLAnteproyectosController">
+   <children>
+      <TextField fx:id="tfCampoBusqueda" layoutX="1147.0" layoutY="91.0" onKeyTyped="#filtrarAnteproyectos" prefHeight="51.0" prefWidth="504.0" promptText="Buscar anteproyecto" style="-fx-background-radius: 15;">
+         <font>
+            <Font size="18.0" />
+         </font></TextField>
+      <Label fx:id="lbTituloVentana" layoutX="79.0" layoutY="82.0" prefHeight="40.0" prefWidth="172.0" text="Anteproyectos">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Pane layoutX="1516.0" layoutY="8.0" prefHeight="50.0" prefWidth="500.0" style="-fx-background-color: #28ad56;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label layoutX="57.0" layoutY="6.0" text="Universidad Veracruzana" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="38.0" fitWidth="40.0" layoutX="399.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/perfil-de-usuario.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="30.0" fitWidth="32.0" layoutX="445.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/flecha-para-desplegar.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Pane prefHeight="50.0" prefWidth="1228.0" style="-fx-background-color: #18529d;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="500.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label layoutX="23.0" layoutY="9.0" text="Sistema de Apoyo al Seguimiento de Proyecto Guiado y Experiencia Recepcional" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <ScrollPane layoutX="83.0" layoutY="226.0" prefHeight="667.0" prefWidth="1575.0" styleClass="edge-to-edge">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="1555.0">
+               <children>
+                  <VBox fx:id="contenedorTarjetasAnteproyectos" prefWidth="1555.0" spacing="10.0" />
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
+      <ImageView fitHeight="38.0" fitWidth="41.0" layoutX="21.0" layoutY="84.0" onMouseClicked="#clicRegresar" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/iconos/flecha.png" />
+         </image>
+      </ImageView>
+      <Pane fx:id="contenedorBotonesAcademico" layoutX="59.0" layoutY="135.0" prefHeight="86.0" prefWidth="894.0" visible="false">
+         <children>
+            <Button layoutX="725.0" layoutY="19.0" mnemonicParsing="false" onAction="#clicBtnAsignados" prefHeight="31.0" prefWidth="140.0" style="-fx-background-radius: 15; -fx-background-color: #C4DAEF;" text="Asignados">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Button layoutX="550.0" layoutY="21.0" mnemonicParsing="false" onAction="#clicBtnPorCorregir" prefHeight="31.0" prefWidth="140.0" style="-fx-background-radius: 15; -fx-background-color: #C4DAEF;" text="Por corregir">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Button layoutX="375.0" layoutY="24.0" mnemonicParsing="false" onAction="#clicBtnBorradores" prefHeight="31.0" prefWidth="140.0" style="-fx-background-radius: 15; -fx-background-color: #C4DAEF;" text="Borradores">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Button layoutX="195.0" layoutY="24.0" mnemonicParsing="false" onAction="#clicBtnNoAsignados" prefHeight="31.0" prefWidth="140.0" style="-fx-background-radius: 15; -fx-background-color: #C4DAEF;" text="No asignados">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Button layoutX="25.0" layoutY="24.0" mnemonicParsing="false" onAction="#clicBtnTodos" prefHeight="31.0" prefWidth="140.0" style="-fx-background-radius: 15; -fx-background-color: #C4DAEF;" text="Todos">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+         </children>
+      </Pane>
+      <Pane fx:id="contenedorBotonesRCA" layoutX="60.0" layoutY="131.0" prefHeight="86.0" prefWidth="894.0" visible="false">
+         <children>
+            <Button layoutX="725.0" layoutY="24.0" mnemonicParsing="false" onAction="#clicBtnConcluidos" prefHeight="31.0" prefWidth="140.0" style="-fx-background-radius: 15; -fx-background-color: #C4DAEF;" text="Concluidos">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Button layoutX="550.0" layoutY="23.0" mnemonicParsing="false" onAction="#clicBtnNoAsignados" prefHeight="31.0" prefWidth="140.0" style="-fx-background-radius: 15; -fx-background-color: #C4DAEF;" text="No asignados">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Button layoutX="375.0" layoutY="24.0" mnemonicParsing="false" onAction="#clicBtnAsignados" prefHeight="31.0" prefWidth="140.0" style="-fx-background-radius: 15; -fx-background-color: #C4DAEF;" text="Asignados">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Button layoutX="195.0" layoutY="24.0" mnemonicParsing="false" onAction="#clicBtnSinPublicar" prefHeight="31.0" prefWidth="140.0" style="-fx-background-radius: 15; -fx-background-color: #C4DAEF;" text="Sin publicar">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Button layoutX="25.0" layoutY="24.0" mnemonicParsing="false" onAction="#clicBtnSinRevisar" prefHeight="31.0" prefWidth="140.0" style="-fx-background-radius: 15; -fx-background-color: #C4DAEF;" text="Sin revisar">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+         </children>
+      </Pane>
+      <Pane fx:id="pnBotonCrearAnteproyecto" layoutX="1379.0" layoutY="850.0" onMouseClicked="#clicCrearAnteproyecto" prefHeight="68.0" prefWidth="244.0" style="-fx-background-color: black; -fx-background-radius: 13;">
+         <children>
+            <Label layoutX="15.0" layoutY="14.0" text="Crear anteproyecto" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <ImageView fitHeight="40.0" fitWidth="38.0" layoutX="1140.0" layoutY="87.0" pickOnBounds="true" preserveRatio="true" />
+   </children>
+</AnchorPane>

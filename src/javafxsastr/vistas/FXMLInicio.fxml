@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="940.0" prefWidth="1728.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxsastr.controladores.FXMLInicioController">
+   <children>
+      <VBox fx:id="vbxCards" layoutX="112.0" layoutY="172.0" />
+      <Pane prefHeight="50.0" prefWidth="1228.0" style="-fx-background-color: #18529d;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="500.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label layoutX="23.0" layoutY="9.0" text="Sistema de Apoyo al Seguimiento de Proyecto Guiado y Experiencia Recepcional" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane layoutX="1516.0" layoutY="7.0" prefHeight="50.0" prefWidth="500.0" style="-fx-background-color: #28ad56;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label layoutX="57.0" layoutY="6.0" text="Universidad Veracruzana" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="38.0" fitWidth="40.0" layoutX="399.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/perfil-de-usuario.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="imvDesplegarCerrarSesion" fitHeight="30.0" fitWidth="32.0" layoutX="445.0" layoutY="9.0" onMouseClicked="#clicDesplegarCerrarSesion" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/flecha-para-desplegar.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <AnchorPane fx:id="menuContraido" layoutY="54.0" prefHeight="890.0" prefWidth="75.0" scaleZ="10.0" style="-fx-background-color: #15294f;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="50.0">
+         <children>
+            <ImageView fx:id="btnMenu" fitHeight="38.0" fitWidth="38.0" layoutX="18.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" scaleZ="15.0" AnchorPane.leftAnchor="18.0" AnchorPane.topAnchor="14.0">
+               <image>
+                  <Image url="@../recursos/iconos/menu.png" />
+               </image></ImageView>
+            <VBox fx:id="vbxMenuContraido" layoutY="137.0" prefHeight="820.0" prefWidth="75.0" spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
+               <padding>
+                  <Insets bottom="18.0" left="18.0" right="18.0" top="18.0" />
+               </padding>
+            </VBox>
+         </children>
+         <rotationAxis>
+            <Point3D />
+         </rotationAxis>
+      </AnchorPane>
+      <Label fx:id="lbTituloVentana" layoutX="112.0" layoutY="62.0" textFill="#434343">
+         <font>
+            <Font name="System Bold" size="36.0" />
+         </font>
+      </Label>
+      <AnchorPane fx:id="menuLateral" layoutY="50.0" prefHeight="890.0" prefWidth="350.0" style="-fx-background-color: #15294f;" translateX="-350.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.topAnchor="50.0">
+         <rotationAxis>
+            <Point3D />
+         </rotationAxis>
+         <children>
+            <VBox fx:id="vbxMenuDesplegado" prefHeight="820.0" prefWidth="350.0" spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
+               <padding>
+                  <Insets bottom="18.0" right="18.0" top="18.0" />
+               </padding></VBox>
+         </children></AnchorPane>
+      <Pane fx:id="pbnBotonCrearAnteproyecto" layoutX="1430.0" layoutY="834.0" onMouseClicked="#clicCrearAnteproyecto" prefHeight="68.0" prefWidth="244.0" style="-fx-background-color: black; -fx-background-radius: 13;" visible="false">
+         <children>
+            <Label layoutX="13.0" layoutY="16.0" text="Crear anteproyecto" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane fx:id="paneCerrarSesion" layoutX="1400.0" layoutY="68.0" onMouseClicked="#clicCerrarSesion" prefHeight="68.0" prefWidth="344.0" style="-fx-background-color: white; -fx-border-color: black; -fx-background-radius: 15; -fx-border-radius: 15;" translateX="345.0">
+         <children>
+            <Label layoutX="85.0" layoutY="10.0" text="Cerrar sesión">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="940.0" prefWidth="1728.0" style="-fx-background-color: EFEFEF;" styleClass="edge-to-edge" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxsastr.controladores.FXMLConsultarAvancesController">
+   <children>
+      <Pane layoutX="1.0" layoutY="1.0" prefHeight="50.0" prefWidth="1228.0" style="-fx-background-color: #18529d;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="500.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label layoutX="23.0" layoutY="9.0" text="Sistema de Apoyo al Seguimiento de Proyecto Guiado y Experiencia Recepcional" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane layoutX="1516.0" layoutY="7.0" prefHeight="50.0" prefWidth="500.0" style="-fx-background-color: #28ad56;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label layoutX="57.0" layoutY="6.0" text="Universidad Veracruzana" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="38.0" fitWidth="40.0" layoutX="399.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/perfil-de-usuario.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="30.0" fitWidth="32.0" layoutX="445.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/flecha-para-desplegar.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Label layoutX="109.0" layoutY="53.0" text="Curso" textFill="#434343">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="44.0" fitWidth="80.0" layoutX="31.0" layoutY="68.0" onMouseClicked="#clicRegresar" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/iconos/flecha.png" />
+         </image>
+      </ImageView>
+      <Pane layoutX="92.0" layoutY="117.0" prefHeight="136.0" prefWidth="1121.0" style="-fx-background-color: white; -fx-background-radius: 13;">
+         <children>
+            <Circle fill="#d9d9d9" layoutX="54.0" layoutY="48.0" radius="35.0" stroke="#ffffff00" strokeType="INSIDE" />
+            <ImageView fitHeight="53.0" fitWidth="45.0" layoutX="32.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/curso-2.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="118.0" layoutY="14.0" text="Detalles del curso">
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </Label>
+            <Label layoutX="124.0" layoutY="58.0" text="Nombre:">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbNombreCurso" alignment="TOP_LEFT" layoutX="125.0" layoutY="86.0" prefHeight="53.0" prefWidth="332.0" wrapText="true">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbNRC" alignment="TOP_LEFT" layoutX="479.0" layoutY="86.0" prefHeight="40.0" prefWidth="118.0" wrapText="true">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="478.0" layoutY="58.0" text="NRC:">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="604.0" layoutY="57.0" text="Periodo escolar:">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbPeriodoEscolar" alignment="TOP_LEFT" layoutX="602.0" layoutY="85.0" prefHeight="40.0" prefWidth="253.0" wrapText="true">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbSeccion" alignment="TOP_LEFT" layoutX="863.0" layoutY="85.0" prefHeight="40.0" prefWidth="118.0" wrapText="true">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="862.0" layoutY="57.0" text="Seccion:">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="989.0" layoutY="56.0" text="Bloque:">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbBloque" alignment="TOP_LEFT" layoutX="990.0" layoutY="84.0" prefHeight="40.0" prefWidth="118.0" wrapText="true">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Label layoutX="88.0" layoutY="262.0" text="Estudiantes">
+         <font>
+            <Font name="System Bold" size="22.0" />
+         </font>
+      </Label>
+      <ScrollPane layoutX="89.0" layoutY="299.0" maxHeight="636.0" prefWidth="1605.0" style="-fx-background-radius: 15;" styleClass="edge-to--egde">
+         <content>
+            <VBox fx:id="vbxCards" prefWidth="1565.0" spacing="8.0" style="-fx-background-radius: 13;" />
+         </content>
+      </ScrollPane>
+      <Pane layoutX="-1787.0" layoutY="539.0" prefHeight="149.0" prefWidth="1572.0" style="-fx-background-color: ECECEC; -fx-background-radius: 13;">
+         <children>
+            <Label layoutX="120.0" layoutY="11.0" prefHeight="30.0" prefWidth="651.0" text="Nombre Completo">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Circle fill="#d9d9d9" layoutX="43.0" layoutY="40.0" radius="35.0" stroke="#ffffff00" strokeType="INSIDE" />
+            <ImageView fitHeight="53.0" fitWidth="54.0" layoutX="18.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/estudiante.png" />
+               </image></ImageView>
+            <Label layoutX="120.0" layoutY="42.0" prefHeight="30.0" prefWidth="261.0" text="Matricula">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label alignment="TOP_LEFT" layoutX="120.0" layoutY="89.0" prefHeight="53.0" prefWidth="632.0" text="Titulo Tr" wrapText="true">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="786.0" layoutY="11.0" prefHeight="30.0" prefWidth="66.0" text="Avance">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="728.0" layoutY="42.0" prefHeight="89.0" prefWidth="182.0" text="100%" textFill="#716e6e">
+               <font>
+                  <Font name="System Bold" size="48.0" />
+               </font>
+            </Label>
+            <Label layoutX="1072.0" layoutY="22.0" prefHeight="30.0" prefWidth="312.0" text="actividades completadas">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="1072.0" layoutY="60.0" prefHeight="30.0" prefWidth="312.0" text="actividades no realizadas">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="1072.0" layoutY="97.0" prefHeight="30.0" prefWidth="312.0" text="actividades restantes">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER_RIGHT" layoutX="924.0" layoutY="24.0" prefHeight="30.0" prefWidth="140.0" text="100/100">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER_RIGHT" layoutX="924.0" layoutY="62.0" prefHeight="30.0" prefWidth="140.0" text="100/100">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER_RIGHT" layoutX="924.0" layoutY="99.0" prefHeight="30.0" prefWidth="140.0" text="100/100">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Button layoutX="1412.0" layoutY="95.0" mnemonicParsing="false" text="Ver su avance">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

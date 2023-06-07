@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="940.0" prefWidth="1728.0" style="-fx-background-color: #efefef;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxsastr.controladores.FXMLFormularioCursoController">
+   <children>
+      <Pane layoutX="1516.0" layoutY="7.0" prefHeight="50.0" prefWidth="500.0" style="-fx-background-color: #28ad56;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label layoutX="57.0" layoutY="6.0" text="Universidad Veracruzana" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="38.0" fitWidth="40.0" layoutX="399.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/perfil-de-usuario.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="30.0" fitWidth="32.0" layoutX="445.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/flecha-para-desplegar.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Pane prefHeight="50.0" prefWidth="1228.0" style="-fx-background-color: #18529d;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="500.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label layoutX="23.0" layoutY="9.0" text="Sistema de Apoyo al Seguimiento de Proyecto Guiado y Experiencia Recepcional" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <ImageView fitHeight="38.0" fitWidth="53.0" layoutX="24.0" layoutY="69.0" onMouseClicked="#clicBtnVolver" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/iconos/flecha.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="lbTituloFormulario" layoutX="100.0" layoutY="63.0">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tfNombreCurso" layoutX="100.0" layoutY="169.0" onKeyTyped="#activarBotonAceptar" prefHeight="55.0" prefWidth="666.0" style="-fx-background-radius: 15; -fx-border-width: 0.5;" />
+      <Label layoutX="101.0" layoutY="134.0" prefHeight="35.0" prefWidth="236.0" text="Nombre del curso">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="cmbExperienciasEducativas" layoutX="100.0" layoutY="290.0" onAction="#clicSeleccionCombo" prefHeight="50.0" prefWidth="375.0" promptText="Seleccionar experiencia educativa" style="-fx-background-radius: 15; -fx-background-color: white;" />
+      <ComboBox fx:id="cmbNrcs" layoutX="488.0" layoutY="290.0" onAction="#clicSeleccionCombo" prefHeight="50.0" prefWidth="281.0" promptText="Seleccionar NRC" style="-fx-background-radius: 15; -fx-background-color: white;" />
+      <ComboBox fx:id="cmbPeriodosEscolares" layoutX="98.0" layoutY="410.0" onAction="#clicSeleccionCombo" prefHeight="50.0" prefWidth="247.0" promptText="Seleccionar periodo escolar" style="-fx-background-radius: 15; -fx-background-color: white;" />
+      <ComboBox fx:id="cmbSecciones" layoutX="371.0" layoutY="410.0" onAction="#clicSeleccionCombo" prefHeight="50.0" prefWidth="185.0" promptText="Seleccionar sección" style="-fx-background-radius: 15; -fx-background-color: white;" />
+      <ComboBox fx:id="cmbBloques" layoutX="587.0" layoutY="410.0" onAction="#clicSeleccionCombo" prefHeight="50.0" prefWidth="185.0" promptText="Seleccionar bloque" style="-fx-background-radius: 15; -fx-background-color: white;" />
+      <Label layoutX="98.0" layoutY="248.0" prefHeight="35.0" prefWidth="236.0" text="Experiencia educativa">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="491.0" layoutY="243.0" prefHeight="35.0" prefWidth="236.0" text="NRC">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="98.0" layoutY="370.0" prefHeight="35.0" prefWidth="236.0" text="Periodo escolar">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="371.0" layoutY="370.0" prefHeight="35.0" prefWidth="151.0" text="Sección">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="587.0" layoutY="370.0" prefHeight="35.0" prefWidth="151.0" text="Bloque">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tfProfesor" layoutX="98.0" layoutY="526.0" prefHeight="55.0" prefWidth="670.0" promptText="Buscar profesor" style="-fx-background-radius: 15;" />
+      <Label layoutX="98.0" layoutY="486.0" prefHeight="35.0" prefWidth="236.0" text="Profesor">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <DatePicker fx:id="dpFechaInicioClases" layoutX="100.0" layoutY="650.0" onAction="#clicSeleccionCombo" prefHeight="55.0" style="-fx-border-radius: 15;" />
+      <Label layoutX="100.0" layoutY="615.0" prefHeight="35.0" prefWidth="236.0" text="Fecha inicio clases">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <DatePicker fx:id="dpFechaFinClases" layoutX="551.0" layoutY="650.0" onAction="#clicSeleccionCombo" prefHeight="55.0" />
+      <Label layoutX="551.0" layoutY="615.0" prefHeight="35.0" prefWidth="236.0" text="Fecha fin clases">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <ListView fx:id="lvprofesores" layoutX="110.0" layoutY="581.0" prefHeight="185.0" prefWidth="647.0" visible="false" />
+      <Button layoutX="101.0" layoutY="766.0" mnemonicParsing="false" onAction="#clicBtnCancelar" prefHeight="61.0" prefWidth="218.0" style="-fx-background-radius: 15; -fx-background-color: #FCCFCF;" text="Cancelar" />
+      <Button fx:id="btnAceptar" layoutX="553.0" layoutY="766.0" mnemonicParsing="false" onAction="#clicBtnAceptar" prefHeight="61.0" prefWidth="218.0" style="-fx-background-radius: 15; -fx-background-color: #C3E0BE;" text="Aceptar" />
+      <ImageView fitHeight="557.0" fitWidth="619.0" layoutX="1012.0" layoutY="191.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/iconos/curso_dos.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="lbMensajeDeError" alignment="CENTER" contentDisplay="CENTER" layoutX="103.0" layoutY="847.0" prefHeight="53.0" prefWidth="670.0" textFill="#d31111" wrapText="true" />
+      <Line endX="560.0" layoutX="680.0" layoutY="500.0" rotate="90.0" startX="-100.0" />
+   </children>
+</AnchorPane>

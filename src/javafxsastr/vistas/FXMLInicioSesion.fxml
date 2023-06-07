@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="940.0" prefWidth="1728.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxsastr.controladores.FXMLInicioSesionController">
+   <children>
+      <ImageView fitHeight="940.0" fitWidth="1792.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/fondo_inicio.jpeg" />
+         </image>
+         <effect>
+            <ColorAdjust brightness="-0.34">
+               <input>
+                  <GaussianBlur />
+               </input>
+            </ColorAdjust>
+         </effect>
+      </ImageView>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0d64b555" height="940.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1411.0" />
+      <Label layoutX="117.0" layoutY="137.0" prefHeight="289.0" prefWidth="690.0" text="Sistema de Apoyo al Seguimiento de Experiencia Recepcional" textFill="WHITE" wrapText="true">
+         <font>
+            <Font name="System Bold" size="46.0" />
+         </font>
+      </Label>
+      <Pane layoutX="1051.0" layoutY="47.0" prefHeight="860.0" prefWidth="617.0" style="-fx-background-color: white; -fx-effect: dropshadow( gaussian, rgba(0, 0, 0, 0.25), 25, 0.0, 0.0, 4); -fx-background-radius: 15;" AnchorPane.rightAnchor="80.0">
+         <children>
+            <Label layoutX="175.0" layoutY="118.0" text="Iniciar sesión">
+               <font>
+                  <Font name="System Bold" size="40.0" />
+               </font></Label>
+            <TextField fx:id="tfCorreoUsuario" layoutX="80.0" layoutY="299.0" prefHeight="78.0" prefWidth="444.0" promptText="Ingrese su correo institucional" style="-fx-background-radius: 15;">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </TextField>
+            <PasswordField fx:id="tfContraseñaUsuario" layoutX="84.0" layoutY="430.0" prefHeight="78.0" prefWidth="444.0" promptText="Ingrese su contraseña" style="-fx-background-radius: 15;">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </PasswordField>
+            <Button layoutX="89.0" layoutY="549.0" mnemonicParsing="false" onAction="#clicIniciarSesion" prefHeight="78.0" prefWidth="444.0" style="-fx-background-color: #18529D; -fx-background-radius: 15;" text="Iniciar Sesión" textFill="WHITE">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Button>
+            <Label fx:id="lbCampoCorreoRequerido" alignment="CENTER" layoutX="83.0" layoutY="389.0" prefHeight="21.0" prefWidth="440.0" textFill="RED">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbCampoContraseñaRequerido" alignment="CENTER" layoutX="86.0" layoutY="510.0" prefHeight="21.0" prefWidth="440.0" textFill="RED">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbErrorCredenciales" alignment="CENTER" contentDisplay="CENTER" layoutX="90.0" layoutY="639.0" prefHeight="70.0" prefWidth="440.0" style="-fx-text-alignment: center;" textFill="RED" wrapText="true">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="82.0" layoutY="194.0" prefHeight="70.0" prefWidth="443.0" style="-fx-text-alignment: center;" text="Ingrese su correo institucional y contraseña para iniciar sesión en el sistema." wrapText="true">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane prefHeight="200.0" prefWidth="200.0" />
+   </children>
+</AnchorPane>

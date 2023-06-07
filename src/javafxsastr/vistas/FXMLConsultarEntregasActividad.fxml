@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="940.0" prefWidth="1728.0" style="-fx-background-color: EFEFEF;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxsastr.controladores.FXMLConsultarEntregasActividadController">
+   <children>
+      <Pane layoutX="1.0" layoutY="1.0" prefHeight="50.0" prefWidth="1228.0" style="-fx-background-color: #18529d;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="500.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label layoutX="23.0" layoutY="9.0" text="Sistema de Apoyo al Seguimiento de Proyecto Guiado y Experiencia Recepcional" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane layoutX="1516.0" layoutY="7.0" prefHeight="50.0" prefWidth="500.0" style="-fx-background-color: #28ad56;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label layoutX="57.0" layoutY="6.0" text="Universidad Veracruzana" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="38.0" fitWidth="40.0" layoutX="399.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/perfil-de-usuario.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="30.0" fitWidth="32.0" layoutX="445.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/flecha-para-desplegar.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Label layoutX="106.0" layoutY="63.0" text="Entregas de la actividad" textFill="#434343">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="44.0" fitWidth="80.0" layoutX="31.0" layoutY="68.0" onMouseClicked="#clicRegresar" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/iconos/flecha.png" />
+         </image>
+      </ImageView>
+      <Pane layoutX="27.0" layoutY="144.0" prefHeight="222.0" prefWidth="1670.0" style="-fx-background-color: white; -fx-background-radius: 15;" AnchorPane.leftAnchor="29.0" AnchorPane.rightAnchor="29.0">
+         <children>
+            <Circle fill="#d9d9d9" layoutX="54.0" layoutY="48.0" radius="35.0" stroke="#ffffff00" strokeType="INSIDE" />
+            <ImageView fitHeight="53.0" fitWidth="45.0" layoutX="32.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/actividad-entrega.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="110.0" layoutY="3.0" text="Detalles de la actividad">
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </Label>
+            <Label layoutX="99.0" layoutY="38.0" text="Nombre:">
+               <font>
+                  <Font size="21.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbNombreActividad" alignment="TOP_LEFT" layoutX="99.0" layoutY="67.0" prefHeight="32.0" prefWidth="782.0" wrapText="true">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbDetallesActividad" alignment="TOP_LEFT" layoutX="89.0" layoutY="127.0" prefHeight="94.0" prefWidth="796.0" wrapText="true">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="96.0" layoutY="98.0" text="Detalles:">
+               <font>
+                  <Font size="21.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbFechaActividad" alignment="TOP_LEFT" layoutX="886.0" layoutY="70.0" prefHeight="30.0" prefWidth="608.0" wrapText="true">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="886.0" layoutY="41.0" text="Fecha:">
+               <font>
+                  <Font size="21.0" />
+               </font>
+            </Label>
+            <Label layoutX="888.0" layoutY="105.0" text="Hora:">
+               <font>
+                  <Font size="21.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbHoraActividad" alignment="TOP_LEFT" layoutX="888.0" layoutY="134.0" prefHeight="30.0" prefWidth="466.0" wrapText="true">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="1497.0" layoutY="102.0" text="Estado:">
+               <font>
+                  <Font size="21.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbEstadoActividad" alignment="CENTER" contentDisplay="CENTER" layoutX="1438.0" layoutY="131.0" prefHeight="35.0" prefWidth="186.0">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <ScrollPane layoutX="29.0" layoutY="426.0" maxHeight="513.0" prefWidth="990.0" style="-fx-background-color: white; -fx-background-radius: 15;" styleClass="edge-to-edge" AnchorPane.leftAnchor="29.0" AnchorPane.topAnchor="426.0">
+         <content>
+            <VBox fx:id="vbxCardsEntregas" spacing="8.0" style="-fx-background-radius: 13;" />
+         </content>
+      </ScrollPane>
+      <Label fx:id="lbNumeroEntregas" layoutX="31.0" layoutY="383.0" prefHeight="30.0" prefWidth="356.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <ScrollPane layoutX="1060.0" layoutY="536.0" maxHeight="392.0" prefWidth="649.0" style="-fx-background-color: white;" styleClass="edge-to-edge">
+         <content>
+            <VBox fx:id="vbxCardsCambios" prefWidth="649.0" spacing="8.0" />
+         </content>
+      </ScrollPane>
+      <Pane layoutX="1060.0" layoutY="426.0" prefHeight="123.0" prefWidth="649.0" style="-fx-background-color: white; -fx-background-radius: 15 15 0 0;">
+         <children>
+            <Label layoutX="67.0" layoutY="9.0" text="Historial de cambios">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="44.0" fitWidth="44.0" layoutX="10.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/historial-cambios.png" />
+               </image>
+            </ImageView>
+            <Pane layoutX="13.0" layoutY="60.0" prefHeight="40.0" prefWidth="127.0" style="-fx-border-color: transparent; -fx-background-color: #C4DAEF; -fx-background-radius: 15;">
+               <children>
+                  <Label layoutX="35.0" layoutY="6.0" text="Fecha">
+                     <font>
+                        <Font name="System Bold" size="21.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane layoutX="181.0" layoutY="60.0" prefHeight="40.0" prefWidth="438.0" style="-fx-border-color: transparent; -fx-background-color: #C4DAEF; -fx-background-radius: 15;">
+               <children>
+                  <Label layoutX="16.0" layoutY="5.0" text="Cambio realizado">
+                     <font>
+                        <Font name="System Bold" size="21.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+         </children>
+      </Pane>
+      <Button fx:id="btnFecha" alignment="CENTER" graphicTextGap="15.0" layoutX="285.0" layoutY="371.0" mnemonicParsing="false" onAction="#clicFecha" prefHeight="35.0" prefWidth="144.0" style="-fx-background-color: C4DAEF; -fx-background-radius: 15;" text="Fecha">
+         <font>
+            <Font size="20.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <graphic>
+            <ImageView fitHeight="36.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/alternar-orden.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+   </children>
+</AnchorPane>

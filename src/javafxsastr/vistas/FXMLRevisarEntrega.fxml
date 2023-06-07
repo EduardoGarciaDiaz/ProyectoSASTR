@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="940.0" prefWidth="1728.0" style="-fx-background-color: #efefef;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxsastr.controladores.FXMLRevisarEntregaControllerController">
+   <children>
+      <Pane layoutX="10.0" layoutY="10.0" prefHeight="50.0" prefWidth="1228.0" style="-fx-background-color: #18529d;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="500.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label layoutX="23.0" layoutY="9.0" text="Sistema de Apoyo al Seguimiento de Proyecto Guiado y Experiencia Recepcional" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane layoutX="1526.0" layoutY="17.0" prefHeight="50.0" prefWidth="500.0" style="-fx-background-color: #28ad56;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label layoutX="57.0" layoutY="6.0" text="Universidad Veracruzana" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="38.0" fitWidth="40.0" layoutX="399.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/perfil-de-usuario.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="30.0" fitWidth="32.0" layoutX="445.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/flecha-para-desplegar.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <ImageView fitHeight="38.0" fitWidth="49.0" layoutX="18.0" layoutY="75.0" onMouseClicked="#clicRegresar" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/iconos/flecha.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="78.0" layoutY="71.0" text="Revisar entrega">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
+      <Pane layoutX="80.0" layoutY="154.0" prefHeight="172.0" prefWidth="885.0" style="-fx-background-radius: 15; -fx-background-color: white;">
+         <children>
+            <Rectangle arcHeight="100.0" arcWidth="100.0" fill="#c4daef" height="65.0" layoutX="28.0" layoutY="33.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="65.0" />
+            <ImageView fitHeight="38.0" fitWidth="40.0" layoutX="41.0" layoutY="45.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/task.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="116.0" layoutY="23.0" text="Detalles del avance">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="118.0" layoutY="58.0" text="Avance no.">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbNumeroAvance" layoutX="226.0" layoutY="58.0">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="118.0" layoutY="97.0" text="Actividad">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbNombreActividad" layoutX="114.0" layoutY="130.0" prefHeight="30.0" prefWidth="446.0">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="347.0" layoutY="22.0" text="Fecha de recibido">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbFechaRecibido" layoutX="349.0" layoutY="58.0" prefHeight="30.0" prefWidth="179.0">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbHoraRecibido" layoutX="587.0" layoutY="58.0" prefHeight="30.0" prefWidth="179.0">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="585.0" layoutY="22.0" text="Hora de recibido">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane layoutX="81.0" layoutY="342.0" prefHeight="272.0" prefWidth="884.0" style="-fx-background-radius: 15; -fx-background-color: white;">
+         <children>
+            <Rectangle arcHeight="100.0" arcWidth="100.0" fill="#c4daef" height="65.0" layoutX="28.0" layoutY="33.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="65.0" />
+            <ImageView fitHeight="38.0" fitWidth="37.0" layoutX="42.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/comentario.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="587.0" layoutY="58.0" prefHeight="30.0" prefWidth="179.0">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="117.0" layoutY="28.0" text="Comentarios del estudiante">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <TextArea fx:id="txaComentariosEstudiante" editable="false" layoutX="119.0" layoutY="64.0" prefHeight="177.0" prefWidth="743.0" style="-fx-border-color: transparent; -fx-background-color: transparent;" wrapText="true" />
+         </children>
+      </Pane>
+      <Pane layoutX="80.0" layoutY="631.0" prefHeight="272.0" prefWidth="883.0" style="-fx-background-radius: 15; -fx-background-color: white;">
+         <children>
+            <Rectangle arcHeight="100.0" arcWidth="100.0" fill="#c4daef" height="65.0" layoutX="28.0" layoutY="33.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="65.0" />
+            <ImageView fitHeight="49.0" fitWidth="49.0" layoutX="38.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/adjuntar.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="587.0" layoutY="58.0" prefHeight="30.0" prefWidth="179.0">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="117.0" layoutY="45.0" text="Archivos adjuntos">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <ScrollPane layoutX="28.0" layoutY="136.0" prefHeight="51.0" prefWidth="835.0" styleClass="edge-to-edge">
+              <content>
+                <AnchorPane prefHeight="50.0" prefWidth="0.0">
+                     <children>
+                        <HBox fx:id="hbxContenedorArchivosAlumno" prefHeight="46.0" spacing="10.0" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </ScrollPane>
+         </children>
+      </Pane>
+      <Line endX="550.0" layoutX="811.0" layoutY="527.0" rotate="90.0" startX="-190.0" />
+      <Label layoutX="1031.0" layoutY="156.0" text="Comentarios">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <TextArea fx:id="txaComentariosDirector" layoutX="1031.0" layoutY="198.0" onKeyTyped="#activarBtnEnviarRevision" prefHeight="289.0" prefWidth="663.0" wrapText="true">
+         <font>
+            <Font size="18.0" />
+         </font></TextArea>
+      <Label layoutX="1031.0" layoutY="501.0" text="Archivos adjuntos">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Pane layoutX="1032.0" layoutY="542.0" prefHeight="233.0" prefWidth="662.0" style="-fx-background-radius: 15; -fx-background-color: white;">
+         <children>
+            <ScrollPane layoutX="27.0" layoutY="41.0" prefHeight="65.0" prefWidth="608.0" styleClass="edge-to-edge">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="51.0">
+                     <children>
+                        <HBox fx:id="hbxContenedorArchivosRevision" prefHeight="51.0" spacing="10.0" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </ScrollPane>
+            <Button layoutX="461.0" layoutY="168.0" mnemonicParsing="false" onAction="#clicBtnAdjuntarArchivo" prefHeight="38.0" prefWidth="173.0" style="-fx-background-radius: 15; -fx-background-insets: 0; -fx-background-color: #efefef;" text="Adjuntar archivos">
+               <graphic>
+                  <ImageView fitHeight="26.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../recursos/iconos/adjuntar.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children></Pane>
+      <Button fx:id="btnEnviarRevision" layoutX="1447.0" layoutY="823.0" mnemonicParsing="false" onAction="#clicBtnEnviarRevision" prefHeight="31.0" prefWidth="241.0" style="-fx-background-radius: 15; -fx-background-color: black;" text="Enviar revisión" textFill="WHITE">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

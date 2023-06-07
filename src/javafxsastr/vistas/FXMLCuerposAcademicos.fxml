@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="940.0" prefWidth="1728.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="javafxsastr.controladores.FXMLCuerposAcademicosController">
+   <children>
+      <Pane layoutX="30.0" layoutY="111.0" prefHeight="50.0" prefWidth="500.0" style="-fx-background-color: #28ad56;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label layoutX="57.0" layoutY="6.0" text="Universidad Veracruzana" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="38.0" fitWidth="40.0" layoutX="399.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/perfil-de-usuario.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="30.0" fitWidth="32.0" layoutX="445.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/flecha-para-desplegar.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Pane prefHeight="50.0" prefWidth="1228.0" style="-fx-background-color: #18529d;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="500.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label layoutX="23.0" layoutY="9.0" text="Sistema de Apoyo al Seguimiento de Proyecto Guiado y Experiencia Recepcional" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Label fx:id="lbTituloVentana" layoutX="78.0" layoutY="61.0" prefHeight="45.0" prefWidth="320.0" text="Cuerpos Académicos">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
+      <ScrollPane layoutX="79.0" layoutY="123.0" prefHeight="715.0" prefWidth="1575.0" styleClass="edge-to-edge">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="1555.0">
+               <children>
+                  <VBox fx:id="contenedorTarjetasCuerpoAcademico" prefWidth="1555.0" spacing="15.0" />
+               </children>
+            </AnchorPane>
+         </content>
+      </ScrollPane>
+      <ImageView fitHeight="38.0" fitWidth="41.0" layoutX="20.0" layoutY="63.0" onMouseClicked="#clicRegresar" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/iconos/flecha.png" />
+         </image>
+      </ImageView>
+      <Pane fx:id="pnCrearCuerpoAcademico" layoutX="1408.0" layoutY="850.0" onMouseClicked="#clicCrearCuerpoAcademico" prefHeight="68.0" prefWidth="244.0" style="-fx-background-color: black; -fx-background-radius: 13;">
+         <children>
+            <Label layoutX="70.0" layoutY="15.0" text="Añadir CA" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

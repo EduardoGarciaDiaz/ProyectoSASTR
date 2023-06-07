@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="940.0" prefWidth="1728.0" style="-fx-background-color: EFEFEF;" styleClass="edge-to-edge" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxsastr.controladores.FXMLFormularioEntregaActividadController">
+   <children>
+      <Pane layoutX="1.0" layoutY="1.0" prefHeight="50.0" prefWidth="1228.0" style="-fx-background-color: #18529d;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="500.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label layoutX="23.0" layoutY="9.0" text="Sistema de Apoyo al Seguimiento de Proyecto Guiado y Experiencia Recepcional" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane layoutX="1516.0" layoutY="7.0" prefHeight="50.0" prefWidth="500.0" style="-fx-background-color: #28ad56;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label layoutX="57.0" layoutY="6.0" text="Universidad Veracruzana" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="38.0" fitWidth="40.0" layoutX="399.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/perfil-de-usuario.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="30.0" fitWidth="32.0" layoutX="445.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/flecha-para-desplegar.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Label fx:id="lbEntrega" layoutX="100.0" layoutY="65.0" text="Enviar entrega" textFill="#434343">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="44.0" fitWidth="80.0" layoutX="31.0" layoutY="68.0" onMouseClicked="#clicRegresar" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/iconos/flecha.png" />
+         </image>
+      </ImageView>
+      <Pane layoutX="82.0" layoutY="120.0" prefHeight="186.0" prefWidth="1205.0" style="-fx-background-color: white; -fx-background-radius: 15;" AnchorPane.leftAnchor="82.0" AnchorPane.rightAnchor="441.0" AnchorPane.topAnchor="120.0">
+         <children>
+            <Label layoutX="10.0" layoutY="4.0" text="Información de la actividad">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Label>
+            <Label layoutX="9.0" layoutY="37.0" text="Nombre de la actividad:">
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbNombreActividad" layoutX="267.0" layoutY="39.0" prefHeight="30.0" prefWidth="932.0" wrapText="true">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbDetallesActividad" alignment="TOP_LEFT" layoutX="108.0" layoutY="75.0" prefHeight="112.0" prefWidth="1099.0" wrapText="true">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="10.0" layoutY="72.0" text="Detalles:">
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane layoutX="1317.0" layoutY="50.0" prefHeight="913.0" prefWidth="416.0" style="-fx-border-color: black; -fx-border-width: 0 0 0 1px; -fx-background-color: #EFEFEF;" AnchorPane.rightAnchor="-4.0">
+         <children>
+            <ScrollPane layoutX="2.0" layoutY="512.0" prefHeight="404.0" prefWidth="413.0" style="-fx-background-color: EFEFEF;">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="410.0" style="-fx-background-color: #EFEFEF;" />
+              </content>
+            </ScrollPane>
+         </children>
+      </Pane>
+      <Pane layoutX="82.0" layoutY="318.0" prefHeight="303.0" prefWidth="1205.0" style="-fx-background-color: white; -fx-background-radius: 15 15 0 0;" AnchorPane.leftAnchor="82.0" AnchorPane.rightAnchor="441.0">
+         <children>
+            <Label layoutX="7.0" layoutY="3.0" text="Comentarios">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Label>
+            <TextArea fx:id="taComentarios" layoutX="-2.0" layoutY="38.0" prefHeight="256.0" prefWidth="1208.0" style="-fx-background-color: white; -fx-border-radius: 15;" wrapText="true">
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="TEXT" />
+               </cursor>
+            </TextArea>
+            <Label fx:id="lbCampoComentariosError" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="640.0" layoutY="6.0" prefHeight="27.0" prefWidth="551.0" textFill="#f50606">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane layoutX="82.0" layoutY="637.0" prefHeight="211.0" prefWidth="1205.0" style="-fx-background-color: white; -fx-background-radius: 15;" AnchorPane.leftAnchor="82.0" AnchorPane.rightAnchor="441.0">
+         <children>
+            <Label layoutX="7.0" layoutY="3.0" text="Evidencias">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Label>
+            <Button alignment="CENTER_RIGHT" contentDisplay="CENTER" layoutX="910.0" layoutY="129.0" mnemonicParsing="false" onAction="#clicAdjuntarArchivo" prefHeight="65.0" prefWidth="266.0" style="-fx-border-color: black; -fx-background-radius: 15; -fx-background-color: white; -fx-border-radius: 15;" text="Adjuntar archivos" textAlignment="RIGHT">
+               <font>
+                  <Font size="22.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <ImageView fitHeight="41.0" fitWidth="52.0" layoutX="926.0" layoutY="140.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/adjuntar.png" />
+               </image>
+            </ImageView>
+            <ScrollPane layoutX="7.0" layoutY="36.0" maxWidth="887.0" prefHeight="65.0" style="-fx-background-color: white;" styleClass="edge-to-edge">
+               <content>
+                  <HBox fx:id="hbxContenedorArchivosAlumno" prefHeight="63.0" spacing="6.0" style="-fx-background-color: white;" />
+               </content>
+            </ScrollPane>
+         </children>
+      </Pane>
+      <Button fx:id="btnEnviar" layoutX="1033.0" layoutY="880.0" mnemonicParsing="false" onAction="#clicEnviar" prefHeight="54.0" prefWidth="245.0" style="-fx-background-color: D4F1C9; -fx-background-radius: 15;" text="Enviar" AnchorPane.rightAnchor="450.0">
+         <font>
+            <Font size="22.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Button layoutX="703.0" layoutY="881.0" mnemonicParsing="false" onAction="#clicCancelar" prefHeight="54.0" prefWidth="245.0" style="-fx-background-color: FCCFCF; -fx-background-radius: 15;" text="Cancelar" AnchorPane.bottomAnchor="29.0" AnchorPane.rightAnchor="800.0">
+         <font>
+            <Font size="22.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <ImageView fx:id="ivArchivo" fitHeight="86.0" fitWidth="100.0" layoutX="10.0" layoutY="497.0" pickOnBounds="true" preserveRatio="true" />
+   </children>
+</AnchorPane>

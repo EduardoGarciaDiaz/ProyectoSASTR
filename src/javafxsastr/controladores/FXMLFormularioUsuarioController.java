@@ -1,0 +1,494 @@
+    /*
+ * Autor: Eduardo García Díaz
+ * Fecha de creación: 03/06/2023
+ * Descripción: Controlador del formulario para registro y edición de usuarios
+ */
+
+package javafxsastr.controladores;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputControl;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
+import javafxsastr.JavaFXSASTR;
+import javafxsastr.modelos.dao.AcademicoDAO;
+import javafxsastr.modelos.dao.DAOException;
+import javafxsastr.modelos.dao.EstudianteDAO;
+import javafxsastr.modelos.dao.UsuarioDAO;
+import javafxsastr.modelos.pojo.Academico;
+import javafxsastr.modelos.pojo.Estudiante;
+import javafxsastr.modelos.pojo.Usuario;
+import javafxsastr.utils.Utilidades;
+
+
+public class FXMLFormularioUsuarioController implements Initializable {
+
+    @FXML
+    private Label lbUsuario;
+    @FXML
+    private TextField tfNombre;
+    @FXML
+    private TextField tfPrimerApellido;
+    @FXML
+    private TextField tfSegundoApellido;
+    @FXML
+    private TextField tfContrasena;
+    @FXML
+    private TextField tfCorreoInstitucional;
+    @FXML
+    private TextField tfIdentificadorTipoUsuario;
+    @FXML
+    private ComboBox<String> cbTipoUsuario;
+    @FXML
+    private CheckBox chbxEsAdministrador;
+    @FXML
+    private Label lbIdentificadorTipoUsuario;
+    @FXML
+    private Label lbPrimerApellidoVacio;
+    @FXML
+    private Label lbSegundoApellidoVacio;
+    @FXML
+    private Label lbCorreoVacio;
+    @FXML
+    private Label lbContrasenaVacia;
+    @FXML
+    private Label lbTipoUsuarioVacio;
+    @FXML
+    private Label lbNombreVacio;   
+    @FXML
+    private Button btnGuardar;
+    @FXML
+    private Label lbIdentificadorTipoUsuarioVacio;
+    
+    private Usuario usuario;
+    
+    private ObservableList<String> tiposUsuarios;
+    private Usuario usuarioEdicion;
+    private boolean esEdicion;
+    private Academico academicoEdicion;
+    private Estudiante estudianteEdicion;
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        cargarTiposUsuarios();
+        lbUsuario.requestFocus();
+        agregarListenersCamposVacios();
+        btnGuardar.setDisable(true);
+        cbTipoUsuario.valueProperty().addListener(new ChangeListener<String>(){
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (newValue != null){
+                    String tipoUsuarioSeleccionado = cbTipoUsuario.getSelectionModel().getSelectedItem();
+                    mostrarCampoIdentificadorTipoUsuario(tipoUsuarioSeleccionado);
+                }
+            }
+        });
+    }    
+    
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+        cargarTiposUsuarios();
+        lbUsuario.requestFocus();
+        agregarListenersCamposVacios();
+        btnGuardar.setDisable(true);
+        cbTipoUsuario.valueProperty().addListener(new ChangeListener<String>(){
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (newValue != null){
+                    String tipoUsuarioSeleccionado = cbTipoUsuario.getSelectionModel().getSelectedItem();
+                    mostrarCampoIdentificadorTipoUsuario(tipoUsuarioSeleccionado);
+                }
+            }
+        });
+    }
+    
+    public void mostrarCampoIdentificadorTipoUsuario(String tipoUsuario) {
+        if ("Estudiante".equals(tipoUsuario)) {
+            tfIdentificadorTipoUsuario.setVisible(true);
+            lbIdentificadorTipoUsuario.setText("Matricula");
+        }
+        if ("Académico".equals(tipoUsuario)) {
+            tfIdentificadorTipoUsuario.setVisible(true);
+            lbIdentificadorTipoUsuario.setText("Número de personal");
+        }
+    }
+    
+    public void cargarTiposUsuarios() {
+        tiposUsuarios = FXCollections.observableArrayList();
+        tiposUsuarios.add("Estudiante");
+        tiposUsuarios.add("Académico");
+        cbTipoUsuario.setItems(tiposUsuarios);
+    }
+    
+    public void inicializarInformacionFormulario(boolean esEdicion, Usuario usuarioEdicion) {
+        this.esEdicion = esEdicion;
+        this.usuarioEdicion = usuarioEdicion;
+        
+        if (esEdicion) {
+            lbUsuario.setText("Modificar usuario");
+            btnGuardar.setText("Guardar cambios");
+            cargarInformacionEdicion();
+        }
+    }
+    
+    private void cargarInformacionEdicion(){
+        String tipoUsuario = "";
+        tfNombre.setText(usuarioEdicion.getNombre());
+        tfPrimerApellido.setText(usuarioEdicion.getPrimerApellido());
+        tfSegundoApellido.setText(usuarioEdicion.getSegundoApellido());
+        tfCorreoInstitucional.setText(usuarioEdicion.getCorreoInstitucional());
+        tfContrasena.setText(usuarioEdicion.getContraseña());
+        try { 
+            estudianteEdicion = new EstudianteDAO().obtenerEstudiantePorIdUsuario(usuarioEdicion.getIdUsuario());
+            if (estudianteEdicion.getIdUsuario() > 0) {
+                tipoUsuario = "Estudiante";
+                tfIdentificadorTipoUsuario.setText(estudianteEdicion.getMatriculaEstudiante());
+            } else {
+                academicoEdicion = new AcademicoDAO().obtenerAcademicoPorIdUsuario(usuarioEdicion.getIdUsuario());
+                if (academicoEdicion.getIdUsuario() > 0) {
+                    tipoUsuario = "Académico";
+                    tfIdentificadorTipoUsuario.setText(String.valueOf(academicoEdicion.getNumeroPersonal()));
+                }
+            }
+            cbTipoUsuario.getSelectionModel().select(tipoUsuario);
+            mostrarCampoIdentificadorTipoUsuario(tipoUsuario);
+        } catch (DAOException ex) {
+            manejarDAOException(ex);
+        }
+        chbxEsAdministrador.setSelected(usuarioEdicion.getEsAdministrador());
+    }
+
+    
+    public void agregarListenersCamposVacios() {
+        agregarListenerCampoVacio(tfNombre, lbNombreVacio);
+        agregarListenerCampoVacio(tfPrimerApellido, lbPrimerApellidoVacio);
+        agregarListenerCampoVacio(tfSegundoApellido, lbSegundoApellidoVacio);
+        agregarListenerCampoVacio(tfCorreoInstitucional, lbCorreoVacio);
+        agregarListenerCampoVacio(tfContrasena, lbContrasenaVacia);
+        agregarListenerCampoVacio(tfIdentificadorTipoUsuario, lbIdentificadorTipoUsuarioVacio);
+        agregarListenerComboBoxVacio(cbTipoUsuario, lbTipoUsuarioVacio);
+    }
+    
+    private void agregarListenerComboBoxVacio(ComboBox combo, Label etiqueta){
+        combo.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            if (newValue) {
+                combo.setStyle("-fx-border-color: gray");
+                etiqueta.setText("");
+                tfIdentificadorTipoUsuario.setText("");
+            }
+            if (oldValue) {
+                if (combo.getSelectionModel().getSelectedIndex()==-1) {
+                    combo.setStyle("-fx-border-color: red");
+                    etiqueta.setText("Campo obligatorio");
+                }
+                if (validarCamposObligatoriosLLenos()) {
+                    btnGuardar.setDisable(false);
+                } else {
+                    btnGuardar.setDisable(true);
+                    llenarMatriculaAutomatico();
+                }
+            }
+        });
+    }
+    
+    private void agregarListenerCampoVacio(TextInputControl campoTexto, Label etiqueta){
+        campoTexto.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            if (newValue) {
+                campoTexto.setStyle("-fx-border-color: gray");
+                etiqueta.setText("");
+            }
+            if (oldValue) {
+                if (campoTexto.getText().trim().isEmpty()) {
+                    campoTexto.setStyle("-fx-border-color: red");
+                    etiqueta.setText("Campo obligatorio");
+
+                }
+                if (validarCamposObligatoriosLLenos()) {
+                    btnGuardar.setDisable(false);
+                } else {
+                    btnGuardar.setDisable(true);
+                }
+            }
+        });
+    }
+    
+    private boolean validarCamposObligatoriosLLenos() {
+        boolean respuesta = false;
+        if ((!tfNombre.getText().trim().isEmpty())
+                & (!tfPrimerApellido.getText().trim().isEmpty())
+                & (!tfSegundoApellido.getText().trim().isEmpty())
+                & (!tfCorreoInstitucional.getText().trim().isEmpty())
+                & (!tfContrasena.getText().trim().isEmpty())
+                & (!tfIdentificadorTipoUsuario.getText().trim().isEmpty())
+                & (cbTipoUsuario.getSelectionModel().getSelectedIndex() >= 0)){
+            respuesta = true;
+        }
+        return respuesta;
+    }
+    
+    private void llenarMatriculaAutomatico() {
+        if ("Estudiante".equals(cbTipoUsuario.getSelectionModel().getSelectedItem())) {
+            String correoInstitucional = tfCorreoInstitucional.getText();
+            if (!correoInstitucional.isEmpty()) {
+                String matricula = correoInstitucional.substring(1, Math.min(correoInstitucional.length(), 10));
+                tfIdentificadorTipoUsuario.setText(matricula);
+            }
+        }
+    }
+
+    @FXML
+    private void clicRegresar(MouseEvent event) {
+
+        irAVistaInicio(usuario);
+    }
+    
+    private void irAVistaInicio(Usuario usuario) {
+        try {
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLUsuarios.fxml"));
+            Parent vista = accesoControlador.load();
+            FXMLUsuariosController controladorVistaUsuarios = accesoControlador.getController();     
+            controladorVistaUsuarios.setUsuario(usuario);
+            Stage escenario = (Stage) lbContrasenaVacia.getScene().getWindow();
+            escenario.setScene(new Scene(vista));
+            escenario.setTitle("Usuarios");
+            escenario.show();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void clicGuardar(ActionEvent event) {
+        validarCampos();
+        irAVistaInicio(usuario);
+    }
+    
+    public void validarCampos() {
+        boolean datosValidos = true;
+        String nombre = tfNombre.getText();
+        String primerApellido = tfPrimerApellido.getText();
+        String segundoApellido = tfSegundoApellido.getText();
+        String correo = tfCorreoInstitucional.getText();
+        String contrasena = tfContrasena.getText();
+        boolean esAdministrador = chbxEsAdministrador.isSelected();
+        int idEstadoUsuario = 1;
+        String tipoUsuarioSeleccionado = cbTipoUsuario.getSelectionModel().getSelectedItem();
+        String identificadorTipoUsuario = tfIdentificadorTipoUsuario.getText();
+        if (contrasena.length() < 7 || contrasena.length()>16) {
+            datosValidos = false;
+            lbContrasenaVacia.setText("La contraseña debe tener de 7 a 16 caracteres");
+        }
+        if (!Utilidades.correoValido(correo)) {
+            datosValidos = false;
+            lbCorreoVacio.setText("Correo no válido. Ejemplos: zs21013811@estudiantes.uv.mx o profesor@uv.mx");
+        }
+        if ("Estudiante".equals(tipoUsuarioSeleccionado)) {
+            if(!Utilidades.matriculaValida(identificadorTipoUsuario)) {
+                datosValidos = false;
+                lbIdentificadorTipoUsuarioVacio.setText("Matricula no válida. Ejemplo S21013811");
+            }
+            if(!esEdicion) {
+                if(validarUsuarioInexistente(correo, identificadorTipoUsuario, tipoUsuarioSeleccionado)) {
+                    datosValidos = false;
+                    Utilidades.mostrarDialogoSimple("Usuario existente", 
+                            "El correo institucional y/o la matrícula ya está registrado en el sistema",
+                            Alert.AlertType.WARNING);
+                }
+            }
+
+        }
+        if ("Académico".equals(tipoUsuarioSeleccionado)) {
+            if (!Utilidades.noPersonalValido(identificadorTipoUsuario)) {
+                datosValidos = false;
+                lbIdentificadorTipoUsuarioVacio.setText("Solo debe contener números");
+            }
+            if (!esEdicion) {
+                if(validarUsuarioInexistente(correo, identificadorTipoUsuario, tipoUsuarioSeleccionado)) {
+                    datosValidos = false;
+                    Utilidades.mostrarDialogoSimple("Usuario existente", 
+                            "El correo institucional y/o el número de personal ya está registrado en el sistema",
+                            Alert.AlertType.WARNING);
+                }
+            }
+            
+        }
+        if (esAdministrador==false) {
+            //TODO VERIFICAR QUE SI ES EDICION, DEBE HABER UN ADMINISTRADOR EN EL SISTEMA
+        }
+        if (datosValidos) {
+            int respuesta;
+            if ("Estudiante".equals(tipoUsuarioSeleccionado)) {
+                Estudiante usuarioNuevo = new Estudiante();
+                usuarioNuevo.setNombre(nombre);
+                usuarioNuevo.setPrimerApellido(primerApellido);
+                usuarioNuevo.setSegundoApellido(segundoApellido);
+                usuarioNuevo.setCorreoInstitucional(correo);
+                usuarioNuevo.setContraseña(contrasena);
+                usuarioNuevo.setEsAdministrador(esAdministrador);
+                usuarioNuevo.setIdEstadoUsuario(idEstadoUsuario);
+                usuarioNuevo.setMatriculaEstudiante(identificadorTipoUsuario);
+                if (!esEdicion) {
+                    respuesta = guardarUsuario(usuarioNuevo);
+                    if (respuesta > 0) {
+                        usuarioNuevo.setIdUsuario(respuesta);
+                    }
+                } else {
+                    usuarioNuevo.setIdUsuario(usuarioEdicion.getIdUsuario());
+                    respuesta = guardarUsuario(usuarioNuevo);
+                }
+                if (esEdicion) {
+                    usuarioNuevo.setIdEstudiante(estudianteEdicion.getIdEstudiante());
+                }
+                guardarEstudiante(usuarioNuevo);
+            } else if("Académico".equals(tipoUsuarioSeleccionado)) {
+                Academico usuarioNuevo = new Academico();
+                usuarioNuevo.setNombre(nombre);
+                usuarioNuevo.setPrimerApellido(primerApellido);
+                usuarioNuevo.setSegundoApellido(segundoApellido);
+                usuarioNuevo.setCorreoInstitucional(correo);
+                usuarioNuevo.setContraseña(contrasena);
+                usuarioNuevo.setEsAdministrador(esAdministrador);
+                usuarioNuevo.setIdEstadoUsuario(idEstadoUsuario);
+                usuarioNuevo.setNumeroPersonal(Integer.parseInt(identificadorTipoUsuario));
+                if (!esEdicion) {
+                    respuesta = guardarUsuario(usuarioNuevo);
+                    if (respuesta > 0) {
+                        usuarioNuevo.setIdUsuario(respuesta);
+                    }
+                } else {
+                    usuarioNuevo.setIdUsuario(usuarioEdicion.getIdUsuario());
+                    respuesta = guardarUsuario(usuarioNuevo);
+                }
+                if (esEdicion) {
+                    usuarioNuevo.setIdAcademico(academicoEdicion.getIdAcademico());
+                }
+                guardarAcademico(usuarioNuevo);
+            }
+        } 
+    }
+    
+    public int guardarUsuario(Usuario usuarioNuevo) {
+        int respuestaUsuario = 0;
+        try {
+            if (esEdicion) {
+                respuestaUsuario = new UsuarioDAO().actualizarUsuario(usuarioNuevo);
+            } else {
+                respuestaUsuario = new UsuarioDAO().guardarUsuario(usuarioNuevo);
+            }
+        } catch (DAOException ex) {
+            manejarDAOException(ex);
+        }
+        return respuestaUsuario;
+    }
+    
+    private boolean validarUsuarioInexistente(String correoInstitucional, String identificadorTipoUsuario, String tipoUsuario) {
+        boolean esExistente = false;
+        try {
+            if ("Estudiante".equals(tipoUsuario)) {
+                esExistente = new UsuarioDAO().verificarUsuarioEstudianteInexistente(correoInstitucional, identificadorTipoUsuario);
+            } else if ("Académico".equals(tipoUsuario)) {
+                esExistente = new UsuarioDAO().verificarUsuarioAcademicoInexistente(correoInstitucional, identificadorTipoUsuario);
+            }
+        } catch (DAOException ex) {
+            manejarDAOException(ex);
+        }
+        return esExistente;
+    }
+    
+    public void guardarEstudiante(Estudiante estudianteNuevo) {
+        int respuestaEstudiante = 0;
+        try {
+            if (esEdicion) {
+                respuestaEstudiante = new EstudianteDAO().actualizarEstudiante(estudianteNuevo);
+            } else {
+                respuestaEstudiante = new EstudianteDAO().guardarEstudiante(estudianteNuevo);
+
+            }
+        } catch (DAOException ex) {
+            manejarDAOException(ex);
+        }
+        if (respuestaEstudiante > 0) {
+            if (esEdicion) {
+                Utilidades.mostrarDialogoSimple("Modificación exitosa", "Usuario modificado con éxto",
+                    Alert.AlertType.INFORMATION);
+            } else {
+                Utilidades.mostrarDialogoSimple("Estudiante registrado con éxito", "Usuario registrado correctamente en el sistema",
+                    Alert.AlertType.INFORMATION);
+            }
+
+        }
+    }
+    
+    public void guardarAcademico(Academico academicoNuevo) {
+        int respuestaAcademico = 0;
+        try {
+            if (esEdicion) {
+                respuestaAcademico = new AcademicoDAO().actualizarAcademico(academicoNuevo);
+            } else {
+                respuestaAcademico = new AcademicoDAO().guardarAcademico(academicoNuevo);
+            }
+        } catch (DAOException ex) {
+            manejarDAOException(ex);
+        }
+        if (respuestaAcademico > 0) {
+            if (esEdicion) {
+                Utilidades.mostrarDialogoSimple("Modificación exitosa", "Usuario modificado con éxito",
+                    Alert.AlertType.INFORMATION);
+            } else {
+                Utilidades.mostrarDialogoSimple("Académico registrado con éxito", "Usuario registrado correctamente en el sistema",
+                    Alert.AlertType.INFORMATION);
+            }
+        }
+    }
+    
+    
+    @FXML
+    private void clicCancelar(ActionEvent event) {
+        boolean cancelarRegistro;
+        if (esEdicion) {
+            cancelarRegistro = Utilidades.mostrarDialogoConfirmacion("Cancelar modificación de usuario",
+                "¿Estás seguro de que deseas cancelar la modificación del usuario?");
+        } else {
+            cancelarRegistro = Utilidades.mostrarDialogoConfirmacion("Cancelar registro de usuario",
+                "¿Estás seguro de que deseas cancelar el registro del usuario?");
+        }
+       
+        if (cancelarRegistro) {
+            irAVistaInicio(usuario);
+        }
+    }
+    
+    private void manejarDAOException(DAOException ex) {
+        switch (ex.getCodigo()) {
+            case ERROR_CONSULTA:
+                ex.printStackTrace();
+                System.out.println("Ocurrió un error de consulta.");
+                break;
+            case ERROR_CONEXION_BD:
+                ex.printStackTrace();
+                Utilidades.mostrarDialogoSimple("Error de conexion", 
+                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
+            default:
+                throw new AssertionError();
+        }
+    }
+    
+}
