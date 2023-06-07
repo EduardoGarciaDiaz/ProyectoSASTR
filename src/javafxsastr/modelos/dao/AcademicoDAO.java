@@ -57,6 +57,17 @@ public class AcademicoDAO {
     private final String ELIMINAR_ACADEMICO = "DELETE FROM academicos WHERE idAcademico = ?";
     private final String ACTUALIZAR_ACADEMICO = "UPDATE academicos set numeroPersonalAcademico = ?, idUsuario = ? where idAcademico = ?;";
     private final String GUARDAR_ACADEMICO = "insert into sastr.academicos (numeroPersonalAcademico, idUsuario) values ( ?, ?);";
+    private final String OBTENER_CODIRECTORES_POR_ANTEPROYECTO = "SELECT acad.idAcademico, usuarios.idUsuario, nombreUsuario AS nombreAcademico, "
+            + "primerApellidoUsuario AS primerApellidoAcademico, numeroPersonalAcademico," 
+            + "segundoApellidoUsuario AS segundoApellidoUsuario, correoInstitucionalUsuario AS correoInstitucionalAcademico, " 
+            + "correoAlternoUsuario AS correoAlternoAcademico, contraseñaUsuario AS contraseñaAcademico, " 
+            + "esAdministrador, usuarios.idEstadoUsuario, estados_usuario.nombreEstadoUsuario " 
+            + "FROM sastr.usuarios " 
+            + "INNER JOIN sastr.estados_usuario on usuarios.idEstadoUsuario = estados_usuario.idEstadoUsuario " 
+            + "inner join sastr.academicos acad on usuarios.idUsuario = acad.idUsuario " 
+            + "inner join codirectores_anteproyectos ca " 
+            + "on ca.idAcademico = acad.idAcademico " 
+            + "where ca.idAnteproyecto = ?;";
     
     public Academico obtenerAcademicoPorId(int idAcademico) throws DAOException{
         Academico academico = new Academico();
@@ -222,4 +233,34 @@ public class AcademicoDAO {
         }
         return respuesta;
     }
+    
+       public ArrayList<Academico> obtenerCodirectoresProAnteproyecto(int idAnteproyecto) throws DAOException {
+        ArrayList<Academico> academicos = new ArrayList<>();
+        try {
+            PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(OBTENER_CODIRECTORES_POR_ANTEPROYECTO);
+            sentencia.setInt(1, idAnteproyecto);
+            ResultSet resultado = sentencia.executeQuery();
+            while (resultado.next()) {
+                academicos.add(new Academico(
+                        resultado.getInt("idAcademico"), 
+                        resultado.getInt("numeroPersonalAcademico"), 
+                        resultado.getInt("idUsuario"), 
+                        resultado.getString("nombreAcademico"), 
+                        resultado.getString("primerApellidoAcademico"), 
+                        resultado.getString("segundoApellidoAcademico"), 
+                        resultado.getString("correoInstitucionalAcademico"), 
+                        resultado.getString("correoAlternoAcademico"), 
+                        resultado.getString("contraseñaAcademico"), 
+                        resultado.getBoolean("esAdministrador"), 
+                        resultado.getInt("idEstadoUsuario"), 
+                        resultado.getString("nombreEstadoUsuario")));
+            }
+            ConexionBD.cerrarConexionBD();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            throw new DAOException("Error de consulta", Codigos.ERROR_CONSULTA);
+        }
+        return academicos;
+    }
+    
 }

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="875.0" prefWidth="1728.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxsastr.controladores.FXMLDetallesCursoController">
+   <children>
+      <AnchorPane id="AnchorPane" layoutY="-63.0" prefHeight="940.0" prefWidth="1728.0" style="-fx-background-color: FFFFFF;">
+         <children>
+            <Pane layoutX="1.0" layoutY="1.0" prefHeight="50.0" prefWidth="1228.0" style="-fx-background-color: #18529d;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="500.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Label layoutX="23.0" layoutY="9.0" text="Sistema de Apoyo al Seguimiento de Proyecto Guiado y Experiencia Recepcional" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane layoutX="1228.0" prefHeight="50.0" prefWidth="500.0" style="-fx-background-color: #28ad56;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Label layoutX="57.0" layoutY="6.0" text="Universidad Veracruzana" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <ImageView fitHeight="38.0" fitWidth="40.0" layoutX="399.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../recursos/iconos/perfil-de-usuario.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="30.0" fitWidth="32.0" layoutX="445.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../recursos/iconos/flecha-para-desplegar.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <AnchorPane fx:id="menuContraido" layoutY="54.0" prefHeight="890.0" prefWidth="75.0" scaleZ="10.0" style="-fx-background-color: #15294f;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="50.0">
+               <rotationAxis>
+                  <Point3D />
+               </rotationAxis>
+            </AnchorPane>
+            <Pane layoutX="75.0" layoutY="50.0" prefHeight="63.0" prefWidth="369.0">
+               <children>
+                  <ImageView fitHeight="38.0" fitWidth="96.0" layoutX="35.0" layoutY="13.0" onMouseClicked="#clicBtnRegresar" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../recursos/iconos/BACK.JPG" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="lbTituloventana" layoutX="110.0" layoutY="5.0" text="Detalles Curso" textFill="#434343">
+                     <font>
+                        <Font name="System Bold" size="36.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane layoutX="129.0" layoutY="119.0" prefHeight="200.0" prefWidth="1574.0" style="-fx-background-color: F4F4F4;">
+               <children>
+                  <ImageView fitHeight="185.0" fitWidth="170.0" layoutX="46.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../recursos/iconos/iconoCurso.jpg" />
+                     </image></ImageView>
+                  <Label layoutX="297.0" layoutY="25.0" text="Nombre:">
+                     <font>
+                        <Font name="System Bold" size="25.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="297.0" layoutY="79.0" prefHeight="38.0" prefWidth="280.0" text="Experiencia Educativa :">
+                     <font>
+                        <Font name="System Bold" size="25.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="297.0" layoutY="136.0" text="Perio Escolar:">
+                     <font>
+                        <Font name="System Bold" size="25.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="910.0" layoutY="18.0" text="Docente:">
+                     <font>
+                        <Font name="System Bold" size="25.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="915.0" layoutY="136.0" text="NRC:">
+                     <font>
+                        <Font name="System Bold" size="25.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="1191.0" layoutY="79.0" text="Sec:">
+                     <font>
+                        <Font name="System Bold" size="25.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="915.0" layoutY="79.0" text="Bloque:">
+                     <font>
+                        <Font name="System Bold" size="25.0" />
+                     </font>
+                  </Label>
+                  <Circle fx:id="crlEstadoCurso" fill="#97eb55" layoutX="1528.0" layoutY="36.0" radius="22.0" stroke="BLACK" strokeType="INSIDE" />
+                  <ImageView fitHeight="50.0" fitWidth="63.0" layoutX="1427.0" layoutY="136.0" onMouseClicked="#clicEditarCurso" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../recursos/iconos/editarCurso.jpg" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="50.0" fitWidth="63.0" layoutX="1497.0" layoutY="136.0" onMouseClicked="#clicDesactivarCurso" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../recursos/iconos/desactivarCurso.jpg" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="lbNombreCurso" layoutX="417.0" layoutY="25.0" prefHeight="36.0" prefWidth="402.0">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lbExpEdu" layoutX="585.0" layoutY="82.0" prefHeight="36.0" prefWidth="291.0">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lbPeriodoEsc" layoutX="483.0" layoutY="136.0" prefHeight="36.0" prefWidth="402.0">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lbDocente" layoutX="1027.0" layoutY="18.0" prefHeight="36.0" prefWidth="408.0">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lbBloque" layoutX="1016.0" layoutY="82.0" prefHeight="36.0" prefWidth="162.0">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lbNrc" layoutX="987.0" layoutY="136.0" prefHeight="36.0" prefWidth="162.0">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lbSeccion" layoutX="1246.0" layoutY="82.0" prefHeight="36.0" prefWidth="162.0">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <ScrollPane fx:id="slpAlamcenEstudinates" layoutX="129.0" layoutY="335.0" maxHeight="588.0" prefWidth="1574.0" style="-fx-background-color: white;">
+               <content>
+                  <VBox fx:id="hbxAlmacenEstdantes" prefWidth="1575.0" style="-fx-background-color: white;" />
+               </content>
+            </ScrollPane>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

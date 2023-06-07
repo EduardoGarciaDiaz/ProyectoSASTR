@@ -32,7 +32,8 @@ public class EntregaDAO {
                                                 "e.fechaRevision, e.horaRevision, e.idActividad, e.idAcademico FROM entregas e " +
                                                 "INNER JOIN actividades a ON e.idActividad = a.idActividad " +
                                                 "WHERE a.idActividad = ?;";
-    
+     private static final String OBTENER_ENTREGAS_UNICAS_EDICION = "Select comentarioAlumno, fechaEntrega, horaEntrega, idAcademico, "+
+                                              "idActividad from entregas where idEntrega = ?";
     public ArrayList<Entrega> consultarEntregas() throws DAOException {
         ArrayList<Entrega> entregasConsultadas = new ArrayList();
         try {            
@@ -60,7 +61,7 @@ public class EntregaDAO {
     }
     
     public Entrega consultarEntregaUnica(int idEntrega) throws DAOException {
-        Entrega entregaConsultada = new Entrega();;
+        Entrega entregaConsultada = new Entrega();
         try {            
             PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(OBTENER_ENTREGAS_UNICAS);
             sentencia.setInt(1, idEntrega);
@@ -78,6 +79,7 @@ public class EntregaDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
+            ex.printStackTrace();
             throw new DAOException("Lo sentimos, hubo un problema al consultar la informacion de esta entrega.",
                                      Codigos.ERROR_CONSULTA);
         }
@@ -180,5 +182,28 @@ public class EntregaDAO {
         }
         return respuestaExito;
     } 
+    
+    public Entrega consultarEntregaUnicaEdicion(int idEntrega) throws DAOException {
+        Entrega entregaConsultada = new Entrega();
+        try {            
+            PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(OBTENER_ENTREGAS_UNICAS_EDICION);
+            sentencia.setInt(1, idEntrega);
+            ResultSet resultadoConsultaEntregaUnica = sentencia.executeQuery();
+            if(resultadoConsultaEntregaUnica.next()) {               
+                entregaConsultada.setIdEntrega(idEntrega);
+                entregaConsultada.setComentarioAlumno(resultadoConsultaEntregaUnica.getString("comentarioAlumno"));
+                entregaConsultada.setFechaEntrega(resultadoConsultaEntregaUnica.getString("fechaEntrega"));
+                entregaConsultada.setHoraEntrega(resultadoConsultaEntregaUnica.getString("horaEntrega"));          
+                entregaConsultada.setIdActividad(resultadoConsultaEntregaUnica.getInt("idActividad"));
+                entregaConsultada.setIdAcademico(resultadoConsultaEntregaUnica.getInt("idAcademico"));
+            }
+            ConexionBD.cerrarConexionBD();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            throw new DAOException("Lo sentimos, hubo un problema al consultar la informacion de esta entrega.",
+                                     Codigos.ERROR_CONSULTA);
+        }
+        return entregaConsultada;
+    }
     
 }

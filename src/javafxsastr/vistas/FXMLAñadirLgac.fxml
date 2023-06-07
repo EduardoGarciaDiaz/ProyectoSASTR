@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="940.0" prefWidth="1728.0" style="-fx-background-color: FFFFFF;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxsastr.controladores.FXMLAñadirLgacController">
+   <children>
+      <Pane layoutX="1.0" layoutY="1.0" prefHeight="50.0" prefWidth="1228.0" style="-fx-background-color: #18529d;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="500.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label layoutX="23.0" layoutY="9.0" text="Sistema de Apoyo al Seguimiento de Proyecto Guiado y Experiencia Recepcional" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane layoutX="1228.0" prefHeight="50.0" prefWidth="500.0" style="-fx-background-color: #28ad56;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label layoutX="57.0" layoutY="6.0" text="Universidad Veracruzana" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="38.0" fitWidth="40.0" layoutX="399.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/perfil-de-usuario.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="30.0" fitWidth="32.0" layoutX="445.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/flecha-para-desplegar.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <AnchorPane fx:id="menuContraido" layoutY="54.0" prefHeight="890.0" prefWidth="75.0" scaleZ="10.0" style="-fx-background-color: #15294f;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="50.0">
+         <children>
+            <ImageView fx:id="btnMenu" fitHeight="50.0" fitWidth="50.0" layoutX="17.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true" scaleZ="15.0" AnchorPane.leftAnchor="12.0" AnchorPane.topAnchor="12.0">
+               <image>
+                  <Image url="@../recursos/iconos/menu.png" />
+               </image>
+            </ImageView>
+         </children>
+         <rotationAxis>
+            <Point3D />
+         </rotationAxis>
+      </AnchorPane>
+      <Pane layoutX="158.0" layoutY="161.0" prefHeight="762.0" prefWidth="1019.0">
+         <children>
+            <Label layoutX="59.0" layoutY="48.0" prefHeight="50.0" prefWidth="97.0" text="Nombre">
+               <font>
+                  <Font size="26.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txfNombreLgac" layoutX="59.0" layoutY="110.0" prefHeight="69.0" prefWidth="673.0" promptText="Nombre LGAC" style="-fx-background-radius: 15;">
+               <font>
+                  <Font size="30.0" />
+               </font></TextField>
+            <Label layoutX="59.0" layoutY="217.0" prefHeight="50.0" prefWidth="149.0" text="Descripcion">
+               <font>
+                  <Font size="26.0" />
+               </font>
+            </Label>
+            <TextArea fx:id="txaDescripcionLgac" layoutX="59.0" layoutY="293.0" prefHeight="275.0" prefWidth="673.0" promptText="Descripcion De la LGAC" style="-fx-background-radius: 5;">
+               <font>
+                  <Font size="30.0" />
+               </font></TextArea>
+            <Button layoutX="126.0" layoutY="680.0" mnemonicParsing="false" onAction="#clicBtnCancelar" prefHeight="53.0" prefWidth="199.0" style="-fx-background-color: FCCFCF; -fx-background-radius: 15;" text="Cancelar">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnGuardar" layoutX="510.0" layoutY="680.0" mnemonicParsing="false" onAction="#clicBtnGuardar" prefHeight="54.0" prefWidth="199.0" style="-fx-background-color: D4F1C9; -fx-background-radius: 15;" text="Guardar">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Button>
+            <Label fx:id="lbNombreLgac" layoutX="90.0" layoutY="179.0" prefHeight="21.0" prefWidth="500.0" textFill="#a80000" />
+            <Label fx:id="lbDescirpcionLgac" layoutX="108.0" layoutY="568.0" prefHeight="21.0" prefWidth="520.0" textFill="#a80000" />
+         </children>
+      </Pane>
+      <Pane layoutX="75.0" layoutY="50.0" prefHeight="63.0" prefWidth="369.0">
+         <children>
+            <ImageView fitHeight="38.0" fitWidth="96.0" layoutX="35.0" layoutY="13.0" onMouseClicked="#clicBtnRegresar" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/BACK.JPG" />
+               </image>
+            </ImageView>
+            <Label fx:id="lbTituloVentana" layoutX="110.0" layoutY="5.0" text="Registrar LGAC" textFill="#434343">
+               <font>
+                  <Font name="System Bold" size="36.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <AnchorPane fx:id="menuLateral" layoutX="-300.0" layoutY="50.0" prefHeight="890.0" prefWidth="300.0" style="-fx-background-color: #15294f;" />
+   </children>
+</AnchorPane>

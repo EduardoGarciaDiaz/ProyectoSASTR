@@ -11,6 +11,7 @@ public class CuerpoAcademico {
     private int idCuerpoAcademico;
     private String nombreCuerpoAcademico;
     private String disciplinaCuerpoAcademico;
+    private String descripcion;
     private String area;
     private int idArea;
     private int idAcademico;
@@ -18,16 +19,25 @@ public class CuerpoAcademico {
 
     public CuerpoAcademico() {
     }
- 
-    public CuerpoAcademico(int idCuerpoAcademico, String nombreCuerpoAcademico, String disciplinaCuerpoAcademico, String area, int idArea, int idAcademico, String nombreResponsableCA) {
+
+    public CuerpoAcademico(int idCuerpoAcademico, String nombreCuerpoAcademico, String disciplinaCuerpoAcademico, String descripcion, String area, int idArea, int idAcademico, String nombreResponsableCA) {
         this.idCuerpoAcademico = idCuerpoAcademico;
         this.nombreCuerpoAcademico = nombreCuerpoAcademico;
         this.disciplinaCuerpoAcademico = disciplinaCuerpoAcademico;
+        this.descripcion = descripcion;
         this.area = area;
         this.idArea = idArea;
         this.idAcademico = idAcademico;
         this.nombreResponsableCA = nombreResponsableCA;
     }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }   
 
     public int getIdCuerpoAcademico() {
         return idCuerpoAcademico;

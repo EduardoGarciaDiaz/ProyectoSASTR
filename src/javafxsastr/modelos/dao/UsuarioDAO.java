@@ -181,6 +181,7 @@ public class UsuarioDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
+            ex.printStackTrace();
             throw new DAOException("Lo sentimos, hubo un problema al consultar la informacion del usuario.", Codigos.ERROR_CONSULTA);
         }
         return esExistente;

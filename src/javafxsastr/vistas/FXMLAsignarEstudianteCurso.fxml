@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="506.0" maxWidth="1121.0" prefHeight="506.0" prefWidth="622.0" style="-fx-background-color: FFFFFF;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxsastr.controladores.FXMLAsignarEstudianteCursoController">
+   <children>
+      <Pane prefHeight="506.0" prefWidth="680.0">
+         <children>
+            <Label layoutX="43.0" layoutY="25.0" prefHeight="50.0" prefWidth="297.0" text="Agregar Estudiante">
+               <font>
+                  <Font size="26.0" />
+               </font>
+            </Label>
+            <Button layoutX="57.0" layoutY="416.0" mnemonicParsing="false" onAction="#clicBtnCancelar" prefHeight="53.0" prefWidth="199.0" style="-fx-background-color: FCCFCF; -fx-background-radius: 15;" text="Cancelar">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnGuardar" layoutX="451.0" layoutY="416.0" mnemonicParsing="false" onAction="#clicBtnGuardar" prefHeight="54.0" prefWidth="199.0" style="-fx-background-color: D4F1C9; -fx-background-radius: 15;" text="Aceptar">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Button>
+            <Pane prefHeight="34.0" prefWidth="312.0" style="-fx-background-color: #18529D;" />
+            <Pane layoutX="311.0" prefHeight="34.0" prefWidth="369.0" style="-fx-background-color: #28AD56;">
+               <children>
+                  <Label layoutX="59.0" layoutY="1.0" prefHeight="34.0" prefWidth="251.0" text="Universidad Veracruzana" textFill="WHITE">
+                     <font>
+                        <Font size="21.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <ScrollPane layoutX="44.0" layoutY="224.0" prefHeight="175.0" prefWidth="596.0" style="-fx-background-color: white;">
+               <content>
+                  <VBox fx:id="vbxEstudiantesPorAgregar" prefHeight="0.0" prefWidth="574.0" />
+               </content>
+            </ScrollPane>
+            <Pane layoutX="14.0" layoutY="94.0" prefHeight="123.0" prefWidth="657.0">
+               <children>
+                  <Label layoutX="22.0" layoutY="-11.0" prefHeight="50.0" prefWidth="102.0" text="Matricula">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="txfAlumnoBusqueda" layoutX="16.0" layoutY="35.0" prefHeight="31.0" prefWidth="626.0" style="-fx-background-color: ECECEC; -fx-background-radius: 15;" />
+                  <Button fx:id="BtnOtro" layoutX="578.0" layoutY="76.0" mnemonicParsing="false" onAction="#clicBtnOtro" style="-fx-background-radius: 15;" text="otro" />
+                  <ListView fx:id="lsvAlumnosBuaqueda" layoutX="16.0" layoutY="66.0" maxWidth="550.0" prefHeight="34.0" prefWidth="548.0" style="-fx-background-color: ECECEC; -fx-background-radius: 13;" visible="false" />
+               </children>
+            </Pane>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

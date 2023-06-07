@@ -1,0 +1,578 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="940.0" prefWidth="1728.0" style="-fx-background-color: EFEFEF;" styleClass="edge-to-edge" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxsastr.controladores.FXMLValidarAnteproyectoController">
+   <children>
+       <Pane fx:id="contenedorRubrica" layoutX="1190.0" layoutY="68.0" prefHeight="467.0" prefWidth="514.0" style="-fx-background-color: white; -fx-background-radius: 15;">
+         <children>
+            <RadioButton fx:id="t0" layoutX="234.0" layoutY="78.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" text="0" textFill="WHITE">
+               <toggleGroup>
+                  <ToggleGroup fx:id="LGACS" />
+               </toggleGroup>
+            </RadioButton>
+            <Label layoutX="20.0" layoutY="18.0" text="Rúbrica">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Label>
+            <Label layoutX="24.0" layoutY="76.0" text="Lgacs relacionadas">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="26.0" layoutY="109.0" prefHeight="60.0" prefWidth="180.0" text="Nombre de Trabajo Recepcional" wrapText="true">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="27.0" layoutY="164.0" prefHeight="50.0" prefWidth="180.0" text="Descripción de TR" wrapText="true">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="30.0" layoutY="208.0" prefHeight="69.0" prefWidth="180.0" text="Requisitos anteproyecto" wrapText="true">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="31.0" layoutY="272.0" prefHeight="69.0" prefWidth="180.0" text="Resultados esperados" wrapText="true">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="33.0" layoutY="339.0" prefHeight="69.0" prefWidth="180.0" text="Bibliografías recomendadas" wrapText="true">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="33.0" layoutY="391.0" prefHeight="69.0" prefWidth="180.0" text="Redacción" wrapText="true">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <RadioButton fx:id="t1" layoutX="303.0" layoutY="78.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" text="1" textFill="WHITE" toggleGroup="$LGACS" />
+            <RadioButton fx:id="t2" layoutX="373.0" layoutY="78.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" text="2" textFill="WHITE" toggleGroup="$LGACS" />
+            <RadioButton fx:id="t3" layoutX="446.0" layoutY="78.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" text="3" textFill="WHITE" toggleGroup="$LGACS" />
+            <RadioButton fx:id="t3" layoutX="446.0" layoutY="125.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" text="3" textFill="WHITE">
+               <toggleGroup>
+                  <ToggleGroup fx:id="NombreTR" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="t2" layoutX="373.0" layoutY="125.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" text="2" textFill="WHITE" toggleGroup="$NombreTR" />
+            <RadioButton fx:id="t1" layoutX="303.0" layoutY="125.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" text="1" textFill="WHITE" toggleGroup="$NombreTR" />
+            <RadioButton fx:id="t0" layoutX="234.0" layoutY="125.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" text="0" textFill="WHITE" toggleGroup="$NombreTR" />
+            <RadioButton fx:id="t0" layoutX="234.0" layoutY="175.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" text="0" textFill="WHITE">
+               <toggleGroup>
+                  <ToggleGroup fx:id="DescripcionTR" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="t1" layoutX="303.0" layoutY="175.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" text="1" textFill="WHITE" toggleGroup="$DescripcionTR" />
+            <RadioButton fx:id="t2" layoutX="373.0" layoutY="175.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" text="3" textFill="WHITE" toggleGroup="$DescripcionTR" />
+            <RadioButton fx:id="t3" layoutX="446.0" layoutY="175.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" text="3" textFill="WHITE" toggleGroup="$DescripcionTR" />
+            <RadioButton fx:id="t3" layoutX="447.0" layoutY="227.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" text="3" textFill="#f8f8f8">
+               <toggleGroup>
+                  <ToggleGroup fx:id="RequisitosAnteproyecto" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="t2" layoutX="374.0" layoutY="227.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" text="2" textFill="WHITE" toggleGroup="$RequisitosAnteproyecto" />
+            <RadioButton fx:id="t1" layoutX="304.0" layoutY="227.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" text="1" textFill="WHITE" toggleGroup="$RequisitosAnteproyecto" />
+            <RadioButton fx:id="t0" layoutX="235.0" layoutY="227.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" text="0" textFill="WHITE" toggleGroup="$RequisitosAnteproyecto" />
+            <RadioButton fx:id="t0" layoutX="234.0" layoutY="288.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" text="0" textFill="WHITE">
+               <toggleGroup>
+                  <ToggleGroup fx:id="ResultadosEsperados" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="t1" layoutX="302.0" layoutY="288.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" text="1" textFill="WHITE" toggleGroup="$ResultadosEsperados" />
+            <RadioButton fx:id="t2" layoutX="374.0" layoutY="288.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" text="2" textFill="WHITE" toggleGroup="$ResultadosEsperados" />
+            <RadioButton fx:id="t3" layoutX="447.0" layoutY="288.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" text="3" textFill="WHITE" toggleGroup="$ResultadosEsperados" />
+            <RadioButton fx:id="t3" layoutX="447.0" layoutY="355.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" text="3" textFill="WHITE">
+               <toggleGroup>
+                  <ToggleGroup fx:id="BibliografiasRecomendadas" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="t2" layoutX="374.0" layoutY="355.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" text="2" textFill="WHITE" toggleGroup="$BibliografiasRecomendadas" />
+            <RadioButton fx:id="t1" layoutX="304.0" layoutY="355.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" text="1" textFill="WHITE" toggleGroup="$BibliografiasRecomendadas" />
+            <RadioButton fx:id="t0" layoutX="235.0" layoutY="355.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" text="0" textFill="WHITE" toggleGroup="$BibliografiasRecomendadas" />
+            <RadioButton fx:id="t0" layoutX="237.0" layoutY="409.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" text="0" textFill="WHITE">
+               <toggleGroup>
+                  <ToggleGroup fx:id="Redaccion" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton layoutX="306.0" layoutY="409.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" text="1" textFill="WHITE" toggleGroup="$Redaccion" />
+            <RadioButton fx:id="t2" layoutX="376.0" layoutY="409.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" text="2" textFill="WHITE" toggleGroup="$Redaccion" />
+            <RadioButton fx:id="t3" layoutX="449.0" layoutY="409.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" text="3" textFill="WHITE" toggleGroup="$Redaccion" />
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="211.0" layoutY="21.0" prefHeight="50.0" prefWidth="62.0" style="-fx-text-alignment: center;" text="Muy bueno" wrapText="true" />
+            <Label layoutX="291.0" layoutY="39.0" text="Bueno" />
+            <Label layoutX="360.0" layoutY="40.0" text="Regular" />
+            <Label layoutX="430.0" layoutY="41.0" text="Corregir" />
+         </children>
+      </Pane>
+      <Pane layoutX="1.0" layoutY="1.0" prefHeight="50.0" prefWidth="1228.0" style="-fx-background-color: #18529d;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="500.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label layoutX="23.0" layoutY="9.0" text="Sistema de Apoyo al Seguimiento de Proyecto Guiado y Experiencia Recepcional" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane layoutX="1516.0" layoutY="7.0" prefHeight="50.0" prefWidth="500.0" style="-fx-background-color: #28ad56;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label layoutX="57.0" layoutY="6.0" text="Universidad Veracruzana" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="38.0" fitWidth="40.0" layoutX="399.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/perfil-de-usuario.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="30.0" fitWidth="32.0" layoutX="445.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/flecha-para-desplegar.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Label layoutX="92.0" layoutY="64.0" text="Validar anteproyecto" textFill="#434343">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="44.0" fitWidth="80.0" layoutX="31.0" layoutY="68.0" onMouseClicked="#clicRegresar" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/iconos/flecha.png" />
+         </image>
+      </ImageView>
+      <Pane layoutX="64.0" layoutY="117.0" prefHeight="109.0" prefWidth="1077.0" style="-fx-background-color: white; -fx-background-radius: 15;">
+         <children>
+            <Circle fill="#d9d9d9" layoutX="54.0" layoutY="56.0" radius="42.0" stroke="#ffffff00" strokeType="INSIDE" />
+            <ImageView fitHeight="53.0" fitWidth="45.0" layoutX="31.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/anteproyecto-negro.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="125.0" layoutY="12.0" text="Descripción del anteproyecto">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Label>
+            <Label layoutX="125.0" layoutY="42.0" text="Licenciatura en Ingeniería de Software">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Label>
+            <Label layoutX="125.0" layoutY="73.0" text="Facultad de Estadística e Informática">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Label>
+            <Separator layoutX="696.0" layoutY="4.0" orientation="VERTICAL" prefHeight="108.0" prefWidth="5.0" />
+            <Label fx:id="lbMes" layoutX="835.0" layoutY="28.0">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbAnio" layoutX="860.0" layoutY="58.0">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <ScrollPane layoutX="56.0" layoutY="270.0" maxHeight="1835.0" prefHeight="666.0" prefWidth="1101.0" style="-fx-background-radius: 15; -fx-border-radius: 15;" styleClass="edge-to-egde">
+         <content>
+            <VBox fx:id="vbxCards" prefWidth="1082.0" spacing="8.0" style="-fx-background-radius: 15; -fx-border-radius: 15; -fx-border-color: transparent; -fx-background-color: EFEFEF;">
+               <children>
+                  <VBox prefWidth="100.0">
+                     <children>
+                        <Pane prefHeight="168.0" prefWidth="1080.0" style="-fx-background-color: white; -fx-background-radius: 15 15 0 0;">
+                           <children>
+                              <Label layoutX="14.0" layoutY="14.0" text="Proyecto de titulación para registro">
+                                 <font>
+                                    <Font size="28.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="9.0" layoutY="65.0" text="Cuerpo académico:">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="9.0" layoutY="97.0" prefHeight="68.0" prefWidth="415.0" text="Nombre del proyecto de Investigación VINCULACIÓN/PLADEA-FEI " wrapText="true">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lbCuerpoAcademico" layoutX="422.0" layoutY="65.0" prefHeight="32.0" prefWidth="655.0">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lbNombreProyectoInvestigacion" alignment="TOP_LEFT" layoutX="422.0" layoutY="101.0" prefHeight="63.0" prefWidth="655.0">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                        <VBox prefWidth="100.0" style="-fx-background-color: white;">
+                           <children>
+                              <HBox prefWidth="200.0">
+                                 <children>
+                                    <Pane prefWidth="422.0">
+                                       <children>
+                                          <Label prefHeight="32.0" prefWidth="369.0" text="LGAC que alimenta:  ">
+                                             <font>
+                                                <Font size="22.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets left="9.0" />
+                                             </padding>
+                                          </Label>
+                                       </children>
+                                    </Pane>
+                                    <Label fx:id="lbLgacAlimenta" prefWidth="655.0" text="lgac" wrapText="true">
+                                       <font>
+                                          <Font size="20.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <Pane prefHeight="164.0" prefWidth="1080.0" style="-fx-background-color: white;">
+                           <children>
+                              <Label fx:id="lbLineaInvestigacion" layoutX="422.0" layoutY="8.0" prefHeight="64.0" prefWidth="655.0" wrapText="true">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lbDuracion" layoutX="422.0" layoutY="72.0" prefHeight="32.0" prefWidth="655.0">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lbModalidad" layoutX="422.0" layoutY="116.0" prefHeight="32.0" prefWidth="655.0">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="9.0" layoutY="8.0" text="Línea de investigación:">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="9.0" layoutY="72.0" text="Duración aproximada:">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="9.0" layoutY="116.0" text="Modalidad de trabajo recepcional:">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                        <VBox prefWidth="100.0" style="-fx-background-color: white;">
+                           <children>
+                              <HBox prefWidth="200.0">
+                                 <children>
+                                    <Pane prefHeight="50.0" prefWidth="422.0">
+                                       <children>
+                                          <Label prefHeight="35.0" prefWidth="369.0" text="Nombre del trabajo recepcional:">
+                                             <font>
+                                                <Font size="22.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets left="9.0" />
+                                             </padding>
+                                          </Label>
+                                       </children>
+                                    </Pane>
+                                    <Label fx:id="lbNombreTrabajoRecepcional" prefWidth="655.0" wrapText="true">
+                                       <font>
+                                          <Font size="20.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <VBox prefWidth="100.0" style="-fx-background-color: white;">
+                           <children>
+                              <HBox prefWidth="200.0">
+                                 <children>
+                                    <Pane prefWidth="422.0">
+                                       <children>
+                                          <Label prefHeight="38.0" prefWidth="369.0" text="Requisitos:">
+                                             <font>
+                                                <Font size="22.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets left="9.0" />
+                                             </padding>
+                                          </Label>
+                                       </children>
+                                    </Pane>
+                                    <Label fx:id="lbRequisitos" prefWidth="655.0" wrapText="true">
+                                       <font>
+                                          <Font size="20.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+                  <VBox prefWidth="100.0" style="-fx-background-color: white;">
+                     <children>
+                        <Pane prefHeight="80.0" prefWidth="1080.0">
+                           <children>
+                              <Label text="Responsable de trabajo recepcional">
+                                 <font>
+                                    <Font size="28.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="9.0" layoutY="40.0" text="Director:">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lbDirector" layoutX="425.0" layoutY="40.0" prefHeight="32.0" prefWidth="655.0">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                        <VBox prefWidth="100.0" style="-fx-background-color: white;">
+                           <children>
+                              <HBox prefWidth="200.0">
+                                 <children>
+                                    <Pane prefWidth="422.0">
+                                       <children>
+                                          <Label prefHeight="32.0" prefWidth="369.0" text="Codirector">
+                                             <font>
+                                                <Font size="22.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets left="9.0" />
+                                             </padding>
+                                          </Label>
+                                       </children>
+                                    </Pane>
+                                    <Label fx:id="lbCodirector" prefWidth="655.0" wrapText="true">
+                                       <font>
+                                          <Font size="20.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <Pane prefHeight="44.0" prefWidth="1080.0">
+                           <children>
+                              <Label layoutX="9.0" layoutY="4.0" text="Alumnos participantes:">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lbNumeroAlumnosParticipantes" layoutX="425.0" layoutY="-1.0" prefHeight="32.0" prefWidth="312.0">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                        <VBox fx:id="vbxAlumnosParticipantes" prefWidth="100.0" style="-fx-background-color: white;">
+                           <children>
+                              <HBox prefWidth="200.0">
+                                 <children>
+                                    <Pane prefWidth="422.0" />
+                                    <Label fx:id="lbEstudianteParticipante" prefHeight="30.0" prefWidth="460.0" wrapText="true">
+                                       <font>
+                                          <Font size="20.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox prefWidth="200.0">
+                                 <children>
+                                    <Pane prefWidth="422.0">
+                                       <children>
+                                          <Label prefHeight="32.0" prefWidth="369.0" text="Segundo alumno">
+                                             <font>
+                                                <Font size="22.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets left="9.0" />
+                                             </padding>
+                                          </Label>
+                                       </children>
+                                    </Pane>
+                                    <Label fx:id="lbEstudianteParticipante2" prefHeight="30.0" prefWidth="459.0" wrapText="true">
+                                       <font>
+                                          <Font size="20.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+                  <VBox prefWidth="1080.0" style="-fx-background-color: white; -fx-background-radius: 15;">
+                     <children>
+                        <Pane prefHeight="70.0" prefWidth="1080.0">
+                           <children>
+                              <Label layoutX="9.0" layoutY="14.0" text="Descripción del proyecto de investigación">
+                                 <font>
+                                    <Font size="28.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                        <Label fx:id="lbDescripcionProyectoInvestigacion" alignment="TOP_LEFT" prefWidth="1076.0" wrapText="true">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <padding>
+                              <Insets left="9.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <VBox prefWidth="1080.0" style="-fx-background-color: white; -fx-background-radius: 15;">
+                     <children>
+                        <Pane prefHeight="70.0" prefWidth="1080.0">
+                           <children>
+                              <Label layoutX="9.0" layoutY="14.0" text="Descripción del trabajo recepcional">
+                                 <font>
+                                    <Font size="28.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                        <Label fx:id="lbDescripcionTrabajoRecepcional" alignment="TOP_LEFT" prefWidth="1076.0" wrapText="true">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <padding>
+                              <Insets left="9.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <VBox prefWidth="1080.0" style="-fx-background-color: white; -fx-background-radius: 15;">
+                     <children>
+                        <Pane prefHeight="70.0" prefWidth="1080.0">
+                           <children>
+                              <Label layoutX="9.0" layoutY="14.0" text="Resultados esperados">
+                                 <font>
+                                    <Font size="28.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                        <Label fx:id="lbResultadosEsperados" alignment="TOP_LEFT" prefWidth="1076.0" wrapText="true">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <padding>
+                              <Insets left="9.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <VBox prefWidth="1080.0" style="-fx-background-color: white; -fx-background-radius: 15;">
+                     <children>
+                        <Pane prefHeight="70.0" prefWidth="1080.0">
+                           <children>
+                              <Label layoutX="9.0" layoutY="14.0" text="Bibliografía Recomendada">
+                                 <font>
+                                    <Font size="28.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                        <Label fx:id="lbBibliografiaRecomendada" alignment="TOP_LEFT" prefWidth="1076.0" wrapText="true">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <padding>
+                              <Insets left="9.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <VBox prefWidth="1080.0" style="-fx-background-color: white; -fx-background-radius: 15;">
+                     <children>
+                        <Pane prefHeight="70.0" prefWidth="1080.0">
+                           <children>
+                              <Label layoutX="9.0" layoutY="14.0" text="Notas">
+                                 <font>
+                                    <Font size="28.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                        <Label fx:id="lbNotas" alignment="TOP_LEFT" prefWidth="1076.0" wrapText="true">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <padding>
+                              <Insets left="9.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+      <Label layoutX="350.0" layoutY="233.0" text="Lugar:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbLugar" layoutX="410.0" layoutY="234.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbFecha" layoutX="858.0" layoutY="235.0" prefHeight="27.0" prefWidth="258.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="803.0" layoutY="234.0" text="Fecha:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Pane layoutX="1190.0" layoutY="585.0" prefHeight="253.0" prefWidth="514.0" style="-fx-background-color: white;">
+         <children>
+            <TextArea fx:id="txaComentarios" prefHeight="253.0" prefWidth="514.0" wrapText="true" />
+         </children>
+      </Pane>
+      <Label layoutX="1201.0" layoutY="544.0" prefHeight="38.0" prefWidth="379.0" text="Seccion de Comentarios:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Button layoutX="1228.0" layoutY="875.0" mnemonicParsing="false" onAction="#clicRechazar" prefHeight="30.0" prefWidth="153.0" style="-fx-background-color: F59999; -fx-background-radius: 13;" text="Rechazar" />
+      <Button fx:id="btnAprobar" layoutX="1535.0" layoutY="875.0" mnemonicParsing="false" onAction="#clicAprobar" prefHeight="27.0" prefWidth="153.0" style="-fx-background-color: #97CE9A; -fx-background-radius: 13;" text="Aprobar" />
+   </children>
+</AnchorPane>

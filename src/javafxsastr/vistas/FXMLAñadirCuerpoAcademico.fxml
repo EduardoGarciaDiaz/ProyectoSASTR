@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="875.0" prefWidth="1728.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxsastr.controladores.FXMLAñadirCuerpoAcademicoController">
+   <children>
+      <AnchorPane id="AnchorPane" layoutY="-63.0" prefHeight="940.0" prefWidth="1728.0" style="-fx-background-color: FFFFFF;">
+         <children>
+            <Pane layoutX="1.0" layoutY="1.0" prefHeight="50.0" prefWidth="1228.0" style="-fx-background-color: #18529d;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="500.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Label layoutX="23.0" layoutY="9.0" text="Sistema de Apoyo al Seguimiento de Proyecto Guiado y Experiencia Recepcional" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane layoutX="1228.0" prefHeight="50.0" prefWidth="500.0" style="-fx-background-color: #28ad56;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Label layoutX="57.0" layoutY="6.0" text="Universidad Veracruzana" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <ImageView fitHeight="38.0" fitWidth="40.0" layoutX="399.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../recursos/iconos/perfil-de-usuario.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="30.0" fitWidth="32.0" layoutX="445.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../recursos/iconos/flecha-para-desplegar.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <AnchorPane fx:id="menuContraido" layoutY="54.0" prefHeight="890.0" prefWidth="75.0" scaleZ="10.0" style="-fx-background-color: #15294f;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="50.0">
+               <children>
+                  <ImageView fx:id="btnMenu" fitHeight="50.0" fitWidth="50.0" layoutX="17.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true" scaleZ="15.0" AnchorPane.leftAnchor="12.0" AnchorPane.topAnchor="12.0">
+                     <image>
+                        <Image url="@../recursos/iconos/menu.png" />
+                     </image>
+                  </ImageView>
+               </children>
+               <rotationAxis>
+                  <Point3D />
+               </rotationAxis>
+            </AnchorPane>
+            <Pane layoutX="138.0" layoutY="127.0" prefHeight="799.0" prefWidth="953.0">
+               <children>
+                  <Label layoutX="51.0" layoutY="76.0" prefHeight="50.0" prefWidth="187.0" text="Nombre del CA*">
+                     <font>
+                        <Font size="26.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="txfNombreCA" layoutX="51.0" layoutY="126.0" prefHeight="44.0" prefWidth="876.0" promptText="&lt;Nobre Cuerpo Academico&gt;" style="-fx-background-color: F4F4F4; -fx-background-radius: 13;">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </TextField>
+                  <Label layoutX="52.0" layoutY="301.0" prefHeight="50.0" prefWidth="149.0" text="Descripcion*">
+                     <font>
+                        <Font size="26.0" />
+                     </font>
+                  </Label>
+                  <TextArea fx:id="txaDescripcionCA" layoutX="51.0" layoutY="350.0" prefHeight="113.0" prefWidth="876.0" promptText="&lt;Descripcion  Cuerpo Academico&gt;" style="-fx-background-color: #F4F4F4; -fx-background-radius: 23;" wrapText="true">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </TextArea>
+                  <Label layoutX="9.0" layoutY="14.0" text="Datos del cuerpo academico">
+                     <font>
+                        <Font name="System Bold" size="30.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="51.0" layoutY="198.0" prefHeight="36.0" prefWidth="66.0" text="Area*">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="397.0" layoutY="198.0" prefHeight="36.0" prefWidth="130.0" text="Disciplina*">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="txfDiciplinaCA" layoutX="399.0" layoutY="244.0" prefHeight="44.0" prefWidth="531.0" promptText="&lt;Disciplina&gt;" style="-fx-background-color: #F4F4F4; -fx-background-radius: 13;">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </TextField>
+                  <Label layoutX="14.0" layoutY="471.0" text="Responsable del cuerpo academico">
+                     <font>
+                        <Font name="System Bold" size="30.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="bsdUsuario" layoutX="52.0" layoutY="564.0" prefHeight="31.0" prefWidth="472.0" style="-fx-background-color: F4F4F4; -fx-background-radius: 113;" visible="false" />
+                  <Label layoutX="52.0" layoutY="517.0" prefHeight="36.0" prefWidth="177.0" text="Buscar Usuario">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="594.0" layoutY="565.0" text="Ó">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <Button layoutX="678.0" layoutY="560.0" mnemonicParsing="false" onAction="#clicBtnAñadirUsuario" prefHeight="31.0" prefWidth="149.0" style="-fx-background-color: F8FFA7;" text="Añadir Usuario">
+                     <font>
+                        <Font size="18.0" />
+                     </font></Button>
+                  <Pane layoutX="52.0" layoutY="625.0" prefHeight="160.0" prefWidth="870.0" style="-fx-background-color: #F4F4F4; -fx-background-radius: 13;">
+                     <children>
+                        <Label layoutX="14.0" layoutY="14.0" text="Datos del responsable academico">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="21.0" layoutY="59.0" text="Nombre:">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="21.0" layoutY="113.0" text="Correo Institucional:">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbNombreResponsable" layoutX="93.0" layoutY="60.0" prefHeight="26.0" prefWidth="740.0" text="&lt;nombre Responsable Cuerpo Academico&gt;">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbCorreoResponsable" layoutX="179.0" layoutY="112.0" prefHeight="26.0" prefWidth="664.0" text="&lt;correo Responsable Cuerpo Academico&gt;">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <ListView fx:id="lvAcademicos" layoutX="-12.0" layoutY="-25.0" prefHeight="200.0" prefWidth="509.0" visible="false" />
+                        <ImageView fitHeight="31.0" fitWidth="38.0" layoutX="831.0" layoutY="124.0" onMouseClicked="#clicEliminarRepsonsable" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../recursos/iconos/delete.jpg" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </Pane>
+                  <TextField fx:id="bsdAcademico" layoutX="55.0" layoutY="567.0" prefHeight="31.0" prefWidth="472.0" style="-fx-background-radius: 13; -fx-background-color: F4F4F4;" />
+                  <ImageView fitHeight="31.0" fitWidth="38.0" layoutX="489.0" layoutY="568.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../recursos/buacdr..jpg" />
+                     </image>
+                  </ImageView>
+                  <ComboBox fx:id="cmbAreas" layoutX="52.0" layoutY="244.0" prefHeight="39.0" prefWidth="300.0" promptText="&lt;Area&gt;" style="-fx-background-color: #F4F4F4; -fx-background-radius: 13;" />
+               </children>
+            </Pane>
+            <Pane layoutX="75.0" layoutY="50.0" prefHeight="63.0" prefWidth="369.0">
+               <children>
+                  <ImageView fitHeight="38.0" fitWidth="96.0" layoutX="35.0" layoutY="13.0" onMouseClicked="#clicBtnRegresar" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../recursos/iconos/BACK.JPG" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="lbTituloventana" layoutX="110.0" layoutY="5.0" text="Añadir Cuerpo Academico" textFill="#434343">
+                     <font>
+                        <Font name="System Bold" size="36.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <AnchorPane fx:id="menuLateral" layoutX="-300.0" layoutY="50.0" prefHeight="890.0" prefWidth="300.0" style="-fx-background-color: #15294f;" />
+            <Button fx:id="btnGuardar" layoutX="1504.0" layoutY="864.0" mnemonicParsing="false" onAction="#clicBtnGuardar" prefHeight="54.0" prefWidth="199.0" style="-fx-background-color: D4F1C9; -fx-background-radius: 15;" text="Guardar">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Button>
+            <Button layoutX="1228.0" layoutY="864.0" mnemonicParsing="false" onAction="#clicBtnCancelar" prefHeight="53.0" prefWidth="199.0" style="-fx-background-color: FCCFCF; -fx-background-radius: 15;" text="Cancelar">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Button>
+            <Pane layoutX="1081.0" layoutY="131.0" prefHeight="728.0" prefWidth="647.0">
+               <children>
+                  <TextField fx:id="bsdLgac" layoutX="23.0" layoutY="133.0" prefHeight="31.0" prefWidth="398.0" style="-fx-background-radius: 13; -fx-background-color: F4F4F4;" />
+                  <Label layoutY="24.0" prefHeight="45.0" prefWidth="847.0" text="Lineas de aplicacion y generacion del conocimiento (LGAC)">
+                     <font>
+                        <Font name="System Bold" size="23.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="449.0" layoutY="134.0" text="Ó">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Button layoutX="495.0" layoutY="130.0" mnemonicParsing="false" onAction="#clicBtnAñadirLgac" prefHeight="39.0" prefWidth="136.0" style="-fx-background-color: F8FFA7;" text="Añadir LGAC">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
+                  <ImageView fitHeight="31.0" fitWidth="50.0" layoutX="383.0" layoutY="133.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../recursos/buacdr..jpg" />
+                     </image>
+                  </ImageView>
+                  <TableView fx:id="tblvLgacs" layoutX="23.0" layoutY="187.0" prefHeight="320.0" prefWidth="619.0">
+                    <columns>
+                        <TableColumn fx:id="colNoLgac" prefWidth="51.0" text="No" />
+                      <TableColumn fx:id="colLgacNombre" prefWidth="242.0" text="LGAC" />
+                      <TableColumn fx:id="colDescipcionLgac" minWidth="0.0" prefWidth="325.0" text="Descripcion" />
+                    </columns>
+                  </TableView>
+                  <Label layoutX="23.0" layoutY="87.0" prefHeight="36.0" prefWidth="219.0" text="Buscar una LGAC">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Label>
+                  <ListView fx:id="lvLgac" layoutX="23.0" layoutY="167.0" prefHeight="135.0" prefWidth="398.0" visible="false" />
+                  <Button fx:id="btnEliminar" layoutX="568.0" layoutY="516.0" mnemonicParsing="false" onAction="#clicEliminarLgac" style="-fx-background-color: FCCFCF; -fx-background-radius: 13;" text="Eliminar" />
+               </children>
+            </Pane>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

@@ -41,7 +41,7 @@ public class FXMLActividadesController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        
     }    
     
     public void setEstudiante(Estudiante estudiante) {
@@ -63,7 +63,10 @@ public class FXMLActividadesController implements Initializable {
         for (Actividad actividad : actividades) {
             TarjetaActividadGestion tarjeta = new TarjetaActividadGestion(actividad);
             tarjeta.getBotonVerDetalles().setOnAction((event) -> {
-                System.out.println("Vamos a ver actividades");
+               
+            });
+            tarjeta.getBotonModificar().setOnAction((event) -> {
+                irAModificarActividad(estudiante, actividad, true);
             });
             contenedorTarjetasActividades.getChildren().add(tarjeta);
         }
@@ -91,7 +94,18 @@ public class FXMLActividadesController implements Initializable {
 
     @FXML
     private void clicCrearActividad(MouseEvent event) {
-        //Ir a actividad
+        try {
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLFormularioActividad.fxml"));
+            Parent vista = accesoControlador.load();
+            FXMLFormularioActividadController controladorVistaInicio = accesoControlador.getController(); 
+            controladorVistaInicio.iniciarFormularioNUevo(estudiante, false, null);
+            Stage escenario = (Stage) lbTituloVentana.getScene().getWindow();
+            escenario.setScene(new Scene(vista));
+            escenario.setTitle("Inicio");
+            escenario.show();
+        } catch (IOException ex) {
+            Utilidades.mostrarDialogoSimple("ERROR","No se pido cargar la catividad", Alert.AlertType.ERROR);
+        }
     }
     
     private void irAVistaInicio(Estudiante estudiante) {
@@ -104,11 +118,25 @@ public class FXMLActividadesController implements Initializable {
             Stage escenario = (Stage) lbTituloVentana.getScene().getWindow();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Inicio");
-            escenario.show();
-            
+            escenario.show();            
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+    
+    private void irAModificarActividad(Estudiante estudiante, Actividad actividad, boolean esModificacion) {
+        try {
+                    FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLFormularioActividad.fxml"));
+                    Parent vista = accesoControlador.load();
+                    FXMLFormularioActividadController controladorVistaInicio = accesoControlador.getController(); 
+                    controladorVistaInicio.iniciarFormularioNUevo(estudiante, esModificacion, actividad);
+                    Stage escenario = (Stage) lbTituloVentana.getScene().getWindow();
+                    escenario.setScene(new Scene(vista));
+                    escenario.setTitle("Inicio");
+                    escenario.show();
+                } catch (IOException ex) {
+                    Utilidades.mostrarDialogoSimple("ERROR","No se pido cargar la catividad", Alert.AlertType.ERROR);
+                }
     }
 
 }

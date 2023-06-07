@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Comparator;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.SortedList;
@@ -74,7 +76,19 @@ public class FXMLCuerposAcademicosController implements Initializable {
         for (CuerpoAcademico cuerposAcademico : cuerposAcademicos) {
             TarjetaCuerpoAcademico tarjeta = new TarjetaCuerpoAcademico(cuerposAcademico);
             tarjeta.getBotonModificarCuerpoAcademico().setOnAction((event) -> {
-                //Ir a la ventana modificar
+                FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLAñadirCuerpoAcademico.fxml"));
+                Parent vista;
+                try {
+                    vista = accesoControlador.load();
+                    FXMLAñadirCuerpoAcademicoController controladorVistaInicio = accesoControlador.getController();
+                    controladorVistaInicio.cargarDatos(cuerposAcademico, true);
+                    Stage escenario = (Stage) lbTituloVentana.getScene().getWindow();
+                    escenario.setScene(new Scene(vista));
+                    escenario.setTitle("Modificar CA");
+                    escenario.show();
+                } catch (IOException ex) {                   
+                    Logger.getLogger(FXMLCuerposAcademicosController.class.getName()).log(Level.SEVERE, null, ex);
+                }               
             });
             contenedorTarjetasCuerpoAcademico.getChildren().add(tarjeta);
         }
@@ -102,6 +116,18 @@ public class FXMLCuerposAcademicosController implements Initializable {
 
     @FXML
     private void clicCrearCuerpoAcademico(MouseEvent event) {
+         try {
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLAñadirCuerpoAcademico.fxml"));
+            Parent vista = accesoControlador.load();
+            FXMLAñadirCuerpoAcademicoController controladorVistaInicio = accesoControlador.getController();
+            controladorVistaInicio.cargarDatos(null, false);
+            Stage escenario = (Stage) lbTituloVentana.getScene().getWindow();
+            escenario.setScene(new Scene(vista));
+            escenario.setTitle("Inicio");
+            escenario.show();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
     
     private void irAVentanaInicio(Usuario usuario) {

@@ -58,5 +58,5 @@ public class Academico extends Usuario {
         return nombre + " " + primerApellido + " " + segundoApellido;
     }
     
-    
+   
 }

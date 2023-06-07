@@ -21,7 +21,8 @@ public class CursoDAO {
             "c.idExperienciaEducativa, e.nombreExperienciaEducativa, c.idNrc, n.nombreNrc, c.idPeriodoEscolar, " +
             "pe.fechaInicioPeriodoEscolar, pe.fechaFinPeriodoEscolar, c.idSeccion, s.nombreSeccion, c.idBloque, " +
             "b.nombreBloque, c.idAcademico, " +
-            "CONCAT(u.nombreUsuario,' ', u.primerApellidoUsuario,' ', u.segundoApellidoUsuario) AS nombreCompletoAcademico, " +
+            "CONCAT(u.nombreUsuario,' ', u.primerApellidoUsuario,' ', u.segundoApellidoUsuario) AS nombreCompletoAcademico, "
+            +
             "c.idEstadoCurso, ec.nombreEstadoCurso " +
             "FROM cursos c " +
             "INNER JOIN experiencias_educativas e ON c.idExperienciaEducativa = e.idExperienciaEducativa " +
@@ -32,19 +33,30 @@ public class CursoDAO {
             "INNER JOIN academicos a ON c.idAcademico = a.idAcademico " +
             "INNER JOIN usuarios u ON u.idUsuario = a.idUsuario " +
             "INNER JOIN estados_curso ec ON c.idEstadoCurso = ec.idEstadoCurso ";
-    private final String OBTENER_CURSOS_POR_EXPERIENCIA_EDUCATIVA = OBTENER_CURSOS + "WHERE nombreExperienciaEducativa = ?";
+    private final String OBTENER_CURSOS_POR_EXPERIENCIA_EDUCATIVA = OBTENER_CURSOS
+            + "WHERE nombreExperienciaEducativa = ?";
     private final String OBTENER_CURSOS_POR_NOMBRE = OBTENER_CURSOS + "WHERE nombreCurso = ?";
-    private final String ORDENAR_CURSOS_POR_PERIODO_ESCOLAR = OBTENER_CURSOS + "ORDER BY fechaInicioPeriodoEscolar DESC;";
-    private final String OBTENER_CURSO = "WHERE idCurso = ?";
-    private final String GUARDAR_CURSO = "INSERT INTO cursos (nombreCurso, fechaInicioCurso, fechaFinCurso, idSeccion, idBloque, " +
+    private final String ORDENAR_CURSOS_POR_PERIODO_ESCOLAR = OBTENER_CURSOS
+            + "ORDER BY fechaInicioPeriodoEscolar DESC;";
+    private final String OBTENER_CURSO = OBTENER_CURSOS + " WHERE idCurso = ?";
+    private final String GUARDAR_CURSO = "INSERT INTO cursos (nombreCurso, fechaInicioCurso, fechaFinCurso, idSeccion, idBloque, "
+            +
             "idExperienciaEducativa, idNrc, idPeriodoEscolar, idEstadoCurso, idAcademico) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-    private final String ACTUALIZAR_CURSO = "UPDATE cursos SET nombreCurso = ?, fechaInicioCurso = ?, fechaFinCurso = ?, idSeccion = ?," +
-            " idBloque = ?, idExperienciaEducativa = ?, idNrc = ?, idPeriodoEscolar = ?, idEstadoCurso = ?, idAcademico = ?, " +
+    private final String ACTUALIZAR_CURSO = "UPDATE cursos SET nombreCurso = ?, fechaInicioCurso = ?, fechaFinCurso = ?, idSeccion = ?,"
+            +
+            " idBloque = ?, idExperienciaEducativa = ?, idNrc = ?, idPeriodoEscolar = ?, idEstadoCurso = ?, idAcademico = ?, "
+            +
             "WHERE idCurso = ?;";
     private final String ELIMINAR_CURSO = "DELETE FROM cursos WHERE idCurso = ?";
     private final String VERIFICAR_SI_ACADEMICO_IMPARTE_CURSO = "SELECT EXISTS"
             + "(SELECT idAcademico FROM cursos WHERE idAcademico = ?) as esProfesor;";
-    
+    private final String OBTENER_CURSOS_POR_ESTUDIANTE = OBTENER_CURSOS
+            + "INNER JOIN cursos_estudiantes cu on c.idCurso = cu.idCurso\n" +
+            "INNER JOIN estudiantes est ON cu.idEstudiante = est.idEstudiante\n" +
+            "WHERE est.idEstudiante = ? and ec.idEstadoCurso = ?";
+    private final String GUARDAR_RELACIONESTUDIANTE_CURSO = "INSERT INTO sastr.cursos_estudiantes "
+            + "( idCurso, idEstudiante) VALUES (?,?);";
+
     public ArrayList<Curso> obtenerCursos() throws DAOException {
         ArrayList<Curso> cursos = new ArrayList<>();
         try {
@@ -84,7 +96,8 @@ public class CursoDAO {
     public ArrayList<Curso> obtenerCursosPorExperienciaEducativa(int idExperienciaEducativa) throws DAOException {
         ArrayList<Curso> cursos = new ArrayList<>();
         try {
-            PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(OBTENER_CURSOS_POR_EXPERIENCIA_EDUCATIVA);
+            PreparedStatement sentencia = ConexionBD.obtenerConexionBD()
+                    .prepareStatement(OBTENER_CURSOS_POR_EXPERIENCIA_EDUCATIVA);
             sentencia.setInt(1, idExperienciaEducativa);
             ResultSet resultado = sentencia.executeQuery();
             while (resultado.next()) {
@@ -156,7 +169,8 @@ public class CursoDAO {
     public ArrayList<Curso> ordenarCursosPorPeriodoEscolar() throws DAOException {
         ArrayList<Curso> cursos = new ArrayList<>();
         try {
-            PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(ORDENAR_CURSOS_POR_PERIODO_ESCOLAR);
+            PreparedStatement sentencia = ConexionBD.obtenerConexionBD()
+                    .prepareStatement(ORDENAR_CURSOS_POR_PERIODO_ESCOLAR);
             ResultSet resultado = sentencia.executeQuery();
             while (resultado.next()) {
                 Curso curso = new Curso();
@@ -193,6 +207,7 @@ public class CursoDAO {
         Curso curso = new Curso();
         try {
             PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(OBTENER_CURSO);
+            sentencia.setInt(1, idCurso);
             ResultSet resultado = sentencia.executeQuery();
             if (resultado.next()) {
                 curso.setIdCurso(resultado.getInt("idCurso"));
@@ -217,6 +232,7 @@ public class CursoDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
+            ex.printStackTrace();
             throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
                     Codigos.ERROR_CONSULTA);
         }
@@ -251,7 +267,7 @@ public class CursoDAO {
         }
         return respuesta;
     }
-    
+
     public int actualizarCurso(Curso curso) throws DAOException {
         int respuesta = -1;
         try {
@@ -290,11 +306,12 @@ public class CursoDAO {
         }
         return respuesta;
     }
-    
+
     public boolean verificarSiAcademicoImparteCurso(int idAcademico) throws DAOException {
         boolean esProfesor = false;
         try {
-            PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(VERIFICAR_SI_ACADEMICO_IMPARTE_CURSO);
+            PreparedStatement sentencia = ConexionBD.obtenerConexionBD()
+                    .prepareStatement(VERIFICAR_SI_ACADEMICO_IMPARTE_CURSO);
             sentencia.setInt(1, idAcademico);
             ResultSet resultado = sentencia.executeQuery();
             if (resultado.next()) {
@@ -307,4 +324,65 @@ public class CursoDAO {
         }
         return esProfesor;
     }
+
+    public Curso ordenarCursosPorEstudiante(int idEstudiante) throws DAOException {
+        Curso curso = null;
+        try {
+            PreparedStatement sentencia = ConexionBD.obtenerConexionBD()
+                    .prepareStatement(OBTENER_CURSOS_POR_ESTUDIANTE);
+            sentencia.setInt(1, idEstudiante);
+            sentencia.setInt(2, 1);
+            ResultSet resultado = sentencia.executeQuery();
+            while (resultado.next()) {
+                curso = new Curso();
+                curso.setIdCurso(resultado.getInt("idCurso"));
+                curso.setNombreCurso(resultado.getString("nombreCurso"));
+                curso.setFechaInicioCurso(resultado.getString("fechaInicioCurso"));
+                curso.setFechaFinCurso(resultado.getString("fechaFinCurso"));
+                curso.setIdSeccion(resultado.getInt("idSeccion"));
+                curso.setIdBloque(resultado.getInt("idBloque"));
+                curso.setIdExperienciaEducativa(resultado.getInt("idExperienciaEducativa"));
+                curso.setIdNRC(resultado.getInt("idNrc"));
+                curso.setIdPeriodoEscolar(resultado.getInt("idPeriodoEscolar"));
+                curso.setIdEstadoCurso(resultado.getInt("idEstadoCurso"));
+                curso.setIdAcademico(resultado.getInt("idAcademico"));
+                curso.setSeccionCurso(resultado.getString("nombreSeccion"));
+                curso.setBloqueCurso(resultado.getString("nombreBloque"));
+                curso.setExperienciaEducativaCurso(resultado.getString("nombreExperienciaEducativa"));
+                curso.setNrcCurso(resultado.getString("nombreNrc"));
+                curso.setInicioPeriodoEscolar(resultado.getString("fechaInicioPeriodoEscolar"));
+                curso.setFinPeriodoEscolar(resultado.getString("fechaFinPeriodoEscolar"));
+                curso.setEstadoCurso(resultado.getString("nombreEstadoCurso"));
+                curso.setAcademicoCurso(resultado.getString("nombreCompletoAcademico"));
+            }
+            ConexionBD.cerrarConexionBD();
+        } catch (SQLException ex) {
+            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
+                    Codigos.ERROR_CONSULTA);
+        }
+        return curso;
+    }
+
+    public int guardarRelacionCursoEstudiante(int idCurso, int IdEstudiante) throws DAOException {
+        int respuesta = -1;
+        try {
+            PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(
+                    GUARDAR_RELACIONESTUDIANTE_CURSO,
+                    Statement.RETURN_GENERATED_KEYS);
+            sentencia.setInt(1, idCurso);
+            sentencia.setInt(2, IdEstudiante);
+            sentencia.executeUpdate();
+            ResultSet resultado = sentencia.getGeneratedKeys();
+            if (resultado.next()) {
+                respuesta = resultado.getInt(1);
+            }
+            ConexionBD.cerrarConexionBD();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
+                    Codigos.ERROR_CONSULTA);
+        }
+        return respuesta;
+    }
+
 }
