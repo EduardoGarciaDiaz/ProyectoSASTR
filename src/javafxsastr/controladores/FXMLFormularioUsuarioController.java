@@ -1,4 +1,4 @@
-    /*
+/*
  * Autor: Eduardo García Díaz
  * Fecha de creación: 03/06/2023
  * Descripción: Controlador del formulario para registro y edición de usuarios
@@ -77,14 +77,16 @@ public class FXMLFormularioUsuarioController implements Initializable {
     private Button btnGuardar;
     @FXML
     private Label lbIdentificadorTipoUsuarioVacio;
+    @FXML
+    private Label lbTipoUsuario;
     
     private Usuario usuario;
-    
     private ObservableList<String> tiposUsuarios;
     private Usuario usuarioEdicion;
     private boolean esEdicion;
     private Academico academicoEdicion;
     private Estudiante estudianteEdicion;
+
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -141,10 +143,11 @@ public class FXMLFormularioUsuarioController implements Initializable {
     public void inicializarInformacionFormulario(boolean esEdicion, Usuario usuarioEdicion) {
         this.esEdicion = esEdicion;
         this.usuarioEdicion = usuarioEdicion;
-        
         if (esEdicion) {
             lbUsuario.setText("Modificar usuario");
             btnGuardar.setText("Guardar cambios");
+            cbTipoUsuario.setVisible(false);
+            lbTipoUsuario.setVisible(false);
             cargarInformacionEdicion();
         }
     }
@@ -175,12 +178,10 @@ public class FXMLFormularioUsuarioController implements Initializable {
         }
         chbxEsAdministrador.setSelected(usuarioEdicion.getEsAdministrador());
     }
-
     
     public void agregarListenersCamposVacios() {
         agregarListenerCampoVacio(tfNombre, lbNombreVacio);
         agregarListenerCampoVacio(tfPrimerApellido, lbPrimerApellidoVacio);
-        agregarListenerCampoVacio(tfSegundoApellido, lbSegundoApellidoVacio);
         agregarListenerCampoVacio(tfCorreoInstitucional, lbCorreoVacio);
         agregarListenerCampoVacio(tfContrasena, lbContrasenaVacia);
         agregarListenerCampoVacio(tfIdentificadorTipoUsuario, lbIdentificadorTipoUsuarioVacio);
@@ -253,33 +254,6 @@ public class FXMLFormularioUsuarioController implements Initializable {
             }
         }
     }
-
-    @FXML
-    private void clicRegresar(MouseEvent event) {
-
-        irAVistaInicio(usuario);
-    }
-    
-    private void irAVistaInicio(Usuario usuario) {
-        try {
-            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLUsuarios.fxml"));
-            Parent vista = accesoControlador.load();
-            FXMLUsuariosController controladorVistaUsuarios = accesoControlador.getController();     
-            controladorVistaUsuarios.setUsuario(usuario);
-            Stage escenario = (Stage) lbContrasenaVacia.getScene().getWindow();
-            escenario.setScene(new Scene(vista));
-            escenario.setTitle("Usuarios");
-            escenario.show();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    @FXML
-    private void clicGuardar(ActionEvent event) {
-        validarCampos();
-        irAVistaInicio(usuario);
-    }
     
     public void validarCampos() {
         boolean datosValidos = true;
@@ -292,13 +266,19 @@ public class FXMLFormularioUsuarioController implements Initializable {
         int idEstadoUsuario = 1;
         String tipoUsuarioSeleccionado = cbTipoUsuario.getSelectionModel().getSelectedItem();
         String identificadorTipoUsuario = tfIdentificadorTipoUsuario.getText();
-        if (contrasena.length() < 7 || contrasena.length()>16) {
+        Usuario usuarioAValidarLongitud = new Usuario(nombre, primerApellido, segundoApellido, correo,
+                contrasena, esAdministrador, idEstadoUsuario);
+        if (!validarLongitudCampos(usuarioAValidarLongitud)) {
             datosValidos = false;
-            lbContrasenaVacia.setText("La contraseña debe tener de 7 a 16 caracteres");
         }
         if (!Utilidades.correoValido(correo)) {
             datosValidos = false;
             lbCorreoVacio.setText("Correo no válido. Ejemplos: zs21013811@estudiantes.uv.mx o profesor@uv.mx");
+        }
+        if (!Utilidades.contrasenaValida(contrasena)) {
+            datosValidos = false;
+            lbContrasenaVacia.setText("Contraseña inválida. Debe tener de 7 a 16 caracteres," +
+                    " debe contener al menos un simbolo y una mayúscula");
         }
         if ("Estudiante".equals(tipoUsuarioSeleccionado)) {
             if(!Utilidades.matriculaValida(identificadorTipoUsuario)) {
@@ -313,7 +293,6 @@ public class FXMLFormularioUsuarioController implements Initializable {
                             Alert.AlertType.WARNING);
                 }
             }
-
         }
         if ("Académico".equals(tipoUsuarioSeleccionado)) {
             if (!Utilidades.noPersonalValido(identificadorTipoUsuario)) {
@@ -328,7 +307,6 @@ public class FXMLFormularioUsuarioController implements Initializable {
                             Alert.AlertType.WARNING);
                 }
             }
-            
         }
         if (esAdministrador==false) {
             //TODO VERIFICAR QUE SI ES EDICION, DEBE HABER UN ADMINISTRADOR EN EL SISTEMA
@@ -385,6 +363,31 @@ public class FXMLFormularioUsuarioController implements Initializable {
         } 
     }
     
+    public boolean validarLongitudCampos(Usuario usuarioNuevo) {
+        boolean esLongitudValida = true;
+        String nombre = usuarioNuevo.getNombre();
+        String primerApellido = usuarioNuevo.getPrimerApellido();
+        String segundoApellido = usuarioNuevo.getSegundoApellido();
+        String correo = usuarioNuevo.getCorreoInstitucional();
+        if (nombre.length() > 50) {
+            esLongitudValida = false;
+            lbNombreVacio.setText("No puede tener más de 50 caracteres");
+        }
+        if (primerApellido.length() > 50) {
+            esLongitudValida = false;
+            lbPrimerApellidoVacio.setText("No puede tener más de 50 caracteres");
+        }
+        if (segundoApellido.length() > 50) {
+            esLongitudValida = false;
+            lbSegundoApellidoVacio.setText("No puede tener más de 50 caracteres");
+        }
+        if (correo.length() > 50) {
+            esLongitudValida = false;
+            lbCorreoVacio.setText("No puede tener más de 50 caracteres");
+        }
+        return esLongitudValida;
+    }
+    
     public int guardarUsuario(Usuario usuarioNuevo) {
         int respuestaUsuario = 0;
         try {
@@ -429,9 +432,11 @@ public class FXMLFormularioUsuarioController implements Initializable {
             if (esEdicion) {
                 Utilidades.mostrarDialogoSimple("Modificación exitosa", "Usuario modificado con éxto",
                     Alert.AlertType.INFORMATION);
+                irAVistaVerUsuario(estudianteNuevo, usuario);
             } else {
                 Utilidades.mostrarDialogoSimple("Estudiante registrado con éxito", "Usuario registrado correctamente en el sistema",
                     Alert.AlertType.INFORMATION);
+                irAVistaUsuarios(usuario);
             }
 
         }
@@ -452,9 +457,12 @@ public class FXMLFormularioUsuarioController implements Initializable {
             if (esEdicion) {
                 Utilidades.mostrarDialogoSimple("Modificación exitosa", "Usuario modificado con éxito",
                     Alert.AlertType.INFORMATION);
+                irAVistaVerUsuario(academicoNuevo, usuario);
+
             } else {
                 Utilidades.mostrarDialogoSimple("Académico registrado con éxito", "Usuario registrado correctamente en el sistema",
                     Alert.AlertType.INFORMATION);
+                irAVistaUsuarios(usuario);
             }
         }
     }
@@ -466,13 +474,61 @@ public class FXMLFormularioUsuarioController implements Initializable {
         if (esEdicion) {
             cancelarRegistro = Utilidades.mostrarDialogoConfirmacion("Cancelar modificación de usuario",
                 "¿Estás seguro de que deseas cancelar la modificación del usuario?");
+            if (cancelarRegistro) {
+                irAVistaVerUsuario(usuarioEdicion, usuario);
+            }
         } else {
             cancelarRegistro = Utilidades.mostrarDialogoConfirmacion("Cancelar registro de usuario",
                 "¿Estás seguro de que deseas cancelar el registro del usuario?");
+            if (cancelarRegistro) {
+                irAVistaUsuarios(usuario);
+             }
         }
        
-        if (cancelarRegistro) {
-            irAVistaInicio(usuario);
+        
+    }
+    
+    @FXML
+    private void clicRegresar(MouseEvent event) {
+        if (esEdicion) {
+            irAVistaVerUsuario(usuarioEdicion, usuario);
+        } else {
+            irAVistaUsuarios(usuario);
+        }
+    }
+
+    @FXML
+    private void clicGuardar(ActionEvent event) {
+        validarCampos();
+    }
+    
+    private void irAVistaUsuarios(Usuario usuario) { //Cambiar nombre, no es a inicio
+        try {
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLUsuarios.fxml"));
+            Parent vista = accesoControlador.load();
+            FXMLUsuariosController controladorVistaUsuarios = accesoControlador.getController();     
+            controladorVistaUsuarios.setUsuario(usuario);
+            Stage escenario = (Stage) lbContrasenaVacia.getScene().getWindow();
+            escenario.setScene(new Scene(vista));
+            escenario.setTitle("Usuarios");
+            escenario.show();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    private void irAVistaVerUsuario(Usuario usuarioVisualizacion, Usuario usuario) {
+        try {
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLVerUsuario.fxml"));
+            Parent vista = accesoControlador.load();
+            FXMLVerUsuarioController controladorVistaVerUsuario = accesoControlador.getController();     
+            controladorVistaVerUsuario.setUsuario(usuarioVisualizacion, usuario);
+            Stage escenario = (Stage) lbContrasenaVacia.getScene().getWindow();
+            escenario.setScene(new Scene(vista));
+            escenario.setTitle("Usuarios");
+            escenario.show();
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
     

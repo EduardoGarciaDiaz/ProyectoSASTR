@@ -94,8 +94,7 @@ public class EstudianteDAO {
             "INNER JOIN estados_usuario eu ON u.idEstadoUsuario = eu.idEstadoUsuario " +
             "WHERE u.idUsuario = ?";
     private final String GUARDAR_ESTUDIANTE = "INSERT INTO estudiantes (matriculaEstudiante, idUsuario) VALUES (?, ?);";
-    private final String ACTUALIZAR_ESTUDIANTE = "UPDATE estudiantes SET matriculaEstudiante = ?, idUsuario = ?, idAnteproyecto = ? "
-            +
+    private final String ACTUALIZAR_ESTUDIANTE = "UPDATE estudiantes SET matriculaEstudiante = ?, idUsuario = ?, idAnteproyecto = ? " +
             "WHERE idEstudiante = ?";
     private final String ELIMINAR_ESTUDIANTE = "DELETE FROM estudiantes WHERE idEstudiante = ?;";
     private final String DESASIGNAR_ESTUDIANTE = "Update estudiantes Set idAnteproyecto = ? where idEstudiante = ?";
@@ -356,12 +355,18 @@ public class EstudianteDAO {
             PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(ACTUALIZAR_ESTUDIANTE);
             sentencia.setString(1, estudiante.getMatriculaEstudiante());
             sentencia.setInt(2, estudiante.getIdUsuario());
-            sentencia.setInt(3, estudiante.getIdAnteproyecto());
+            if (estudiante.getIdAnteproyecto() > 0) {
+                sentencia.setInt(3, estudiante.getIdAnteproyecto());
+            } else {
+                sentencia.setNull(3, Types.INTEGER);
+            }
+            sentencia.setInt(4, estudiante.getIdEstudiante());
             int filasAfectadas = sentencia.executeUpdate();
             respuesta = (filasAfectadas == 1) ? estudiante.getIdEstudiante() : -1;
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
+            ex.printStackTrace();
+            throw new DAOException("Ocurrió un error al actualizar los datos del estudiante",
                     Codigos.ERROR_CONSULTA);
         }
         return respuesta;

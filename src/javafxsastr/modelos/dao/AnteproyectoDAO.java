@@ -22,15 +22,12 @@ import javafxsastr.utils.Codigos;
 public class AnteproyectoDAO {
 
     private final String OBTENER_ANTEPROYECTOS = "SELECT  " +
-            "idAnteproyecto, fechaCreacionAnteproyecto, nombreProyectoInvestigacion, ciudadCreacionAnteproyecto, " +
-            "lineaInvestigacion, duracionAproximadaAnteproyecto, nombreTrabajoRecepcional, requisitosAnteproyecto, " +
-            "alumnosParticipantesAnteproyecto, descripcionProyectoInvestigacion, descripcionTrabajoRecepcional, " +
-            "resultadosEsperadosAnteproyecto, bibliografiasRecomendadasAnteproyecto, notasExtraAnteproyecto, A.idAcademico, "
-            +
-            "CONCAT(US.nombreUsuario, ' ', US.primerApellidoUsuario,' ', US.segundoApellidoUsuario) AS 'nombreDirector', "
-            +
-            "A.idEstadoSeguimiento, A.idCuerpoAcademico, A.idModalidad, nombreEstadoSeguimiento, nombreModalidad, nombreCuerpoAcademico "
-            +
+            "A.idAnteproyecto, A.fechaCreacionAnteproyecto, A.nombreProyectoInvestigacion, A.ciudadCreacionAnteproyecto, " +
+            "A.lineaInvestigacion, A.duracionAproximadaAnteproyecto, A.nombreTrabajoRecepcional, A.requisitosAnteproyecto, " +
+            "A.alumnosParticipantesAnteproyecto, A.descripcionProyectoInvestigacion, A.descripcionTrabajoRecepcional, " +
+            "A.resultadosEsperadosAnteproyecto, A.bibliografiasRecomendadasAnteproyecto, A.notasExtraAnteproyecto, A.idAcademico, " +
+            "CONCAT(US.nombreUsuario, ' ', US.primerApellidoUsuario,' ', US.segundoApellidoUsuario) AS 'nombreDirector', " +
+            "A.idEstadoSeguimiento, A.idCuerpoAcademico, A.idModalidad, nombreEstadoSeguimiento, nombreModalidad, nombreCuerpoAcademico " +
             "from sastr.anteproyectos A " +
             "inner join sastr.estados_seguimiento ES " +
             "on A.idEstadoSeguimiento = ES.idEstadoSeguimiento " +
@@ -514,7 +511,7 @@ public class AnteproyectoDAO {
         Anteproyecto anteproyecto = null;
         try {
             PreparedStatement sentencia = ConexionBD.obtenerConexionBD()
-                    .prepareStatement(OBTENER_ANTEPROYECTOS_POR_ACADEMICO);
+                    .prepareStatement(OBTENER_ANTEPROYECTOS_POR_ESTUDIANTE);
             sentencia.setInt(1, idEstudiante);
             ResultSet resultado = sentencia.executeQuery();
             while (resultado.next()) {

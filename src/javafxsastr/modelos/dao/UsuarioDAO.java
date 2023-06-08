@@ -230,6 +230,7 @@ public class UsuarioDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
+            ex.printStackTrace();
             throw new DAOException("Lo sentimos, hubo un problema al registrar el usuario.", Codigos.ERROR_CONSULTA);
         }
         return respuesta;

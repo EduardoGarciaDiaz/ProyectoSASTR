@@ -51,8 +51,8 @@ public class CursoDAO {
     private final String VERIFICAR_SI_ACADEMICO_IMPARTE_CURSO = "SELECT EXISTS"
             + "(SELECT idAcademico FROM cursos WHERE idAcademico = ?) as esProfesor;";
     private final String OBTENER_CURSOS_POR_ESTUDIANTE = OBTENER_CURSOS
-            + "INNER JOIN cursos_estudiantes cu on c.idCurso = cu.idCurso\n" +
-            "INNER JOIN estudiantes est ON cu.idEstudiante = est.idEstudiante\n" +
+            + "INNER JOIN cursos_estudiantes cu on c.idCurso = cu.idCurso " +
+            "INNER JOIN estudiantes est ON cu.idEstudiante = est.idEstudiante " +
             "WHERE est.idEstudiante = ? and ec.idEstadoCurso = ?";
     private final String GUARDAR_RELACIONESTUDIANTE_CURSO = "INSERT INTO sastr.cursos_estudiantes "
             + "( idCurso, idEstudiante) VALUES (?,?);";
