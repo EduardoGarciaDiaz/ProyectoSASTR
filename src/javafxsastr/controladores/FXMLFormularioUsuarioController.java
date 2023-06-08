@@ -1,4 +1,4 @@
-    /*
+/*
  * Autor: Eduardo García Díaz
  * Fecha de creación: 03/06/2023
  * Descripción: Controlador del formulario para registro y edición de usuarios
@@ -77,6 +77,8 @@ public class FXMLFormularioUsuarioController implements Initializable {
     private Button btnGuardar;
     @FXML
     private Label lbIdentificadorTipoUsuarioVacio;
+    @FXML
+    private Label lbTipoUsuario;
     
     private Usuario usuario;
     private ObservableList<String> tiposUsuarios;
@@ -84,8 +86,7 @@ public class FXMLFormularioUsuarioController implements Initializable {
     private boolean esEdicion;
     private Academico academicoEdicion;
     private Estudiante estudianteEdicion;
-    @FXML
-    private Label lbTipoUsuario;
+
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -456,11 +457,12 @@ public class FXMLFormularioUsuarioController implements Initializable {
             if (esEdicion) {
                 Utilidades.mostrarDialogoSimple("Modificación exitosa", "Usuario modificado con éxito",
                     Alert.AlertType.INFORMATION);
-                irAVistaUsuarios(usuario);
+                irAVistaVerUsuario(academicoNuevo, usuario);
+
             } else {
                 Utilidades.mostrarDialogoSimple("Académico registrado con éxito", "Usuario registrado correctamente en el sistema",
                     Alert.AlertType.INFORMATION);
-                irAVistaVerUsuario(academicoNuevo, usuario);
+                irAVistaUsuarios(usuario);
             }
         }
     }

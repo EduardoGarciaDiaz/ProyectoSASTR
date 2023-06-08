@@ -266,6 +266,11 @@
                   <HBox fx:id="hbxContenedorArchivosAlumno" prefHeight="63.0" spacing="6.0" style="-fx-background-color: white;" />
                </content>
             </ScrollPane>
+            <Label fx:id="lbErrorArchivos" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="405.0" layoutY="6.0" prefHeight="27.0" prefWidth="788.0" textFill="#f50606">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
       <Button fx:id="btnEnviar" layoutX="1033.0" layoutY="880.0" mnemonicParsing="false" onAction="#clicEnviar" prefHeight="54.0" prefWidth="245.0" style="-fx-background-color: D4F1C9; -fx-background-radius: 15;" text="Enviar" AnchorPane.rightAnchor="450.0">

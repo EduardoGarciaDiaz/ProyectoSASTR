@@ -118,14 +118,14 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
     @FXML
     private Pane paneLateralDer;
    
-
     private Actividad actividad;
     private Entrega entregaEdicion;
-    private boolean esEdicion = true; // Este dato se setteará al llamar a esta controlador en
-                                      // inicializarInformacionFormulario
+    private boolean esEdicion; 
     private File archivoEntregaSeleccion;
     private ArrayList<File> archivosEntregaSeleccionados = new ArrayList<>();
     private Archivo archivoEntrega;
+    private Usuario usuario;
+    
     private boolean menuDatos;
     private int porVencer;
     private int realizadas;
@@ -136,74 +136,39 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
     private Estudiante estudiante;
     private Anteproyecto anteproyecto;
     private ArrayList<Archivo> archivosEdicion = new ArrayList<>();
+    @FXML
+    private Label lbErrorArchivos;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        EstudianteDAO est = new EstudianteDAO();// METODO TEMPORALPAR ARECUPERAR UN ESTUDIANTE, LA VENTANA ANTERIOR ME
-                                                // LO DEBE MANDAR
-        Estudiante estudidi;
+        btnEnviar.setDisable(true);
+        obtenerDatosRelacionadoAlEstudiante();
+        mostrarInformacionActividad(actividad);
+        validarCamposVacios();
+    }    
+    
+    public void setEstudiante(Estudiante estudiante) {      //Establece al usuario para mantener la navegabilidad entre pantallas
+        this.estudiante = estudiante;
+    }
+
+    public void setActividad(Actividad actividad) {
+        this.actividad = actividad;
         try {
-            entregaEdicion = new EntregaDAO().consultarEntregaUnicaEdicion(9);
-            estudidi = est.obtenerEstudiante(1);
-            this.estudiante = estudidi;
+            entregaEdicion = new EntregaDAO().consultarEntregaUnicaEdicion(1);//QUITAR, DEBE SETTEARSE
+
+            this.estudiante = new EstudianteDAO().obtenerEstudiante(1);
         } catch (DAOException ex) {
             Logger.getLogger(FXMLFormularioActividadController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        // Instancia para probar si funciona al cargarInformacionEdicion, se hece lo
-        // mismo que con "esEdicion"
-
-        // entregaEdicion = new Entrega(2, "Hola maestro, esta es mi entrega.",
-        // "2023-06-03", "07:59:00", null, null, null, 1, 1);
         btnEnviar.setDisable(true);
         obtenerDatosRelacionadoAlEstudiante();
-        obtenerActividad(); // QUITAR ESTE MÉTODO
         mostrarInformacionActividad(actividad);
-        inicializarInformacionFormulario(esEdicion, entregaEdicion);
         validarCamposVacios();
-    }    
-
-    private void obtenerActividad() { // QUITAR MÉTODO, ES PARA PROBAR LA FUNCIONALIDAD
-        try { // PERO LA ACTIVIDAD DEBE SER PASADA
-            Actividad ac = new ActividadDAO().obtenerActividad(7);
-            actividad = ac;
-            lbNombreActividad.setText(ac.getNombreActividad());
-            lbDetallesActividad.setText(ac.getDetallesActividad());
-        } catch (DAOException ex) {
-            manejarDAOException(ex);
-        }
-    }
-
-    public void setIdActividad(Actividad actividad) {
-        this.actividad = actividad;
-    }
-
-    @FXML
-    private void clicRegresar(MouseEvent event) {
-        Stage escenerioBase = (Stage) lbNombreActividad.getScene().getWindow();
-        escenerioBase.close();
-    }
-
-    @FXML
-    private void clicAdjuntarArchivo(ActionEvent event) {
-        FileChooser ventanaSeleccionArchivo = new FileChooser();
-        ventanaSeleccionArchivo.setTitle("Selecciona el archivo a enviar");
-        FileChooser.ExtensionFilter filtroSeleccion = new FileChooser.ExtensionFilter(
-                "Cualquier .PDF, .ZIP, .TXT, .XLSX, .DOCX, .PPTX",
-                "*.PDF", "*.ZIP", "*.TXT", "*.XLSX", "*.DOCX", "*.PPTX", "*.PNG", "*.JPG");
-        ventanaSeleccionArchivo.getExtensionFilters().add(filtroSeleccion);
-
-        Stage escenarioBase = (Stage) lbEntrega.getScene().getWindow();
-        archivoEntregaSeleccion = ventanaSeleccionArchivo.showOpenDialog(escenarioBase);
-
-        visualizarArchivo(archivoEntregaSeleccion);
     }
 
     private void visualizarArchivo(File archivoEntrega) {
         if (archivoEntrega != null) {
             agregarArchivo(archivoEntrega);
-            archivoEntrega.getName(); // SETTEARLO A LA TARJETA
-            System.out.println(archivoEntrega.getName());
-            // hbxEvidencias TarhetaEvidencias
         }
     }
 
@@ -212,11 +177,11 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
         configurarBotonArchivo(archivoEntrega);
     }
 
-    private void eliminarArchivo(File archivoEntrega) { // FALTA EL BOTON DE ESTO
+    private void eliminarArchivo(File archivoEntrega) {
         archivosEntregaSeleccionados.remove(archivoEntrega);
     }
 
-public void configurarBotonArchivo(File archivo) {
+    public void configurarBotonArchivo(File archivo) {
         Pane contenedorArchivo = new Pane();
         contenedorArchivo.setPrefSize(285, 20);
         contenedorArchivo.setStyle("-fx-background-color: #C4DAEF; -fx-background-radius: 15");
@@ -240,7 +205,7 @@ public void configurarBotonArchivo(File archivo) {
         imgIconoEliminarArchivo.setFitWidth(35);
         imgIconoEliminarArchivo.setLayoutX(240);
         imgIconoEliminarArchivo.setLayoutY(12);
-        contenedorArchivo.setOnMouseClicked((event) -> {
+        imgIconoEliminarArchivo.setOnMouseClicked((event) -> {
             eliminarArchivo(archivo);
             contenedorArchivo.setVisible(false);
             hbxContenedorArchivosAlumno.getChildren().remove(contenedorArchivo);
@@ -248,27 +213,11 @@ public void configurarBotonArchivo(File archivo) {
         hbxContenedorArchivosAlumno.getChildren().add(contenedorArchivo);
     }
 
-    @FXML
-    private void clicEnviar(ActionEvent event) {
-        enviarEntrega();
-        System.out.println("Archivos");
-        for (File a : archivosEntregaSeleccionados) {
-            System.out.println("ARCHIVOS:" + a.getName());
-        }
-    }
-
-    @FXML
-    private void clicCancelar(ActionEvent event) {
-        boolean cancelarRegistro = Utilidades.mostrarDialogoConfirmacion("Cancelar entrega de actividad",
-                "¿Estás seguro de que deseas cancelar la entrega?");
-        if (cancelarRegistro) {
-            cerrarVenatan();
-        }
-    }
-
     private void mostrarInformacionActividad(Actividad actividad) {
-        lbNombreActividad.setText(actividad.getNombreActividad());
-        lbDetallesActividad.setText(actividad.getDetallesActividad());
+        if (actividad != null) {
+            lbNombreActividad.setText(actividad.getNombreActividad());
+            lbDetallesActividad.setText(actividad.getDetallesActividad());
+        }
     }
 
     public void inicializarInformacionFormulario(boolean esEdicion, Entrega entregaEdicion) {
@@ -330,7 +279,7 @@ public void configurarBotonArchivo(File archivo) {
         entregaNueva.setFechaEntrega(String.valueOf(fechaEntrega));
         entregaNueva.setHoraEntrega(String.valueOf(horaEntrega));
         entregaNueva.setIdActividad(actividad.getIdActividad());
-        entregaNueva.setIdAcademico(1); // CAMBIAR
+        entregaNueva.setIdAcademico(academico.getIdAcademico());
         try {
             if (esEdicion) {
                 entregaNueva.setIdEntrega(entregaEdicion.getIdEntrega());
@@ -340,6 +289,7 @@ public void configurarBotonArchivo(File archivo) {
             }
             if (respuesta > 0) {
                 enviarArchivosEntrega(respuesta);
+                                                                    //TODO Redirigir a la pantalla que la activo
             } else {
                 Utilidades.mostrarDialogoSimple("Error al enviar la entrega",
                         "No se pudo cargar el archivo seleccionado. Inténtelo de nuevo o hágalo más tarde",
@@ -348,6 +298,24 @@ public void configurarBotonArchivo(File archivo) {
         } catch (DAOException ex) {
             manejarDAOException(ex);
         }
+    }
+    
+    private boolean validarLongitudCampos() {
+        boolean esTamañoValido = true;
+        double totalPesoArchivos = 0.0;
+        String textoComentarios = taComentarios.getText();
+        if (textoComentarios.length() > 1000) {
+            esTamañoValido = false;
+            lbCampoComentariosError.setText("No puede tener más de 1000 caracteres");
+        }
+        for (File archivo : archivosEntregaSeleccionados) {
+            totalPesoArchivos = totalPesoArchivos + archivo.length();
+        }
+        if (totalPesoArchivos > 16000) {
+            esTamañoValido = false;
+            lbErrorArchivos.setText("El límite de peso de los archivos debe ser menor a 16 MB.");
+        }
+        return esTamañoValido;
     }
 
     private void enviarArchivosEntrega(int idEntrega) {
@@ -393,7 +361,7 @@ public void configurarBotonArchivo(File archivo) {
         if (seEnviaronTodos) {
             Utilidades.mostrarDialogoSimple("Entrega enviada", "Entrega enviada exitosamente",
                     Alert.AlertType.INFORMATION);
-            cerrarVenatan();
+            cerrarVenatana();
         } else {
             Utilidades.mostrarDialogoSimple("Error en la entrega",
                     "No se pudo cargar el archivo seleccionado. Inténtelo de nuevo o hágalo más tarde",
@@ -412,20 +380,6 @@ public void configurarBotonArchivo(File archivo) {
         }
     }
 
-    private void manejarDAOException(DAOException ex) {
-        switch (ex.getCodigo()) {
-            case ERROR_CONSULTA:
-                System.out.println("Ocurrió un error de consulta.");
-                break;
-            case ERROR_CONEXION_BD:
-                Utilidades.mostrarDialogoSimple("Error de conexion",
-                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                        Alert.AlertType.ERROR);
-            default:
-                throw new AssertionError();
-        }
-    }
-
     private void actualizaEstadoMenu(int posicion, boolean abierto, String icono) {
         animacionMenu(posicion);
         menuDatos = abierto;
@@ -439,7 +393,12 @@ public void configurarBotonArchivo(File archivo) {
         ActividadDAO actividadesDao = new ActividadDAO();
         try {
             curso = cursoDao.ordenarCursosPorEstudiante(estudiante.getIdEstudiante());
+            System.out.println("idEstudiante"+estudiante.getIdEstudiante());
+            System.out.println("nam estud 0"+estudiante.getNombre());
+            System.out.println("curso0"+curso.getNombreCurso());
             anteproyecto = anteproyectoDao.obtenerAnteproyectosPorEstudiante(estudiante.getIdEstudiante());
+            System.out.println("anteid"+anteproyecto.getIdAnteproyecto());
+            System.out.println("estu id"+estudiante.getIdEstudiante());
             academico = academicoDao.obtenerAcademicoPorId(curso.getIdAcademico());
             codirectores = FXCollections.observableArrayList(
                     new AcademicoDAO().obtenerCodirectoresProAnteproyecto(anteproyecto.getIdAnteproyecto()));
@@ -449,7 +408,6 @@ public void configurarBotonArchivo(File archivo) {
             revisadas = actividadesDao.totalActividades(3, estudiante.getIdEstudiante());
         } catch (DAOException ex) {
             ex.printStackTrace();
-            Logger.getLogger(FXMLFormularioActividadController.class.getName()).log(Level.SEVERE, null, ex);
         }
         setInformacion();
     }
@@ -461,7 +419,7 @@ public void configurarBotonArchivo(File archivo) {
             lbPeriodo.setText(curso.getFechaInicioCurso() + "-" + curso.getFinPeriodoEscolar());
         }
         if (academico != null) {
-            lbDocente.setText(academico.getNombre() + " " + academico.getPrimerApellido());
+            lbDocente.setText(academico.getNombre() + " " + academico.getPrimerApellido() + " " +academico.getSegundoApellido());
         }
         if (anteproyecto != null) {
             lbAnteproyecto.setText(anteproyecto.getNombreTrabajoRecepcional());
@@ -489,18 +447,69 @@ public void configurarBotonArchivo(File archivo) {
         translate.play();
     }
 
-    private void cerrarVenatan() {
+    private void cerrarVenatana() {
+        Stage escenerioBase = (Stage) lbNombreActividad.getScene().getWindow();
+        escenerioBase.close();
+    }
+    
+    @FXML
+    private void clicRegresar(MouseEvent event) {
+        //TODO Redirigir a la pantalla que la activo
         Stage escenerioBase = (Stage) lbNombreActividad.getScene().getWindow();
         escenerioBase.close();
     }
 
     @FXML
+    private void clicAdjuntarArchivo(ActionEvent event) {
+        FileChooser ventanaSeleccionArchivo = new FileChooser();
+        ventanaSeleccionArchivo.setTitle("Selecciona el archivo a enviar");
+        FileChooser.ExtensionFilter filtroSeleccion = new FileChooser.ExtensionFilter(
+                "Cualquier .PDF, .ZIP, .TXT, .XLSX, .DOCX, .PPTX",
+                "*.PDF", "*.ZIP", "*.TXT", "*.XLSX", "*.DOCX", "*.PPTX", "*.PNG", "*.JPG");
+        ventanaSeleccionArchivo.getExtensionFilters().add(filtroSeleccion);
+        Stage escenarioBase = (Stage) lbEntrega.getScene().getWindow();
+        archivoEntregaSeleccion = ventanaSeleccionArchivo.showOpenDialog(escenarioBase);
+        visualizarArchivo(archivoEntregaSeleccion);
+    }
+    
+    @FXML
+    private void clicEnviar(ActionEvent event) {
+        if (validarLongitudCampos()) {
+            enviarEntrega();
+        }
+    }
+
+    @FXML
+    private void clicCancelar(ActionEvent event) {
+        boolean cancelarRegistro = Utilidades.mostrarDialogoConfirmacion("Cancelar entrega de actividad",
+                "¿Estás seguro de que deseas cancelar la entrega?");
+        if (cancelarRegistro) {
+            cerrarVenatana();     
+                //TODO REDIRIGIR A PANTALLA ANTERIOR
+        }
+    }
+
+    @FXML
     private void clicEscoderPanleIzquierdo(MouseEvent event) {
-         if(menuDatos) {
+        if(menuDatos) {
             actualizaEstadoMenu(-433, false, "recursos/hide.jpg");            
         }
         else{
             actualizaEstadoMenu(433, true, "recursos/show.jpg");           
+        }
+    }
+    
+    private void manejarDAOException(DAOException ex) {
+        switch (ex.getCodigo()) {
+            case ERROR_CONSULTA:
+                System.out.println("Ocurrió un error de consulta.");
+                break;
+            case ERROR_CONEXION_BD:
+                Utilidades.mostrarDialogoSimple("Error de conexion",
+                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.",
+                        Alert.AlertType.ERROR);
+            default:
+                throw new AssertionError();
         }
     }
 
