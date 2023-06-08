@@ -5,6 +5,7 @@
  */
 package javafxsastr.controladores;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -15,7 +16,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -25,17 +29,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafxsastr.interfaces.INotificacionSeleccionItem;
+import javafxsastr.JavaFXSASTR;
+import javafxsastr.interfaces.INotificacionRecargarLgac;
 import javafxsastr.modelos.dao.DAOException;
 import javafxsastr.modelos.dao.LgacDAO;
 import javafxsastr.modelos.pojo.Lgac;
+import javafxsastr.modelos.pojo.Usuario;
 import javafxsastr.utils.Utilidades;
 
-/**
- * FXML Controller class
- *
- * @author tristan
- */
 public class FXMLAñadirLgacController implements Initializable {
 
     @FXML
@@ -51,55 +52,75 @@ public class FXMLAñadirLgacController implements Initializable {
     @FXML
     private Label lbDescirpcionLgac;
     @FXML
-    private ImageView btnMenu;
-    @FXML
-    private AnchorPane menuLateral;
+    private Label lbTituloVentana;
 
-    private String nombreLgac;
-    private  String descripcionLgac;
+    private final int LIMT_CARACT_NOMBRE = 200;
+    private final int LIMT_CARACT_DESCRIPCION = 500;
+    private Usuario ususarioActual;
     private ObservableList<Lgac> lgacs;
-    private boolean isEdicion;
-    private int lgacIdEdicion;
-    private INotificacionSeleccionItem interfazNotificaiconDesasignacion;
-    
-  
+    private boolean isEdicion = false;
+    private Lgac lgacIdEdicion;
+    private boolean esDeVentanaCA = false;
+    private INotificacionRecargarLgac interfaz;
     
     @Override
-    public void initialize(URL url, ResourceBundle rb) {        
+    public void initialize(URL url, ResourceBundle rb) {     
+        if(isEdicion){
+            lbTituloVentana.setText("Modificar Lgac");
+        }
         btnGuardar.setDisable(true);
-        txfNombreLgac.textProperty().addListener(new ChangeListener<String>() {
+       inicializarListeners();
+    }  
+    
+    public void setUsuario(Usuario usuario) {
+        this.ususarioActual = usuario;
+    }
+    
+    public void instancearInterfaz(INotificacionRecargarLgac interfazN) {
+       interfaz = interfazN;
+    }
+
+    public void registroLgacPorCA(boolean origen) {
+        esDeVentanaCA = origen;
+    }
+    
+    public void cargarCampos(Lgac lgacEditar, boolean esEdicio, Usuario usuario) {
+        isEdicion = true;
+        lgacIdEdicion = lgacEditar;
+        ususarioActual = usuario;               
+        txfNombreLgac.setText(lgacEditar.getNombreLgac());
+        txaDescripcionLgac.setText(lgacEditar.getDescripcionLgac());        
+    }
+    
+    private void inicializarListeners() {
+         txfNombreLgac.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                validarBtnGuardar();
+                if (txfNombreLgac.getText().length() < LIMT_CARACT_NOMBRE) {
+                    validarBtnGuardar();
+                    lbNombreLgac.setText("");
+                }else {
+                    mostraMensajelimiteSuperado(LIMT_CARACT_NOMBRE, "Nombre LGAC", lbNombreLgac);
+                }                
             }
         });       
         txaDescripcionLgac.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                validarBtnGuardar();
+                 if (txfNombreLgac.getText().length() < LIMT_CARACT_DESCRIPCION) {
+                    validarBtnGuardar();
+                    lbDescirpcionLgac.setText("");
+                }else {
+                    mostraMensajelimiteSuperado(LIMT_CARACT_DESCRIPCION, "Descripcion LGAC", lbDescirpcionLgac);
+                }     
             }
-        });  
-    }      
-    
-    private void cargarCampos(Lgac lgacEditar, boolean esEdicion, INotificacionSeleccionItem interfaz) {
-        interfazNotificaiconDesasignacion = interfaz;
-        lgacIdEdicion = lgacEditar.getIdLgac();
-        ///borrar despues
-        try {
-            lgacEditar= new LgacDAO().obtenerInformacionLGAC(1);
-        } catch (DAOException ex) {
-            Logger.getLogger(FXMLAñadirLgacController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        lbNombreLgac.setText(lgacEditar.getNombreLgac());
-        lbDescirpcionLgac.setText(lgacEditar.getDescripcionLgac());
-        isEdicion = true;//esEdicion;
+        }); 
     }
     
     private void validarBtnGuardar() {
-       nombreLgac = txfNombreLgac.getText();
-       descripcionLgac = txaDescripcionLgac.getText();
-        if(nombreLgac.length() > 10 && descripcionLgac.length() > 10) {
+       String nombreLgac = txfNombreLgac.getText();
+       String descripcionLgac = txaDescripcionLgac.getText();
+        if(nombreLgac.length() > 10 && descripcionLgac.length() > 10 && nombreLgac.length() < 200 && descripcionLgac.length() < 500) {
             habilitarBtnGuardar();
         }else {
             btnGuardar.setDisable(true);
@@ -114,7 +135,7 @@ public class FXMLAñadirLgacController implements Initializable {
         boolean esRepetida = false;
         for (int i = 0; i < lgacs.size(); i++) {            
             String original = lgacs.get(i).getNombreLgac().toLowerCase().trim();
-            String nueva = nombreLgac.toLowerCase().trim();
+            String nueva = txfNombreLgac.getText().toLowerCase().trim();
             if(original == null ? nueva == null : original.equals(nueva)) {                
                 esRepetida = true;              
             }
@@ -126,32 +147,30 @@ public class FXMLAñadirLgacController implements Initializable {
         LgacDAO lgacDao = new LgacDAO();
         try {
             lgacs = FXCollections.observableArrayList();           
-            lgacs.addAll(lgacDao.obtenerInformacionLGCAS());
-                       
+            lgacs.addAll(lgacDao.obtenerInformacionLGCAS());                       
             if(lgacs.isEmpty()) {      
                 registrarLgac();      
             }else if(estaRepetida()) {
-                Utilidades.mostrarDialogoSimple("LGAC repetida", "La LGAC "+nombreLgac+" ya existe", Alert.AlertType.INFORMATION);
+                Utilidades.mostrarDialogoSimple("LGAC repetida", "La LGAC "+txfNombreLgac.getText()+" ya existe", Alert.AlertType.INFORMATION);
                 }else {                
                     registrarLgac();
                 }            
         } catch (DAOException ex) {
-            ex.printStackTrace();
-            Utilidades.mostrarDialogoSimple("Error", "Ocurrio un error al consultar las LGAC's", Alert.AlertType.ERROR);
+             manejarDAOException(ex);
         }
     }
     
     private void registrarLgac() {
         LgacDAO lgacDao = new LgacDAO();
         Lgac lgacNuevo = new Lgac();
-        lgacNuevo.setNombreLgac(nombreLgac);
-        lgacNuevo.setDescripcionLgac(descripcionLgac);
+        lgacNuevo.setNombreLgac(txfNombreLgac.getText().trim());
+        lgacNuevo.setDescripcionLgac(txaDescripcionLgac.getText().trim());
         try {
             if(isEdicion) {
-                lgacNuevo.setIdLgac(lgacIdEdicion);
+                lgacNuevo.setIdLgac(lgacIdEdicion.getIdLgac());
                 int exito = lgacDao.actualizarLgac(lgacNuevo);
                 if(exito != -1) {
-                    Utilidades.mostrarDialogoSimple("Actualizacion exitoso","La LGAC "+nombreLgac+" se actualizo correctamente", 
+                    Utilidades.mostrarDialogoSimple("Actualizacion exitoso","La LGAC "+txfNombreLgac.getText()+" se actualizo correctamente", 
                             Alert.AlertType.CONFIRMATION);           
                 }else {
                     System.err.println(exito);                
@@ -161,7 +180,7 @@ public class FXMLAñadirLgacController implements Initializable {
             }else {
                 int exito = lgacDao.guardarLgac(lgacNuevo);
                 if(exito != -1) {
-                    Utilidades.mostrarDialogoSimple("Registro exitoso","La LGAC "+nombreLgac+" se registro correctamente", 
+                    Utilidades.mostrarDialogoSimple("Registro exitoso","La LGAC "+txfNombreLgac.getText()+" se registro correctamente", 
                             Alert.AlertType.CONFIRMATION);
                     txfNombreLgac.clear();
                     txaDescripcionLgac.clear();
@@ -173,15 +192,49 @@ public class FXMLAñadirLgacController implements Initializable {
                 }
             }
         }catch (DAOException ex) {           
-                Utilidades.mostrarDialogoSimple("Registro Fallido","Ocurrio un error al registrar la LGAC",
-                            Alert.AlertType.ERROR);
+               manejarDAOException(ex);
         }
     }
     
+     private void manejarDAOException(DAOException ex) {
+        switch (ex.getCodigo()) {
+            case ERROR_CONSULTA:
+                System.out.println("Ocurrió un error de consulta.");
+                ex.printStackTrace();
+                break;
+            case ERROR_CONEXION_BD:
+                Utilidades.mostrarDialogoSimple("Error de conexion", 
+                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", 
+                        Alert.AlertType.ERROR);
+            default:
+                throw new AssertionError();
+        }
+    }
+    
+    private void mostraMensajelimiteSuperado(int limiteCaracteres, String campo, Label etiquetaError) {        
+        etiquetaError.setText("Cuidado, Exediste el limite de caracteres("+limiteCaracteres+") de este campo " + campo);
+        btnGuardar.setDisable(true);
+    }    
+    
     private void cerrarVentana() {
-       // interfazNotificaiconDesasignacion.notificarPerdidaDelFoco();
-        Stage escenarioActual = (Stage) txaDescripcionLgac.getScene().getWindow();
-        escenarioActual.close();
+        try {               
+            Stage escenarioActual = (Stage) txaDescripcionLgac.getScene().getWindow();
+            if(esDeVentanaCA) {
+               FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLAñadirCuerpoAcademico.fxml"));
+               interfaz.notitficacionRecargarLgac();
+               escenarioActual.close();
+           }else {
+                FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLCuerposAcademicos.fxml"));
+                Parent vista = accesoControlador.load();
+                FXMLCuerposAcademicosController controladorVista = accesoControlador.getController();  
+                controladorVista.setUsuario(ususarioActual);
+                escenarioActual.setScene(new Scene(vista));
+                escenarioActual.setTitle("Cuerpos Academicos"); 
+                escenarioActual.show();
+            }          
+        }catch (IOException ex) {
+              Utilidades.mostrarDialogoSimple("Error","No se pudo regresar a Registrar Cuerpos Academicos", Alert.AlertType.NONE);
+        }
     }   
     
     @FXML
@@ -199,17 +252,12 @@ public class FXMLAñadirLgacController implements Initializable {
             registrarLgac();
         }else{
              validarLgac();
-        }
-       
+        }       
     }
 
     @FXML
     private void clicBtnRegresar(MouseEvent event) {
         cerrarVentana();
     }
-
- 
-    
-    
     
 }

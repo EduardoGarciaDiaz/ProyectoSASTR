@@ -41,13 +41,6 @@
          </children>
       </Pane>
       <AnchorPane fx:id="menuContraido" layoutY="54.0" prefHeight="890.0" prefWidth="75.0" scaleZ="10.0" style="-fx-background-color: #15294f;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="50.0">
-         <children>
-            <ImageView fx:id="btnMenu" fitHeight="50.0" fitWidth="50.0" layoutX="17.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true" scaleZ="15.0" AnchorPane.leftAnchor="12.0" AnchorPane.topAnchor="12.0">
-               <image>
-                  <Image url="@../recursos/iconos/menu.png" />
-               </image>
-            </ImageView>
-         </children>
          <rotationAxis>
             <Point3D />
          </rotationAxis>
@@ -82,8 +75,8 @@
                   <Font size="25.0" />
                </font>
             </Button>
-            <Label fx:id="lbNombreLgac" layoutX="90.0" layoutY="179.0" prefHeight="21.0" prefWidth="500.0" textFill="#a80000" />
-            <Label fx:id="lbDescirpcionLgac" layoutX="108.0" layoutY="568.0" prefHeight="21.0" prefWidth="520.0" textFill="#a80000" />
+            <Label fx:id="lbNombreLgac" layoutX="69.0" layoutY="179.0" prefHeight="21.0" prefWidth="500.0" textFill="#a80000" />
+            <Label fx:id="lbDescirpcionLgac" layoutX="59.0" layoutY="568.0" prefHeight="21.0" prefWidth="520.0" textFill="RED" />
          </children>
       </Pane>
       <Pane layoutX="75.0" layoutY="50.0" prefHeight="63.0" prefWidth="369.0">
@@ -100,6 +93,5 @@
             </Label>
          </children>
       </Pane>
-      <AnchorPane fx:id="menuLateral" layoutX="-300.0" layoutY="50.0" prefHeight="890.0" prefWidth="300.0" style="-fx-background-color: #15294f;" />
    </children>
 </AnchorPane>

@@ -43,7 +43,7 @@ public class TarjetaAgregarAlumno extends Pane{
                     FXMLDetallesCursoController formulario = accesoControlador.getController();            
                     formulario.agregarAlumno();                   
                 } catch (IOException ex) {
-                    Logger.getLogger(TarjetaAgregarAlumno.class.getName()).log(Level.SEVERE, null, ex);
+                    ex.printStackTrace();
                 }                    
             }
         });

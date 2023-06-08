@@ -42,20 +42,13 @@
                </children>
             </Pane>
             <AnchorPane fx:id="menuContraido" layoutY="54.0" prefHeight="890.0" prefWidth="75.0" scaleZ="10.0" style="-fx-background-color: #15294f;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="50.0">
-               <children>
-                  <ImageView fx:id="btnMenu" fitHeight="50.0" fitWidth="50.0" layoutX="17.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true" scaleZ="15.0" AnchorPane.leftAnchor="12.0" AnchorPane.topAnchor="12.0">
-                     <image>
-                        <Image url="@../recursos/iconos/menu.png" />
-                     </image>
-                  </ImageView>
-               </children>
                <rotationAxis>
                   <Point3D />
                </rotationAxis>
             </AnchorPane>
             <Pane layoutX="138.0" layoutY="127.0" prefHeight="799.0" prefWidth="953.0">
                <children>
-                  <Label layoutX="51.0" layoutY="76.0" prefHeight="50.0" prefWidth="187.0" text="Nombre del CA*">
+                  <Label layoutX="51.0" layoutY="76.0" prefHeight="50.0" prefWidth="246.0" text="Nombre del CA*">
                      <font>
                         <Font size="26.0" />
                      </font>
@@ -95,7 +88,7 @@
                         <Font size="20.0" />
                      </font>
                   </TextField>
-                  <Label layoutX="14.0" layoutY="471.0" text="Responsable del cuerpo academico">
+                  <Label layoutX="14.0" layoutY="473.0" text="Responsable del cuerpo academico">
                      <font>
                         <Font name="System Bold" size="30.0" />
                      </font>
@@ -111,7 +104,7 @@
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Button layoutX="678.0" layoutY="560.0" mnemonicParsing="false" onAction="#clicBtnAñadirUsuario" prefHeight="31.0" prefWidth="149.0" style="-fx-background-color: F8FFA7;" text="Añadir Usuario">
+                  <Button layoutX="678.0" layoutY="560.0" mnemonicParsing="false" onAction="#clicBtnAñadirUsuario" prefHeight="31.0" prefWidth="149.0" style="-fx-background-color: F8FFA7; -fx-background-radius: 13;" text="Añadir Usuario">
                      <font>
                         <Font size="18.0" />
                      </font></Button>
@@ -124,12 +117,12 @@
                         </Label>
                         <Label layoutX="21.0" layoutY="59.0" text="Nombre:">
                            <font>
-                              <Font size="17.0" />
+                              <Font name="System Bold" size="17.0" />
                            </font>
                         </Label>
                         <Label layoutX="21.0" layoutY="113.0" text="Correo Institucional:">
                            <font>
-                              <Font size="17.0" />
+                              <Font name="System Bold" size="17.0" />
                            </font>
                         </Label>
                         <Label fx:id="lbNombreResponsable" layoutX="93.0" layoutY="60.0" prefHeight="26.0" prefWidth="740.0" text="&lt;nombre Responsable Cuerpo Academico&gt;">
@@ -157,6 +150,9 @@
                      </image>
                   </ImageView>
                   <ComboBox fx:id="cmbAreas" layoutX="52.0" layoutY="244.0" prefHeight="39.0" prefWidth="300.0" promptText="&lt;Area&gt;" style="-fx-background-color: #F4F4F4; -fx-background-radius: 13;" />
+                  <Label fx:id="lbNombre" layoutX="51.0" layoutY="174.0" prefHeight="21.0" prefWidth="472.0" textFill="RED" />
+                  <Label fx:id="lbDiciplina" layoutX="407.0" layoutY="291.0" prefHeight="21.0" prefWidth="472.0" textFill="RED" />
+                  <Label fx:id="lbDescripcion" layoutX="51.0" layoutY="461.0" prefHeight="21.0" prefWidth="472.0" textFill="RED" />
                </children>
             </Pane>
             <Pane layoutX="75.0" layoutY="50.0" prefHeight="63.0" prefWidth="369.0">
@@ -166,14 +162,13 @@
                         <Image url="@../recursos/iconos/BACK.JPG" />
                      </image>
                   </ImageView>
-                  <Label fx:id="lbTituloventana" layoutX="110.0" layoutY="5.0" text="Añadir Cuerpo Academico" textFill="#434343">
+                  <Label fx:id="lbTituloventana" layoutX="110.0" layoutY="5.0" prefHeight="53.0" prefWidth="548.0" text="Añadir Cuerpo Academico" textFill="#434343">
                      <font>
                         <Font name="System Bold" size="36.0" />
                      </font>
                   </Label>
                </children>
             </Pane>
-            <AnchorPane fx:id="menuLateral" layoutX="-300.0" layoutY="50.0" prefHeight="890.0" prefWidth="300.0" style="-fx-background-color: #15294f;" />
             <Button fx:id="btnGuardar" layoutX="1504.0" layoutY="864.0" mnemonicParsing="false" onAction="#clicBtnGuardar" prefHeight="54.0" prefWidth="199.0" style="-fx-background-color: D4F1C9; -fx-background-radius: 15;" text="Guardar">
                <font>
                   <Font size="25.0" />
@@ -197,7 +192,7 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Button layoutX="495.0" layoutY="130.0" mnemonicParsing="false" onAction="#clicBtnAñadirLgac" prefHeight="39.0" prefWidth="136.0" style="-fx-background-color: F8FFA7;" text="Añadir LGAC">
+                  <Button layoutX="495.0" layoutY="130.0" mnemonicParsing="false" onAction="#clicBtnAñadirLgac" prefHeight="39.0" prefWidth="136.0" style="-fx-background-color: F8FFA7; -fx-background-radius: 13;" text="Añadir LGAC">
                      <font>
                         <Font size="18.0" />
                      </font>

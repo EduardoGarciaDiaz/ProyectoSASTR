@@ -60,8 +60,7 @@ public class TarjetaEstudianteCurso extends Pane{
                     FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLDetallesCurso.fxml"));
                     Parent vista = accesoControlador.load();
                     FXMLDetallesCursoController formulario = accesoControlador.getController();            
-                    formulario.editarUsuario(idEstudiante);  
-                    vista = null;
+                    formulario.editarUsuario(idEstudiante);                      
                 } catch (IOException ex) {
                     ex.printStackTrace();
                     Utilidades.mostrarDialogoSimple("Error","Ocurrio un error al querer editar ",

@@ -46,7 +46,7 @@ public class TarjetaAgregarEstudianteCurso extends Pane {
                     FXMLAsignarEstudianteCursoController accion = accesoControlador.getController();            
                     accion.quitarEstudianste(IdEstudinate);            
                 } catch (IOException ex) {                    
-                    Logger.getLogger(TarjetaAgregarAlumno.class.getName()).log(Level.SEVERE, null, ex);
+                  ex.printStackTrace();
                 }                    
             }
         });

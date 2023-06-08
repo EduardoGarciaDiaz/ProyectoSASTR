@@ -56,13 +56,11 @@ public class CuerpoAcademicoDAO {
     private final String VERIFICAR_SI_CA_EXISTE = "SELECT EXISTS"
             + "(SELECT idCuerpoAcademico FROM cuerpos_academicos WHERE nombreCuerpoAcademico = ?) as existeCA";
     private final String OBTENER_AREAS_CUERPOS_ACADEMICOS = "Select idArea, nombreArea from areas";
-    private final String ACTUALIZA_CUERPO_ACADEMICO = "Update cuerpos_academicos set cuerpos_academicos.nombreCuerpoAcademico = ?, \n"
-            +
+    private final String ACTUALIZA_CUERPO_ACADEMICO = "Update cuerpos_academicos set cuerpos_academicos.nombreCuerpoAcademico = ?, \n"+
             "cuerpos_academicos.disciplinaCuerpoAcademico = ?, cuerpos_academicos.idArea = ?,\n" +
             "cuerpos_academicos.idAcademico = ?, cuerpos_academicos.descripcion = ?\n" +
             "where cuerpos_academicos.idCuerpoAcademico = ?;";
-    private final String VERIFICAR_RELACION_CA_LGAC = "Select exists(Select idCuerpoAcademicoLgac from cuerpos_academicos_lgac\n"
-            +
+    private final String VERIFICAR_RELACION_CA_LGAC = "Select exists(Select idCuerpoAcademicoLgac from cuerpos_academicos_lgac\n"+
             " where cuerpos_academicos_lgac.idLgac = ? and cuerpos_academicos_lgac.idCuerpoAcademico = ?)  as existeRelacion";
     private final String OBTENER_RELACIONES_LGAC_CA = "Select idCuerpoAcademicoLgac, idLgac, idCuerpoAcademico from cuerpos_academicos_lgac\n"
             +
@@ -248,15 +246,18 @@ public class CuerpoAcademicoDAO {
         try {
             PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(ACTUALIZA_CUERPO_ACADEMICO);
             sentencia.setString(1, cuEdicion.getNombreCuerpoAcademico());
-            sentencia.setString(2, cuEdicion.getNombreCuerpoAcademico());
+            sentencia.setString(2, cuEdicion.getDisciplinaCuerpoAcademico());
             sentencia.setInt(3, cuEdicion.getIdArea());
-            sentencia.setInt(4, cuEdicion.getIdCuerpoAcademico());
+            sentencia.setInt(4,cuEdicion.getIdAcademico());
+            sentencia.setString(5, cuEdicion.getDescripcion());
+            sentencia.setInt(6, cuEdicion.getIdCuerpoAcademico());
             int filas = sentencia.executeUpdate();
             if (filas != 0) {
                 respuestaExito = filas;
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
+            ex.printStackTrace();
             throw new DAOException("Error de Actualizaicion", Codigos.ERROR_CONSULTA);
         }
         return respuestaExito;
@@ -269,29 +270,33 @@ public class CuerpoAcademicoDAO {
             sentencia.setInt(1, idLgac);
             sentencia.setInt(2, idCa);
             ResultSet resultado = sentencia.executeQuery();
-            respuesta = resultado.getInt("existeRelacion");
+            if(resultado.next()) {
+                respuesta = resultado.getByte("existeRelacion");
+            }            
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
+            ex.printStackTrace();;
             throw new DAOException("Error de consulta", Codigos.ERROR_CONSULTA);
         }
         return respuesta;
     }
 
     public ArrayList<CuerpoAcademicoLgac> obtenerRelacionesLgacCa(int idCa) throws DAOException {
-        ArrayList<CuerpoAcademicoLgac> relaciones = null;
+        ArrayList<CuerpoAcademicoLgac> relaciones = new ArrayList<>();
         try {
             PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(OBTENER_RELACIONES_LGAC_CA);
             sentencia.setInt(1, idCa);
             ResultSet reusltado = sentencia.executeQuery();
             while (reusltado.next()) {
                 CuerpoAcademicoLgac ca = new CuerpoAcademicoLgac();
-                ca.setIdCuerpoAcademico(reusltado.getInt("idCuerpoAcademicoLgac"));
+                ca.setIdCuerpoAcademicoLgac(reusltado.getInt("idCuerpoAcademicoLgac"));
                 ca.setIdCuerpoAcademico(reusltado.getInt("idCuerpoAcademico"));
                 ca.setLgac(reusltado.getInt("idLgac"));
                 relaciones.add(ca);
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
+            ex.printStackTrace();
             throw new DAOException("Error de consulta", Codigos.ERROR_CONSULTA);
         }
         return relaciones;
