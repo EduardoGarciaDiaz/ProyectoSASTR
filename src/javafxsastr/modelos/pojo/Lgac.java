@@ -47,8 +47,6 @@ public class Lgac {
     @Override
     public String toString() {
         return nombreLgac;
-    }
-    
-    
+    } 
     
 }

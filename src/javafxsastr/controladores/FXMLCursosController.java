@@ -132,7 +132,7 @@ public class FXMLCursosController implements Initializable {
                        return false;
                     });
                     SortedList<Curso> sortedListCursos = new SortedList<>(filtroCursos,
-                     Comparator.comparing(Curso::getNombreCurso));
+                        Comparator.comparing(Curso::getNombreCurso));
                     mostrarCursos(sortedListCursos);
                 }
             });

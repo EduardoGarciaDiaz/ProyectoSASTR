@@ -162,7 +162,8 @@ public class FXMLInicioController implements Initializable, INotificacionClicBot
         try {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLFormularioAnteproyecto.fxml"));
             Parent vista = accesoControlador.load();
-            FXMLFormularioAnteproyectoController controladorVistaCrearAnteproyecto = accesoControlador.getController();            controladorVistaCrearAnteproyecto.setAcademico(academico);
+            FXMLFormularioAnteproyectoController controladorVistaCrearAnteproyecto = accesoControlador.getController();
+            controladorVistaCrearAnteproyecto.setAcademico(academico);
             controladorVistaCrearAnteproyecto.inicializarInformacionFormulario(null,false);
             Stage escenario = (Stage) menuContraido.getScene().getWindow();
             escenario.setScene(new Scene(vista));
