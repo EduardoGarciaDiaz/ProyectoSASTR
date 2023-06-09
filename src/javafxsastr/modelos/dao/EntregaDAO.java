@@ -19,8 +19,8 @@ public class EntregaDAO {
     
     private static final String OBTENER_ENTREGAS = "Select idEntrega, comentarioAlumno, fechaEntrega, horaEntrega, comentariosDirector, " +
                                               "fechaRevision, horaRevision, idActividad, idAcademico form entregas";
-    private static final String OBTENER_ENTREGAS_UNICAS = "Select comentarioAlumno, fechaEntrega, horaEntrega, comentariosDirector "+
-                                              "fechaRevision, horaRevision, idActividad from entregas where idEntrega = ?";
+    private static final String OBTENER_ENTREGAS_UNICAS = "Select comentarioAlumno, fechaEntrega, horaEntrega, comentariosDirector, " +
+                                              "fechaRevision, horaRevision, idActividad, idAcademico from entregas where idEntrega = ?";
     private static final String GUARDAR_ENTREGA = "Insert into entregas(comentarioAlumno, fechaEntrega, horaEntrega, comentariosDirector, "+
                                               "fechaRevision, horaRevision, idActividad, idAcademico) Values (?,?,?,?,?,?,?,?)";
     private static final String ACTUALIZAR_ENTREGA = "Update entregas set comentarioAlumno = ?, fechaEntrega = ?, horaEntrega = ?, "+
@@ -71,7 +71,7 @@ public class EntregaDAO {
                 entregaConsultada.setComentarioAlumno(resultadoConsultaEntregaUnica.getString("comentarioAlumno"));
                 entregaConsultada.setFechaEntrega(resultadoConsultaEntregaUnica.getString("fechaEntrega"));
                 entregaConsultada.setHoraEntrega(resultadoConsultaEntregaUnica.getString("horaEntrega"));
-                entregaConsultada.setComentarioDirector(resultadoConsultaEntregaUnica.getString("comentarioDirector"));
+                entregaConsultada.setComentarioDirector(resultadoConsultaEntregaUnica.getString("comentariosDirector"));
                 entregaConsultada.setFechaRevision(resultadoConsultaEntregaUnica.getString("fechaRevision"));
                 entregaConsultada.setHoraRevision(resultadoConsultaEntregaUnica.getString("horaEntrega"));
                 entregaConsultada.setIdActividad(resultadoConsultaEntregaUnica.getInt("idActividad"));

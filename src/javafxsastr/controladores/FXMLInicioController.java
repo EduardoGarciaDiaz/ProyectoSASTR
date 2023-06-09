@@ -76,12 +76,12 @@ public class FXMLInicioController implements Initializable, INotificacionClicBot
         try {
             this.usuario = usuario;
             Academico academico = new AcademicoDAO().obtenerAcademicoPorIdUsuario(usuario.getIdUsuario());
-            if (academico.getIdAcademico() != -1) {
+            if (academico.getIdAcademico() > 0) {
                 this.academico = academico;
                 prepararVistaParaAcademico(this.academico);
             }
             Estudiante estudiante = new EstudianteDAO().obtenerEstudiantePorIdUsuario(usuario.getIdUsuario());
-            if (estudiante.getIdEstudiante() != -1) {
+            if (estudiante.getIdEstudiante() > 0) {
                 this.estudiante = estudiante;
                 crearVistaEstudiante();
             }
@@ -95,8 +95,10 @@ public class FXMLInicioController implements Initializable, INotificacionClicBot
                 ConstructorInicio.crearPantallaInicio(this)
                         .cargarBotonIconoGestionUsuarios(vbxMenuContraido)
                         .cargarBotonIconoGestionCA(vbxMenuContraido)
+                        .cargarBotonIconoGestionCursos(vbxMenuContraido)
                         .cargarBotonTextoGestionUsuarios(vbxMenuDesplegado)
-                        .cargarBotonTextoGestionCA(vbxMenuDesplegado);
+                        .cargarBotonTextoGestionCA(vbxMenuDesplegado)
+                        .cargarBotonTextoGestionCursos(vbxMenuDesplegado);
             }
         } catch (DAOException ex) {
             ex.printStackTrace();
@@ -234,6 +236,22 @@ public class FXMLInicioController implements Initializable, INotificacionClicBot
 
     private void irAVistaCursos() {
         try {
+            //TODO Cambiar la pantalla a la que redirige
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLCursos.fxml"));
+            Parent vista = accesoControlador.load();
+            FXMLCursosController controladorVistaCuesos = accesoControlador.getController();
+            controladorVistaCuesos.setUsuario(academico);
+            Stage escenario = (Stage) menuContraido.getScene().getWindow();
+            escenario.setScene(new Scene(vista));
+            escenario.setTitle("Cursos");
+            escenario.show();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    private void irAVistaGestionCursos() {
+        try {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLCursos.fxml"));
             Parent vista = accesoControlador.load();
             FXMLCursosController controladorVistaCuesos = accesoControlador.getController();
@@ -275,6 +293,11 @@ public class FXMLInicioController implements Initializable, INotificacionClicBot
     @Override
     public void notificarClicBotonCursos() {
         irAVistaCursos();
+    }
+    
+    @Override
+    public void notificarClicBotonGestionCursos() {
+        irAVistaGestionCursos();
     }
     
     private void manejarDAOException(DAOException ex) {

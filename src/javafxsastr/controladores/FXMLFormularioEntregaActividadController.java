@@ -6,7 +6,6 @@
 
 package javafxsastr.controladores;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -15,57 +14,31 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.animation.TranslateTransition;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextInputControl;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import javafx.util.Duration;
 import javafxsastr.JavaFXSASTR;
 import javafxsastr.modelos.dao.AcademicoDAO;
-import javafxsastr.modelos.dao.ActividadDAO;
 import javafxsastr.modelos.dao.AnteproyectoDAO;
-import javafxsastr.modelos.dao.ArchivoDAO;
-import javafxsastr.modelos.dao.CursoDAO;
-import javafxsastr.modelos.dao.DAOException;
-import javafxsastr.modelos.dao.EntregaDAO;
-import javafxsastr.modelos.dao.EstudianteDAO;
 import javafxsastr.modelos.pojo.Academico;
-import javafxsastr.modelos.pojo.Actividad;
 import javafxsastr.modelos.pojo.Anteproyecto;
-import javafxsastr.modelos.pojo.Archivo;
-import javafxsastr.modelos.pojo.Curso;
-import javafxsastr.modelos.pojo.Entrega;
 import javafxsastr.modelos.pojo.Estudiante;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafxsastr.modelos.dao.ActividadDAO;
 import javafxsastr.modelos.dao.ArchivoDAO;
 import javafxsastr.modelos.dao.DAOException;
 import javafxsastr.modelos.dao.EntregaDAO;
@@ -80,8 +53,6 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
     @FXML
     private Label lbNombreActividad;
     @FXML
-    private Label lbDetallesActividad;
-    @FXML
     private TextArea taComentarios;
     @FXML
     private Label lbEntrega;
@@ -94,29 +65,9 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
     @FXML
     private ImageView ivArchivo;
     @FXML
-    private Label lbCurso;
+    private Label lbErrorArchivos;
     @FXML
-    private Label lbNrc;
-    @FXML
-    private Label lbDocente;
-    @FXML
-    private Label lbPeriodo;
-    @FXML
-    private Label lbAnteproyecto;
-    @FXML
-    private Label lbDirector;
-    @FXML
-    private Label lbCodirector;
-    @FXML
-    private Label lbActRevisadas;
-    @FXML
-    private Label lbActSinPendientes;
-    @FXML
-    private Label lbActPorVencer;
-    @FXML
-    private ImageView imgBtnDesplegar;
-    @FXML
-    private Pane paneLateralDer;
+    private TextArea taDetallesActividad;
    
     private Actividad actividad;
     private Entrega entregaEdicion;
@@ -125,24 +76,15 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
     private ArrayList<File> archivosEntregaSeleccionados = new ArrayList<>();
     private Archivo archivoEntrega;
     private Usuario usuario;
-    
-    private boolean menuDatos;
-    private int porVencer;
-    private int realizadas;
-    private int revisadas;
-    private Curso curso;
+
     private Academico academico;
-    private ObservableList<Academico> codirectores;
     private Estudiante estudiante;
     private Anteproyecto anteproyecto;
     private ArrayList<Archivo> archivosEdicion = new ArrayList<>();
-    @FXML
-    private Label lbErrorArchivos;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         btnEnviar.setDisable(true);
-        obtenerDatosRelacionadoAlEstudiante();
         mostrarInformacionActividad(actividad);
         validarCamposVacios();
     }    
@@ -153,15 +95,7 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
 
     public void setActividad(Actividad actividad) {
         this.actividad = actividad;
-        try {
-            entregaEdicion = new EntregaDAO().consultarEntregaUnicaEdicion(1);//QUITAR, DEBE SETTEARSE
-
-            this.estudiante = new EstudianteDAO().obtenerEstudiante(1);
-        } catch (DAOException ex) {
-            Logger.getLogger(FXMLFormularioActividadController.class.getName()).log(Level.SEVERE, null, ex);
-        }
         btnEnviar.setDisable(true);
-        obtenerDatosRelacionadoAlEstudiante();
         mostrarInformacionActividad(actividad);
         validarCamposVacios();
     }
@@ -216,7 +150,7 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
     private void mostrarInformacionActividad(Actividad actividad) {
         if (actividad != null) {
             lbNombreActividad.setText(actividad.getNombreActividad());
-            lbDetallesActividad.setText(actividad.getDetallesActividad());
+            taDetallesActividad.setText(actividad.getDetallesActividad());
         }
     }
 
@@ -253,13 +187,14 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
     }
 
     private void validarCamposVacios() {
-        if (!taComentarios.getText().isEmpty()) {
+        if (!taComentarios.getText().trim().isEmpty()) {
             btnEnviar.setDisable(false);
         }
         taComentarios.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (!newValue.isEmpty()) {
+                if (!newValue.trim().isEmpty()) {
+                    lbCampoComentariosError.setText("");
                     btnEnviar.setDisable(false);
                 } else {
                     btnEnviar.setDisable(true);
@@ -271,6 +206,7 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
 
     private void enviarEntrega() {
         int respuesta;
+        obtenerAcademicoDelEstudiante();
         Entrega entregaNueva = new Entrega();
         String comentariosEstudiante = taComentarios.getText();
         LocalDate fechaEntrega = LocalDate.now();
@@ -289,7 +225,6 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
             }
             if (respuesta > 0) {
                 enviarArchivosEntrega(respuesta);
-                                                                    //TODO Redirigir a la pantalla que la activo
             } else {
                 Utilidades.mostrarDialogoSimple("Error al enviar la entrega",
                         "No se pudo cargar el archivo seleccionado. Inténtelo de nuevo o hágalo más tarde",
@@ -300,8 +235,18 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
         }
     }
     
+    private void obtenerAcademicoDelEstudiante() {
+        try { 
+            int idAcademico = new AnteproyectoDAO().obtenerAnteproyectosPorEstudiante(estudiante.getIdEstudiante()).getIdAcademico();
+            academico = new AcademicoDAO().obtenerAcademicoPorId(idAcademico);
+        } catch(DAOException ex) {
+            manejarDAOException(ex);
+        }
+    }
+    
     private boolean validarLongitudCampos() {
         boolean esTamañoValido = true;
+        lbErrorArchivos.setText("");
         double totalPesoArchivos = 0.0;
         String textoComentarios = taComentarios.getText();
         if (textoComentarios.length() > 1000) {
@@ -309,11 +254,15 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
             lbCampoComentariosError.setText("No puede tener más de 1000 caracteres");
         }
         for (File archivo : archivosEntregaSeleccionados) {
-            totalPesoArchivos = totalPesoArchivos + archivo.length();
+            totalPesoArchivos = totalPesoArchivos + (archivo.length() / 1024);
         }
         if (totalPesoArchivos > 16000) {
             esTamañoValido = false;
             lbErrorArchivos.setText("El límite de peso de los archivos debe ser menor a 16 MB.");
+        }
+        if (actividad == null) {
+            esTamañoValido = false;
+            System.err.println("La actividad pasada es NULA, no se puede enviar una entrega");
         }
         return esTamañoValido;
     }
@@ -361,7 +310,11 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
         if (seEnviaronTodos) {
             Utilidades.mostrarDialogoSimple("Entrega enviada", "Entrega enviada exitosamente",
                     Alert.AlertType.INFORMATION);
-            cerrarVenatana();
+            if(esEdicion) {
+                irAVistaDetallesEntrega();
+            } else {
+                irAVistaDetallesActividad();
+            }
         } else {
             Utilidades.mostrarDialogoSimple("Error en la entrega",
                     "No se pudo cargar el archivo seleccionado. Inténtelo de nuevo o hágalo más tarde",
@@ -378,85 +331,15 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
                         "No se pudo actualizar los archivos de la entrega", Alert.AlertType.ERROR);
             }
         }
-    }   
-
-    private void obtenerDatosRelacionadoAlEstudiante() {
-        AnteproyectoDAO anteproyectoDao = new AnteproyectoDAO();
-        CursoDAO cursoDao = new CursoDAO();
-        AcademicoDAO academicoDao = new AcademicoDAO();
-        ActividadDAO actividadesDao = new ActividadDAO();
-        try {
-            curso = cursoDao.ordenarCursosPorEstudiante(estudiante.getIdEstudiante());
-            System.out.println("idEstudiante"+estudiante.getIdEstudiante());
-            System.out.println("nam estud 0"+estudiante.getNombre());
-            System.out.println("curso0"+curso.getNombreCurso());
-            anteproyecto = anteproyectoDao.obtenerAnteproyectosPorEstudiante(estudiante.getIdEstudiante());
-            System.out.println("anteid"+anteproyecto.getIdAnteproyecto());
-            System.out.println("estu id"+estudiante.getIdEstudiante());
-            academico = academicoDao.obtenerAcademicoPorId(curso.getIdAcademico());
-            codirectores = FXCollections.observableArrayList(
-                    new AcademicoDAO().obtenerCodirectoresProAnteproyecto(anteproyecto.getIdAnteproyecto()));
-            int totalActividades = actividadesDao.obtenerNumeroActividadesPorEstudiante(estudiante.getIdEstudiante());
-            porVencer = actividadesDao.totalActividades(1, estudiante.getIdEstudiante());
-            realizadas = actividadesDao.totalActividades(4, estudiante.getIdEstudiante());
-            revisadas = actividadesDao.totalActividades(3, estudiante.getIdEstudiante());
-        } catch (DAOException ex) {
-            ex.printStackTrace();
-        }
-        setInformacion();
-    }
-
-    private void setInformacion() {
-        if (curso != null) {
-            lbCurso.setText(curso.getNombreCurso());
-            lbNrc.setText(curso.getNrcCurso());
-            lbPeriodo.setText(curso.getFechaInicioCurso() + "-" + curso.getFinPeriodoEscolar());
-        }
-        if (academico != null) {
-            lbDocente.setText(academico.getNombre() + " " + academico.getPrimerApellido() + " " +academico.getSegundoApellido());
-        }
-        if (anteproyecto != null) {
-            lbAnteproyecto.setText(anteproyecto.getNombreTrabajoRecepcional());
-            lbDirector.setText(anteproyecto.getNombreDirector());
-        }
-        String codirectoresNombre = "";
-        if (!codirectores.isEmpty()) {
-            for (int i = 0; i < codirectores.size(); i++) {
-                codirectoresNombre = codirectoresNombre + codirectores.get(i).getNombre() + " "
-                        + codirectores.get(i).getPrimerApellido() + "\n";
-            }
-        }
-        lbCodirector.setText(codirectoresNombre);
-        lbActSinPendientes.setText(porVencer + " Actividades sin realizar");
-        lbActRevisadas.setText(realizadas + " Actividades realizadas");
-        lbActPorVencer.setText(revisadas + " Activdades revisadas");
-    }
-    
-     private void actualizaEstadoMenu(int posicion, boolean abierto, String icono) {
-        animacionMenu(posicion);
-        menuDatos = abierto;
-        imgBtnDesplegar.setImage(new Image(JavaFXSASTR.class.getResource(icono).toString()));
-    }
-
-    private void animacionMenu(int posicion) {
-        TranslateTransition translate = new TranslateTransition();
-        translate.setNode(paneLateralDer);
-        translate.setDuration(Duration.millis(300));
-        translate.setByX(posicion);
-        translate.setAutoReverse(true);
-        translate.play();
-    }
-
-    private void cerrarVenatana() {
-        Stage escenerioBase = (Stage) lbNombreActividad.getScene().getWindow();
-        escenerioBase.close();
     }
     
     @FXML
     private void clicRegresar(MouseEvent event) {
-        //TODO Redirigir a la pantalla que la activo
-        Stage escenerioBase = (Stage) lbNombreActividad.getScene().getWindow();
-        escenerioBase.close();
+        if(esEdicion) {
+            irAVistaDetallesEntrega();
+        } else {
+            irAVistaDetallesActividad();
+        }
     }
 
     @FXML
@@ -484,18 +367,11 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
         boolean cancelarRegistro = Utilidades.mostrarDialogoConfirmacion("Cancelar entrega de actividad",
                 "¿Estás seguro de que deseas cancelar la entrega?");
         if (cancelarRegistro) {
-            cerrarVenatana();     
-                //TODO REDIRIGIR A PANTALLA ANTERIOR
-        }
-    }
-
-    @FXML
-    private void clicEscoderPanleIzquierdo(MouseEvent event) {
-        if(menuDatos) {
-            actualizaEstadoMenu(-433, false, "recursos/hide.jpg");            
-        }
-        else{
-            actualizaEstadoMenu(433, true, "recursos/show.jpg");           
+            if(esEdicion) {
+                irAVistaDetallesEntrega();
+            } else {
+                irAVistaDetallesActividad();
+            }
         }
     }
     
@@ -511,6 +387,27 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
             default:
                 throw new AssertionError();
         }
+    }
+    
+    private void irAVistaDetallesActividad() {
+        try {
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLDetallesActividad.fxml"));
+            Parent vista = accesoControlador.load();
+            FXMLDetallesActividadController controladorVistaDetallesActividad = accesoControlador.getController();     
+            controladorVistaDetallesActividad.setEstudiante(estudiante);
+            controladorVistaDetallesActividad.setActividad(actividad);
+            Stage escenario = (Stage) lbEntrega.getScene().getWindow();
+            escenario.setScene(new Scene(vista));
+            escenario.setTitle("Detalles de Actividad");
+            escenario.show();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void irAVistaDetallesEntrega() {
+        //TODO
+        System.out.println("Ir a Vista Detalles de la entrega (ventana del estudiante)");
     }
 
 }

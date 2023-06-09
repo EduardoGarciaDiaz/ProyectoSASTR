@@ -70,6 +70,19 @@ public class ConstructorInicio {
         return constructor;
     }
     
+    public ConstructorInicio cargarBotonIconoGestionCursos(VBox vbxMenuContraido) {
+        Image img = new Image("file:src/javafxsastr/recursos/iconos/gestion-cursos.png");
+        ImageView imvCurso = new ImageView(img);
+        imvCurso.setFitHeight(38);
+        imvCurso.setFitWidth(38);
+        imvCurso.setLayoutX(30);
+        vbxMenuContraido.getChildren().add(imvCurso);
+        imvCurso.setOnMouseClicked((event) -> {
+            interfazNotificacion.notificarClicBotonGestionCursos();
+        });
+        return constructor;
+    }
+    
     public ConstructorInicio cargarBotonIconoAnteproyecto(VBox vbxMenuContraido) {
         Image img = new Image("file:src/javafxsastr/recursos/iconos/anteproyecto.png");
         ImageView imvAnteproyecto = new ImageView(img);
@@ -170,7 +183,7 @@ public class ConstructorInicio {
     public ConstructorInicio cargarBotonTextoCursos(VBox vbxMenuDesplegado) {
         Pane btnCursos = new Pane();
         btnCursos.setPrefSize(300, 38);
-        Label lbCursos = new Label("Cursos");
+        Label lbCursos = new Label("Mis Cursos");
         lbCursos.setStyle("-fx-text-fill: white; -fx-font-size: 24");
         lbCursos.setLayoutX(75);
         lbCursos.setLayoutY(7);
@@ -178,6 +191,21 @@ public class ConstructorInicio {
         vbxMenuDesplegado.getChildren().add(btnCursos);
         btnCursos.setOnMouseClicked((event) -> {
             interfazNotificacion.notificarClicBotonCursos();
+        });
+        return constructor;
+    }
+    
+    public ConstructorInicio cargarBotonTextoGestionCursos(VBox vbxMenuDesplegado) {
+        Pane btnCursos = new Pane();
+        btnCursos.setPrefSize(300, 38);
+        Label lbCursos = new Label("Gestión de Cursos");
+        lbCursos.setStyle("-fx-text-fill: white; -fx-font-size: 24");
+        lbCursos.setLayoutX(75);
+        lbCursos.setLayoutY(7);
+        btnCursos.getChildren().add(lbCursos);
+        vbxMenuDesplegado.getChildren().add(btnCursos);
+        btnCursos.setOnMouseClicked((event) -> {
+            interfazNotificacion.notificarClicBotonGestionCursos();
         });
         return constructor;
     }
@@ -200,7 +228,7 @@ public class ConstructorInicio {
     public ConstructorInicio cargarBotonTextoGestionUsuarios(VBox vbxMenuDesplegado) {
         Pane btnGestionUsuarios = new Pane();
         btnGestionUsuarios.setPrefSize(300, 38);
-        Label lbGestionUsuarios = new Label("Gestion de usuarios");
+        Label lbGestionUsuarios = new Label("Gestión de usuarios");
         lbGestionUsuarios.setStyle("-fx-text-fill: white; -fx-font-size: 24");
         lbGestionUsuarios.setLayoutX(75);
         lbGestionUsuarios.setLayoutY(7);
@@ -215,7 +243,7 @@ public class ConstructorInicio {
     public ConstructorInicio cargarBotonTextoGestionCA(VBox vbxMenuDesplegado) {
         Pane btnGestionCA = new Pane();
         btnGestionCA.setPrefSize(300, 38);
-        Label lbGestionCA = new Label("Gestion de CA");
+        Label lbGestionCA = new Label("Gestión de CA");
         lbGestionCA.setStyle("-fx-text-fill: white; -fx-font-size: 24");
         lbGestionCA.setLayoutX(75);
         lbGestionCA.setLayoutY(7);
