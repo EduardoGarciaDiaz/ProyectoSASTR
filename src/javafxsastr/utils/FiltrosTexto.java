@@ -27,7 +27,7 @@ public class FiltrosTexto {
     private static final Pattern PATRON_SOLO_LETRA_NUMEROS_PUNTOS = Pattern.compile("^[\\p{L}0-9.\\s]*$");
     
     public static  void filtroLetrasNumeros(TextInputControl campoTexto) {              
-            UnaryOperator<TextFormatter.Change> filtroTetxtoIngresado = change -> {
+            UnaryOperator<TextFormatter.Change> filtroTextoIngresado = change -> {
                 String textoIngresado = change.getControlNewText();
                 if (PATRON_SOLO_LETRA_NUMEROS.matcher(textoIngresado).matches()) {
                     return change;
@@ -40,7 +40,7 @@ public class FiltrosTexto {
     };
     
      public static  void filtroLetrasNumerosPuntos(TextInputControl campoTexto) {              
-            UnaryOperator<TextFormatter.Change> filtroTetxtoIngresado = change -> {
+            UnaryOperator<TextFormatter.Change> filtroTextoIngresado = change -> {
                 String textoIngresado = change.getControlNewText();
                 if (PATRON_SOLO_LETRA_NUMEROS_PUNTOS.matcher(textoIngresado).matches()) {
                     return change;
