@@ -163,7 +163,7 @@ public class FXMLRevisarEntregaController implements Initializable {
         File directorioSeleccionado = directorioSeleccion.showDialog(this.txaComentariosDirector.getScene().getWindow());
         if (directorioSeleccionado != null) {
             try {
-                String rutaArchivo = directorioSeleccionado.getAbsolutePath()+"/"+archivo.getNombreArchivo();
+                String rutaArchivo = directorioSeleccionado.getAbsolutePath() + "/" + archivo.getNombreArchivo();
                 FileOutputStream fos = new FileOutputStream(rutaArchivo);
                 fos.write(archivo.getArchivo());
                 fos.close();

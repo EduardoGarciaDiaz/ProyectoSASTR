@@ -63,8 +63,7 @@ public class FXMLDetallesActividadController implements Initializable {
     private Estudiante estudiante;
     private Actividad actividad;
     private ObservableList<Entrega> entregas;
-    private Entrega entrega;
-    private final DateTimeFormatter FORMATO_FECHA_COMPLETA = DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy",
+    private final DateTimeFormatter FORMATO_FECHA_COMPLETA = DateTimeFormatter.ofPattern("EEEE ',' dd 'de' MMMM 'de' yyyy",
         new Locale("es"));
     private final DateTimeFormatter FORMATO_HORA = DateTimeFormatter.ofPattern("HH:mm a");
     
@@ -119,7 +118,7 @@ public class FXMLDetallesActividadController implements Initializable {
             if (actividad != null) {
                 entregas  = FXCollections.observableArrayList(new EntregaDAO().consultarEntregasPorActividad(actividad.getIdActividad()));
                 lbNumeroEntregas.setText(entregas.size() + " Entregas enviadas");
-                mostrarEntregas(entregas, false);
+                mostrarEntregas(entregas);
             } else {
                  System.err.println("La actividad que se recibió viene NULA");
             }
@@ -128,31 +127,22 @@ public class FXMLDetallesActividadController implements Initializable {
         }
     }
     
-    private void mostrarEntregas(ObservableList<Entrega> entregas, boolean esOrdenInverso) {
-        int numeroEntregaInverso = entregas.size();
-        int numeroEntrega;
+    private void mostrarEntregas(ObservableList<Entrega> entregas) {
+        vbxEntregas.getChildren().clear();
         for (int i = 0; i < entregas.size(); i++) {
-            if (esOrdenInverso) {
-                numeroEntrega = numeroEntregaInverso;
-                numeroEntregaInverso --;
-            } else {
-                numeroEntrega = i + 1;
-            }
-            entrega = entregas.get(i);
+            int numeroEntrega = i + 1;
+            Entrega entrega = entregas.get(i);
             TarjetaEntregas tarjetaEntrega = new TarjetaEntregas(entrega, numeroEntrega);
             vbxEntregas.getChildren().add(tarjetaEntrega);
-            Button btnVerDetalles = tarjetaEntrega.getBotonVerDetalles();
-            btnVerDetalles.setOnAction((event) -> {
-                    //TODO Establecer la escena a la que se dirigirá al darle clic
-                irAVistaDetallesEntrega();
-                System.out.println("Ver detalles clicked...");
+            tarjetaEntrega.getBotonVerDetalles().setOnAction((event) -> {
+                irAVistaDetallesEntrega(entrega, numeroEntrega);
             });
         }
     }
 
     @FXML
     private void clicRegresar(MouseEvent event) {
-            //TODO Redirigir a la pantalla que la activo
+            //TODO Redirigir a la pantalla que la activó
         Stage escenerioBase = (Stage) lbNombreActividad.getScene().getWindow();
         escenerioBase.close();
     }
@@ -179,9 +169,22 @@ public class FXMLDetallesActividadController implements Initializable {
         }
     }
     
-    private void irAVistaDetallesEntrega() {
-        //TODO
-        System.out.println("Ir a Vista Detalles de la entrega (ventana del estudiante)");
+    private void irAVistaDetallesEntrega(Entrega entrega, int numeroEntrega) {
+        try {
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLDetallesEntrega.fxml"));
+            Parent vista = accesoControlador.load();
+            FXMLDetallesEntregaController controladorVistaDetallesEntrega = accesoControlador.getController();    
+            controladorVistaDetallesEntrega.setEstudiante(estudiante);
+            controladorVistaDetallesEntrega.setEntrega(entrega, numeroEntrega);
+            controladorVistaDetallesEntrega.setActividad(actividad);
+            Stage escenario = (Stage) lbEntrega.getScene().getWindow();
+            escenario.setScene(new Scene(vista));
+            escenario.setTitle("Entregas de Actividad");
+            escenario.show();
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
     }
     
     private void manejarDAOException(DAOException ex) {
