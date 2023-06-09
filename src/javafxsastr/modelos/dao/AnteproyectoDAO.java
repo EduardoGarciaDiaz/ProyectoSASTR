@@ -108,12 +108,12 @@ public class AnteproyectoDAO {
             "ON LA.idLgac = LG.idLgac;";
     private final String OBTENER_ANTEPROYECTO_POR_ID = OBTENER_ANTEPROYECTOS + " WHERE A.idAnteproyecto = ?";
     private final String ELIMINAR_ANTEPROYECTO = "DELETE FROM sastr.anteproyectos WHERE idAnteproyecto = ?";
-    private final String ACTUALIZAR_ANTEPROYECTO = "UPDATE anteproyectos SET"
+    private final String ACTUALIZAR_ANTEPROYECTO = "UPDATE anteproyectos SET "
             + "fechaCreacionAnteproyecto = ?, nombreProyectoInvestigacion = ?, ciudadCreacionAnteproyecto = ?, "
             + "lineaInvestigacion = ?, duracionAproximadaAnteproyecto = ?, nombreTrabajoRecepcional = ?, "
             + "requisitosAnteproyecto = ?, alumnosParticipantesAnteproyecto = ?, descripcionProyectoInvestigacion = ?,"
             + "descripcionTrabajoRecepcional = ?, resultadosEsperadosAnteproyecto = ?, bibliografiasRecomendadasAnteproyecto = ?,"
-            + "notasExtraAnteproyecto = ?, idAcademico = ?, idEstadoSeguimiento = ?, idCuerpoAcademico = ?, idModalidad = ?"
+            + "notasExtraAnteproyecto = ?, idAcademico = ?, idEstadoSeguimiento = ?, idCuerpoAcademico = ?, idModalidad = ? "
             + "WHERE idAnteproyecto = ?";
     private final String GUARDAR_ANTEPROYECTO = "insert into anteproyectos (fechaCreacionAnteproyecto, nombreProyectoInvestigacion, "
             + "ciudadCreacionAnteproyecto, lineaInvestigacion, duracionAproximadaAnteproyecto, nombreTrabajoRecepcional, "
@@ -127,8 +127,10 @@ public class AnteproyectoDAO {
             + "(`idAnteproyecto`, `idAcademico`) VALUES (?, ?);";
     private final String GUARDAR_LGAC_ANTEPROYECTO = "INSERT INTO `sastr`.`lgacs_anteproyectos` "
             + "(`idLgac`, `idAnteproyecto`) VALUES (?, ?);";
-    private final String ELIMINAR_LGACS_DE_ANTEPROYECTO = "DELETE FROM `sastr`.`lgacs_anteproyectos` WHERE (`idAnteproyecto` = '?');";
-    private final String ELIMINAR_CODIRECTORES_DE_ANTEPROYECTO = "DELETE FROM `sastr`.`codirectores_anteproyectos` WHERE (`idAnteproyecto` = '?');";
+    private final String ELIMINAR_LGACS_DE_ANTEPROYECTO 
+            = "DELETE FROM `sastr`.`lgacs_anteproyectos` WHERE (`idAnteproyecto` = ?);";
+    private final String ELIMINAR_CODIRECTORES_DE_ANTEPROYECTO 
+            = "DELETE FROM `sastr`.`codirectores_anteproyectos` WHERE (`idAnteproyecto` = ?);";
     private final String OBTENER_ANTEPROYECTOS_POR_ESTUDIANTE = OBTENER_ANTEPROYECTOS
             + " inner join sastr.estudiantes ASE\n" +
             "on A.idAnteproyecto = ASE.idAnteproyecto\n" +
@@ -399,13 +401,22 @@ public class AnteproyectoDAO {
             sentencia.setString(13, anteproyecto.getNotasExtras());
             sentencia.setInt(14, anteproyecto.getIdAcademico());
             sentencia.setInt(15, anteproyecto.getIdEstadoSeguimiento());
-            sentencia.setInt(16, anteproyecto.getIdCuerpoAcademico());
-            sentencia.setInt(17, anteproyecto.getIdModalidad());
+            if (anteproyecto.getIdCuerpoAcademico() > 0) {
+                sentencia.setInt(16, anteproyecto.getIdCuerpoAcademico());
+            } else {
+                sentencia.setNull(16, Types.INTEGER);
+            }
+            if (anteproyecto.getIdModalidad() > 0) {
+                sentencia.setInt(17, anteproyecto.getIdModalidad());
+            } else {
+                sentencia.setNull(17, Types.INTEGER);
+            }
             sentencia.setInt(18, anteproyecto.getIdAnteproyecto());
             int filasAfectadas = sentencia.executeUpdate();
             respuesta = (filasAfectadas == 1) ? anteproyecto.getIdAnteproyecto() : -1;
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
+            ex.printStackTrace();
             throw new DAOException("Error de consulta", Codigos.ERROR_CONSULTA);
         }
         return respuesta;
@@ -420,7 +431,7 @@ public class AnteproyectoDAO {
             respuesta = (filasAfectadas == 1) ? idAnteproyecto : -1;
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-
+            ex.printStackTrace();
         }
         return respuesta;
     }

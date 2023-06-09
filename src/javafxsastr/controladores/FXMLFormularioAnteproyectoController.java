@@ -35,8 +35,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -60,11 +58,11 @@ import javafxsastr.modelos.pojo.Modalidad;
 import javafxsastr.modelos.pojo.RevisionAnteproyecto;
 import javafxsastr.modelos.pojo.Rubrica;
 import javafxsastr.utils.CampoDeBusqueda;
+import javafxsastr.utils.FiltrosTexto;
 import javafxsastr.utils.Utilidades;
 
 public class FXMLFormularioAnteproyectoController implements Initializable {
 
-    Academico academico = null;
     @FXML
     private Label lbMesCreacion;
     @FXML
@@ -105,25 +103,16 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
     private TextArea tfBibliografia;
     @FXML
     private Button btnEnviar;
-    private ObservableList<CuerpoAcademico> cuerposAcademicos;
-    private CuerpoAcademico cuerpoSeleccionado;
     @FXML
     private ListView<CuerpoAcademico> lvCuerposAcademicosBusqueda;
-    private ObservableList<Academico> codirectores;
-    private ObservableList<Modalidad> modalidades;
     @FXML
     private ListView<Academico> lvCodirectores;
-    private ObservableList<Lgac> lgacs = FXCollections.observableArrayList();
     @FXML
     private VBox vbxContenedorLgac;
     @FXML
     private ComboBox<Lgac> cmbxLgacs;
-    private ObservableList<Lgac> lgacsSeleccionadas = FXCollections.observableArrayList();
-    private ObservableList<Academico> codirectoresSeleccionado = FXCollections.observableArrayList();
     @FXML
     private VBox vbxContenedorDirectores;
-    private boolean esCorreccion;
-    private Anteproyecto anteproyectoCorrecion;
     @FXML
     private Label lbAdvertenciaCuerpoAcademico;
     @FXML
@@ -142,8 +131,6 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
     private Label lbTituloVentana;
     @FXML
     private Pane contenedorNotasPorDefecto;
-    @FXML
-    private Pane contenedorNotasExtra;
     @FXML
     private Pane contenedorRubrica;
     @FXML
@@ -164,42 +151,61 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
     private Pane contenedorComentariosProfesor;
     @FXML
     private TextArea txaComentariosProfesor;
-    private final String MESES[] = 
-        {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre",
-        "Diciembre"};
     @FXML
     private Label lbAdvertenciaCiudad;
     @FXML
     private Pane btnEliminar;
+    @FXML
+    private Label lbAdventenciaLineaInvestigacion;
+    @FXML
+    private Label lbAdvertenciaNombreProyecto;
+    @FXML
+    private Label lbAdvertenciaDescripcionProyecto;
+    @FXML
+    private Label lbAdvertenciaNotasExtra;
+    
+    private final String MESES[] = 
+        {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre",
+        "Diciembre"};
+    private Academico academico = null; 
+    private boolean esEdicion;
+    private Anteproyecto anteproyectoCorrecion;
+    private ObservableList<Lgac> lgacsSeleccionadas = FXCollections.observableArrayList();
+    private ObservableList<Academico> codirectoresSeleccionado = FXCollections.observableArrayList();
+    private ObservableList<Lgac> lgacs = FXCollections.observableArrayList();
+    private ObservableList<Academico> codirectores;
+    private ObservableList<Modalidad> modalidades;
+    private ObservableList<CuerpoAcademico> cuerposAcademicos;
+    private CuerpoAcademico cuerpoSeleccionado;
     
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        agregarListenersACamposObligatorios();
+        agregarListenersACampos();
+        agregarFiltros();
         cargarModalidades();
         obtenerCuerposAcademicos();
-        obtenerCodirectores();
         configurarCampoDeBusquedaCuerposAcademicos();
-        configurarCampoDeBusquedaCodirectores();
-        cmbxNumeroAlumnos.setItems(FXCollections.observableArrayList(1, 2, 3));
+        cmbxNumeroAlumnos.setItems(
+                FXCollections.observableArrayList(Integer.valueOf(1), Integer.valueOf(2), Integer.valueOf(3))
+        );
     }
     
     public void inicializarInformacionFormulario(Anteproyecto anteproyectoCorrecion, boolean esEdicion) {
-        this.esCorreccion = esEdicion;
+        this.esEdicion = esEdicion;
         this.anteproyectoCorrecion = anteproyectoCorrecion;
         if (this.anteproyectoCorrecion == null) {
             btnEnviar.setDisable(true);
             lbTituloVentana.setText("Crear anteproyecto");
             mostrarFechaActual();
             contenedorNotasPorDefecto.setVisible(true);
-            contenedorNotasExtra.setVisible(true);
+            lbNombreDirector.setText(academico.toString());
         } else if ("Borrador".equals(this.anteproyectoCorrecion.getEstadoSeguimiento())) {
             this.anteproyectoCorrecion = anteproyectoCorrecion;
             lbTituloVentana.setText("Editar borrador de anteproyecto");
             setDatosAnteproyecto();
-            contenedorNotasExtra.setVisible(true);
             contenedorNotasPorDefecto.setVisible(true);
             btnEliminar.setVisible(true);
         } else if ("Rechazado".equals(this.anteproyectoCorrecion.getEstadoSeguimiento())) {
@@ -219,6 +225,48 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
     */
     public void setAcademico(Academico academico) {
         this.academico = academico;
+        obtenerCodirectores();
+        configurarCampoDeBusquedaCodirectores();
+    }
+    
+    private void obtenerCuerposAcademicos() {
+        try {
+            cuerposAcademicos = FXCollections.observableArrayList(
+                    new CuerpoAcademicoDAO().obtenerCuerposAcademicos()
+            );
+        } catch (DAOException ex) {
+            manejarDAOException(ex);
+        }
+    }
+    
+    private void obtenerLgacs(int idCuerpoAcademico) {
+        try {
+            lgacs = FXCollections.observableArrayList(
+                    new LgacDAO().obtenerInformacionLGACsPorCuerpoAcademico(idCuerpoAcademico)
+            );
+        } catch (DAOException ex) {
+            manejarDAOException(ex);
+        }
+    }
+    
+    private void obtenerCodirectores() {
+        try {
+            codirectores = FXCollections.observableArrayList(
+                new AcademicoDAO().obtenerAcademicos()
+            );
+        } catch (DAOException ex) {
+            manejarDAOException(ex);
+        }
+    }
+    
+    private void obtenerModalidades() {
+        try {
+            modalidades = FXCollections.observableArrayList(
+                    new ModalidadDAO().obtenerModalidades()
+            );
+        } catch (DAOException ex) {
+            manejarDAOException(ex);
+        }
     }
     
     private void setDatosRevision() {
@@ -253,6 +301,7 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
             cargarCuerpoAcademicoBorradorDeAnteproyecto(anteproyectoCorrecion.getIdCuerpoAcademico());
         }
         cargarLgacsBorradorDeAnteproyecto();
+        cargarCodirectoresBorradorDeAnteproyecto();
         if (anteproyectoCorrecion.getNombreProyectoInvestigacion()!= null) {
             txaNombreProyectoInvestigacion.setText(anteproyectoCorrecion.getNombreProyectoInvestigacion());
         }
@@ -272,7 +321,11 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
             cargarModalidadBorradorDeAnteproyecto(anteproyectoCorrecion.getIdModalidad());
         }
         if (anteproyectoCorrecion.getNumeroMaximoAlumnosParticipantes()> 0) {
-            cmbxNumeroAlumnos.getSelectionModel().select(anteproyectoCorrecion.getNumeroMaximoAlumnosParticipantes());
+            cmbxNumeroAlumnos.getSelectionModel().select
+                (Integer.valueOf(anteproyectoCorrecion.getNumeroMaximoAlumnosParticipantes()));
+        }
+        if (anteproyectoCorrecion.getNombreDirector() != null) {
+            lbNombreDirector.setText(anteproyectoCorrecion.getNombreDirector());
         }
         if (anteproyectoCorrecion.getDescripcionProyectoInvestigacion() != null) {
             txaDescripcionProyectoInvestigacion.setText(anteproyectoCorrecion.getDescripcionProyectoInvestigacion());
@@ -292,34 +345,20 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
     }
     
     private void cargarLgacsBorradorDeAnteproyecto() {
-        try {
-            if (cuerpoSeleccionado != null) {
-                obtenerLgacs(cuerpoSeleccionado.getIdCuerpoAcademico());
-            }
-            ArrayList<Lgac> lgacs = 
-                    new LgacDAO().obtenerInformacionLGACsPorAnteproyecto(anteproyectoCorrecion.getIdAnteproyecto());
-            lgacsSeleccionadas.addAll(lgacs);
+        if (cuerpoSeleccionado != null) {
+            obtenerLgacs(cuerpoSeleccionado.getIdCuerpoAcademico());
+            llenarLgacsSeleccionadas();
             for (Lgac lgacsSeleccionada : lgacsSeleccionadas) {
                 configurarComponenteLgacSeleccionada(lgacsSeleccionada);
-            }
-            FilteredList<Lgac> filtro = configurarFiltroLgac();
-            System.out.println(filtro);
-            cmbxLgacs.setItems(filtro);
-        } catch (DAOException ex) {
-            manejarDAOException(ex);
+            }   
+            configurarFiltroLgac();
         }
     }
     
     private void cargarCodirectoresBorradorDeAnteproyecto() {
-        try {
-            ArrayList<Academico> codirectores = 
-                    new AcademicoDAO().obtenerCodirectores(anteproyectoCorrecion.getIdAnteproyecto());
-            codirectoresSeleccionado.addAll(codirectores);
-            for (Academico academico : codirectoresSeleccionado) {
-                configurarComponenteCodirectorSeleccionado(academico);
-            }
-        } catch (DAOException ex) {
-            manejarDAOException(ex);
+        llenarCodirectoresSeleccionados();
+        for (Academico academico : codirectoresSeleccionado) {
+            configurarComponenteCodirectorSeleccionado(academico);
         }
     }
     
@@ -343,16 +382,6 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
             }
         }
     }
-    
-    private void agregarListenersACamposObligatorios() {
-        agregarListenerValidadorCampoVacio(tfCiudad, lbAdvertenciaCiudad);
-        agregarListenerValidadorCampoVacio(tfNombreTrabajoRecepcional, lbAdvertenciaNombreTR);
-        agregarListenerValidadorCampoVacio(tfDuracionAproximada, lbAdvertenciaDuracionAproximada);
-        agregarListenerValidadorCampoVacio(tfRequisitos, lbAdvertenciaRequisitos);
-        agregarListenerValidadorCampoVacio(txaDescripcionTrabajoRecepcional, lbAdvertenciaDescripcionTR);
-        agregarListenerValidadorCampoVacio(txaResultados, lbAdvertenciaResultados);
-        agregarListenerValidadorCampoVacio(tfBibliografia, lbAdvertenciaBibliografia);
-    }
 
     private void cargarModalidades(){
         obtenerModalidades();
@@ -361,7 +390,7 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
     
     private void cargarLgacs(int idCuerpoAcademico){
         obtenerLgacs(idCuerpoAcademico);
-        if (esCorreccion) {
+        if (esEdicion) {
             configurarFiltroLgac();
         } else {
             cmbxLgacs.setItems(lgacs);
@@ -369,34 +398,35 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
         }
     }
 
-    @FXML
-    private void clicBtnGuardarBorrador(ActionEvent event) {
-        Anteproyecto anteproyecto = prepararAnteproyecto("Borrador");
-        if (esCorreccion) {
-            anteproyecto.setIdAnteproyecto(anteproyectoCorrecion.getIdAnteproyecto());
-            actualizarAnteproyecto(anteproyecto);
-        } else {
-            guardarAnteproyecto(anteproyecto);
-        }
-        Utilidades.mostrarDialogoSimple("Borrador guardado",
-                        "Borrador guardado correctamente.", Alert.AlertType.INFORMATION);
-        cerrarVentana();
-    }
-
-    @FXML
-    private void clicBtnEnviarAnteproyecto(ActionEvent event) {
-        boolean camposLlenos = validarCamposObligatoriosLLenos();
-        if (camposLlenos == true) {
-            Anteproyecto anteproyecto = prepararAnteproyecto("Sin revisar");
-            if (esCorreccion) {
-                anteproyecto.setIdAnteproyecto(anteproyectoCorrecion.getIdAnteproyecto());
-                actualizarAnteproyecto(anteproyecto);
-            } else {
-                guardarAnteproyecto(anteproyecto);
-                Utilidades.mostrarDialogoSimple("Anteproyecto enviado",
-                        "Anteproyecto enviado para su aprobación correctamente.", Alert.AlertType.INFORMATION);
+    private void llenarLgacsSeleccionadas() {
+        try {
+            ArrayList<Lgac> lgacsRecuperadas =
+                    new LgacDAO().obtenerInformacionLGACsPorAnteproyecto(anteproyectoCorrecion.getIdAnteproyecto());
+            for (Lgac lgac : lgacs) {
+                for (Lgac lgacRecuperada : lgacsRecuperadas) {
+                    if (lgac.getIdLgac() == lgacRecuperada.getIdLgac()) {
+                        lgacsSeleccionadas.add(lgac);
+                    }
+                }
             }
-            cerrarVentana();
+        } catch (DAOException ex) {
+            manejarDAOException(ex);
+        }
+    }
+    
+    private void llenarCodirectoresSeleccionados() {
+        try {
+            ArrayList<Academico> codirectoresRecuperados = 
+                    new AcademicoDAO().obtenerCodirectores(anteproyectoCorrecion.getIdAnteproyecto());
+            for (Academico codirector : codirectores) {
+                for (Academico codirectoresRecuperado : codirectoresRecuperados) {
+                    if (codirector.getIdAcademico() == codirectoresRecuperado.getIdAcademico()) {
+                        codirectoresSeleccionado.add(codirector);
+                    }
+                }
+            }
+        } catch (DAOException ex) {
+            manejarDAOException(ex);
         }
     }
     
@@ -405,28 +435,30 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
     para ser usado en el guardado, actualizacion o modificacion.
     */
     private Anteproyecto prepararAnteproyecto(String estadoSeguimiento) {
-        String ciudad = tfCiudad.getText();
+        String ciudad = tfCiudad.getText().trim().replaceAll(" +", " ");
         LocalDate fecha = LocalDate.now();
         int idCuerpoAcademico = -1;
         if (cuerpoSeleccionado != null) {
             idCuerpoAcademico = cuerpoSeleccionado.getIdCuerpoAcademico();
         }
-        String nombreProyectoInvestigacion = txaNombreProyectoInvestigacion.getText();
-        String nombreTrabajoRecepcional = tfNombreTrabajoRecepcional.getText();
-        String lineaInvestigacion = tfLineaInvestigacion.getText();
-        String requisitos = tfRequisitos.getText();
-        String duracionAproximada = tfDuracionAproximada.getText();
+        String nombreProyectoInvestigacion = txaNombreProyectoInvestigacion.getText().trim().replaceAll(" +", " ");
+        String nombreTrabajoRecepcional = tfNombreTrabajoRecepcional.getText().trim().replaceAll(" +", " ");
+        String lineaInvestigacion = tfLineaInvestigacion.getText().trim().replaceAll(" +", " ");
+        String requisitos = tfRequisitos.getText().trim().replaceAll(" +", " ");
+        String duracionAproximada = tfDuracionAproximada.getText().trim().replaceAll(" +", " ");
         int idModalidad = -1;
         if (cmbxModalidadTrabajoRecepcional.getSelectionModel().getSelectedItem() != null){
             idModalidad = cmbxModalidadTrabajoRecepcional.getSelectionModel().getSelectedItem().getIdModalidad();
         }
-        int idDirector = academico.getIdAcademico();
-        int numeroAlumnosParticipantes = cmbxNumeroAlumnos.getSelectionModel().getSelectedIndex();
-        String descripcionProyectoInvestigacion = txaDescripcionProyectoInvestigacion.getText();
-        String descripcionTrabajoRecepcional = txaDescripcionTrabajoRecepcional.getText();
-        String resultados = txaResultados.getText();
-        String bibliografiaRecomendada = tfBibliografia.getText();
-        String notasExtra = txaNotasExtra.getText();
+        int numeroAlumnosParticipantes = -1;
+        if (cmbxNumeroAlumnos.getSelectionModel().getSelectedItem() != null) {
+            numeroAlumnosParticipantes = (int) cmbxNumeroAlumnos.getSelectionModel().getSelectedItem();
+        }
+        String descripcionProyectoInvestigacion = txaDescripcionProyectoInvestigacion.getText().trim().replaceAll(" +", " ");
+        String descripcionTrabajoRecepcional = txaDescripcionTrabajoRecepcional.getText().trim().replaceAll(" +", " ");
+        String resultados = txaResultados.getText().trim().replaceAll(" +", " ");
+        String bibliografiaRecomendada = tfBibliografia.getText().trim().replaceAll(" +", " ");
+        String notasExtra = txaNotasExtra.getText().trim().replaceAll(" +", " ");
         int idEstadoSeguimiento = -1;
         try {
             idEstadoSeguimiento = new EstadoSeguimientoDAO().obtenerIdEstadoSeguimiento(estadoSeguimiento);
@@ -482,9 +514,9 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
     private void eliminarAnteproyecto(int idAnteproyecto) {
         AnteproyectoDAO anteproyectoDAO = new AnteproyectoDAO();
         try {
-            int respuesta = anteproyectoDAO.eliminarAnteproyecto(idAnteproyecto);
             anteproyectoDAO.eliminarLgacsAnteproyecto(idAnteproyecto);
             anteproyectoDAO.eliminarCodirectoresAnteproyecto(idAnteproyecto);
+            int respuesta = anteproyectoDAO.eliminarAnteproyecto(idAnteproyecto);
             if (respuesta != -1) {
                 Utilidades.mostrarDialogoSimple("Borrador eliminado",
                         "El borrador del anteproyecto se ha eliminado correctamente", Alert.AlertType.INFORMATION);
@@ -518,10 +550,31 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
     
     private void mostrarFechaActual(){
         LocalDate fecha = LocalDate.now();
-        String fechaActual = fecha.getDayOfMonth() + " de " + MESES[fecha.getMonthValue()-1] + " de " + fecha.getYear();
+        String fechaActual 
+                = fecha.getDayOfMonth() + " de " + MESES[fecha.getMonthValue()-1] + " de " + fecha.getYear();
         lbFechaCreacion.setText(fechaActual);
         lbMesCreacion.setText(MESES[fecha.getMonthValue()-1]);
         lbAñoCreacion.setText(fecha.getYear() + "");
+    }
+    
+    private void agregarListenersACampos() {
+        agregarListenerValidadorCampoVacio(tfCiudad, lbAdvertenciaCiudad);
+        agregarListenerValidadorCampoVacio(tfNombreTrabajoRecepcional, lbAdvertenciaNombreTR);
+        agregarListenerValidadorCampoVacio(tfDuracionAproximada, lbAdvertenciaDuracionAproximada);
+        agregarListenerValidadorCampoVacio(tfRequisitos, lbAdvertenciaRequisitos);
+        agregarListenerValidadorCampoVacio(txaDescripcionTrabajoRecepcional, lbAdvertenciaDescripcionTR);
+        agregarListenerValidadorCampoVacio(txaResultados, lbAdvertenciaResultados);
+        agregarListenerValidadorCampoVacio(tfBibliografia, lbAdvertenciaBibliografia);
+        agregarListenerACampoNoObligatorio(txaNombreProyectoInvestigacion, lbAdvertenciaNombreTR);
+    }
+    
+    private void agregarFiltros() {
+        FiltrosTexto.filtroLetrasNumeros(tfCiudad);
+        FiltrosTexto.filtroLetrasNumerosPuntos(tfNombreTrabajoRecepcional);
+        FiltrosTexto.filtroLetrasNumerosPuntos(tfLineaInvestigacion);
+        FiltrosTexto.filtroLetrasNumerosPuntos(tfDuracionAproximada);
+        FiltrosTexto.filtroLetrasNumerosPuntos(tfCodirector);
+        FiltrosTexto.filtroLetrasNumerosPuntos(tfCuerpoAcademico);
     }
     
     /*
@@ -531,23 +584,36 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
     private void agregarListenerValidadorCampoVacio(TextInputControl campoTexto, Label lbMensajeError){
         campoTexto.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, 
                 Boolean oldValue, Boolean newValue) -> {
-            if (newValue) {
-                campoTexto.setStyle("-fx-border-color: gray");
-                lbMensajeError.setVisible(false);
-            }
             if (oldValue) {
-                if (campoTexto.getText().trim().isEmpty()) {
+                if (campoTexto.getText().isEmpty()) {
                     campoTexto.setStyle("-fx-border-color: red");
-                    lbMensajeError.setVisible(true);
+                    lbMensajeError.setText("Campo requerido");
                 }
+            } else {
+                campoTexto.setStyle("-fx-border-color: gray");
+                lbMensajeError.setText("");
+            }
+        });
+        campoTexto.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
                 if (validarCamposObligatoriosLLenos()) {
                     btnEnviar.setDisable(false);
                 } else {
                     btnEnviar.setDisable(true);
                 }
+            } else {
+                btnEnviar.setDisable(true);
             }
         });
     }
+    
+    private void agregarListenerACampoNoObligatorio(TextInputControl campoDeTexto, Label lbAdvertencia) {
+        campoDeTexto.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                lbAdvertencia.setText("");
+            }
+        });
+    }   
     
     public void configurarCampoDeBusquedaCodirectores() {
         CampoDeBusqueda<Academico> campoDeBusqueda = new CampoDeBusqueda<Academico>(tfCodirector, lvCodirectores,
@@ -556,11 +622,16 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
             public void notificarSeleccionItem(Academico itemSeleccionado) {
                 lbNombreDirector.requestFocus();
                 Academico codirectorSeleccionado = itemSeleccionado;
-                if (codirectorSeleccionado != null && !codirectoresSeleccionado.contains(codirectorSeleccionado)
-                        && codirectorSeleccionado != academico) {
+                if ((codirectorSeleccionado != null) && (!codirectoresSeleccionado.contains(codirectorSeleccionado))
+                        && (codirectorSeleccionado.getIdAcademico() != academico.getIdAcademico())) {
                     codirectoresSeleccionado.add(codirectorSeleccionado);
                     tfCodirector.setText("");
                     configurarComponenteCodirectorSeleccionado(codirectorSeleccionado);
+                    if (validarCamposObligatoriosLLenos()) {
+                        btnEnviar.setDisable(false);
+                    } else {
+                        btnEnviar.setDisable(true);
+                    }
                 } else {
                     Utilidades.mostrarDialogoSimple("Acción no permitida",
                         "El academico ya ha sido seleccionado o es usted.", Alert.AlertType.INFORMATION);
@@ -576,30 +647,34 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
     
     public void configurarCampoDeBusquedaCuerposAcademicos(){
         CampoDeBusqueda<CuerpoAcademico> campoBusquedaAcademico = new CampoDeBusqueda<CuerpoAcademico>(
-                tfCuerpoAcademico, lvCuerposAcademicosBusqueda, cuerposAcademicos, cuerpoSeleccionado,
+                tfCuerpoAcademico, 
+                lvCuerposAcademicosBusqueda, 
+                cuerposAcademicos, 
+                cuerpoSeleccionado,
                 new INotificacionSeleccionItem<CuerpoAcademico>() {
-            @Override
-            public void notificarSeleccionItem(CuerpoAcademico itemSeleccionado) {
-                lbAñoCreacion.requestFocus();
-                vbxContenedorLgac.getChildren().clear();
-                cuerpoSeleccionado = itemSeleccionado;
-                cargarLgacs(itemSeleccionado.getIdCuerpoAcademico());
-            }
+                    @Override
+                    public void notificarSeleccionItem(CuerpoAcademico itemSeleccionado) {
+                        cmbxLgacs.requestFocus();
+                        lbAdvertenciaCuerpoAcademico.setText("");
+                        vbxContenedorLgac.getChildren().clear();
+                        cuerpoSeleccionado = itemSeleccionado;
+                        cargarLgacs(itemSeleccionado.getIdCuerpoAcademico());
+                    }
 
-            @Override
-            public void notificarPerdidaDelFoco() {
-                validarCampoBusqueda(tfCuerpoAcademico, lvCuerposAcademicosBusqueda);
-            }
-            }
+                    @Override
+                    public void notificarPerdidaDelFoco() {
+                        validarCampoBusqueda(tfCuerpoAcademico, lvCuerposAcademicosBusqueda);
+                    }
+                }
         );       
     }
     
     private boolean validarCamposObligatoriosLLenos() {
         boolean respuesta = false;
         if ((!tfCiudad.getText().trim().isEmpty())
-                && cuerpoSeleccionado != null
-                && !lgacsSeleccionadas.isEmpty()
-                && !codirectoresSeleccionado.isEmpty()
+                && (cuerpoSeleccionado != null)
+                && (!lgacsSeleccionadas.isEmpty())
+                && (!codirectoresSeleccionado.isEmpty())
                 && (!tfNombreTrabajoRecepcional.getText().trim().isEmpty())
                 && (!tfDuracionAproximada.getText().trim().isEmpty())
                 && (!tfRequisitos.getText().trim().isEmpty())
@@ -613,44 +688,49 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
         return respuesta;
     }
     
-    private void obtenerCuerposAcademicos() {
-        try {
-            cuerposAcademicos = FXCollections.observableArrayList(
-                    new CuerpoAcademicoDAO().obtenerCuerposAcademicos()
-            );
-        } catch (DAOException ex) {
-            manejarDAOException(ex);
+    private boolean validarLongitudesTexto() {
+        boolean longitudValida = true;
+        if (txaNombreProyectoInvestigacion.getText().length() > 200) {
+            longitudValida = false;
+            lbAdvertenciaNombreProyecto.setText("El número de carácteres no puede ser mayor a 200.");
         }
-    }
-    
-    private void obtenerCodirectores() {
-        try {
-            codirectores = FXCollections.observableArrayList(
-                    new AcademicoDAO().obtenerAcademicos()
-            );
-        } catch (DAOException ex) {
-            manejarDAOException(ex);
+        if (tfCiudad.getText().length() > 30) {
+            longitudValida = false;
+            lbAdvertenciaCiudad.setText("El número de carácteres no puede ser mayor a 30.");
         }
-    }
-    
-    private void obtenerLgacs(int idCuerpoAcademico) {
-        try {
-            lgacs = FXCollections.observableArrayList(
-                    new LgacDAO().obtenerInformacionLGACsPorCuerpoAcademico(idCuerpoAcademico)
-            );
-        } catch (DAOException ex) {
-            manejarDAOException(ex);
+        if (tfLineaInvestigacion.getText().length() > 300) {
+            longitudValida = false;
+            lbAdventenciaLineaInvestigacion.setText("El número de carácteres no puede ser mayor a 300.");
         }
-    }
-    
-    private void obtenerModalidades() {
-        try {
-            modalidades = FXCollections.observableArrayList(
-                    new ModalidadDAO().obtenerModalidades()
-            );
-        } catch (DAOException ex) {
-            manejarDAOException(ex);
+        if (tfDuracionAproximada.getText().length() > 15) {
+            longitudValida = false;
+            lbAdvertenciaDuracionAproximada.setText("El número de carácteres no puede ser mayor a 15.");
         }
+        if (tfNombreTrabajoRecepcional.getText().length() > 300) {
+            longitudValida = false;
+            lbAdvertenciaNombreTR.setText("El número de carácteres no puede ser mayor a 300.");
+        }
+        if (tfRequisitos.getText().length() > 1000) {
+            longitudValida = false;
+            lbAdvertenciaRequisitos.setText("El número de carácteres no puede ser mayor a 1000.");
+        } 
+        if (txaDescripcionProyectoInvestigacion.getText().length() > 3000) {
+            longitudValida = false;
+            lbAdvertenciaDescripcionProyecto.setText("El número de carácteres no puede ser mayor a 3000.");
+        }
+        if (txaResultados.getText().length() > 3000) {
+            longitudValida = false;
+            lbAdvertenciaResultados.setText("El número de carácteres no puede ser mayor a 3000.");
+        }
+        if (tfBibliografia.getText().length() > 3000) {
+            longitudValida = false;
+            lbAdvertenciaBibliografia.setText("El número de carácteres no puede ser mayor a 3000.");
+        }
+        if (txaNotasExtra.getText().length() > 1000) {
+            longitudValida = false;
+            lbAdvertenciaNotasExtra.setText("El número de carácteres no puede ser mayor a 1000.");
+        }
+        return longitudValida;
     }
     
     private void validarCampoBusqueda(TextField tfCampo, ListView listView) {
@@ -659,6 +739,7 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
             if (tfCampo == tfCuerpoAcademico && cmbxLgacs.getItems().size() > 0) {
                 cmbxLgacs.setItems(FXCollections.observableArrayList());
                 cmbxLgacs.setPromptText("Selecciona un cuerpo academico.");
+                lbAdvertenciaCuerpoAcademico.setText("Selecciona un cuerpo academico.");
                 vbxContenedorLgac.getChildren().removeAll(vbxContenedorLgac.getChildren());
                 cuerpoSeleccionado = null;
             }
@@ -670,6 +751,47 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
             btnEnviar.setDisable(true);
         }
     }  
+    
+    @FXML
+    private void clicBtnGuardarBorrador(ActionEvent event) {
+        if (validarLongitudesTexto()) {
+            if (tfNombreTrabajoRecepcional.getText().trim().isEmpty()) {
+                Utilidades.mostrarDialogoSimple("Acción no permitidad.", 
+                        "Para guardar un borrador debes asignar al menos un nombre al anteproyecto.",
+                        Alert.AlertType.INFORMATION);
+                tfNombreTrabajoRecepcional.requestFocus();
+            } else {
+                Anteproyecto anteproyecto = prepararAnteproyecto("Borrador");
+                if (esEdicion) {
+                    anteproyecto.setIdAnteproyecto(anteproyectoCorrecion.getIdAnteproyecto());
+                    actualizarAnteproyecto(anteproyecto);
+                } else {
+                    guardarAnteproyecto(anteproyecto);
+                }
+                Utilidades.mostrarDialogoSimple("Borrador guardado", "Borrador guardado correctamente.", 
+                    Alert.AlertType.INFORMATION);
+                irAVistaAnteproyectos(academico);
+            }
+        }
+    }
+
+    @FXML
+    private void clicBtnEnviarAnteproyecto(ActionEvent event) {
+        if (validarLongitudesTexto()) {
+            if (validarCamposObligatoriosLLenos()) {
+                Anteproyecto anteproyecto = prepararAnteproyecto("Sin revisar");
+                if (esEdicion) {
+                    anteproyecto.setIdAnteproyecto(anteproyectoCorrecion.getIdAnteproyecto());
+                    actualizarAnteproyecto(anteproyecto);
+                } else {
+                    guardarAnteproyecto(anteproyecto);
+                    Utilidades.mostrarDialogoSimple("Anteproyecto enviado",
+                        "Anteproyecto enviado para su aprobación correctamente.", Alert.AlertType.INFORMATION);
+                }
+                irAVistaAnteproyectos(academico);
+            }
+        }
+    }
 
     @FXML
     private void clicSeleccionLGAC(ActionEvent event) {
@@ -682,13 +804,28 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
         }
     }
     
+        @FXML
+    private void clicRegresar(MouseEvent event) {
+        irAVistaAnteproyectos(academico);
+    }
+
+    @FXML
+    private void clicEliminarBorrador(MouseEvent event) {
+        boolean respuesta = Utilidades.mostrarDialogoConfirmacion("Eliminar borrador de anteproyecto.",
+                "¿Estás seguro de que deseas eliminar el borrador del anteproyecto?");
+        if (respuesta == true) {
+            eliminarAnteproyecto(anteproyectoCorrecion.getIdAnteproyecto());
+            irAVistaAnteproyectos(academico);
+        }
+    }
+    
     /*
     Configura un filtro que muestra o no las lgacs
     segun hayan sido seleccionadas.
     */
     private FilteredList<Lgac> configurarFiltroLgac(){
         FilteredList<Lgac> filtradoLgacs = new FilteredList(lgacs, p -> true );
-        if (lgacs.size() > 0) {
+        if (!lgacs.isEmpty()) {
             filtradoLgacs.setPredicate(lgac -> {
                 return !lgacsSeleccionadas.contains(lgac);
             });
@@ -705,7 +842,7 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
         Label labelLgac = new Label(lgacSeleccionada.getNombreLgac());
         Button btnEliminar = new Button("X");
         clicEliminarLgacSeleccionado(btnEliminar);
-        btnEliminar.setStyle("-fx-background-color: white;");
+        btnEliminar.setStyle("-fx-background-color: white; -fx-border-radius: 15;");
         btnEliminar.setLayoutX(300);
         btnEliminar.setLayoutY(10);
         labelLgac.setLayoutX(20);
@@ -739,7 +876,7 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
         Label labelLgac = new Label(codirectorSeleccionado.toString());
         Button btnEliminar = new Button("X");
         clicEliminarCodirectorSeleccionado(btnEliminar);
-        btnEliminar.setStyle("-fx-background-color: white;");
+        btnEliminar.setStyle("-fx-background-color: white; -fx-border-radius: 15;");
         btnEliminar.setLayoutX(440);
         btnEliminar.setLayoutY(10);
         labelLgac.setLayoutX(20);
@@ -769,25 +906,6 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
         });
     }
     
-    @FXML
-    private void clicRegresar(MouseEvent event) {
-        cerrarVentana();
-    }
-
-    @FXML
-    private void clicEliminarBorrador(MouseEvent event) {
-        boolean respuesta = Utilidades.mostrarDialogoConfirmacion("Eliminar borrador de anteproyecto.",
-                "¿Estás seguro de que deseas eliminar el borrador del anteproyecto?");
-        if (respuesta == true) {
-            eliminarAnteproyecto(anteproyectoCorrecion.getIdAnteproyecto());
-            cerrarVentana();
-        }
-    }
-    
-    private void cerrarVentana() {
-        irAVistaAnteproyectos(academico);
-    }
-    
     private void irAVistaAnteproyectos(Academico academico) {
         try {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLAnteproyectos.fxml"));
@@ -802,21 +920,7 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
             ex.printStackTrace();
         }
     }
-
-    @FXML
-    private void activarBotonEnviar(KeyEvent event) {
-        if (validarCamposObligatoriosLLenos()) {
-            btnEnviar.setDisable(false);
-        }
-    }
-
-    @FXML
-    private void activaBotonEnviar(KeyEvent event) {
-        if (validarCamposObligatoriosLLenos()) {
-            btnEnviar.setDisable(false);
-        }
-    }
-    
+  
     private void manejarDAOException(DAOException ex) {
         switch (ex.getCodigo()) {
             case ERROR_CONSULTA:
