@@ -3,7 +3,7 @@
  * Fecha de creación: 03/06/2023
  * Descripción: Esta clase es un componente personalizado
  * creado a partir de Pane. Su fin es servir como contenedor dinamico
- * de informacion las entregas de una actividad.
+ * de informacion las entregas de una actividad que se le muestran al director
  */
 
 package javafxsastr.utils.cards;
@@ -18,7 +18,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafxsastr.utils.Utilidades;
 
-public class TarjetaEntregaActividad extends Pane{
+public class TarjetaEntregasActividad extends Pane{
     
     private Pane fondoImagen;
     private Button btnRevisar;
@@ -29,7 +29,7 @@ public class TarjetaEntregaActividad extends Pane{
     
     private boolean esRevisada = false;
     
-    public TarjetaEntregaActividad(int numeroEntrega, String fechaEntrega, String horaEntrega, String fechaRevision) {
+    public TarjetaEntregasActividad(int numeroEntrega, String fechaEntrega, String horaEntrega, String fechaRevision) {
         if (!fechaRevision.isEmpty()) {
             esRevisada = true;
         }
@@ -121,6 +121,7 @@ public class TarjetaEntregaActividad extends Pane{
                 + "-fx-background-radius: 15;"
                 + "-fx-background-color: #C4DAEF");
         btnRevisar.setOnAction((event) -> {
+            //TODO CAMBIAR ESCENA A LA QUE SE DIRIGE
             Stage  escenarioBase = new Stage();
             escenarioBase.setScene(Utilidades.inicializarEscena("vistas/FXMLFormularioUsuario.fxml")); //CAMBIAR A LA RUTA 
             escenarioBase.setTitle("Entrega del estudiante");

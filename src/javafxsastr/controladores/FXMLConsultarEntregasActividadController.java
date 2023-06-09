@@ -38,7 +38,7 @@ import javafxsastr.modelos.pojo.Entrega;
 import javafxsastr.modelos.pojo.HistorialCambios;
 import javafxsastr.utils.Utilidades;
 import javafxsastr.utils.cards.TarjetaCambioActividad;
-import javafxsastr.utils.cards.TarjetaEntregaActividad;
+import javafxsastr.utils.cards.TarjetaEntregasActividad;
 
 public class FXMLConsultarEntregasActividadController implements Initializable {
 
@@ -140,7 +140,7 @@ public class FXMLConsultarEntregasActividadController implements Initializable {
             if ("null".equals(fechaRevision)) {
                 fechaRevision = "";
             }
-            vbxCardsEntregas.getChildren().add(new TarjetaEntregaActividad(numeroEntrega,fechaEntregaFormateada,
+            vbxCardsEntregas.getChildren().add(new TarjetaEntregasActividad(numeroEntrega,fechaEntregaFormateada,
                     horaEntrega,fechaRevision));
         }
     }
