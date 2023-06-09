@@ -49,45 +49,52 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
     @FXML
     private VBox vbxEstudiantesPorAgregar;
     
-    private ObservableList<Estudiante> estudinatesDisponibles = FXCollections.observableArrayList();
-    private ObservableList<Estudiante> estudinatesActuales = FXCollections.observableArrayList();
-    private ObservableList<Estudiante> estudinatesTabla = FXCollections.observableArrayList();
-    private ObservableList<Estudiante> estudinatesTablaAuxiliar ;
+    private ObservableList<Estudiante> estudiantesDisponibles;// = FXCollections.observableArrayList();
+    private ObservableList<Estudiante> estudiantesActuales;// = FXCollections.observableArrayList();
+    private ObservableList<Estudiante> estudiantesTabla;// = FXCollections.observableArrayList();
+    private ObservableList<Estudiante> estudiantesTablaAuxiliar ;
     private Estudiante estudiante = new Estudiante();
-    private int cursoActual ;
+    private Curso cursoActual ;
     private INotificacionRecargarDatos interfaz;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       BtnOtro.setDisable(true);
-       btnGuardar.setDisable(true);
-       recuperarEstudinates();
-       iniciarListener();
+       //BtnOtro.setDisable(true);
+       //btnGuardar.setDisable(true);
+       //recuperarEstudinates();
+       //iniciarListener();
     }    
     
-    public void quitarEstudianste(int idEstudinate) {
-         System.err.println("tabla usuarios al querer eliminar: "+estudinatesTablaAuxiliar.size());
-        for (Estudiante estudianteEliminar : estudinatesTablaAuxiliar) {
-            System.err.println(estudianteEliminar +" =="+idEstudinate);
-            if(estudianteEliminar.getIdEstudiante() == idEstudinate) {
+    public void quitarEstudiante(int idEstudiante) {
+         System.err.println("tabla usuarios al querer eliminar: " + estudiantesTablaAuxiliar.size());
+        for (Estudiante estudianteEliminar : estudiantesTablaAuxiliar) {
+            System.err.println(estudianteEliminar +" =="+idEstudiante);
+            if (estudianteEliminar.getIdEstudiante() == idEstudiante) {
                 System.err.println("Si es igual???????");
-                estudinatesTabla.remove(estudianteEliminar);
+                estudiantesTabla.remove(estudianteEliminar);
             }
         }
         recargarVbox();        
     }
     
-    public void iniciarEstudiantes(ObservableList<Estudiante> estudinates, int curso, INotificacionRecargarDatos interfazN) {
+    public void iniciarEstudiantes(ObservableList<Estudiante> estudiantes, Curso curso, INotificacionRecargarDatos interfazN) {
         interfaz = interfazN;
-        if(estudinates != null) {
-            estudinatesActuales.addAll(estudinates);
+        if(estudiantes != null) {
+            estudiantesActuales = FXCollections.observableArrayList((estudiantes));
+                    recuperarEstudinates();
+
+        } else {
+            System.out.println("El Observable de estudiantes viene nulo");
         }
-        cursoActual = curso;        
+        cursoActual = curso;    
+        BtnOtro.setDisable(true);
+        btnGuardar.setDisable(true);
+        iniciarListener();
     }
     
     private void iniciarListener() {
         CampoDeBusqueda<Estudiante> campoDeBusqueda = new CampoDeBusqueda<>(txfAlumnoBusqueda, lsvAlumnosBuaqueda,
-            estudinatesDisponibles, estudiante, new INotificacionSeleccionItem<Estudiante>() {            
+            estudiantesDisponibles, estudiante, new INotificacionSeleccionItem<Estudiante>() {            
               @Override
             public void notificarSeleccionItem(Estudiante itemSeleccionado) {
                 estudiante = itemSeleccionado;
@@ -108,19 +115,19 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
     
     private void recuperarEstudinates() {
         try {
-            estudinatesDisponibles.addAll(new EstudianteDAO().obtenerEstudiantes());
+            estudiantesDisponibles = FXCollections.observableArrayList((new EstudianteDAO().obtenerEstudiantes()));
         } catch (DAOException ex) {
             Logger.getLogger(FXMLAsignarEstudianteCursoController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
     private boolean validarEstudianteEnCurso() {
-        for (Estudiante estudinates : estudinatesActuales) {
+        for (Estudiante estudinates : estudiantesActuales) {
             if (estudiante.getIdEstudiante() == estudinates.getIdEstudiante()) {
                 return false;
             }
         }
-        for (Estudiante estudiante1 : estudinatesTabla) {
+        for (Estudiante estudiante1 : estudiantesTabla) {
             if (estudiante.getIdEstudiante() == estudiante1.getIdEstudiante()) {
                 return false;
             }
@@ -129,14 +136,14 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
     }
     
     private void AgregarATabla() {     
-       estudinatesTabla.add(estudiante);
+       estudiantesTabla.add(estudiante);
        vbxEstudiantesPorAgregar.setSpacing(40);      
-       estudinatesTablaAuxiliar= FXCollections.observableArrayList();
-       estudinatesTablaAuxiliar.addAll(estudinatesTabla);
+       estudiantesTablaAuxiliar= FXCollections.observableArrayList();
+       estudiantesTablaAuxiliar.addAll(estudiantesTabla);
        TarjetaAgregarEstudianteCurso tarjeta = new TarjetaAgregarEstudianteCurso(estudiante);
        tarjeta.getImagen().setOnMouseClicked(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {              
-                      quitarEstudianste(tarjeta.getEstudinate().getIdEstudiante());
+                      quitarEstudiante(tarjeta.getEstudinate().getIdEstudiante());
                 }
             });
        vbxEstudiantesPorAgregar.getChildren().add(tarjeta);     
@@ -148,11 +155,11 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
     
     public void recargarVbox() {
         vbxEstudiantesPorAgregar.getChildren().clear();
-        for (Estudiante estudianteAgregar : estudinatesTabla) {
+        for (Estudiante estudianteAgregar : estudiantesTabla) {
              TarjetaAgregarEstudianteCurso tarjeta = new TarjetaAgregarEstudianteCurso(estudiante);
             tarjeta.getImagen().setOnMouseClicked(new EventHandler<MouseEvent>() {
                  public void handle(MouseEvent event) {              
-                           quitarEstudianste(tarjeta.getEstudinate().getIdEstudiante());
+                           quitarEstudiante(tarjeta.getEstudinate().getIdEstudiante());
                      }
                  });
             vbxEstudiantesPorAgregar.getChildren().add(tarjeta);     
@@ -160,10 +167,10 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
     }
     
     private void guardarEstudiantes() {
-        for (Estudiante estudinateNuevo : estudinatesTabla) {
+        for (Estudiante estudinateNuevo : estudiantesTabla) {
             try {
                 System.err.println(cursoActual);
-                int exito = new CursoDAO().guardarRelacionCursoEstudiante(cursoActual,
+                int exito = new CursoDAO().guardarRelacionCursoEstudiante(cursoActual.getIdCurso(),
                         estudinateNuevo.getIdEstudiante());
             } catch (DAOException ex) {
                 manejarDAOException(ex);

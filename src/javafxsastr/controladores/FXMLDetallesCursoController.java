@@ -8,7 +8,10 @@ package javafxsastr.controladores;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -79,7 +82,6 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
    
     @Override
     public void initialize(URL url, ResourceBundle rb) {        
-        
     }
     
     public void setUsuarioYCurso(Academico academicoN, Curso curso) {
@@ -169,7 +171,14 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
             HBox fila = new HBox();           
             fila.setSpacing(60);
             if(i==0){
-                 fila.getChildren().add(new TarjetaAgregarAlumno());
+                TarjetaAgregarAlumno tarjetaAgregarAlumno = new TarjetaAgregarAlumno();
+                fila.getChildren().add(tarjetaAgregarAlumno);
+                tarjetaAgregarAlumno.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    public void handle(MouseEvent event) {  
+                        System.out.println("Clic agregar");
+                        irVistaAgregarAlumno();
+                    }
+                });
             }           
             for (int j = 0; j < elementosPorFila && numeroEstudiantes != contadorGeneral && estudiantes.size() != 0; j++) {
                 TarjetaEstudianteCurso tarjeta = new TarjetaEstudianteCurso(estudiantes.get(contadorGeneral));
@@ -219,18 +228,18 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
         try {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLAsignarEstudianteCurso.fxml"));
             Parent vista = accesoControlador.load();
-            FXMLAsignarEstudianteCursoController accion = accesoControlador.getController();
-            accion.iniciarEstudiantes(estudiantes, cursoActual.getIdCurso(), this);
-            Stage escenarioNuevo = new Stage();
-            Scene escenaNueva = Utilidades.inicializarEscena("vistas/FXMLAsignarEstudianteCurso.fxml");
-            escenarioNuevo.setScene(escenaNueva);
-            escenarioNuevo.setTitle("Modificar Uusuario");
-            escenarioNuevo.initModality(Modality.APPLICATION_MODAL);
-            escenarioNuevo.show();
+            FXMLAsignarEstudianteCursoController controladorVistaAsignarEstudianteCurso = accesoControlador.getController();
+            controladorVistaAsignarEstudianteCurso.iniciarEstudiantes(estudiantes, cursoActual, this);
+            
+            Stage escenarioFormulario = new Stage();
+            escenarioFormulario.setScene(new Scene(vista));
+            escenarioFormulario.setTitle("Añadir estudiantes");
+            escenarioFormulario.initModality(Modality.APPLICATION_MODAL);
+            escenarioFormulario.showAndWait();
         } catch (IOException ex) {
             ex.printStackTrace();
-           Utilidades.mostrarDialogoSimple("Error","No sepudo caragar la Escena", Alert.AlertType.ERROR);
-        } 
+            Utilidades.mostrarDialogoSimple("Error","No se pudo cargar la Escena", Alert.AlertType.ERROR);
+        }        
     }
     
     private void irVistaEditarEstudiante(Estudiante estudiante) {

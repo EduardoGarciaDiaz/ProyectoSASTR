@@ -301,7 +301,7 @@ public class EstudianteDAO {
                     .prepareStatement(OBTENER_ESTUDIANTES_POR_CURSO);
             sentencia.setInt(1, idCurso);
             ResultSet resultado = sentencia.executeQuery();
-            if (resultado.next()) {
+            while (resultado.next()) {
                 Estudiante estudiante = new Estudiante();
                 estudiante.setIdEstudiante(resultado.getInt("idEstudiante"));
                 estudiante.setNombre(resultado.getString("nombreEstudiante"));

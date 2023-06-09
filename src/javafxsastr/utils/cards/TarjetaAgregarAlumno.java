@@ -34,19 +34,7 @@ public class TarjetaAgregarAlumno extends Pane{
         establecerEstiloPane();
         establecerEstiloFondoImagen();
         establecerEstiloInstruccion();
-        getChildren().addAll(fondo,instruccion);
-        imvIconoAgregar.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent event) {              
-                try {
-                    FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLDetallesCurso.fxml"));
-                    Parent vista = accesoControlador.load();
-                    FXMLDetallesCursoController formulario = accesoControlador.getController();            
-                    formulario.agregarAlumno();                   
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }                    
-            }
-        });
+        getChildren().addAll(fondo,instruccion, imvIconoAgregar);
     }
     
     private void inicializarElementos() {
