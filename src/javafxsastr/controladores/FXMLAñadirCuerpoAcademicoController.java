@@ -267,6 +267,9 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
         try {
            academicosBusqueda = FXCollections.observableArrayList(new AcademicoDAO().obtenerAcademicos());
            lgacs = FXCollections.observableArrayList(new LgacDAO().obtenerInformacionLGCAS());
+           lvLgac.setItems(lgacs);
+           lvAcademicos.setItems(academicosBusqueda);
+           inicializarLisneters();
         } catch (DAOException ex) {
             ex.printStackTrace();
         }        
@@ -581,6 +584,11 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
     @Override
     public void notitficacionRecargarDatos() {
         recuperarDatos(); 
+    }
+
+    @Override
+    public void notitficacionRecargarDatosPorEdicion(boolean fueEditado) {
+        recuperarDatos();
     }
     
 }

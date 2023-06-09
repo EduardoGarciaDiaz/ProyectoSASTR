@@ -98,7 +98,7 @@
                         <Image url="@../recursos/iconos/editarCurso.jpg" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="50.0" fitWidth="63.0" layoutX="1497.0" layoutY="136.0" onMouseClicked="#clicDesactivarCurso" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="imvActivar" fitHeight="50.0" fitWidth="63.0" layoutX="1497.0" layoutY="136.0" onMouseClicked="#clicDesactivarCurso" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../recursos/iconos/desactivarCurso.jpg" />
                      </image>

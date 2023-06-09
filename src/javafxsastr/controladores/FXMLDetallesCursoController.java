@@ -1,6 +1,6 @@
 /*
  * Autor: Tristan Eduardo Suarez Santiago
- * Fecha de creación: 24/05/2023
+ * Fecha de creación: 03/06/2023
  * Descripción: Controller de la ventana de ver detalles de curso.
  */
 
@@ -8,10 +8,7 @@ package javafxsastr.controladores;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -24,11 +21,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -48,8 +47,6 @@ import javafxsastr.utils.cards.TarjetaEstudianteCurso;
 
 public class FXMLDetallesCursoController implements Initializable, INotificacionRecargarDatos {
 
-    @FXML
-    private AnchorPane menuContraido;
     @FXML
     private Label lbTituloventana;
     @FXML
@@ -73,9 +70,11 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
     private ScrollPane slpAlamcenEstudinates;
     @FXML
     private VBox hbxAlmacenEstdantes;
+    @FXML
+    private ImageView imvActivar;
      
-    private final int DESACTIVAR_USUSARIO = 2;
-    private final int ACTIVAR_USUSARIO = 1;
+    private final int DESACTIVAR = 2;
+    private final int ACTIVAR = 1;
     private Academico academico;
     private ObservableList<Estudiante> estudiantes;
     private Curso cursoActual;
@@ -92,34 +91,6 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
         llenarEstudiantes();
     }
     
-    public void desactivarUsuario(Estudiante estudiante) {
-        if(Utilidades.mostrarDialogoConfirmacion("Desactivar Estudiante de curso",
-                "¿Estas seguro que deseas desactivar al estudiante del curso?")) {
-            try {
-                Usuario usuario = new UsuarioDAO().obtenerUsuarioPorId(estudiante.getIdUsuario());
-                usuario.setIdEstadoUsuario(DESACTIVAR_USUSARIO);
-                new UsuarioDAO().actualizarUsuario(usuario);
-            } catch (DAOException ex) {
-                manejarDAOException(ex);
-            }
-        }
-        iniciarVentana();
-    }
-    
-     public void activarUsuario(Estudiante estudiante) {
-        if(Utilidades.mostrarDialogoConfirmacion("Activar Estudiante de curso",
-                "¿Estas seguro que deseas activar al estudiante del curso?")) {
-            try {
-                Usuario usuario = new UsuarioDAO().obtenerUsuarioPorId(estudiante.getIdUsuario());
-                usuario.setIdEstadoUsuario(ACTIVAR_USUSARIO);
-                new UsuarioDAO().actualizarUsuario(usuario);
-            } catch (DAOException ex) {
-                manejarDAOException(ex);
-            }
-        }
-        iniciarVentana();
-    }
-    
     public void editarUsuario(Estudiante estudiante) {         
         irVistaEditarEstudiante(estudiante);
     }
@@ -133,8 +104,7 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
         estudiantes.clear();
         obtenerEstudiantesCurso();
         llenarEstudiantes();     
-    }
-    
+    }    
     
     private void cargarDetallesCurso() {
         lbNombreCurso.setText(cursoActual.getNombreCurso());
@@ -145,6 +115,15 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
         lbNrc.setText(cursoActual.getNrcCurso());
         lbSeccion.setText(cursoActual.getSeccionCurso());
     }    
+    
+    private void recargarCurso() {
+        try {
+            cursoActual = new CursoDAO().obtenerCurso(cursoActual.getIdCurso());
+        } catch (DAOException ex) {
+            manejarDAOException(ex);
+        }
+        cargarDetallesCurso();
+    }
     
     
     private void obtenerEstudiantesCurso() {        
@@ -175,8 +154,12 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
                 fila.getChildren().add(tarjetaAgregarAlumno);
                 tarjetaAgregarAlumno.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     public void handle(MouseEvent event) {  
-                        System.out.println("Clic agregar");
-                        irVistaAgregarAlumno();
+                        if(cursoActual.getIdEstadoCurso() == 2) {
+                            Utilidades.mostrarDialogoSimple("Accion invalida","No puedes asignar estudiantes a un curso inactivo",
+                                    Alert.AlertType.WARNING);
+                        }else {
+                            irVistaAgregarAlumno();
+                        }
                     }
                 });
             }           
@@ -204,6 +187,64 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
         }
     }
     
+    private void desactivarUsuario(Estudiante estudiante) {
+        if(Utilidades.mostrarDialogoConfirmacion("Desactivar Estudiante de curso",
+                "¿Estas seguro que deseas desactivar al estudiante del curso?")) {
+            try {
+                Usuario usuario = new UsuarioDAO().obtenerUsuarioPorId(estudiante.getIdUsuario());
+                usuario.setIdEstadoUsuario(DESACTIVAR);
+                new UsuarioDAO().actualizarUsuario(usuario);
+            } catch (DAOException ex) {
+                manejarDAOException(ex);
+            }
+        }
+        iniciarVentana();
+    }
+    
+    private void activarUsuario(Estudiante estudiante) {
+        if(Utilidades.mostrarDialogoConfirmacion("Activar Estudiante de curso",
+                "¿Estas seguro que deseas activar al estudiante del curso?")) {
+            try {
+                Usuario usuario = new UsuarioDAO().obtenerUsuarioPorId(estudiante.getIdUsuario());
+                usuario.setIdEstadoUsuario(ACTIVAR);
+                new UsuarioDAO().actualizarUsuario(usuario);
+            } catch (DAOException ex) {
+                manejarDAOException(ex);
+            }
+        }
+        iniciarVentana();
+    }
+    
+    private void desactivarCurso(Curso curso) {        
+        try {
+            curso.setIdEstadoCurso(DESACTIVAR);
+            int cursoEdicion = new CursoDAO().actualizarCurso(curso);
+        } catch (DAOException ex) {
+            manejarDAOException(ex);
+        }
+        recargarCurso();
+    }
+    
+    private void activarCurso(Curso curso) {        
+        try {
+            curso.setIdEstadoCurso(ACTIVAR);
+            int cursoEdicion = new CursoDAO().actualizarCurso(curso);
+        } catch (DAOException ex) {
+            manejarDAOException(ex);
+        }
+        recargarCurso();
+    }
+     
+    private void setLogoActivo() {
+        if(cursoActual.getIdEstadoCurso()== 1) {
+           imvActivar.setImage(new Image("file:src/javafxsastr/recursos/iconos/desactivarCurso.jpg")); 
+           crlEstadoCurso.setFill(Color.web("#C3E0BE"));
+        }else {
+            imvActivar.setImage(new Image("file:src/javafxsastr/recursos/iconos/activarEstudiante.png")); 
+            crlEstadoCurso.setFill(Color.web("#EBE555"));
+        }        
+    }
+            
     private void manejarDAOException(DAOException ex) {
         switch (ex.getCodigo()) {
             case ERROR_CONSULTA:
@@ -229,8 +270,7 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLAsignarEstudianteCurso.fxml"));
             Parent vista = accesoControlador.load();
             FXMLAsignarEstudianteCursoController controladorVistaAsignarEstudianteCurso = accesoControlador.getController();
-            controladorVistaAsignarEstudianteCurso.iniciarEstudiantes(estudiantes, cursoActual, this);
-            
+            controladorVistaAsignarEstudianteCurso.iniciarEstudiantes(estudiantes, cursoActual, this);            
             Stage escenarioFormulario = new Stage();
             escenarioFormulario.setScene(new Scene(vista));
             escenarioFormulario.setTitle("Añadir estudiantes");
@@ -275,8 +315,7 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLFormularioCurso.fxml"));
             Parent vista = accesoControlador.load();
             FXMLFormularioCursoController controladorVista = accesoControlador.getController();     
-            controladorVista.esEdiconPorVentanaDetalles(this);
-            controladorVista.inicializarInformacionFormulario(true, cursoActual);
+            controladorVista.inicializarInformacionFormulario(true, cursoActual,this);
             Stage escenario = new Stage();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Modificar Curso");
@@ -290,8 +329,18 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
 
     @FXML
     private void clicDesactivarCurso(MouseEvent event) {
-        Utilidades.mostrarDialogoConfirmacion("Desactivar Estudiante de curso",
-                "¡Estas seguro que deseas desactivar el curso!");
+        if(cursoActual.getIdEstadoCurso() == 1) {
+            if(Utilidades.mostrarDialogoConfirmacion("Desactivar Estudiante de curso",
+                "¿Estas seguro que deseas desactivar el curso?")) {
+                      desactivarCurso(cursoActual);
+            }          
+        }else {
+            if(Utilidades.mostrarDialogoConfirmacion("Activar Estudiante de curso",
+                "¿Estas seguro que deseas activar el curso?")) {
+                      activarCurso(cursoActual);
+            }         
+        }
+        setLogoActivo();
     }
     
     private void irAVistaCursos() {
@@ -312,6 +361,13 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
     @Override
     public void notitficacionRecargarDatos() {
        iniciarVentana();
+    }
+
+    @Override
+    public void notitficacionRecargarDatosPorEdicion(boolean fueEditado) {
+       if(fueEditado) {
+           recargarCurso();
+       }
     }
     
 }

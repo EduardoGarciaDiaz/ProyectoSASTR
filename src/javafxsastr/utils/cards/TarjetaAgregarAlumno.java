@@ -1,28 +1,18 @@
 /*
  * Autor: Tristan Eduardo Suarez Santiago
- * Fecha de creación: 24/05/2023
+ * Fecha de creación: 04/06/2023
  * Descripción: Clae de la tarjeta añadir estudinate en DetallesCurso.
  */
 
 package javafxsastr.utils.cards;
 
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
-import javafxsastr.JavaFXSASTR;
-import javafxsastr.controladores.FXMLDetallesCursoController;
 
 public class TarjetaAgregarAlumno extends Pane{
     private Pane fondo;    
@@ -52,13 +42,13 @@ public class TarjetaAgregarAlumno extends Pane{
     
     private void establecerEstiloFondoImagen() {
         fondo.setPrefSize(104.0, 104.0);
-        fondo.setLayoutX(80.5);
+        fondo.setLayoutX(80);
         fondo.setLayoutY(14.0);
         fondo.setStyle("-fx-background-color: #F4F4F4");
         fondo.getChildren().add(imvIconoAgregar);
         imvIconoAgregar.setFitHeight(100);
         imvIconoAgregar.setFitWidth(100);
-        imvIconoAgregar.setLayoutX(2.0);
+        imvIconoAgregar.setLayoutX(80.0);
         imvIconoAgregar.setLayoutY(21.0);
     }
     

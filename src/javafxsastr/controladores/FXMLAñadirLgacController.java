@@ -195,9 +195,15 @@ public class FXMLAñadirLgacController implements Initializable {
                             Alert.AlertType.ERROR);
                 }
             }
+            limpiarCampos();
         }catch (DAOException ex) {           
                manejarDAOException(ex);
         }
+    }
+    
+    public void limpiarCampos() {
+        txfNombreLgac.setText("");
+        txaDescripcionLgac.setText("");
     }
     
      private void manejarDAOException(DAOException ex) {

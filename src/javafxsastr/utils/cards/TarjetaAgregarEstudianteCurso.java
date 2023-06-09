@@ -1,6 +1,6 @@
 /*
  * Autor: Tristan Eduardo Suarez Santiago
- * Fecha de creación: 24/05/2023
+ * Fecha de creación: 04/06/2023
  * Descripción: Clase para las tarjetas de la ventana asignarEstudianteCursor.
  */
 
@@ -33,8 +33,8 @@ public class TarjetaAgregarEstudianteCurso extends Pane {
         getChildren().addAll(fondo, nombreEstudiante);       
     }
     
-    public ImageView getImagen() {
-        return this.imvEliminar;
+    public Pane getImagen() {
+        return this.fondo;
     }
     
     public Estudiante getEstudinate() {
@@ -56,15 +56,15 @@ public class TarjetaAgregarEstudianteCurso extends Pane {
     }
     
     private void establecerEstiloFondoImagen() {
-        fondo.setPrefSize(30, 30);
-        fondo.setLayoutX(520);
-        fondo.setLayoutY(-30);
+        fondo.setPrefSize(30, 25);
+        fondo.setLayoutX(500);
+        fondo.setLayoutY(0);
         fondo.setStyle("-fx-background-color: #F4F4F4");
         fondo.getChildren().add(imvEliminar);
         imvEliminar.setFitHeight(30);
-        imvEliminar.setFitWidth(30);
+        imvEliminar.setFitWidth(25);
         imvEliminar.setLayoutX(30);
-        imvEliminar.setLayoutY(30);
+        imvEliminar.setLayoutY(0);
     }
     
     private void establecerEstiloNombreEstudiante() {

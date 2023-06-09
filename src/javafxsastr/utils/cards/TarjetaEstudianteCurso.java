@@ -1,37 +1,21 @@
 /*
  * Autor: Tristan Eduardo Suarez Santiago
- * Fecha de creación: 24/05/2023
+ * Fecha de creación: 04/06/2023
  * Descripción: Clase para la tarjetas de DetalleCursor.
  */
 
 package javafxsastr.utils.cards;
 
-import static java.awt.PageAttributes.ColorType.COLOR;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafxsastr.JavaFXSASTR;
-import javafxsastr.controladores.FXMLDetallesCursoController;
 import javafxsastr.modelos.pojo.Estudiante;
-import javafxsastr.utils.Utilidades;
 
 public class TarjetaEstudianteCurso extends Pane{
     private Pane fondo;
@@ -63,12 +47,12 @@ public class TarjetaEstudianteCurso extends Pane{
         return this.estudiante;
     }
     
-    public ImageView getBotonDesactivar() {
-        return imvBtnDesactivar;
+    public Pane getBotonDesactivar() {
+        return fondoDesactivar;
     }
     
-     public ImageView getBotonEditar() {
-        return imvBtnEditar;
+     public Pane getBotonEditar() {
+        return fondoEitar;
     }
     
     private void inicializarElementos() {

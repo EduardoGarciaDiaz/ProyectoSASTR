@@ -378,13 +378,7 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
                         "No se pudo actualizar los archivos de la entrega", Alert.AlertType.ERROR);
             }
         }
-    }
-
-    private void actualizaEstadoMenu(int posicion, boolean abierto, String icono) {
-        animacionMenu(posicion);
-        menuDatos = abierto;
-        imgBtnDesplegar.setImage(new Image(JavaFXSASTR.class.getResource(icono).toString()));
-    }
+    }   
 
     private void obtenerDatosRelacionadoAlEstudiante() {
         AnteproyectoDAO anteproyectoDao = new AnteproyectoDAO();
@@ -436,6 +430,12 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
         lbActSinPendientes.setText(porVencer + " Actividades sin realizar");
         lbActRevisadas.setText(realizadas + " Actividades realizadas");
         lbActPorVencer.setText(revisadas + " Activdades revisadas");
+    }
+    
+     private void actualizaEstadoMenu(int posicion, boolean abierto, String icono) {
+        animacionMenu(posicion);
+        menuDatos = abierto;
+        imgBtnDesplegar.setImage(new Image(JavaFXSASTR.class.getResource(icono).toString()));
     }
 
     private void animacionMenu(int posicion) {

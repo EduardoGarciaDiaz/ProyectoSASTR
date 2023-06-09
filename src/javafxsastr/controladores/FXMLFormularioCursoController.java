@@ -51,8 +51,8 @@ import javafxsastr.modelos.pojo.ExperienciaEducativa;
 import javafxsastr.modelos.pojo.Nrc;
 import javafxsastr.modelos.pojo.PeriodoEscolar;
 import javafxsastr.modelos.pojo.Seccion;
-import javafxsastr.modelos.pojo.Usuario;
 import javafxsastr.utils.CampoDeBusqueda;
+import javafxsastr.utils.FiltrosTexto;
 import javafxsastr.utils.Utilidades;
 
 public class FXMLFormularioCursoController implements Initializable {
@@ -86,7 +86,6 @@ public class FXMLFormularioCursoController implements Initializable {
     private ObservableList<Seccion> secciones;
     private ObservableList<Bloque> bloques;
     private boolean esEdicion;
-    private boolean vieneDeDetalles = false;
     private Curso cursoEdicion;
     private INotificacionRecargarDatos interfaz;
     @FXML
@@ -114,6 +113,29 @@ public class FXMLFormularioCursoController implements Initializable {
     
     public void setUsuario(Academico academico) {
         this.academico = academico;
+        recuperarDatosCurso();
+    }
+
+    public void inicializarInformacionFormulario(boolean esEdicion, Curso cursoEdicion, INotificacionRecargarDatos interfazN) {
+        this.interfaz = interfazN;
+        this.esEdicion = esEdicion;
+        this.cursoEdicion = cursoEdicion;
+        if (esEdicion) {
+            lbTituloFormulario.setText("Modificar curso");
+            recuperarDatosCurso();
+            lvprofesores.setItems(profesores);
+            setInformacionCursoEdicion(cursoEdicion);
+        } else {
+            lbTituloFormulario.setText("Añadir curso");
+            btnAceptar.setDisable(true);
+        }
+    }
+    
+    private void inicializarFiltros() {
+        FiltrosTexto.filtroLetrasNumeros(tfNombreCurso);
+    }
+    
+    private void recuperarDatosCurso() {
         cargarExperienciasEducativas();
         cargarPeriodosEscolares();
         obtenerProfesores();
@@ -122,23 +144,6 @@ public class FXMLFormularioCursoController implements Initializable {
         agregarListenerCampos();
         btnAceptar.setDisable(true);
         inicializarCamposDeBusqueda();
-    }
-    
-    public void esEdiconPorVentanaDetalles(INotificacionRecargarDatos interfazN) {
-        this.vieneDeDetalles = true;
-        this.interfaz = interfazN;
-    }
-
-    public void inicializarInformacionFormulario(boolean esEdicion, Curso cursoEdicion) {
-        this.esEdicion = esEdicion;
-        this.cursoEdicion = cursoEdicion;
-        if (esEdicion) {
-            lbTituloFormulario.setText("Modificar curso");
-            setInformacionCursoEdicion(cursoEdicion);
-        } else {
-            lbTituloFormulario.setText("Añadir curso");
-            btnAceptar.setDisable(true);
-        }
     }
     
     private void setInformacionCursoEdicion(Curso cursoEdicion) {
@@ -154,11 +159,10 @@ public class FXMLFormularioCursoController implements Initializable {
         int posicionBloque = obtenerPosicionComboBloques(cursoEdicion.getIdBloque());
         cmbBloques.getSelectionModel().select(posicionBloque);
         int posicionProfesor = obtenerPosicionProfesor(cursoEdicion.getIdAcademico());
-        lvprofesores.getSelectionModel().select(posicionProfesor);
+        lvprofesores.getSelectionModel().select(posicionProfesor);        
         tfProfesor.setText(lvprofesores.getSelectionModel().getSelectedItem().toString());
         dpFechaInicioClases.setValue(LocalDate.parse(cursoEdicion.getFechaInicioCurso()));
         dpFechaFinClases.setValue(LocalDate.parse(cursoEdicion.getFechaFinCurso()));
-        
     }
     
     private int obtenerPosicionComboExperienciaEducativa(int idExperienciaEducativa) {
@@ -312,7 +316,7 @@ public class FXMLFormularioCursoController implements Initializable {
                     Utilidades.mostrarDialogoSimple("Curso registrado.", 
                             "El curso se creó correctamente en el sistema", Alert.AlertType.INFORMATION);
                 }
-                irAVistaCursos();
+                cerrarVentana();
             } else {
                 lbTituloFormulario.requestFocus();
                 lbMensajeDeError.setText("No puedes seleccionar una fecha de fin de clases posterior a la de fin del periodo");
@@ -478,6 +482,14 @@ public class FXMLFormularioCursoController implements Initializable {
         }
         return camposLlenos;
     }
+    
+    private void cerrarVentana() {
+        if(esEdicion) {
+            irAVistaDetallesCursos(); 
+        }else {
+            irAVistaCursos();
+        } 
+    }
 
     @FXML
     private void clicSeleccionCombo(ActionEvent event) {
@@ -492,11 +504,7 @@ public class FXMLFormularioCursoController implements Initializable {
 
     @FXML
     private void clicBtnVolver(MouseEvent event) {
-        if(vieneDeDetalles) {
-            irAVistaDetallesCursos();
-        }else {
-            irAVistaCursos();
-        }        
+      cerrarVentana();
     }
     
     private void irAVistaCursos() {
@@ -515,7 +523,7 @@ public class FXMLFormularioCursoController implements Initializable {
     }
     
      private void irAVistaDetallesCursos() {
-       interfaz.notitficacionRecargarDatos();
+       interfaz.notitficacionRecargarDatosPorEdicion(true);
        Stage escenario = (Stage) lbTituloFormulario.getScene().getWindow();
        escenario.close();
     }
