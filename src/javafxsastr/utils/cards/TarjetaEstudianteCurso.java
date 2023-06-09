@@ -30,6 +30,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafxsastr.JavaFXSASTR;
 import javafxsastr.controladores.FXMLDetallesCursoController;
+import javafxsastr.modelos.pojo.Estudiante;
 import javafxsastr.utils.Utilidades;
 
 public class TarjetaEstudianteCurso extends Pane{
@@ -43,64 +44,53 @@ public class TarjetaEstudianteCurso extends Pane{
     private ImageView imvBtnEditar;
      private Circle crlEstadoUsuario;
     private boolean esActivo = false;
+    private Estudiante estudiante;
     
-    public TarjetaEstudianteCurso(String nombreEstudiante, String correoEstudinate, int idEstudiante) {
+    public TarjetaEstudianteCurso(Estudiante estudianteN) {
+        this.estudiante = estudianteN;
         inicializarElementos();
         establecerEstiloPane();
         establecerEstiloFondoImagen();
         establecerEstiloNombreEstudiante();
+        establecerColorEstadoEstudinate(estudiante);
         establecerEstiloCorreo();
-        lbNombreEstudiante.setText(nombreEstudiante);
-        lbcorreoEstudinate.setText(correoEstudinate);
-        getChildren().addAll(fondo,fondoEitar,crlEstadoUsuario,fondoDesactivar,lbNombreEstudiante,lbcorreoEstudinate);
-        
-    imvBtnEditar.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent event) {
-                try {
-                    FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLDetallesCurso.fxml"));
-                    Parent vista = accesoControlador.load();
-                    FXMLDetallesCursoController formulario = accesoControlador.getController();            
-                    formulario.editarUsuario(idEstudiante);                      
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                    Utilidades.mostrarDialogoSimple("Error","Ocurrio un error al querer editar ",
-                            Alert.AlertType.ERROR);
-                }
-            }
-        });
-     
-     imvBtnDesactivar.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent event) {
-                 try {
-                    FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLDetallesCurso.fxml"));
-                    Parent vista = accesoControlador.load();
-                    FXMLDetallesCursoController formulario = accesoControlador.getController();            
-                    formulario.desactivarUsuario(idEstudiante);                     
-                } catch (IOException ex) {
-                    Utilidades.mostrarDialogoSimple("Error","Ocurrio un error al querer desactivar ",
-                            Alert.AlertType.ERROR);
-                }
-            }
-        });
-}
+        lbNombreEstudiante.setText(estudiante.getNombre()+" "+estudiante.getPrimerApellido()+" "+estudiante.getSegundoApellido());
+        lbcorreoEstudinate.setText(estudiante.getCorreoInstitucional());
+        getChildren().addAll(fondo,fondoEitar,crlEstadoUsuario,fondoDesactivar,lbNombreEstudiante,lbcorreoEstudinate);     
+    }
     
-     private void inicializarElementos() {
+    public Estudiante getEstudiante() {
+        return this.estudiante;
+    }
+    
+    public ImageView getBotonDesactivar() {
+        return imvBtnDesactivar;
+    }
+    
+     public ImageView getBotonEditar() {
+        return imvBtnEditar;
+    }
+    
+    private void inicializarElementos() {
         fondo = new Pane();
         fondoEitar = new Pane();
         fondoDesactivar= new Pane();
         lbNombreEstudiante = new Label();
         lbcorreoEstudinate = new Label();
         imvIconoEstudiate = new ImageView(new Image("file:src/javafxsastr/recursos/iconos/iconoEstudianteCurso.jpg")); 
-        imvBtnEditar = new ImageView(new Image("file:src/javafxsastr/recursos/iconos/editarCurso.jpg"));         
-        imvBtnDesactivar = new ImageView(new Image("file:src/javafxsastr/recursos/iconos/desactivarCurso.jpg")); 
+        imvBtnEditar = new ImageView(new Image("file:src/javafxsastr/recursos/iconos/editarCurso.jpg"));   
+        if(estudiante.getIdEstadoUsuario() == 1) {
+            imvBtnDesactivar = new ImageView(new Image("file:src/javafxsastr/recursos/iconos/desactivarCurso.jpg")); 
+        }else {
+            imvBtnDesactivar = new ImageView(new Image("file:src/javafxsastr/recursos/iconos/activarEstudiante.png")); 
+        }        
         crlEstadoUsuario =new Circle(14.46);
     }
     private void establecerEstiloPane() {
         setPrefSize(249, 249);
         setLayoutX(20);
         setLayoutY(20);
-        this.setStyle("-fx-background-color: #F4F4F4");
-                
+        this.setStyle("-fx-background-color: #F4F4F4");                
     }
     
      private void establecerEstiloFondoImagen() {
@@ -132,21 +122,27 @@ public class TarjetaEstudianteCurso extends Pane{
         imvBtnDesactivar.setFitHeight(40);
         imvBtnDesactivar.setFitWidth(40);
         imvBtnDesactivar.setLayoutX(0);
-        imvBtnDesactivar.setLayoutY(0);
-        
-        crlEstadoUsuario.setFill(Color.web("#C3E0BE"));
+        imvBtnDesactivar.setLayoutY(0);     
+    }
+     
+    private void establecerColorEstadoEstudinate(Estudiante estudiante) {        
+        if(estudiante.getIdEstadoUsuario() == 1) {
+             crlEstadoUsuario.setFill(Color.web("#C3E0BE"));
+        }else {
+            crlEstadoUsuario.setFill(Color.web("#EBE555"));
+        }  
         crlEstadoUsuario.setLayoutX(230);
         crlEstadoUsuario.setLayoutY(20);
     }
      
     private void establecerEstiloNombreEstudiante() {
         lbNombreEstudiante.setPrefSize(360.0, 62.0);
-        lbNombreEstudiante.setLayoutX(30);
+        lbNombreEstudiante.setLayoutX(-50);
         lbNombreEstudiante.setLayoutY(124.0);
         lbNombreEstudiante.setTextAlignment(TextAlignment.CENTER);
         lbNombreEstudiante.setWrapText(true);
         lbNombreEstudiante.setFont(new Font(20));
-        lbNombreEstudiante.setAlignment(Pos.CENTER_LEFT);
+        lbNombreEstudiante.setAlignment(Pos.CENTER);
     }
     
     private void establecerEstiloCorreo() {
@@ -157,7 +153,6 @@ public class TarjetaEstudianteCurso extends Pane{
         lbcorreoEstudinate.setWrapText(true);
         lbcorreoEstudinate.setFont(new Font(20.0));
         lbcorreoEstudinate.setAlignment(Pos.CENTER);
-    }  
-    
+    }      
      
 }

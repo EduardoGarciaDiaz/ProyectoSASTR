@@ -57,7 +57,7 @@ public class UsuarioDAO {
     private final String CONSULTAR_USUARIO_ACADEMICO_INEXISTENTES = "SELECT u.idUsuario, u.nombreUsuario FROM usuarios u " +
             "INNER JOIN academicos a ON u.idUsuario = a.idUsuario " +
             "WHERE u.correoInstitucionalUsuario = ? OR a.numeroPersonalAcademico = ?;";
-        
+           
     public Usuario obtenerUsuarioPorId(int idUsuario) throws DAOException {
         Usuario usuario = new Usuario();
         usuario.setIdUsuario(-1);

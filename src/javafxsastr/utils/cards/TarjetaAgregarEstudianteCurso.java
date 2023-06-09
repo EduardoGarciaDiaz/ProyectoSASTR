@@ -6,55 +6,39 @@
 
 package javafxsastr.utils.cards;
 
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
-import javafxsastr.JavaFXSASTR;
-import javafxsastr.controladores.FXMLAsignarEstudianteCursoController;
-import javax.print.DocFlavor;
+import javafxsastr.modelos.pojo.Estudiante;
+
 
 public class TarjetaAgregarEstudianteCurso extends Pane {
     private Pane fondo ;
     private  Label nombreEstudiante;
     private  ImageView imvEliminar ;
+    private Estudiante estudianteTarjeta;
     
-    public TarjetaAgregarEstudianteCurso(String nombre, int IdEstudinate) {
+    public TarjetaAgregarEstudianteCurso(Estudiante estudiante) {
+        estudianteTarjeta = estudiante;
         inicializarElementos();
         establecerEstiloPane();
         establecerEstiloFondoImagen();
         establecerEstiloNombreEstudiante();
-        nombreEstudiante.setText(nombre);
-        getChildren().addAll(fondo, nombreEstudiante);
-        setId(String.valueOf(IdEstudinate));
-         
-        imvEliminar.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent event) {              
-                try {
-                    FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLAsignarEstudianteCurso.fxml"));
-                    Parent vista = accesoControlador.load();
-                    FXMLAsignarEstudianteCursoController accion = accesoControlador.getController();            
-                    accion.quitarEstudianste(IdEstudinate);            
-                } catch (IOException ex) {                    
-                  ex.printStackTrace();
-                }                    
-            }
-        });
-        
+        nombreEstudiante.setText(estudiante.getNombre()
+               +" "+estudiante.getPrimerApellido()+ " "+ estudiante.getSegundoApellido()+ "      " +estudiante.getMatriculaEstudiante());
+        getChildren().addAll(fondo, nombreEstudiante);       
     }
     
     public ImageView getImagen() {
         return this.imvEliminar;
+    }
+    
+    public Estudiante getEstudinate() {
+        return estudianteTarjeta; 
     }
     
     private void inicializarElementos() {

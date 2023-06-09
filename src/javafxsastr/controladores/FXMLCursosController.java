@@ -57,6 +57,7 @@ public class FXMLCursosController implements Initializable {
     private ObservableList<Curso> cursos ;
     private Usuario usuario;
     private Academico academico;
+    private Curso cursoConsutla;
     private final String ESTILO_SELECCIONADO = "-fx-background-color: ACACAC;"
                                         + "-fx-background-radius: 15;";
     private final String ESTILO_NORMAL = "-fx-background-color: C9C9C9;"
@@ -87,7 +88,8 @@ public class FXMLCursosController implements Initializable {
         for (Curso curso : cursos) {
             TarjetaCurso tarjeta = new TarjetaCurso(curso);
             tarjeta.getBotonVerDetalles().setOnAction((event) -> {
-                irAVistaDetallesCurso(academico);
+                cursoConsutla = curso;
+                irAVistaDetallesCurso();
             });
             vbxCursos.getChildren().add(tarjeta);
         }
@@ -213,14 +215,14 @@ public class FXMLCursosController implements Initializable {
         }
     }
     
-    private void irAVistaDetallesCurso(Academico academico) {
+    private void irAVistaDetallesCurso() {
         try {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLDetallesCurso.fxml"));
             Parent vista = accesoControlador.load();
             FXMLDetallesCursoController controladorDetallesCurso = accesoControlador.getController();
-            controladorDetallesCurso.setUsuario(academico);
+            controladorDetallesCurso.setUsuarioYCurso(academico, cursoConsutla);
             Stage escenario = (Stage) lbTituloVentana.getScene().getWindow();
-            escenario.setScene(new Scene(vista));
+            escenario.setScene(new Scene(vista));            
             escenario.setTitle("Detalles curso");
             escenario.show();
         } catch (IOException ex) {

@@ -29,6 +29,7 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafxsastr.JavaFXSASTR;
+import javafxsastr.interfaces.INotificacionRecargarDatos;
 import javafxsastr.modelos.dao.AcademicoDAO;
 import javafxsastr.modelos.dao.DAOException;
 import javafxsastr.modelos.dao.EstudianteDAO;
@@ -84,9 +85,11 @@ public class FXMLFormularioUsuarioController implements Initializable {
     private ObservableList<String> tiposUsuarios;
     private Usuario usuarioEdicion;
     private boolean esEdicion;
+    private boolean vieneDeDetallesCurso = false;
     private Academico academicoEdicion;
     private Estudiante estudianteEdicion;
-
+    private INotificacionRecargarDatos interfaz;
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -150,6 +153,11 @@ public class FXMLFormularioUsuarioController implements Initializable {
             lbTipoUsuario.setVisible(false);
             cargarInformacionEdicion();
         }
+    }
+    
+    public void vieneDeVentanaDetallesCurso(boolean esVentanaDetallesCurso, INotificacionRecargarDatos interfaN) {
+        this.vieneDeDetallesCurso = esVentanaDetallesCurso;
+        interfaz =  interfaN;
     }
     
     private void cargarInformacionEdicion(){
@@ -490,10 +498,14 @@ public class FXMLFormularioUsuarioController implements Initializable {
     
     @FXML
     private void clicRegresar(MouseEvent event) {
-        if (esEdicion) {
+        if(vieneDeDetallesCurso){
+            irAVistaVerDetallesCursos();
+        }else {
+            if (esEdicion) {
             irAVistaVerUsuario(usuarioEdicion, usuario);
-        } else {
+            }else {
             irAVistaUsuarios(usuario);
+            }   
         }
     }
 
@@ -530,6 +542,12 @@ public class FXMLFormularioUsuarioController implements Initializable {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+    
+    private void irAVistaVerDetallesCursos() {
+       interfaz.notitficacionRecargarDatos();
+       Stage escenario = (Stage) lbContrasenaVacia.getScene().getWindow();
+       escenario.close();
     }
     
     private void manejarDAOException(DAOException ex) {

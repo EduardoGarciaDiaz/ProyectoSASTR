@@ -34,6 +34,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafxsastr.JavaFXSASTR;
+import javafxsastr.interfaces.INotificacionRecargarDatos;
 import javafxsastr.interfaces.INotificacionSeleccionItem;
 import javafxsastr.modelos.dao.AcademicoDAO;
 import javafxsastr.modelos.dao.BloqueDAO;
@@ -85,7 +86,9 @@ public class FXMLFormularioCursoController implements Initializable {
     private ObservableList<Seccion> secciones;
     private ObservableList<Bloque> bloques;
     private boolean esEdicion;
+    private boolean vieneDeDetalles = false;
     private Curso cursoEdicion;
+    private INotificacionRecargarDatos interfaz;
     @FXML
     private Label lbTituloFormulario;
     @FXML
@@ -119,6 +122,11 @@ public class FXMLFormularioCursoController implements Initializable {
         agregarListenerCampos();
         btnAceptar.setDisable(true);
         inicializarCamposDeBusqueda();
+    }
+    
+    public void esEdiconPorVentanaDetalles(INotificacionRecargarDatos interfazN) {
+        this.vieneDeDetalles = true;
+        this.interfaz = interfazN;
     }
 
     public void inicializarInformacionFormulario(boolean esEdicion, Curso cursoEdicion) {
@@ -484,7 +492,11 @@ public class FXMLFormularioCursoController implements Initializable {
 
     @FXML
     private void clicBtnVolver(MouseEvent event) {
-        irAVistaCursos();
+        if(vieneDeDetalles) {
+            irAVistaDetallesCursos();
+        }else {
+            irAVistaCursos();
+        }        
     }
     
     private void irAVistaCursos() {
@@ -500,6 +512,12 @@ public class FXMLFormularioCursoController implements Initializable {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+    
+     private void irAVistaDetallesCursos() {
+       interfaz.notitficacionRecargarDatos();
+       Stage escenario = (Stage) lbTituloFormulario.getScene().getWindow();
+       escenario.close();
     }
     
 }

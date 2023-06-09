@@ -8,8 +8,8 @@ package javafxsastr.interfaces;
  *
  * @author tristan
  */
-public interface INotificacionRecargarLgac {
+public interface INotificacionRecargarDatos {
     
-    public void notitficacionRecargarLgac();
+    public void notitficacionRecargarDatos();
      
 }

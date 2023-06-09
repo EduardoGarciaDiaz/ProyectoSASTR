@@ -23,6 +23,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafxsastr.interfaces.INotificacionRecargarDatos;
 import javafxsastr.interfaces.INotificacionSeleccionItem;
 import javafxsastr.modelos.dao.CursoDAO;
 import javafxsastr.modelos.dao.DAOException;
@@ -51,9 +52,10 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
     private ObservableList<Estudiante> estudinatesDisponibles = FXCollections.observableArrayList();
     private ObservableList<Estudiante> estudinatesActuales = FXCollections.observableArrayList();
     private ObservableList<Estudiante> estudinatesTabla = FXCollections.observableArrayList();
-     private ObservableList<Estudiante> estudinatesTablaAuxiliar ;
+    private ObservableList<Estudiante> estudinatesTablaAuxiliar ;
     private Estudiante estudiante = new Estudiante();
     private int cursoActual ;
+    private INotificacionRecargarDatos interfaz;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -63,7 +65,7 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
        iniciarListener();
     }    
     
-    public void quitarEstudianste(int idEstudinate) {///CHECHAR ESTE ROLLO
+    public void quitarEstudianste(int idEstudinate) {
          System.err.println("tabla usuarios al querer eliminar: "+estudinatesTablaAuxiliar.size());
         for (Estudiante estudianteEliminar : estudinatesTablaAuxiliar) {
             System.err.println(estudianteEliminar +" =="+idEstudinate);
@@ -75,7 +77,8 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
         recargarVbox();        
     }
     
-    public void iniciarEstudiantes(ObservableList<Estudiante> estudinates, int curso) {
+    public void iniciarEstudiantes(ObservableList<Estudiante> estudinates, int curso, INotificacionRecargarDatos interfazN) {
+        interfaz = interfazN;
         if(estudinates != null) {
             estudinatesActuales.addAll(estudinates);
         }
@@ -127,13 +130,16 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
     
     private void AgregarATabla() {     
        estudinatesTabla.add(estudiante);
-       System.err.println("tabla estudinates al agregar "+estudinatesTabla.size());
        vbxEstudiantesPorAgregar.setSpacing(40);      
        estudinatesTablaAuxiliar= FXCollections.observableArrayList();
        estudinatesTablaAuxiliar.addAll(estudinatesTabla);
-       vbxEstudiantesPorAgregar.getChildren().add(new TarjetaAgregarEstudianteCurso(estudiante.getNombre()
-               +" "+estudiante.getPrimerApellido()+ " "+ estudiante.getSegundoApellido()+ "      " +estudiante.getMatriculaEstudiante(),
-               estudiante.getIdEstudiante()));     
+       TarjetaAgregarEstudianteCurso tarjeta = new TarjetaAgregarEstudianteCurso(estudiante);
+       tarjeta.getImagen().setOnMouseClicked(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent event) {              
+                      quitarEstudianste(tarjeta.getEstudinate().getIdEstudiante());
+                }
+            });
+       vbxEstudiantesPorAgregar.getChildren().add(tarjeta);     
        txfAlumnoBusqueda.setText("");
        txfAlumnoBusqueda.setDisable(true);
        BtnOtro.setDisable(false);
@@ -143,10 +149,13 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
     public void recargarVbox() {
         vbxEstudiantesPorAgregar.getChildren().clear();
         for (Estudiante estudianteAgregar : estudinatesTabla) {
-            vbxEstudiantesPorAgregar.getChildren().add(new TarjetaAgregarEstudianteCurso(estudianteAgregar.getNombre()+
-                    " "+estudianteAgregar.getPrimerApellido()+" "+estudianteAgregar.getSegundoApellido()+"    "
-                    +estudianteAgregar.getMatriculaEstudiante(),
-                    estudianteAgregar.getIdEstudiante()));     
+             TarjetaAgregarEstudianteCurso tarjeta = new TarjetaAgregarEstudianteCurso(estudiante);
+            tarjeta.getImagen().setOnMouseClicked(new EventHandler<MouseEvent>() {
+                 public void handle(MouseEvent event) {              
+                           quitarEstudianste(tarjeta.getEstudinate().getIdEstudiante());
+                     }
+                 });
+            vbxEstudiantesPorAgregar.getChildren().add(tarjeta);     
         }
     }
     
@@ -167,6 +176,7 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
     
     public void cerrarVentana() {
         Stage escenarioActual = (Stage) txfAlumnoBusqueda.getScene().getWindow();
+        interfaz.notitficacionRecargarDatos();
         escenarioActual.close();
     }    
     
