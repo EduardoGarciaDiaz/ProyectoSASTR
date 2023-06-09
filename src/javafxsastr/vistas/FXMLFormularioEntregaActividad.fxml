@@ -50,7 +50,7 @@
             <Image url="@../recursos/iconos/flecha.png" />
          </image>
       </ImageView>
-      <Pane layoutX="82.0" layoutY="120.0" prefHeight="186.0" prefWidth="1205.0" style="-fx-background-color: white; -fx-background-radius: 15;" AnchorPane.leftAnchor="82.0" AnchorPane.rightAnchor="441.0" AnchorPane.topAnchor="120.0">
+      <Pane layoutX="93.0" layoutY="122.0" prefHeight="186.0" prefWidth="1578.0" style="-fx-background-color: white; -fx-background-radius: 15;" AnchorPane.leftAnchor="82.0" AnchorPane.rightAnchor="57.0" AnchorPane.topAnchor="122.0">
          <children>
             <Label layoutX="10.0" layoutY="4.0" text="Información de la actividad">
                <font>
@@ -62,171 +62,30 @@
                   <Font name="System Bold" size="22.0" />
                </font>
             </Label>
-            <Label fx:id="lbNombreActividad" layoutX="267.0" layoutY="39.0" prefHeight="30.0" prefWidth="932.0" wrapText="true">
+            <Label fx:id="lbNombreActividad" alignment="TOP_LEFT" layoutX="267.0" layoutY="39.0" prefHeight="65.0" prefWidth="1296.0" wrapText="true">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label fx:id="lbDetallesActividad" alignment="TOP_LEFT" layoutX="108.0" layoutY="75.0" prefHeight="112.0" prefWidth="1099.0" wrapText="true">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Label layoutX="10.0" layoutY="72.0" text="Detalles:">
+            <Label layoutX="10.0" layoutY="91.0" text="Detalles:">
                <font>
                   <Font name="System Bold" size="22.0" />
                </font>
             </Label>
+            <TextArea fx:id="taDetallesActividad" editable="false" focusTraversable="false" layoutX="108.0" layoutY="94.0" prefHeight="93.0" prefWidth="1469.0" style="-fx-border-color: transparent; -fx-background-color: white; -fx-background-radius: 0 0 15 0; -fx-border-radius: 0 0 15 0;" wrapText="true">
+               <font>
+                  <Font size="20.0" />
+               </font></TextArea>
          </children>
       </Pane>
-      <Pane fx:id="paneLateralDer" layoutX="1315.0" layoutY="50.0" prefHeight="913.0" prefWidth="433.0" style="-fx-border-color: black; -fx-border-width: 0 0 0 1px; -fx-background-color: #EFEFEF;" AnchorPane.rightAnchor="-3.0">
-         <children>
-            <Pane prefHeight="574.0" prefWidth="433.0" style="-fx-background-color: F4F4F4; -fx-border-color: black;">
-               <children>
-                  <Label layoutX="116.0" layoutY="33.0" prefHeight="50.0" prefWidth="164.0" text="Curso Actual">
-                     <font>
-                        <Font size="25.0" />
-                     </font>
-                  </Label>
-                  <Pane layoutX="11.0" layoutY="94.0" prefHeight="189.0" prefWidth="402.0" style="-fx-background-color: white; -fx-background-radius: 13;">
-                     <children>
-                        <Label layoutX="14.0" layoutY="14.0" prefHeight="35.0" prefWidth="66.0" text="Curso:">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="14.0" layoutY="62.0" prefHeight="35.0" prefWidth="66.0" text="NRC:">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="10.0" layoutY="105.0" prefHeight="35.0" prefWidth="87.0" text="Docente:">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="14.0" layoutY="147.0" prefHeight="35.0" prefWidth="172.0" text="Duracion Periodo:">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="lbCurso" layoutX="81.0" layoutY="14.0" prefHeight="35.0" prefWidth="308.0">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="lbNrc" layoutX="67.0" layoutY="62.0" prefHeight="35.0" prefWidth="332.0">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="lbDocente" layoutX="94.0" layoutY="109.0" prefHeight="35.0" prefWidth="308.0">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="lbPeriodo" layoutX="177.0" layoutY="147.0" prefHeight="35.0" prefWidth="218.0">
-                           <font>
-                              <Font size="17.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </Pane>
-                  <ImageView fitHeight="54.0" fitWidth="66.0" layoutX="36.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../recursos/iconos/cursoactualjpg.jpg" />
-                     </image>
-                  </ImageView>
-                  <Pane layoutX="16.0" layoutY="341.0" prefHeight="214.0" prefWidth="402.0" style="-fx-background-color: white; -fx-background-radius: 13;">
-                     <children>
-                        <Label layoutX="14.0" layoutY="14.0" prefHeight="35.0" prefWidth="208.0" text="Nombre Anteproyecto:">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="lbAnteproyecto" layoutX="14.0" layoutY="42.0" prefHeight="63.0" prefWidth="375.0" wrapText="true">
-                           <font>
-                              <Font size="17.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="10.0" layoutY="105.0" prefHeight="35.0" prefWidth="87.0" text="Director:">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="14.0" layoutY="147.0" prefHeight="35.0" prefWidth="172.0" text="Codirector:">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="lbDirector" layoutX="88.0" layoutY="105.0" prefHeight="35.0" prefWidth="308.0">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="lbCodirector" layoutX="119.0" layoutY="147.0" prefHeight="35.0" prefWidth="270.0">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </Pane>
-                  <Label layoutX="116.0" layoutY="287.0" prefHeight="50.0" prefWidth="208.0" text="Mi Anteproyecto">
-                     <font>
-                        <Font size="25.0" />
-                     </font>
-                  </Label>
-                  <ImageView fitHeight="63.0" fitWidth="46.0" layoutX="51.0" layoutY="283.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../recursos/iconos/anteproyecto.jpg" />
-                     </image>
-                  </ImageView>
-               </children>
-            </Pane>
-            <Pane layoutX="26.0" layoutY="606.0" prefHeight="264.0" prefWidth="402.0" style="-fx-background-color: F4F4F4;">
-               <children>
-                  <Label layoutX="14.0" layoutY="62.0" prefHeight="35.0" prefWidth="375.0">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="95.0" prefHeight="50.0" prefWidth="164.0" text="Notificaciones">
-                     <font>
-                        <Font size="25.0" />
-                     </font>
-                  </Label>
-                  <ImageView fitHeight="54.0" fitWidth="53.0" layoutX="20.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../recursos/iconos/notification.jpg" />
-                     </image>
-                  </ImageView>
-                  <Label fx:id="lbActRevisadas" layoutX="14.0" layoutY="61.0" prefHeight="38.0" prefWidth="352.0" style="-fx-background-color: white; -fx-background-radius: 13;">
-                     <font>
-                        <Font size="25.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="lbActSinPendientes" layoutX="14.0" layoutY="125.0" prefHeight="38.0" prefWidth="352.0" style="-fx-background-color: white; -fx-background-radius: 13;">
-                     <font>
-                        <Font size="25.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="lbActPorVencer" layoutX="14.0" layoutY="188.0" prefHeight="38.0" prefWidth="352.0" style="-fx-background-color: white; -fx-background-radius: 13;">
-                     <font>
-                        <Font size="25.0" />
-                     </font>
-                  </Label>
-               </children>
-            </Pane>
-         </children>
-      </Pane>
-      <Pane layoutX="82.0" layoutY="318.0" prefHeight="303.0" prefWidth="1205.0" style="-fx-background-color: white; -fx-background-radius: 15 15 0 0;" AnchorPane.leftAnchor="82.0" AnchorPane.rightAnchor="441.0">
+      <Pane layoutX="93.0" layoutY="318.0" prefHeight="303.0" prefWidth="1578.0" style="-fx-background-color: white; -fx-background-radius: 15 15 0 0;" AnchorPane.leftAnchor="82.0" AnchorPane.rightAnchor="57.0">
          <children>
             <Label layoutX="7.0" layoutY="3.0" text="Comentarios">
                <font>
                   <Font size="22.0" />
                </font>
             </Label>
-            <TextArea fx:id="taComentarios" layoutX="-2.0" layoutY="38.0" prefHeight="256.0" prefWidth="1208.0" style="-fx-background-color: white; -fx-border-radius: 15;" wrapText="true">
+            <TextArea fx:id="taComentarios" layoutX="-2.0" layoutY="38.0" prefHeight="256.0" prefWidth="1589.0" style="-fx-background-color: white; -fx-border-radius: 15;" wrapText="true">
                <font>
                   <Font size="20.0" />
                </font>
@@ -234,34 +93,36 @@
                   <Cursor fx:constant="TEXT" />
                </cursor>
             </TextArea>
-            <Label fx:id="lbCampoComentariosError" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="640.0" layoutY="6.0" prefHeight="27.0" prefWidth="551.0" textFill="#f50606">
+            <Label fx:id="lbCampoComentariosError" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="916.0" layoutY="6.0" prefHeight="27.0" prefWidth="655.0" textFill="#f50606">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
          </children>
       </Pane>
-      <Pane layoutX="82.0" layoutY="637.0" prefHeight="211.0" prefWidth="1205.0" style="-fx-background-color: white; -fx-background-radius: 15;" AnchorPane.leftAnchor="82.0" AnchorPane.rightAnchor="441.0">
+      <Pane layoutX="82.0" layoutY="637.0" prefHeight="211.0" prefWidth="1578.0" style="-fx-background-color: white; -fx-background-radius: 15;" AnchorPane.leftAnchor="82.0" AnchorPane.rightAnchor="57.0">
          <children>
             <Label layoutX="7.0" layoutY="3.0" text="Evidencias">
                <font>
                   <Font size="22.0" />
                </font>
             </Label>
-            <Button alignment="CENTER_RIGHT" contentDisplay="CENTER" layoutX="910.0" layoutY="129.0" mnemonicParsing="false" onAction="#clicAdjuntarArchivo" prefHeight="65.0" prefWidth="266.0" style="-fx-border-color: black; -fx-background-radius: 15; -fx-background-color: white; -fx-border-radius: 15;" text="Adjuntar archivos" textAlignment="RIGHT">
+            <Button alignment="CENTER_RIGHT" contentDisplay="CENTER" layoutX="1307.0" layoutY="131.0" mnemonicParsing="false" onAction="#clicAdjuntarArchivo" prefHeight="65.0" prefWidth="266.0" style="-fx-border-color: black; -fx-background-radius: 15; -fx-background-color: white; -fx-border-radius: 15;" text="Adjuntar archivos" textAlignment="RIGHT">
                <font>
                   <Font size="22.0" />
                </font>
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
+               <graphic>
+                  <ImageView fitHeight="41.0" fitWidth="52.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" translateX="-120.0">
+                     <image>
+                        <Image url="@../recursos/iconos/adjuntar.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
-            <ImageView fitHeight="41.0" fitWidth="52.0" layoutX="926.0" layoutY="140.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../recursos/iconos/adjuntar.png" />
-               </image>
-            </ImageView>
-            <ScrollPane layoutX="7.0" layoutY="36.0" maxWidth="887.0" prefHeight="65.0" style="-fx-background-color: white;" styleClass="edge-to-edge">
+            <ScrollPane layoutX="7.0" layoutY="36.0" maxWidth="1580.0" prefHeight="65.0" style="-fx-background-color: white;" styleClass="edge-to-edge">
                <content>
                   <HBox fx:id="hbxContenedorArchivosAlumno" prefHeight="63.0" spacing="6.0" style="-fx-background-color: white;" />
                </content>
@@ -273,7 +134,7 @@
             </Label>
          </children>
       </Pane>
-      <Button fx:id="btnEnviar" layoutX="1033.0" layoutY="880.0" mnemonicParsing="false" onAction="#clicEnviar" prefHeight="54.0" prefWidth="245.0" style="-fx-background-color: D4F1C9; -fx-background-radius: 15;" text="Enviar" AnchorPane.rightAnchor="450.0">
+      <Button fx:id="btnEnviar" layoutX="1406.0" layoutY="865.0" mnemonicParsing="false" onAction="#clicEnviar" prefHeight="54.0" prefWidth="245.0" style="-fx-background-color: D4F1C9; -fx-background-radius: 15;" text="Enviar" AnchorPane.bottomAnchor="19.0" AnchorPane.rightAnchor="77.0">
          <font>
             <Font size="22.0" />
          </font>
@@ -281,7 +142,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button layoutX="703.0" layoutY="881.0" mnemonicParsing="false" onAction="#clicCancelar" prefHeight="54.0" prefWidth="245.0" style="-fx-background-color: FCCFCF; -fx-background-radius: 15;" text="Cancelar" AnchorPane.bottomAnchor="29.0" AnchorPane.rightAnchor="800.0">
+      <Button layoutX="1040.0" layoutY="867.0" mnemonicParsing="false" onAction="#clicCancelar" prefHeight="54.0" prefWidth="245.0" style="-fx-background-color: FCCFCF; -fx-background-radius: 15;" text="Cancelar" AnchorPane.bottomAnchor="19.0" AnchorPane.rightAnchor="443.0">
          <font>
             <Font size="22.0" />
          </font>
@@ -290,10 +151,5 @@
          </cursor>
       </Button>
       <ImageView fx:id="ivArchivo" fitHeight="86.0" fitWidth="100.0" layoutX="10.0" layoutY="497.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="imgBtnDesplegar" fitHeight="58.0" fitWidth="38.0" layoutX="1696.0" layoutY="52.0" onMouseClicked="#clicEscoderPanleIzquierdo" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../recursos/hide.jpg" />
-         </image>
-      </ImageView>
    </children>
 </AnchorPane>

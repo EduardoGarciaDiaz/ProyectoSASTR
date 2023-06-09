@@ -11,9 +11,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.time.LocalDate;
-import javafx.animation.TranslateTransition;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -34,14 +31,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.util.Duration;
 import javafxsastr.JavaFXSASTR;
 import javafxsastr.modelos.dao.AcademicoDAO;
 import javafxsastr.modelos.dao.AnteproyectoDAO;
-import javafxsastr.modelos.dao.CursoDAO;
 import javafxsastr.modelos.pojo.Academico;
 import javafxsastr.modelos.pojo.Anteproyecto;
-import javafxsastr.modelos.pojo.Curso;
 import javafxsastr.modelos.pojo.Estudiante;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -60,8 +54,6 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
     @FXML
     private Label lbNombreActividad;
     @FXML
-    private Label lbDetallesActividad;
-    @FXML
     private TextArea taComentarios;
     @FXML
     private Label lbEntrega;
@@ -74,29 +66,9 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
     @FXML
     private ImageView ivArchivo;
     @FXML
-    private Label lbCurso;
+    private Label lbErrorArchivos;
     @FXML
-    private Label lbNrc;
-    @FXML
-    private Label lbDocente;
-    @FXML
-    private Label lbPeriodo;
-    @FXML
-    private Label lbAnteproyecto;
-    @FXML
-    private Label lbDirector;
-    @FXML
-    private Label lbCodirector;
-    @FXML
-    private Label lbActRevisadas;
-    @FXML
-    private Label lbActSinPendientes;
-    @FXML
-    private Label lbActPorVencer;
-    @FXML
-    private ImageView imgBtnDesplegar;
-    @FXML
-    private Pane paneLateralDer;
+    private TextArea taDetallesActividad;
    
     private Actividad actividad;
     private Entrega entregaEdicion;
@@ -105,24 +77,15 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
     private ArrayList<File> archivosEntregaSeleccionados = new ArrayList<>();
     private Archivo archivoEntrega;
     private Usuario usuario;
-    
-    private boolean menuDatos;
-    private int porVencer;
-    private int realizadas;
-    private int revisadas;
-    private Curso curso;
+
     private Academico academico;
-    private ObservableList<Academico> codirectores;
     private Estudiante estudiante;
     private Anteproyecto anteproyecto;
     private ArrayList<Archivo> archivosEdicion = new ArrayList<>();
-    @FXML
-    private Label lbErrorArchivos;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        btnEnviar.setDisable(false);
-        //obtenerDatosRelacionadoAlEstudiante();
+        btnEnviar.setDisable(true);
         mostrarInformacionActividad(actividad);
         validarCamposVacios();
     }    
@@ -134,7 +97,6 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
     public void setActividad(Actividad actividad) {
         this.actividad = actividad;
         btnEnviar.setDisable(true);
-        //obtenerDatosRelacionadoAlEstudiante();
         mostrarInformacionActividad(actividad);
         validarCamposVacios();
     }
@@ -189,7 +151,7 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
     private void mostrarInformacionActividad(Actividad actividad) {
         if (actividad != null) {
             lbNombreActividad.setText(actividad.getNombreActividad());
-            lbDetallesActividad.setText(actividad.getDetallesActividad());
+            taDetallesActividad.setText(actividad.getDetallesActividad());
         }
     }
 
@@ -226,13 +188,13 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
     }
 
     private void validarCamposVacios() {
-        if (!taComentarios.getText().isEmpty()) {
+        if (!taComentarios.getText().trim().isEmpty()) {
             btnEnviar.setDisable(false);
         }
         taComentarios.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (!newValue.isEmpty()) {
+                if (!newValue.trim().isEmpty()) {
                     lbCampoComentariosError.setText("");
                     btnEnviar.setDisable(false);
                 } else {
@@ -241,15 +203,6 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
                 }
             }
         });
-    }
-    
-    private void obtenerAcademicoDelEstudiante() {
-        try { 
-            int idAcademico = new AnteproyectoDAO().obtenerAnteproyectosPorEstudiante(estudiante.getIdEstudiante()).getIdAcademico();
-            academico = new AcademicoDAO().obtenerAcademicoPorId(idAcademico);
-        } catch(DAOException ex) {
-            manejarDAOException(ex);
-        }
     }
 
     private void enviarEntrega() {
@@ -279,6 +232,15 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
                         Alert.AlertType.ERROR);
             }
         } catch (DAOException ex) {
+            manejarDAOException(ex);
+        }
+    }
+    
+    private void obtenerAcademicoDelEstudiante() {
+        try { 
+            int idAcademico = new AnteproyectoDAO().obtenerAnteproyectosPorEstudiante(estudiante.getIdEstudiante()).getIdAcademico();
+            academico = new AcademicoDAO().obtenerAcademicoPorId(idAcademico);
+        } catch(DAOException ex) {
             manejarDAOException(ex);
         }
     }
@@ -371,70 +333,6 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
             }
         }
     }
-
-    private void actualizaEstadoMenu(int posicion, boolean abierto, String icono) {
-        animacionMenu(posicion);
-        menuDatos = abierto;
-        imgBtnDesplegar.setImage(new Image(JavaFXSASTR.class.getResource(icono).toString()));
-    }
-
-    private void obtenerDatosRelacionadoAlEstudiante() {
-        AnteproyectoDAO anteproyectoDao = new AnteproyectoDAO();
-        CursoDAO cursoDao = new CursoDAO();
-        AcademicoDAO academicoDao = new AcademicoDAO();
-        ActividadDAO actividadesDao = new ActividadDAO();
-        try {
-            curso = cursoDao.ordenarCursosPorEstudiante(estudiante.getIdEstudiante());      //CAMBIAR DAO A OBTENER
-            anteproyecto = anteproyectoDao.obtenerAnteproyectosPorEstudiante(estudiante.getIdEstudiante());
-            if (curso != null) {
-                academico = academicoDao.obtenerAcademicoPorId(curso.getIdAcademico());
-            }
-            codirectores = FXCollections.observableArrayList(
-                    new AcademicoDAO().obtenerCodirectoresProAnteproyecto(anteproyecto.getIdAnteproyecto()));
-            int totalActividades = actividadesDao.obtenerNumeroActividadesPorEstudiante(estudiante.getIdEstudiante());
-            porVencer = actividadesDao.totalActividades(1, estudiante.getIdEstudiante());
-            realizadas = actividadesDao.totalActividades(4, estudiante.getIdEstudiante());
-            revisadas = actividadesDao.totalActividades(3, estudiante.getIdEstudiante());
-        } catch (DAOException ex) {
-            ex.printStackTrace();
-        }
-        setInformacion();
-    }
-
-    private void setInformacion() {
-        if (curso != null) {
-            lbCurso.setText(curso.getNombreCurso());
-            lbNrc.setText(curso.getNrcCurso());
-            lbPeriodo.setText(curso.getFechaInicioCurso() + "-" + curso.getFinPeriodoEscolar());
-        }
-        if (academico != null) {
-            lbDocente.setText(academico.getNombre() + " " + academico.getPrimerApellido() + " " +academico.getSegundoApellido());
-        }
-        if (anteproyecto != null) {
-            lbAnteproyecto.setText(anteproyecto.getNombreTrabajoRecepcional());
-            lbDirector.setText(anteproyecto.getNombreDirector());
-        }
-        String codirectoresNombre = "";
-        if (!codirectores.isEmpty()) {
-            for (int i = 0; i < codirectores.size(); i++) {
-                codirectoresNombre = codirectoresNombre + codirectores.get(i).getNombre() + " "
-                        + codirectores.get(i).getPrimerApellido() + "\n";
-            }
-        }
-        lbCodirector.setText(codirectoresNombre);
-        lbActSinPendientes.setText(porVencer + " Actividades sin realizar");
-        lbActRevisadas.setText(realizadas + " Actividades realizadas");
-        lbActPorVencer.setText(revisadas + " Activdades revisadas");
-    }
-
-    private void animacionMenu(int posicion) {
-        TranslateTransition translate = new TranslateTransition();
-        translate.setNode(paneLateralDer);
-        translate.setDuration(Duration.millis(300));
-        translate.setByX(posicion);
-        translate.setAutoReverse(true);
-        translate.play();
-    }
     
     @FXML
     private void clicRegresar(MouseEvent event) {
@@ -475,16 +373,6 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
             } else {
                 irAVistaDetallesActividad();
             }
-        }
-    }
-
-    @FXML
-    private void clicEscoderPanleIzquierdo(MouseEvent event) {
-        if(menuDatos) {
-            actualizaEstadoMenu(-433, false, "recursos/hide.jpg");            
-        }
-        else{
-            actualizaEstadoMenu(433, true, "recursos/show.jpg");           
         }
     }
     
