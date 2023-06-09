@@ -21,5 +21,9 @@ public interface INotificacionClicBotonInicio {
     public void notificarClicBotonGestionCA();
     
     public void notificarClicBotonActividades();
+    
     public void notificarClicBotonCursos();
+    
+    public void notificarClicBotonGestionCursos();
+    
 }
