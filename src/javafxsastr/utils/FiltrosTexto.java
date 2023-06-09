@@ -11,24 +11,22 @@ package javafxsastr.utils;
 import java.util.function.UnaryOperator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.control.TextInputControl;
 
 public class FiltrosTexto {
 
     public FiltrosTexto() {
     }
     
-    private static final Pattern PATRON_SOLO_LETRA_NUMEROS = Pattern.compile("^[\\p{L}0-9\\s]+$");
-    private static final Pattern PATRON_SOLO_LETRA_NUMEROS_PUNTOS = Pattern.compile("^[\\p{L}0-9.\\s]+$");
     private static final Pattern PATRON_CORREO_VALIDO = Pattern.compile("^[A-Za-z0-9]+@(?:[A-Za-z0-9]+\\.)?uv\\.mx$");
     private static final Pattern PATRON_NUMERO_PERSONAL_VALIDO = Pattern.compile("^[0-9]+$");
     private static final Pattern PATRON_MATRICULA_VALIDA = Pattern.compile("^[sS]\\d{8}$");
     private static final Pattern PATRON_CONTRASENA_VALIDA = Pattern.compile("^(?=.*[A-Z])(?=.*[\\W_]).{7,16}$");
-
+    private static final Pattern PATRON_SOLO_LETRA_NUMEROS = Pattern.compile("^[\\p{L}0-9\\s]*$");
+    private static final Pattern PATRON_SOLO_LETRA_NUMEROS_PUNTOS = Pattern.compile("^[\\p{L}0-9.\\s]*$");
     
-    public static  void filtroLetrasNumeros(TextField campoTexto) {              
+    public static  void filtroLetrasNumeros(TextInputControl campoTexto) {              
             UnaryOperator<TextFormatter.Change> filtroTextoIngresado = change -> {
                 String textoIngresado = change.getControlNewText();
                 if (PATRON_SOLO_LETRA_NUMEROS.matcher(textoIngresado).matches()) {
@@ -41,7 +39,7 @@ public class FiltrosTexto {
             campoTexto.setTextFormatter(textFormatter);
     };
     
-    public static  void filtroLetrasNumerosPuntos(TextArea campoTexto) {              
+     public static  void filtroLetrasNumerosPuntos(TextInputControl campoTexto) {              
             UnaryOperator<TextFormatter.Change> filtroTextoIngresado = change -> {
                 String textoIngresado = change.getControlNewText();
                 if (PATRON_SOLO_LETRA_NUMEROS_PUNTOS.matcher(textoIngresado).matches()) {
@@ -90,8 +88,6 @@ public class FiltrosTexto {
         }
     }
      
-    
-    
     
 }
 

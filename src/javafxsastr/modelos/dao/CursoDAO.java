@@ -44,9 +44,9 @@ public class CursoDAO {
             "idExperienciaEducativa, idNrc, idPeriodoEscolar, idEstadoCurso, idAcademico) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
     private final String ACTUALIZAR_CURSO = "UPDATE cursos SET nombreCurso = ?, fechaInicioCurso = ?, fechaFinCurso = ?, idSeccion = ?,"
             +
-            " idBloque = ?, idExperienciaEducativa = ?, idNrc = ?, idPeriodoEscolar = ?, idEstadoCurso = ?, idAcademico = ?, "
+            " idBloque = ?, idExperienciaEducativa = ?, idNrc = ?, idPeriodoEscolar = ?, idEstadoCurso = ?, idAcademico = ? "
             +
-            "WHERE idCurso = ?;";
+            "WHERE idCurso = ?";
     private final String ELIMINAR_CURSO = "DELETE FROM cursos WHERE idCurso = ?";
     private final String VERIFICAR_SI_ACADEMICO_IMPARTE_CURSO = "SELECT EXISTS"
             + "(SELECT idAcademico FROM cursos WHERE idAcademico = ?) as esProfesor;";
@@ -282,10 +282,12 @@ public class CursoDAO {
             sentencia.setInt(8, curso.getIdPeriodoEscolar());
             sentencia.setInt(9, curso.getIdEstadoCurso());
             sentencia.setInt(10, curso.getIdAcademico());
+            sentencia.setInt(11,curso.getIdCurso());
             int filasAfectadas = sentencia.executeUpdate();
             respuesta = (filasAfectadas == 1) ? curso.getIdCurso() : -1;
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
+            ex.printStackTrace();
             throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
                     Codigos.ERROR_CONSULTA);
         }

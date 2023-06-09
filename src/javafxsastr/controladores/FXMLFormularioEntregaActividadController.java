@@ -71,17 +71,16 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
    
     private Actividad actividad;
     private Entrega entregaEdicion;
-    private boolean esEdicion; 
+    private boolean esEdicion ; 
     private File archivoEntregaSeleccion;
     private ArrayList<File> archivosEntregaSeleccionados = new ArrayList<>();
     private Archivo archivoEntrega;
     private Usuario usuario;
-
     private Academico academico;
     private Estudiante estudiante;
     private Anteproyecto anteproyecto;
-    private ArrayList<Archivo> archivosEdicion = new ArrayList<>();
-
+    private ArrayList<Archivo> archivosEdicion = new ArrayList<>();    
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         btnEnviar.setDisable(true);
@@ -89,8 +88,8 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
         validarCamposVacios();
     }    
     
-    public void setEstudiante(Estudiante estudiante) {      //Establece al usuario para mantener la navegabilidad entre pantallas
-        this.estudiante = estudiante;
+    public void setEstudiante(Estudiante estudiante) {   
+       this.estudiante = estudiante;       //Establece al usuario para mantener la navegabilidad entre pantallas
     }
 
     public void setActividad(Actividad actividad) {

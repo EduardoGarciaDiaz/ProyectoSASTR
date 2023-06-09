@@ -105,6 +105,6 @@ public class Estudiante extends Usuario{
             segundoApellido = super.getSegundoApellido();
         }
         return nombre + " " + primerApellido + " " + segundoApellido;
-    }
+    }    
     
 }

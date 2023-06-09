@@ -98,7 +98,7 @@
                         <Image url="@../recursos/iconos/editarCurso.jpg" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="50.0" fitWidth="63.0" layoutX="1497.0" layoutY="136.0" onMouseClicked="#clicDesactivarCurso" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="imvActivar" fitHeight="50.0" fitWidth="63.0" layoutX="1497.0" layoutY="136.0" onMouseClicked="#clicDesactivarCurso" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../recursos/iconos/desactivarCurso.jpg" />
                      </image>
@@ -140,7 +140,7 @@
                   </Label>
                </children>
             </Pane>
-            <ScrollPane fx:id="slpAlamcenEstudinates" layoutX="100.0" layoutY="335.0" maxHeight="588.0" prefWidth="1574.0" style="-fx-background-color: white;">
+            <ScrollPane fx:id="slpAlamcenEstudinates" hbarPolicy="NEVER" layoutX="100.0" layoutY="335.0" maxHeight="586.0" prefWidth="1574.0" style="-fx-background-color: white;">
                <content>
                   <VBox fx:id="hbxAlmacenEstdantes" prefWidth="1575.0" style="-fx-background-color: white;" />
                </content>

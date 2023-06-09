@@ -125,12 +125,12 @@
                               <Font name="System Bold" size="17.0" />
                            </font>
                         </Label>
-                        <Label fx:id="lbNombreResponsable" layoutX="93.0" layoutY="60.0" prefHeight="26.0" prefWidth="740.0" text="&lt;nombre Responsable Cuerpo Academico&gt;">
+                        <Label fx:id="lbNombreResponsable" layoutX="102.0" layoutY="60.0" prefHeight="26.0" prefWidth="740.0" text="&lt;nombre Responsable Cuerpo Academico&gt;">
                            <font>
                               <Font size="17.0" />
                            </font>
                         </Label>
-                        <Label fx:id="lbCorreoResponsable" layoutX="179.0" layoutY="112.0" prefHeight="26.0" prefWidth="664.0" text="&lt;correo Responsable Cuerpo Academico&gt;">
+                        <Label fx:id="lbCorreoResponsable" layoutX="194.0" layoutY="112.0" prefHeight="26.0" prefWidth="664.0" text="&lt;correo Responsable Cuerpo Academico&gt;">
                            <font>
                               <Font size="17.0" />
                            </font>

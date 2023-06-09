@@ -9,6 +9,7 @@ package javafxsastr.controladores;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -34,7 +35,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafxsastr.JavaFXSASTR;
-import javafxsastr.interfaces.INotificacionRecargarLgac;
 import javafxsastr.interfaces.INotificacionSeleccionItem;
 import javafxsastr.modelos.dao.AcademicoDAO;
 import javafxsastr.modelos.dao.CuerpoAcademicoDAO;
@@ -47,9 +47,11 @@ import javafxsastr.modelos.pojo.CuerpoAcademicoLgac;
 import javafxsastr.modelos.pojo.Lgac;
 import javafxsastr.modelos.pojo.Usuario;
 import javafxsastr.utils.CampoDeBusqueda;
+import javafxsastr.utils.FiltrosTexto;
 import javafxsastr.utils.Utilidades;
+import javafxsastr.interfaces.INotificacionRecargarDatos;
 
-public class FXMLAñadirCuerpoAcademicoController implements Initializable, INotificacionRecargarLgac{
+public class FXMLAñadirCuerpoAcademicoController implements Initializable, INotificacionRecargarDatos{
 
     @FXML
     private AnchorPane menuContraido;
@@ -98,6 +100,7 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
     
     Academico academico = null;
     Lgac lgacSelected = null;
+    private static final Pattern PATRON_NOMBRE_CA = Pattern.compile("^[\\p{L}0-9\\s]+$");
     private final int LIM_CARACT_NOMBRE = 100;
     private final int LIM_CARACT_DICIPLINA = 200;
     private final int LIM_CARACT_DESCRIPCION = 600;    
@@ -126,6 +129,7 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
         recuperarDatos();
         recuperarAreas();
         inicializarLisneters();  
+        inicializarFiltrosDeTexto();
         if(esEdicion) {
             lbTituloventana.setText("Modificar Cuerpo Academico");
         }
@@ -253,10 +257,19 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
         );    
     }
     
+    private   void inicializarFiltrosDeTexto() {              
+        FiltrosTexto.filtroLetrasNumeros(txfNombreCA);
+        FiltrosTexto.filtroLetrasNumeros(txfDiciplinaCA);
+        FiltrosTexto.filtroLetrasNumerosPuntos(txaDescripcionCA);
+    }
+    
     private void recuperarDatos() {
         try {
            academicosBusqueda = FXCollections.observableArrayList(new AcademicoDAO().obtenerAcademicos());
            lgacs = FXCollections.observableArrayList(new LgacDAO().obtenerInformacionLGCAS());
+           lvLgac.setItems(lgacs);
+           lvAcademicos.setItems(academicosBusqueda);
+           inicializarLisneters();
         } catch (DAOException ex) {
             ex.printStackTrace();
         }        
@@ -484,7 +497,7 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
         }
     }
      
-    private void mostraMensajelimiteSuperado(int limiteCaracteres, String campo,  Label etiquetaError) {        
+    private void mostraMensajelimiteSuperado(int limiteCaracteres, String campo,  Label etiquetaError) { 
         etiquetaError.setText("Cuidado, Exediste el limite de caracteres("+limiteCaracteres+") de este campo " + campo);
         btnGuardar.setDisable(esEdicion);
     }    
@@ -569,8 +582,13 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
     }
 
     @Override
-    public void notitficacionRecargarLgac() {
+    public void notitficacionRecargarDatos() {
         recuperarDatos(); 
+    }
+
+    @Override
+    public void notitficacionRecargarDatosPorEdicion(boolean fueEditado) {
+        recuperarDatos();
     }
     
 }

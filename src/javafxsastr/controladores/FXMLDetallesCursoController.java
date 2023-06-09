@@ -1,7 +1,7 @@
 /*
  * Autor: Tristan Eduardo Suarez Santiago
- * Fecha de creación: 24/05/2023
- * Descripción: Controller de la ventana AñadirCuerpoAcademico y modificar.
+ * Fecha de creación: 03/06/2023
+ * Descripción: Controller de la ventana de ver detalles de curso.
  */
 
 package javafxsastr.controladores;
@@ -9,11 +9,9 @@ package javafxsastr.controladores;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -21,44 +19,34 @@ import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafxsastr.JavaFXSASTR;
+import javafxsastr.interfaces.INotificacionRecargarDatos;
 import javafxsastr.modelos.dao.CursoDAO;
 import javafxsastr.modelos.dao.DAOException;
 import javafxsastr.modelos.dao.EstudianteDAO;
+import javafxsastr.modelos.dao.UsuarioDAO;
 import javafxsastr.modelos.pojo.Academico;
 import javafxsastr.modelos.pojo.Curso;
 import javafxsastr.modelos.pojo.Estudiante;
+import javafxsastr.modelos.pojo.Usuario;
 import javafxsastr.utils.Utilidades;
 import javafxsastr.utils.cards.TarjetaAgregarAlumno;
 import javafxsastr.utils.cards.TarjetaEstudianteCurso;
 
-/**
- * FXML Controller class
- *
- * @author tristan
- */
-public class FXMLDetallesCursoController implements Initializable {
+public class FXMLDetallesCursoController implements Initializable, INotificacionRecargarDatos {
 
-    @FXML
-    private AnchorPane menuContraido;
     @FXML
     private Label lbTituloventana;
     @FXML
@@ -82,56 +70,41 @@ public class FXMLDetallesCursoController implements Initializable {
     private ScrollPane slpAlamcenEstudinates;
     @FXML
     private VBox hbxAlmacenEstdantes;
-    
+    @FXML
+    private ImageView imvActivar;
+     
+    private final int DESACTIVAR = 2;
+    private final int ACTIVAR = 1;
     private Academico academico;
     private ObservableList<Estudiante> estudiantes;
     private Curso cursoActual;
    
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        obtenerDatosCurso();
+    public void initialize(URL url, ResourceBundle rb) {        
+    }
+    
+    public void setUsuarioYCurso(Academico academicoN, Curso curso) {
+        this.academico = academicoN;
+        this.cursoActual = curso;
+        cargarDetallesCurso();
         obtenerEstudiantesCurso();
         llenarEstudiantes();
     }
     
-    public void setUsuario(Academico academico) {
-        this.academico = academico;
+    public void editarUsuario(Estudiante estudiante) {         
+        irVistaEditarEstudiante(estudiante);
     }
     
-    public void desactivarUsuario(int idUsuario) {
-          Utilidades.mostrarDialogoConfirmacion("Desactivar Estudiante de curso",
-                "¿Estas seguro que deseas desactivar al estudinate del curso?");
-    }
-    
-    public void editarUsuario(int idUsuario) {
-          Utilidades.mostrarDialogoConfirmacion("Editar Estudiante de curso",
-                "¡Empieza edicion!");
-        /////INICIA EDITAR Usuario
-       /* Stage escenarioNuevo = new Stage();
-        Scene escenaNueva = Utilidades.inicializarEscena("vistas/FXML.fxml");
-        escenarioNuevo.setScene(escenaNueva);
-        escenarioNuevo.setTitle("Modificar Uusuario");
-        escenarioNuevo.initModality(Modality.APPLICATION_MODAL);
-        escenarioNuevo.show();*/
-        
-    }
     public void agregarAlumno() {
-        try {
-            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLAsignarEstudianteCurso.fxml"));
-            Parent vista = accesoControlador.load();
-            FXMLAsignarEstudianteCursoController accion = accesoControlador.getController();
-            accion.iniciarEstudiantes(estudiantes, cursoActual.getIdCurso());
-            Stage escenarioNuevo = new Stage();
-            Scene escenaNueva = Utilidades.inicializarEscena("vistas/FXMLAsignarEstudianteCurso.fxml");
-            escenarioNuevo.setScene(escenaNueva);
-            escenarioNuevo.setTitle("Modificar Uusuario");
-            escenarioNuevo.initModality(Modality.APPLICATION_MODAL);
-            escenarioNuevo.show();
-        } catch (IOException ex) {
-           Utilidades.mostrarDialogoSimple("Error","No sepudo caragar la Escena", Alert.AlertType.ERROR);
-        }
-        
+       irVistaAgregarAlumno();
     }
+    
+    private void iniciarVentana(){     
+        hbxAlmacenEstdantes.getChildren().clear();
+        estudiantes.clear();
+        obtenerEstudiantesCurso();
+        llenarEstudiantes();     
+    }    
     
     private void cargarDetallesCurso() {
         lbNombreCurso.setText(cursoActual.getNombreCurso());
@@ -141,47 +114,137 @@ public class FXMLDetallesCursoController implements Initializable {
         lbBloque.setText(cursoActual.getBloqueCurso());
         lbNrc.setText(cursoActual.getNrcCurso());
         lbSeccion.setText(cursoActual.getSeccionCurso());
-    }
+    }    
     
-    private void obtenerDatosCurso(/*Curso curso*/) {
+    private void recargarCurso() {
         try {
-            cursoActual = new CursoDAO().obtenerCurso(1);  //OBTEENR CURSO POR ID,RECIBIRLOD EUNA PANTALLA ANTERIOR          
+            cursoActual = new CursoDAO().obtenerCurso(cursoActual.getIdCurso());
         } catch (DAOException ex) {
             manejarDAOException(ex);
         }
         cargarDetallesCurso();
     }
     
-    private void obtenerEstudiantesCurso() {
-        estudiantes = FXCollections.observableArrayList();
+    
+    private void obtenerEstudiantesCurso() {        
+        estudiantes = FXCollections.observableArrayList(); 
+        if(cursoActual != null) {
+            int idCurso = cursoActual.getIdCurso();
         try {
-            estudiantes.addAll(new EstudianteDAO().obtenerEstudiantesPorIdCurso(cursoActual.getIdCurso()));
+            estudiantes.addAll(new EstudianteDAO().obtenerEstudiantesPorIdCurso(idCurso));
         } catch (DAOException ex) {
+            ex.printStackTrace();
             manejarDAOException(ex);
         }
+        }        
     }
     
     private void llenarEstudiantes() {
         hbxAlmacenEstdantes.setSpacing(20);   
         hbxAlmacenEstdantes.setPadding(new Insets(5));
-        int numFilas = 3;   //Math.round(estudiantes.size()/3);
-        int elementosPorFila = 5;       
-        for (int i = 0; i < numFilas; i++) {
+        int numeroEstudiantes = estudiantes.size();       
+        int elementosPorFila = 5;  
+        int numFilas = Math.round(numeroEstudiantes/elementosPorFila) + 1;    
+        int contadorGeneral = 0;
+        for (int i = 0; (i < numFilas && numeroEstudiantes != contadorGeneral) || i == 0; i++) {
             HBox fila = new HBox();           
             fila.setSpacing(60);
-            for (int j = 0; j < elementosPorFila; j++) {
-                if(j==0 && i == 0) {
-                    fila.getChildren().add(new TarjetaAgregarAlumno());
-                }else {    
-                    fila.getChildren().add(new TarjetaEstudianteCurso("Juan Peres De Girjalva", "juan@homtail.com", i+j));
-                }             
-            }
+            if(i==0){
+                TarjetaAgregarAlumno tarjetaAgregarAlumno = new TarjetaAgregarAlumno();
+                fila.getChildren().add(tarjetaAgregarAlumno);
+                tarjetaAgregarAlumno.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    public void handle(MouseEvent event) {  
+                        if(cursoActual.getIdEstadoCurso() == 2) {
+                            Utilidades.mostrarDialogoSimple("Accion invalida","No puedes asignar estudiantes a un curso inactivo",
+                                    Alert.AlertType.WARNING);
+                        }else {
+                            irVistaAgregarAlumno();
+                        }
+                    }
+                });
+            }           
+            for (int j = 0; j < elementosPorFila && numeroEstudiantes != contadorGeneral && estudiantes.size() != 0; j++) {
+                TarjetaEstudianteCurso tarjeta = new TarjetaEstudianteCurso(estudiantes.get(contadorGeneral));
+                tarjeta.getBotonDesactivar().setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    public void handle(MouseEvent event) {
+                            if(tarjeta.getEstudiante().getIdEstadoUsuario() == 1) {                                    
+                                desactivarUsuario(tarjeta.getEstudiante());
 
+                            }else {                            
+                                 activarUsuario(tarjeta.getEstudiante());
+                            }                                
+                        }
+                    });
+                tarjeta.getBotonEditar().setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    public void handle(MouseEvent event) {
+                            editarUsuario(tarjeta.getEstudiante());
+                        }
+                    });                 
+                fila.getChildren().add(tarjeta);
+                contadorGeneral++;                          
+            }
             hbxAlmacenEstdantes.getChildren().add(fila);
         }
     }
     
+    private void desactivarUsuario(Estudiante estudiante) {
+        if(Utilidades.mostrarDialogoConfirmacion("Desactivar Estudiante de curso",
+                "¿Estas seguro que deseas desactivar al estudiante del curso?")) {
+            try {
+                Usuario usuario = new UsuarioDAO().obtenerUsuarioPorId(estudiante.getIdUsuario());
+                usuario.setIdEstadoUsuario(DESACTIVAR);
+                new UsuarioDAO().actualizarUsuario(usuario);
+            } catch (DAOException ex) {
+                manejarDAOException(ex);
+            }
+        }
+        iniciarVentana();
+    }
     
+    private void activarUsuario(Estudiante estudiante) {
+        if(Utilidades.mostrarDialogoConfirmacion("Activar Estudiante de curso",
+                "¿Estas seguro que deseas activar al estudiante del curso?")) {
+            try {
+                Usuario usuario = new UsuarioDAO().obtenerUsuarioPorId(estudiante.getIdUsuario());
+                usuario.setIdEstadoUsuario(ACTIVAR);
+                new UsuarioDAO().actualizarUsuario(usuario);
+            } catch (DAOException ex) {
+                manejarDAOException(ex);
+            }
+        }
+        iniciarVentana();
+    }
+    
+    private void desactivarCurso(Curso curso) {        
+        try {
+            curso.setIdEstadoCurso(DESACTIVAR);
+            int cursoEdicion = new CursoDAO().actualizarCurso(curso);
+        } catch (DAOException ex) {
+            manejarDAOException(ex);
+        }
+        recargarCurso();
+    }
+    
+    private void activarCurso(Curso curso) {        
+        try {
+            curso.setIdEstadoCurso(ACTIVAR);
+            int cursoEdicion = new CursoDAO().actualizarCurso(curso);
+        } catch (DAOException ex) {
+            manejarDAOException(ex);
+        }
+        recargarCurso();
+    }
+     
+    private void setLogoActivo() {
+        if(cursoActual.getIdEstadoCurso()== 1) {
+           imvActivar.setImage(new Image("file:src/javafxsastr/recursos/iconos/desactivarCurso.jpg")); 
+           crlEstadoCurso.setFill(Color.web("#C3E0BE"));
+        }else {
+            imvActivar.setImage(new Image("file:src/javafxsastr/recursos/iconos/activarEstudiante.png")); 
+            crlEstadoCurso.setFill(Color.web("#EBE555"));
+        }        
+    }
+            
     private void manejarDAOException(DAOException ex) {
         switch (ex.getCodigo()) {
             case ERROR_CONSULTA:
@@ -197,10 +260,49 @@ public class FXMLDetallesCursoController implements Initializable {
         }
     }
     
-    public void cerrarVentana() {
+    private void cerrarVentana() {
         Stage escenarioActual = (Stage) lbBloque.getScene().getWindow();
         escenarioActual.close();
     }
+    
+    private void irVistaAgregarAlumno() {
+        try {
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLAsignarEstudianteCurso.fxml"));
+            Parent vista = accesoControlador.load();
+            FXMLAsignarEstudianteCursoController controladorVistaAsignarEstudianteCurso = accesoControlador.getController();
+            controladorVistaAsignarEstudianteCurso.iniciarEstudiantes(estudiantes, cursoActual, this);            
+            Stage escenarioFormulario = new Stage();
+            escenarioFormulario.setScene(new Scene(vista));
+            escenarioFormulario.setTitle("Añadir estudiantes");
+            escenarioFormulario.initModality(Modality.APPLICATION_MODAL);
+            escenarioFormulario.showAndWait();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            Utilidades.mostrarDialogoSimple("Error","No se pudo cargar la Escena", Alert.AlertType.ERROR);
+        }        
+    }
+    
+    private void irVistaEditarEstudiante(Estudiante estudiante) {
+         try {
+            Usuario usuario = new UsuarioDAO().obtenerUsuarioPorId(estudiante.getIdUsuario());   
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLFormularioUsuario.fxml"));
+            Parent vista = accesoControlador.load();
+            FXMLFormularioUsuarioController controladorVistaVerUsuario = accesoControlador.getController();     
+            controladorVistaVerUsuario.inicializarInformacionFormulario(true, usuario);
+            controladorVistaVerUsuario.vieneDeVentanaDetallesCurso(true, this);
+            Stage escenario = new Stage();
+            escenario.setScene(new Scene(vista));
+            escenario.setTitle("Modificar Usuarios");
+            escenario.initModality(Modality.APPLICATION_MODAL);
+            escenario.showAndWait();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (DAOException ex) {
+            manejarDAOException(ex);
+        }
+        iniciarVentana();
+    }
+    
 
     @FXML
     private void clicBtnRegresar(MouseEvent event) {
@@ -209,21 +311,36 @@ public class FXMLDetallesCursoController implements Initializable {
 
     @FXML
     private void clicEditarCurso(MouseEvent event) {
-          Utilidades.mostrarDialogoConfirmacion("Editar  curso",
-                "¡Empieza edicion!");
-        /////INICIA EDITAR CURSO
-       /* Stage escenarioNuevo = new Stage();
-        Scene escenaNueva = Utilidades.inicializarEscena("vistas/FXML.fxml");
-        escenarioNuevo.setScene(escenaNueva);
-        escenarioNuevo.setTitle("Añadir Usuario");
-        escenarioNuevo.initModality(Modality.APPLICATION_MODAL);
-        escenarioNuevo.show();*/
+        try {              
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLFormularioCurso.fxml"));
+            Parent vista = accesoControlador.load();
+            FXMLFormularioCursoController controladorVista = accesoControlador.getController();     
+            controladorVista.inicializarInformacionFormulario(true, cursoActual,this);
+            Stage escenario = new Stage();
+            escenario.setScene(new Scene(vista));
+            escenario.setTitle("Modificar Curso");
+            escenario.initModality(Modality.APPLICATION_MODAL);
+            escenario.showAndWait();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        iniciarVentana();
     }
 
     @FXML
     private void clicDesactivarCurso(MouseEvent event) {
-        Utilidades.mostrarDialogoConfirmacion("Desactivar Estudiante de curso",
-                "¡Estas seguro que deseas desactivar el curso!");
+        if(cursoActual.getIdEstadoCurso() == 1) {
+            if(Utilidades.mostrarDialogoConfirmacion("Desactivar Estudiante de curso",
+                "¿Estas seguro que deseas desactivar el curso?")) {
+                      desactivarCurso(cursoActual);
+            }          
+        }else {
+            if(Utilidades.mostrarDialogoConfirmacion("Activar Estudiante de curso",
+                "¿Estas seguro que deseas activar el curso?")) {
+                      activarCurso(cursoActual);
+            }         
+        }
+        setLogoActivo();
     }
     
     private void irAVistaCursos() {
@@ -239,6 +356,18 @@ public class FXMLDetallesCursoController implements Initializable {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    @Override
+    public void notitficacionRecargarDatos() {
+       iniciarVentana();
+    }
+
+    @Override
+    public void notitficacionRecargarDatosPorEdicion(boolean fueEditado) {
+       if(fueEditado) {
+           recargarCurso();
+       }
     }
     
 }

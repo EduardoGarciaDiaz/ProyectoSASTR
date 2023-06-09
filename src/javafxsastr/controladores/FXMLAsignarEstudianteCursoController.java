@@ -1,6 +1,6 @@
 /*
  * Autor: Tristan Eduardo Suarez Santiago
- * Fecha de creación: 24/05/2023
+ * Fecha de creación: 04/06/2023
  * Descripción: Controller de la ventana Asignar estudinate Curso.
  */
 
@@ -8,8 +8,6 @@ package javafxsastr.controladores;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,16 +21,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafxsastr.interfaces.INotificacionRecargarDatos;
 import javafxsastr.interfaces.INotificacionSeleccionItem;
 import javafxsastr.modelos.dao.CursoDAO;
 import javafxsastr.modelos.dao.DAOException;
 import javafxsastr.modelos.dao.EstudianteDAO;
-import javafxsastr.modelos.pojo.Academico;
 import javafxsastr.modelos.pojo.Curso;
 import javafxsastr.modelos.pojo.Estudiante;
 import javafxsastr.utils.CampoDeBusqueda;
 import javafxsastr.utils.Utilidades;
-import javafxsastr.utils.cards.TarjetaAgregarAlumno;
 import javafxsastr.utils.cards.TarjetaAgregarEstudianteCurso;
 
 public class FXMLAsignarEstudianteCursoController implements Initializable {
@@ -42,131 +39,155 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
     @FXML
     private TextField txfAlumnoBusqueda;
     @FXML
-    private ListView<Estudiante> lsvAlumnosBuaqueda;    
+    private ListView<Estudiante> lsvEstudiantesBusqueda;    
     @FXML
     private Button BtnOtro;
     @FXML
     private VBox vbxEstudiantesPorAgregar;
     
-    private ObservableList<Estudiante> estudinatesDisponibles = FXCollections.observableArrayList();
-    private ObservableList<Estudiante> estudinatesActuales = FXCollections.observableArrayList();
-    private ObservableList<Estudiante> estudinatesTabla = FXCollections.observableArrayList();
-     private ObservableList<Estudiante> estudinatesTablaAuxiliar ;
-    private Estudiante estudiante = new Estudiante();
-    private int cursoActual ;
+    private ObservableList<Estudiante> estudiantesDisponibles;
+    private ObservableList<Estudiante> estudiantesActuales;
+    private ObservableList<Estudiante> estudiantesTabla;
+    private Estudiante estudianteSeleccionado;
+    private Curso cursoActual ;
+    private INotificacionRecargarDatos interfaz;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       BtnOtro.setDisable(true);
-       btnGuardar.setDisable(true);
-       recuperarEstudinates();
-       iniciarListener();
     }    
     
-    public void quitarEstudianste(int idEstudinate) {///CHECHAR ESTE ROLLO
-         System.err.println("tabla usuarios al querer eliminar: "+estudinatesTablaAuxiliar.size());
-        for (Estudiante estudianteEliminar : estudinatesTablaAuxiliar) {
-            System.err.println(estudianteEliminar +" =="+idEstudinate);
-            if(estudianteEliminar.getIdEstudiante() == idEstudinate) {
-                System.err.println("Si es igual???????");
-                estudinatesTabla.remove(estudianteEliminar);
-            }
+    public void iniciarEstudiantes(ObservableList<Estudiante> estudiantes, Curso curso, INotificacionRecargarDatos interfazN) {
+        interfaz = interfazN;
+        if(estudiantes != null) {
+            estudiantesActuales = FXCollections.observableArrayList((estudiantes));
+                    recuperarEstudinates();
+
+        } else {
+            System.out.println("El Observable de estudiantes viene nulo");
         }
-        recargarVbox();        
-    }
-    
-    public void iniciarEstudiantes(ObservableList<Estudiante> estudinates, int curso) {
-        if(estudinates != null) {
-            estudinatesActuales.addAll(estudinates);
-        }
-        cursoActual = curso;        
+        cursoActual = curso;    
+        BtnOtro.setDisable(true);
+        btnGuardar.setDisable(true);
+        estudiantesTabla = FXCollections.observableArrayList();
+        iniciarListener();
     }
     
     private void iniciarListener() {
-        CampoDeBusqueda<Estudiante> campoDeBusqueda = new CampoDeBusqueda<>(txfAlumnoBusqueda, lsvAlumnosBuaqueda,
-            estudinatesDisponibles, estudiante, new INotificacionSeleccionItem<Estudiante>() {            
+        CampoDeBusqueda<Estudiante> campoDeBusqueda = new CampoDeBusqueda<>(txfAlumnoBusqueda, lsvEstudiantesBusqueda,
+            estudiantesDisponibles, estudianteSeleccionado, new INotificacionSeleccionItem<Estudiante>() {            
               @Override
             public void notificarSeleccionItem(Estudiante itemSeleccionado) {
-                estudiante = itemSeleccionado;
-                btnGuardar.requestFocus();                
+                if(itemSeleccionado != null) {
+                    estudianteSeleccionado = itemSeleccionado;
+                     vbxEstudiantesPorAgregar.requestFocus();     
+                }                          
             }
             @Override
             public void notificarPerdidaDelFoco() {                
                 if(validarEstudianteEnCurso()) {                    
                     AgregarATabla();
                 }else {
-                    Utilidades.mostrarDialogoSimple("NO posible", "EsteEstudiante ya existe en el curso",
-                            Alert.AlertType.INFORMATION);
+                    Utilidades.mostrarDialogoSimple("Accion invalida", "Este Estudiante ya pertenece a un curso",
+                            Alert.AlertType.INFORMATION);                   
                 }
+                txfAlumnoBusqueda.setText("");
             }         
-        });
-        
+        });        
     }
     
     private void recuperarEstudinates() {
         try {
-            estudinatesDisponibles.addAll(new EstudianteDAO().obtenerEstudiantes());
+            estudiantesDisponibles = FXCollections.observableArrayList((new EstudianteDAO().obtenerEstudiantes()));
         } catch (DAOException ex) {
-            Logger.getLogger(FXMLAsignarEstudianteCursoController.class.getName()).log(Level.SEVERE, null, ex);
+            manejarDAOException(ex);
         }
     }
     
     private boolean validarEstudianteEnCurso() {
-        for (Estudiante estudinates : estudinatesActuales) {
-            if (estudiante.getIdEstudiante() == estudinates.getIdEstudiante()) {
+        if(estudianteSeleccionado != null) {
+            for (Estudiante estudiantes : estudiantesActuales) {
+                if (estudiantes.getIdEstudiante() == estudianteSeleccionado.getIdEstudiante()) {
+                    return false;
+                }
+            }
+            if(estudianteSeleccionado.getIdCurso() != 0){
                 return false;
             }
+            if(estudiantesTabla != null) {
+                for (Estudiante estudiante1 : estudiantesTabla) {
+                    if (estudiante1.getIdEstudiante() == estudianteSeleccionado.getIdEstudiante()) {
+                        return false;
+                    }
+                }  
+            } 
+            return true;
         }
-        for (Estudiante estudiante1 : estudinatesTabla) {
-            if (estudiante.getIdEstudiante() == estudiante1.getIdEstudiante()) {
-                return false;
-            }
-        }                
-        return true;
+        return false;        
     }
     
     private void AgregarATabla() {     
-       estudinatesTabla.add(estudiante);
-       System.err.println("tabla estudinates al agregar "+estudinatesTabla.size());
+       estudiantesTabla.add(estudianteSeleccionado);
        vbxEstudiantesPorAgregar.setSpacing(40);      
-       estudinatesTablaAuxiliar= FXCollections.observableArrayList();
-       estudinatesTablaAuxiliar.addAll(estudinatesTabla);
-       vbxEstudiantesPorAgregar.getChildren().add(new TarjetaAgregarEstudianteCurso(estudiante.getNombre()
-               +" "+estudiante.getPrimerApellido()+ " "+ estudiante.getSegundoApellido()+ "      " +estudiante.getMatriculaEstudiante(),
-               estudiante.getIdEstudiante()));     
+       TarjetaAgregarEstudianteCurso tarjeta = new TarjetaAgregarEstudianteCurso(estudianteSeleccionado);
+       tarjeta.getImagen().setOnMouseClicked(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent event) {              
+                      quitarEstudiante(tarjeta.getEstudinate());                      
+                }
+            });
+       vbxEstudiantesPorAgregar.getChildren().add(tarjeta);     
        txfAlumnoBusqueda.setText("");
        txfAlumnoBusqueda.setDisable(true);
        BtnOtro.setDisable(false);
        btnGuardar.setDisable(false);
     }
     
-    public void recargarVbox() {
-        vbxEstudiantesPorAgregar.getChildren().clear();
-        for (Estudiante estudianteAgregar : estudinatesTabla) {
-            vbxEstudiantesPorAgregar.getChildren().add(new TarjetaAgregarEstudianteCurso(estudianteAgregar.getNombre()+
-                    " "+estudianteAgregar.getPrimerApellido()+" "+estudianteAgregar.getSegundoApellido()+"    "
-                    +estudianteAgregar.getMatriculaEstudiante(),
-                    estudianteAgregar.getIdEstudiante()));     
+    private void quitarEstudiante(Estudiante estudianteQuitar) {
+        for (Estudiante estudianteEliminar : estudiantesTabla) {
+            if (estudianteEliminar.getIdEstudiante() == estudianteQuitar.getIdEstudiante()) {
+                estudiantesTabla.remove(estudianteEliminar);
+                break;
+            }
         }
+        recargarVbox();        
+    }
+    
+    private void recargarVbox() {
+        vbxEstudiantesPorAgregar.getChildren().clear();
+        if(estudiantesTabla.size() > 0) {
+            for (Estudiante estudianteAgregar : estudiantesTabla) {
+                TarjetaAgregarEstudianteCurso tarjeta = new TarjetaAgregarEstudianteCurso(estudianteSeleccionado);
+                tarjeta.getImagen().setOnMouseClicked(new EventHandler<MouseEvent>() {
+                     public void handle(MouseEvent event) {              
+                               quitarEstudiante(tarjeta.getEstudinate());                               
+                         }
+                     });
+                vbxEstudiantesPorAgregar.getChildren().add(tarjeta);     
+             }
+        }else {
+            txfAlumnoBusqueda.setDisable(false);
+            BtnOtro.setDisable(true);
+            btnGuardar.setDisable(true);
+        }    
     }
     
     private void guardarEstudiantes() {
-        for (Estudiante estudinateNuevo : estudinatesTabla) {
+        for (Estudiante estudinateNuevo : estudiantesTabla) {
             try {
                 System.err.println(cursoActual);
-                int exito = new CursoDAO().guardarRelacionCursoEstudiante(cursoActual,
+                int exito = new CursoDAO().guardarRelacionCursoEstudiante(cursoActual.getIdCurso(),
                         estudinateNuevo.getIdEstudiante());
             } catch (DAOException ex) {
                 manejarDAOException(ex);
             }
         }
-        Utilidades.mostrarDialogoSimple("Registor Exitoso","Se guardaron los estudinates", 
-                Alert.AlertType.INFORMATION);
+        Utilidades.mostrarDialogoSimple("Registro Exitoso","Se guardaron los estudiantes", 
+                Alert.AlertType.INFORMATION);       
         cerrarVentana();
     }
     
-    public void cerrarVentana() {
-        Stage escenarioActual = (Stage) txfAlumnoBusqueda.getScene().getWindow();
+    private void cerrarVentana() {
+        Stage escenarioActual = (Stage) txfAlumnoBusqueda.getScene().getWindow();  
+        interfaz.notitficacionRecargarDatos();
         escenarioActual.close();
     }    
     

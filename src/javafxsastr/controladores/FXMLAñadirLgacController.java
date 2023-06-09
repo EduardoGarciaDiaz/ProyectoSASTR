@@ -8,8 +8,6 @@ package javafxsastr.controladores;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -25,17 +23,17 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafxsastr.JavaFXSASTR;
-import javafxsastr.interfaces.INotificacionRecargarLgac;
 import javafxsastr.modelos.dao.DAOException;
 import javafxsastr.modelos.dao.LgacDAO;
 import javafxsastr.modelos.pojo.Lgac;
 import javafxsastr.modelos.pojo.Usuario;
+import javafxsastr.utils.FiltrosTexto;
 import javafxsastr.utils.Utilidades;
+import javafxsastr.interfaces.INotificacionRecargarDatos;
 
 public class FXMLAñadirLgacController implements Initializable {
 
@@ -61,7 +59,7 @@ public class FXMLAñadirLgacController implements Initializable {
     private boolean isEdicion = false;
     private Lgac lgacIdEdicion;
     private boolean esDeVentanaCA = false;
-    private INotificacionRecargarLgac interfaz;
+    private INotificacionRecargarDatos interfaz;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {     
@@ -70,13 +68,14 @@ public class FXMLAñadirLgacController implements Initializable {
         }
         btnGuardar.setDisable(true);
        inicializarListeners();
+       inicializarFiltros();
     }  
     
     public void setUsuario(Usuario usuario) {
         this.ususarioActual = usuario;
     }
     
-    public void instancearInterfaz(INotificacionRecargarLgac interfazN) {
+    public void instancearInterfaz(INotificacionRecargarDatos interfazN) {
        interfaz = interfazN;
     }
 
@@ -117,10 +116,15 @@ public class FXMLAñadirLgacController implements Initializable {
         }); 
     }
     
+    private void inicializarFiltros() {
+        FiltrosTexto.filtroLetrasNumeros(txfNombreLgac);
+        FiltrosTexto.filtroLetrasNumerosPuntos(txaDescripcionLgac);
+    }
+    
     private void validarBtnGuardar() {
        String nombreLgac = txfNombreLgac.getText();
        String descripcionLgac = txaDescripcionLgac.getText();
-        if(nombreLgac.length() > 10 && descripcionLgac.length() > 10 && nombreLgac.length() < 200 && descripcionLgac.length() < 500) {
+        if(nombreLgac.trim().length() > 10 && descripcionLgac.trim().length() > 10 && nombreLgac.trim().length() < 200 && descripcionLgac.trim().length() < 500) {
             habilitarBtnGuardar();
         }else {
             btnGuardar.setDisable(true);
@@ -191,9 +195,15 @@ public class FXMLAñadirLgacController implements Initializable {
                             Alert.AlertType.ERROR);
                 }
             }
+            limpiarCampos();
         }catch (DAOException ex) {           
                manejarDAOException(ex);
         }
+    }
+    
+    public void limpiarCampos() {
+        txfNombreLgac.setText("");
+        txaDescripcionLgac.setText("");
     }
     
      private void manejarDAOException(DAOException ex) {
@@ -221,7 +231,7 @@ public class FXMLAñadirLgacController implements Initializable {
             Stage escenarioActual = (Stage) txaDescripcionLgac.getScene().getWindow();
             if(esDeVentanaCA) {
                FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLAñadirCuerpoAcademico.fxml"));
-               interfaz.notitficacionRecargarLgac();
+               interfaz.notitficacionRecargarDatos();
                escenarioActual.close();
            }else {
                 FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLCuerposAcademicos.fxml"));

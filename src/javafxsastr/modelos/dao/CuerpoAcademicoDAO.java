@@ -38,8 +38,8 @@ public class CuerpoAcademicoDAO {
             + "inner join usuarios u "
             + "on u.idUsuario = acad.idUsuario; ";
     private final String OBTENER_CUERPO_ACADEMICO_POR_RCA = "SELECT idCuerpoAcademico, nombreCuerpoAcademico, disciplinaCuerpoAcademico, "
-            + "nombreArea, concat(nombreUsuario,' ', primerApellidoUsuario,' ',segundoApellidoUsuario) as nombreResponsable, "
-            + "ca.idAcademico, ca.idArea "
+            + "nombreArea, CONCAT(nombreUsuario,' ', primerApellidoUsuario,' ',segundoApellidoUsuario) as nombreResponsable, "
+            + "ca.idAcademico, ca.idArea, ca.descripcion "
             + "FROM sastr.cuerpos_academicos ca "
             + "INNER JOIN areas a "
             + "ON ca.idArea = a.idArea "
@@ -119,7 +119,7 @@ public class CuerpoAcademicoDAO {
                         resultado.getInt("idCuerpoAcademico"),
                         resultado.getString("nombreCuerpoAcademico"),
                         resultado.getString("disciplinaCuerpoAcademico"),
-                       resultado.getString(" "),
+                       resultado.getString("descripcion"),
                         resultado.getString("nombreArea"),
                         resultado.getInt("idArea"),
                         resultado.getInt("idAcademico"),
@@ -127,6 +127,7 @@ public class CuerpoAcademicoDAO {
                 );
             }
         }catch (SQLException ex) {
+            ex.printStackTrace();
             throw new DAOException("Error de consulta", Codigos.ERROR_CONSULTA);
         }
         return cuerpoAcademico;

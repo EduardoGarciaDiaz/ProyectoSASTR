@@ -26,7 +26,7 @@ public class ArchivoDAO {
     private static final String REGISTRAR_ARCHIVO = "Insert into archivos(nombreArchivo, archivo, esEntrega, idEntrega) Values (?,?,?,?)";
     private static final String ACTUALIZAR_ARCHIVO = "Update archivos set nombreArchivo = ?, archivo = ?, esEntrega = ?, idEntrega = ? " +
                                             " where idArchivo = ?";
-    private static final String ELIMINAR_ARCHIVO = "Delete from archivos where idEntrega = ? and esEntrega = 0";
+    private static final String ELIMINAR_ARCHIVO = "Delete from archivos where idArchivo = ?";
     private static final String CONSULTAR_ARCHIVOS_POR_ENTREGA = "Select idArchivo, nombreArchivo, archivo, esEntrega, archivos.idEntrega " +
                                             "From archivos "+
                                             "Inner Join entregas On archivos.idEntrega = entregas.idEntrega "+
@@ -116,11 +116,11 @@ public class ArchivoDAO {
         return respuestaExito;
     }
     
-    public int borrarArchivosRevision(int idEntregs) throws DAOException {
+    public int borrarArchivosRevision(int idArchivoBorrar) throws DAOException {
         int respuestaExito = -1;
         try {            
             PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(ELIMINAR_ARCHIVO);
-            sentencia.setInt(1, idEntregs);
+            sentencia.setInt(1, idArchivoBorrar);
             respuestaExito = sentencia.executeUpdate();
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
