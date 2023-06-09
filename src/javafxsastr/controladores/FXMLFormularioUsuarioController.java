@@ -36,6 +36,7 @@ import javafxsastr.modelos.dao.UsuarioDAO;
 import javafxsastr.modelos.pojo.Academico;
 import javafxsastr.modelos.pojo.Estudiante;
 import javafxsastr.modelos.pojo.Usuario;
+import javafxsastr.utils.FiltrosTexto;
 import javafxsastr.utils.Utilidades;
 
 
@@ -211,7 +212,7 @@ public class FXMLFormularioUsuarioController implements Initializable {
     }
     
     private void agregarListenerCampoVacio(TextInputControl campoTexto, Label etiqueta){
-        campoTexto.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+        /*campoTexto.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
             if (newValue) {
                 campoTexto.setStyle("-fx-border-color: gray");
                 etiqueta.setText("");
@@ -228,6 +229,28 @@ public class FXMLFormularioUsuarioController implements Initializable {
                     btnGuardar.setDisable(true);
                 }
             }
+        });*/
+        campoTexto.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (!newValue.trim().isEmpty()) {
+                    campoTexto.setStyle("-fx-border-color: gray");
+                    etiqueta.setText("");
+                    if (validarCamposObligatoriosLLenos()) {
+                        btnGuardar.setDisable(false);
+                    } else {
+                        btnGuardar.setDisable(true);
+                    }
+                } else {
+                    etiqueta.setText("Campo obligatorio");
+                    campoTexto.setStyle("-fx-border-color: red");
+                    //if (validarCamposObligatoriosLLenos()) {
+                        //btnGuardar.setDisable(false);
+                    //} else {
+                        btnGuardar.setDisable(true);
+                    //}
+                }
+            }
         });
     }
     
@@ -235,7 +258,6 @@ public class FXMLFormularioUsuarioController implements Initializable {
         boolean respuesta = false;
         if ((!tfNombre.getText().trim().isEmpty())
                 & (!tfPrimerApellido.getText().trim().isEmpty())
-                & (!tfSegundoApellido.getText().trim().isEmpty())
                 & (!tfCorreoInstitucional.getText().trim().isEmpty())
                 & (!tfContrasena.getText().trim().isEmpty())
                 & (!tfIdentificadorTipoUsuario.getText().trim().isEmpty())
@@ -247,7 +269,7 @@ public class FXMLFormularioUsuarioController implements Initializable {
     
     private void llenarMatriculaAutomatico() {
         if ("Estudiante".equals(cbTipoUsuario.getSelectionModel().getSelectedItem())) {
-            String correoInstitucional = tfCorreoInstitucional.getText();
+            String correoInstitucional = tfCorreoInstitucional.getText().trim();
             if (!correoInstitucional.isEmpty()) {
                 String matricula = correoInstitucional.substring(1, Math.min(correoInstitucional.length(), 10));
                 tfIdentificadorTipoUsuario.setText(matricula);
@@ -257,31 +279,31 @@ public class FXMLFormularioUsuarioController implements Initializable {
     
     public void validarCampos() {
         boolean datosValidos = true;
-        String nombre = tfNombre.getText();
-        String primerApellido = tfPrimerApellido.getText();
-        String segundoApellido = tfSegundoApellido.getText();
-        String correo = tfCorreoInstitucional.getText();
-        String contrasena = tfContrasena.getText();
+        String nombre = tfNombre.getText().trim();
+        String primerApellido = tfPrimerApellido.getText().trim();
+        String segundoApellido = tfSegundoApellido.getText().trim();
+        String correo = tfCorreoInstitucional.getText().trim();
+        String contrasena = tfContrasena.getText().trim();
         boolean esAdministrador = chbxEsAdministrador.isSelected();
         int idEstadoUsuario = 1;
         String tipoUsuarioSeleccionado = cbTipoUsuario.getSelectionModel().getSelectedItem();
-        String identificadorTipoUsuario = tfIdentificadorTipoUsuario.getText();
+        String identificadorTipoUsuario = tfIdentificadorTipoUsuario.getText().trim();
         Usuario usuarioAValidarLongitud = new Usuario(nombre, primerApellido, segundoApellido, correo,
                 contrasena, esAdministrador, idEstadoUsuario);
         if (!validarLongitudCampos(usuarioAValidarLongitud)) {
             datosValidos = false;
         }
-        if (!Utilidades.correoValido(correo)) {
+        if (!FiltrosTexto.correoValido(correo)) {
             datosValidos = false;
             lbCorreoVacio.setText("Correo no válido. Ejemplos: zs21013811@estudiantes.uv.mx o profesor@uv.mx");
         }
-        if (!Utilidades.contrasenaValida(contrasena)) {
+        if (!FiltrosTexto.contrasenaValida(contrasena)) {
             datosValidos = false;
-            lbContrasenaVacia.setText("Contraseña inválida. Debe tener de 7 a 16 caracteres," +
+            lbContrasenaVacia.setText("Contraseña no sválida. Debe tener de 7 a 16 caracteres," +
                     " debe contener al menos un simbolo y una mayúscula");
         }
         if ("Estudiante".equals(tipoUsuarioSeleccionado)) {
-            if(!Utilidades.matriculaValida(identificadorTipoUsuario)) {
+            if(!FiltrosTexto.matriculaValida(identificadorTipoUsuario)) {
                 datosValidos = false;
                 lbIdentificadorTipoUsuarioVacio.setText("Matricula no válida. Ejemplo S21013811");
             }
@@ -295,7 +317,7 @@ public class FXMLFormularioUsuarioController implements Initializable {
             }
         }
         if ("Académico".equals(tipoUsuarioSeleccionado)) {
-            if (!Utilidades.noPersonalValido(identificadorTipoUsuario)) {
+            if (!FiltrosTexto.noPersonalValido(identificadorTipoUsuario)) {
                 datosValidos = false;
                 lbIdentificadorTipoUsuarioVacio.setText("Solo debe contener números");
             }

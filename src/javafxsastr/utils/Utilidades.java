@@ -49,45 +49,5 @@ public class Utilidades {
         }
         return escena;
     }   
-    
-    public static boolean correoValido(String correo) {
-        if(correo != null && !correo.isEmpty()) {
-            Pattern patronCorreo = Pattern.compile("^[A-Za-z0-9]+@(?:[A-Za-z0-9]+\\.)?uv\\.mx$");
-            Matcher matchPatron = patronCorreo.matcher(correo); 
-            return matchPatron.find();
-        }else{
-            return false;
-        }
-    }
-    
-    public static boolean noPersonalValido(String noPersonal) {
-        if(noPersonal != null && !noPersonal.isEmpty()) {
-            Pattern patronNoPersonal = Pattern.compile("^[0-9]+$");
-            Matcher matchPatron = patronNoPersonal.matcher(noPersonal); 
-            return matchPatron.find();
-        }else{
-            return false;
-        }
-    }
-    
-    public static boolean matriculaValida(String matricula) {
-        if(matricula != null && !matricula.isEmpty() ) {
-            Pattern patronMatricula = Pattern.compile("^[sS]\\d{8}$");
-            Matcher matchPatron = patronMatricula.matcher(matricula); 
-            return matchPatron.find();
-        }else{
-            return false;
-        }
-    }
-    
-    public static boolean contrasenaValida(String contrasena) {
-        if(contrasena != null && !contrasena.isEmpty()) {
-            Pattern patronMatricula = Pattern.compile("^(?=.*[A-Z])(?=.*[\\W_]).{7,16}$");
-            Matcher matchPatron = patronMatricula.matcher(contrasena); 
-            return matchPatron.find();
-        }else{
-            return false;
-        }
-    }
         
 }

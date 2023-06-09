@@ -39,7 +39,6 @@ import javafxsastr.modelos.pojo.Anteproyecto;
 import javafxsastr.modelos.pojo.Estudiante;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafxsastr.modelos.dao.ActividadDAO;
 import javafxsastr.modelos.dao.ArchivoDAO;
 import javafxsastr.modelos.dao.DAOException;
 import javafxsastr.modelos.dao.EntregaDAO;
