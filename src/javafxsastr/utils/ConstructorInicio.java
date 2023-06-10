@@ -135,6 +135,47 @@ public class ConstructorInicio {
         return constructor;
     }
     
+    public ConstructorInicio cargarBotonIconoEstudiantes(VBox vbxMenuContraido) {
+        Image img = new Image("file:src/javafxsastr/recursos/iconos/estudiante-blanco.png");
+        ImageView imvEstudiantes = new ImageView(img);
+        imvEstudiantes.setFitHeight(38);
+        imvEstudiantes.setFitWidth(38);
+        imvEstudiantes.setLayoutX(30);
+        vbxMenuContraido.getChildren().add(imvEstudiantes);
+        imvEstudiantes.setOnMouseClicked((event) -> {
+            interfazNotificacion.notificarClicBotonEstudiantes();
+        });
+        return constructor;
+    }
+    
+    public ConstructorInicio cargarBotonIconoMiAnteproyecto(VBox vbxMenuContraido) {
+        Image img = new Image("file:src/javafxsastr/recursos/iconos/anteproyecto.png");
+        ImageView imvMiAnteproyecto = new ImageView(img);
+        imvMiAnteproyecto.setFitHeight(38);
+        imvMiAnteproyecto.setFitWidth(38);
+        imvMiAnteproyecto.setLayoutX(30);
+        vbxMenuContraido.getChildren().add(imvMiAnteproyecto);
+        imvMiAnteproyecto.setOnMouseClicked((event) -> {
+            interfazNotificacion.notificarClicBotonMiAnteproyecto();
+        });
+        return constructor;
+    }
+    
+    public ConstructorInicio cargarBotonTextoMiAnteproyecto(VBox vbxMenuDesplegado) {
+        Pane btnAnteproyectos = new Pane();
+        btnAnteproyectos.setPrefSize(300, 38);
+        Label lbAnteproyectos = new Label("Mi anteproyecto");
+        lbAnteproyectos.setStyle("-fx-text-fill: white; -fx-font-size: 24");
+        lbAnteproyectos.setLayoutX(75);
+        lbAnteproyectos.setLayoutY(7);
+        btnAnteproyectos.getChildren().add(lbAnteproyectos);
+        vbxMenuDesplegado.getChildren().add(btnAnteproyectos);
+        btnAnteproyectos.setOnMouseClicked((event) -> {
+            interfazNotificacion.notificarClicBotonMiAnteproyecto();
+        });
+        return constructor;
+    }
+    
     public ConstructorInicio cargarBotonTextoAnteproyectosRCA(VBox vbxMenuDesplegado) {
         Pane botonValidarAnteproyectos = new Pane();
         botonValidarAnteproyectos.setPrefSize(300, 38);
@@ -251,6 +292,21 @@ public class ConstructorInicio {
         vbxMenuDesplegado.getChildren().add(btnGestionCA);
         btnGestionCA.setOnMouseClicked((event) -> {
             interfazNotificacion.notificarClicBotonGestionCA();
+        });
+        return constructor;
+    }
+    
+    public ConstructorInicio cargarBotonTextoEstudiantes(VBox vbxMenuDesplegado) {
+        Pane btnEstudiantes = new Pane();
+        btnEstudiantes.setPrefSize(300, 38);
+        Label lbEstudiantes = new Label("Estudiantes");
+        lbEstudiantes.setStyle("-fx-text-fill: white; -fx-font-size: 24");
+        lbEstudiantes.setLayoutX(75);
+        lbEstudiantes.setLayoutY(7);
+        btnEstudiantes.getChildren().add(lbEstudiantes);
+        vbxMenuDesplegado.getChildren().add(btnEstudiantes);
+        btnEstudiantes.setOnMouseClicked((event) -> {
+            interfazNotificacion.notificarClicBotonEstudiantes();
         });
         return constructor;
     }

@@ -33,7 +33,7 @@ public class EstudianteDAO {
             "LEFT JOIN anteproyectos a ON e.idAnteproyecto = a.idAnteproyecto " +
             "LEFT JOIN cursos_estudiantes ce ON e.idEstudiante = ce.idEstudiante " +
             "LEFT JOIN cursos c ON ce.idCurso = c.idCurso " +
-            "INNER JOIN estados_usuario eu ON u.idEstadoUsuario = eu.idEstadoUsuario";
+            "INNER JOIN estados_usuario eu ON u.idEstadoUsuario = eu.idEstadoUsuario ";
     private final String OBTENER_ESTUDIANTE = "SELECT e.idEstudiante, u.nombreUsuario AS nombreEstudiante, " +
             "u.primerApellidoUsuario AS primerApellidoEstudiante, u.segundoApellidoUsuario AS segundoApellidoEstudiante, "
             +
@@ -130,7 +130,11 @@ public class EstudianteDAO {
             "WHERE e.idAnteproyecto = ?";
     private final String VERIFICAR_SI_ANTEPROYECTO_ESTA_ASIGNADO = "SELECT EXISTS"
             + "(SELECT idAnteproyecto FROM estudiantes WHERE idAnteproyecto = ?) as estaAsignado;";
-
+    private final String OBTENER_ESTUDIANTES_ASIGNADOS_POR_ACADEMICO = OBTENER_ESTUDIANTES +
+                "INNER JOIN academicos acad "
+            + "ON a.idAcademico = acad.idAcademico "
+            + "WHERE acad.idAcademico = ? and a.idEstadoSeguimiento = 5";
+    
     public ArrayList<Estudiante> obtenerEstudiantes() throws DAOException {
         ArrayList<Estudiante> estudiantes = new ArrayList<>();
         try {
@@ -458,4 +462,38 @@ public class EstudianteDAO {
         return estaAsignado;
     }
     
+    public ArrayList<Estudiante> obtenerEstudiantesPorAcademico(int idAcademico) throws DAOException {
+        ArrayList<Estudiante> estudiantes = new ArrayList<>();
+        try {
+            PreparedStatement sentencia = ConexionBD.obtenerConexionBD()
+                    .prepareStatement(OBTENER_ESTUDIANTES_ASIGNADOS_POR_ACADEMICO);
+            sentencia.setInt(1, idAcademico);
+            ResultSet resultado = sentencia.executeQuery();
+            while (resultado.next()) {
+                Estudiante estudiante = new Estudiante();
+                estudiante.setIdEstudiante(resultado.getInt("idEstudiante"));
+                estudiante.setNombre(resultado.getString("nombreEstudiante"));
+                estudiante.setPrimerApellido(resultado.getString("primerApellidoEstudiante"));
+                estudiante.setSegundoApellido(resultado.getString("segundoApellidoEstudiante"));
+                estudiante.setMatriculaEstudiante(resultado.getString("matriculaEstudiante"));
+                estudiante.setCorreoInstitucional(resultado.getString("correoInstitucionalEstudiante"));
+                estudiante.setCorreoAlterno(resultado.getString("correoAlternoEstudiante"));
+                estudiante.setContraseña(resultado.getString("contraseñaUsuario"));
+                estudiante.setIdUsuario(resultado.getInt("idUsuario"));
+                estudiante.setIdAnteproyecto(resultado.getInt("idAnteproyecto"));
+                estudiante.setAnteproyectoEstudiante(resultado.getString("nombreTrabajoRecepcional"));
+                estudiante.setIdCurso(resultado.getInt("idCurso"));
+                estudiante.setCursoEstudiante(resultado.getString("nombreCurso"));
+                estudiante.setIdEstadoUsuario(resultado.getInt("idEstadoUsuario"));
+                estudiante.setEstadoUsuario(resultado.getString("nombreEstadoUsuario"));
+                estudiantes.add(estudiante);
+            }
+            ConexionBD.cerrarConexionBD();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
+                    Codigos.ERROR_CONSULTA);
+        }
+        return estudiantes;
+    }
 }

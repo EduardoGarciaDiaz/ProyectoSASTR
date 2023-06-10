@@ -16,21 +16,23 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import javafxsastr.modelos.pojo.Estudiante;
 
 public class TarjetaEstudiante extends Pane {
-    
-    private int idEstudiante;
+   
     private Pane fondoImagen;
     private ImageView imvIconoEstudiante;
     private Label lbNombreEstudiante;
     private Label lbMatriculaEstudiante;
     private Label lbNombreTrabajoRecepcional;
     private Button btnVerAvance;
+    private Estudiante estudiante;
 
     public TarjetaEstudiante() {
     }
 
-    public TarjetaEstudiante(int idEstudiante, String nombreEstudiante, String matriculaEstudiante, String nombreTrabajoRecepcional) {
+    public TarjetaEstudiante(Estudiante estudiante) {
+        this.estudiante = estudiante;
         inicializarElementos();
         establecerEstiloPane();
         establecerEstiloFondoImagen();
@@ -38,19 +40,20 @@ public class TarjetaEstudiante extends Pane {
         establecerEstiloMatricula();
         establecerEstiloNombreTrabajoRecepcional();
         establecerEstiloBotonVerAvance();
-        this.idEstudiante = idEstudiante;
-        lbNombreEstudiante.setText(nombreEstudiante);
-        lbMatriculaEstudiante.setText(matriculaEstudiante);
-        lbNombreTrabajoRecepcional.setText(nombreTrabajoRecepcional);
-        getChildren().addAll(fondoImagen, lbNombreEstudiante, lbMatriculaEstudiante, lbNombreTrabajoRecepcional, btnVerAvance);
+        getChildren().addAll(fondoImagen, lbNombreEstudiante, lbMatriculaEstudiante, 
+                lbNombreTrabajoRecepcional, btnVerAvance);
+    }
+    
+    public Button getBotonVerAvance() {
+        return btnVerAvance;
     }
     
     private void inicializarElementos() {
         fondoImagen = new Pane();
-        imvIconoEstudiante = new ImageView(new Image("file:src/javafxsastr/recursos/iconos/avance.png"));
-        lbNombreEstudiante = new Label();
-        lbMatriculaEstudiante = new Label();
-        lbNombreTrabajoRecepcional = new Label();
+        imvIconoEstudiante = new ImageView(new Image("file:src/javafxsastr/recursos/iconos/estudiante.png"));
+        lbNombreEstudiante = new Label(estudiante.toString());
+        lbMatriculaEstudiante = new Label(estudiante.getMatriculaEstudiante());
+        lbNombreTrabajoRecepcional = new Label(estudiante.getAnteproyectoEstudiante());
         btnVerAvance = new Button("Ver su avance");
     }
     
@@ -111,10 +114,7 @@ public class TarjetaEstudiante extends Pane {
         btnVerAvance.setFont(new Font(20.0));
         btnVerAvance.setStyle("-fx-border-color: transparent;"
                 + "-fx-background-radius: 13;"
-                + "-fx-background-color: #c9c9c9");
-        btnVerAvance.setOnAction((event) -> {
-            System.out.println("Hola, soy un boton");
-        });
+                + "-fx-background-color: #C4DAEF;");
     }
     
 }
