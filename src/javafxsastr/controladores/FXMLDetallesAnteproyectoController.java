@@ -137,7 +137,7 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
     private ArrayList<Academico> codirectores = new ArrayList<>();
     private ArrayList<Lgac> lgacs = new ArrayList<>();
     private final int ANTEPROYECTO_APROBADO = 3;
-    private final int NUMERO_MAXIMO_ESTUDIANTES = 3;
+    private int numeroMaximoEstudiantes;
     private final int NUMERO_MINIMO_ESTUDIANTES = 1;
     private final DateTimeFormatter FORMATO_FECHA_MES = DateTimeFormatter.ofPattern("MMMM",
             new Locale("es"));
@@ -152,6 +152,7 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
     public void setAnteproyectoAcademico(Anteproyecto anteproyecto, Academico academico) {
         this.anteproyecto = anteproyecto;
         this.academico = academico;
+        numeroMaximoEstudiantes = anteproyecto.getNumeroMaximoAlumnosParticipantes();
         obtenerEstudiantes();                
         mostrarDatosAnteproyecto();
         obtenerInformacionAvance();
@@ -180,7 +181,6 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
             validarEsDirector();
             mostrarDatosLugarFecha();
             mostrarDatosProyectoTitulacion();
-
             mostrarDatosDescripciones();
             mostrarDatosFinales();
         } else {
@@ -188,16 +188,21 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
         }
     }
     
-    public void validarEsDirector() {
+    public boolean validarEsDirector() {
+        boolean esDirector = true;
         if (academico == null) {
             btnAsignarOtroEstudiante.setVisible(false);
+            esDirector = false;
         } else {
             if(academico.getIdAcademico() == anteproyecto.getIdAcademico()
                     && anteproyecto.getIdEstadoSeguimiento() == ANTEPROYECTO_APROBADO) {
                 validarAsignarPrimerEstudiante();
                 validarAsignarOtroEstudiante();
+            } else {
+                esDirector = false;
             }
         }
+        return esDirector;
     }
     
     private void validarAsignarPrimerEstudiante() {
@@ -207,7 +212,7 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
     }
     
     private void validarAsignarOtroEstudiante() {
-        if (estudiantesParticipantes.size() < NUMERO_MAXIMO_ESTUDIANTES
+        if (estudiantesParticipantes.size() < numeroMaximoEstudiantes
                 && estudiantesParticipantes.size() >= 1) {
             btnAsignarOtroEstudiante.setVisible(true);
         }
@@ -382,7 +387,7 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
                     lbActividadesCompletadas.requestFocus();
                     Estudiante estudianteSeleccionado = itemSeleccionado;
                     if (estudianteSeleccionado != null && !estudiantesParticipantes.contains(estudianteSeleccionado)) {
-                        if (estudiantesParticipantes.size() < NUMERO_MAXIMO_ESTUDIANTES) {                            
+                        if (estudiantesParticipantes.size() < numeroMaximoEstudiantes) {                            
                             tfEstudiante.setText("");
                             estudiantesParticipantes.add(estudianteSeleccionado);
                             configurarEstudianteParticipante(estudianteSeleccionado, true);         
@@ -463,16 +468,19 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
         lbNombreEstudiante.setLayoutY(6);
         lbNombreEstudiante.setFont(new Font(20.0));
         Button btnDesasignarEstudiante = new Button("Desasignar estudiante");
-        if (academico != null) {
-            btnDesasignarEstudiante.setStyle("-fx-border-color: transparent;"
-                + "-fx-background-radius: 15;"
-                + "-fx-background-color: #c9c9c9");
-            btnDesasignarEstudiante.setPrefSize(173, 0);
-            contenedorEstudiante.getChildren().add(btnDesasignarEstudiante);
-            if (esRecienAsignado) {
-                btnDesasignarEstudiante.setVisible(false);
+        if (validarEsDirector()) {
+            if (academico != null) {
+                btnDesasignarEstudiante.setStyle("-fx-border-color: transparent;"
+                    + "-fx-background-radius: 15;"
+                    + "-fx-background-color: #c9c9c9");
+                btnDesasignarEstudiante.setPrefSize(173, 0);
+                contenedorEstudiante.getChildren().add(btnDesasignarEstudiante);
+                if (esRecienAsignado) {
+                    btnDesasignarEstudiante.setVisible(false);
+                }
             }
         }
+        
         btnDesasignarEstudiante.setOnMouseClicked((event) -> {
             desasignarEstudiante(estudiante);           
         });

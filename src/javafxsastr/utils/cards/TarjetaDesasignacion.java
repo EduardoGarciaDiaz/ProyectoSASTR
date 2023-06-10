@@ -55,7 +55,7 @@ public class TarjetaDesasignacion extends Pane {
     }
     
     private void establecerEstiloPane() {
-        setPrefSize(507.0, 38.0);
+        setPrefSize(507.0, 60.0);
         this.setStyle("-fx-background-color: white;"
                 + "-fx-effect:  dropshadow( gaussian, rgba(0, 0, 0, 0.1), 25, 0.0, 0.0, 4);"
                 + "-fx-background-radius: 15;");
@@ -72,7 +72,7 @@ public class TarjetaDesasignacion extends Pane {
     }
     
     private void establecerEstiloBotonVerAvance() {
-        btnVerJustificacion.setPrefSize(116.0, 25.0);
+        btnVerJustificacion.setPrefSize(140.0, 25.0);
         btnVerJustificacion.setLayoutX(369.0);
         btnVerJustificacion.setLayoutY(4.0);
         btnVerJustificacion.setFont(new Font(16.0));
