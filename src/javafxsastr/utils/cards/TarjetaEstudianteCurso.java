@@ -39,7 +39,9 @@ public class TarjetaEstudianteCurso extends Pane{
         establecerColorEstadoEstudinate(estudiante);
         establecerEstiloCorreo();
         lbNombreEstudiante.setText(estudiante.getNombre()+" "+estudiante.getPrimerApellido()+" "+estudiante.getSegundoApellido());
+        lbNombreEstudiante.setWrapText(true);
         lbcorreoEstudinate.setText(estudiante.getCorreoInstitucional());
+        lbcorreoEstudinate.setWrapText(true);
         getChildren().addAll(fondo,fondoEitar,crlEstadoUsuario,fondoDesactivar,lbNombreEstudiante,lbcorreoEstudinate);     
     }
     
@@ -120,9 +122,9 @@ public class TarjetaEstudianteCurso extends Pane{
     }
      
     private void establecerEstiloNombreEstudiante() {
-        lbNombreEstudiante.setPrefSize(360.0, 62.0);
-        lbNombreEstudiante.setLayoutX(-50);
-        lbNombreEstudiante.setLayoutY(124.0);
+        lbNombreEstudiante.setPrefSize(240.0, 72.0);
+        lbNombreEstudiante.setLayoutX(10);
+        lbNombreEstudiante.setLayoutY(114.0);
         lbNombreEstudiante.setTextAlignment(TextAlignment.CENTER);
         lbNombreEstudiante.setWrapText(true);
         lbNombreEstudiante.setFont(new Font(20));

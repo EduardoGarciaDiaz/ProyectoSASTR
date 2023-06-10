@@ -428,13 +428,16 @@ public class FXMLValidarAnteproyectoController implements Initializable {
                 int exitoActualizaicon = new AnteproyectoDAO().actualizarEstadoSeguimiento(anteproyecto.getIdAnteproyecto(),
                             idEstadoSeguimiento);
                 if(exitoActualizaicon == 1) {
-                    if( estadoSeguimiento.equals("Sin Publicar")) {
+                        if( estadoSeguimiento.equals("Rechazado")) {
                      Utilidades.mostrarDialogoSimple("Registro Exitoso", 
                         "Se ha aprobado el anteproyecto correctamente", Alert.AlertType.INFORMATION);
-                    }else {
-                        Utilidades.mostrarDialogoSimple("Registro Exitoso", 
+                        }else {
+                            Utilidades.mostrarDialogoSimple("Registro Exitoso", 
                             "Se ha rechazado el anteproyecto", Alert.AlertType.INFORMATION);
                     }               
+                }else {
+                Utilidades.mostrarDialogoSimple("Error","Fallo actualizar el estado de seguimiento", 
+                        Alert.AlertType.ERROR);
                 }
                cerrarVentana();
             }else {
@@ -488,12 +491,12 @@ public class FXMLValidarAnteproyectoController implements Initializable {
 
     @FXML
     private void clicRechazar(ActionEvent event) {
-        guardarRevision("Por Corregir");
+        guardarRevision("Rechazado");
     }
     
     @FXML
     private void clicAprobar(ActionEvent event) {
-        guardarRevision("Sin Publicar");
+        guardarRevision("Validado");
     }
     
 }

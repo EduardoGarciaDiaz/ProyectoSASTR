@@ -37,7 +37,7 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
     @FXML
     private Button btnGuardar;
     @FXML
-    private TextField txfAlumnoBusqueda;
+    private TextField txfEstudianteBusqueda;
     @FXML
     private ListView<Estudiante> lsvEstudiantesBusqueda;    
     @FXML
@@ -54,17 +54,17 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
     }    
     
     public void iniciarEstudiantes(ObservableList<Estudiante> estudiantes, Curso curso, INotificacionRecargarDatos interfazN) {
         interfaz = interfazN;
         if(estudiantes != null) {
-            estudiantesActuales = FXCollections.observableArrayList((estudiantes));
-                    recuperarEstudinates();
-
+            estudiantesActuales = FXCollections.observableArrayList((estudiantes));                    
         } else {
             System.out.println("El Observable de estudiantes viene nulo");
         }
+        recuperarEstudinates();
         cursoActual = curso;    
         BtnOtro.setDisable(true);
         btnGuardar.setDisable(true);
@@ -73,7 +73,7 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
     }
     
     private void iniciarListener() {
-        CampoDeBusqueda<Estudiante> campoDeBusqueda = new CampoDeBusqueda<>(txfAlumnoBusqueda, lsvEstudiantesBusqueda,
+        CampoDeBusqueda<Estudiante> campoDeBusqueda = new CampoDeBusqueda<>(txfEstudianteBusqueda, lsvEstudiantesBusqueda,
             estudiantesDisponibles, estudianteSeleccionado, new INotificacionSeleccionItem<Estudiante>() {            
               @Override
             public void notificarSeleccionItem(Estudiante itemSeleccionado) {
@@ -90,7 +90,7 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
                     Utilidades.mostrarDialogoSimple("Accion invalida", "Este Estudiante ya pertenece a un curso",
                             Alert.AlertType.INFORMATION);                   
                 }
-                txfAlumnoBusqueda.setText("");
+                txfEstudianteBusqueda.setText("");
             }         
         });        
     }
@@ -135,8 +135,8 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
                 }
             });
        vbxEstudiantesPorAgregar.getChildren().add(tarjeta);     
-       txfAlumnoBusqueda.setText("");
-       txfAlumnoBusqueda.setDisable(true);
+       txfEstudianteBusqueda.setText("");
+       txfEstudianteBusqueda.setDisable(true);
        BtnOtro.setDisable(false);
        btnGuardar.setDisable(false);
     }
@@ -164,7 +164,7 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
                 vbxEstudiantesPorAgregar.getChildren().add(tarjeta);     
              }
         }else {
-            txfAlumnoBusqueda.setDisable(false);
+            txfEstudianteBusqueda.setDisable(false);
             BtnOtro.setDisable(true);
             btnGuardar.setDisable(true);
         }    
@@ -186,7 +186,7 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
     }
     
     private void cerrarVentana() {
-        Stage escenarioActual = (Stage) txfAlumnoBusqueda.getScene().getWindow();  
+        Stage escenarioActual = (Stage) txfEstudianteBusqueda.getScene().getWindow();  
         interfaz.notitficacionRecargarDatos();
         escenarioActual.close();
     }    
@@ -220,7 +220,7 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
 
     @FXML
     private void clicBtnOtro(ActionEvent event) {
-       txfAlumnoBusqueda.setDisable(false);
+       txfEstudianteBusqueda.setDisable(false);
        BtnOtro.setDisable(true);
        btnGuardar.setDisable(true);
     }

@@ -1,4 +1,8 @@
-
+/*
+ * Autor: Daniel Garcia Arcos
+ * Fecha de creación: 04/06/2023
+ * Descripción: Controlador de la vista aactividades  para poder consultar las actividades.
+ */
 package javafxsastr.controladores;
 
 import java.io.IOException;

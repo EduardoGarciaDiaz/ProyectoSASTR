@@ -141,9 +141,9 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
     
     private void llenarEstudiantes() {
         hbxAlmacenEstdantes.setSpacing(20);   
-        hbxAlmacenEstdantes.setPadding(new Insets(5));
+       // hbxAlmacenEstdantes.setPadding(new Insets(5));
         int numeroEstudiantes = estudiantes.size();       
-        int elementosPorFila = 5;  
+        int elementosPorFila = 4;  
         int numFilas = Math.round(numeroEstudiantes/elementosPorFila) + 1;    
         int contadorGeneral = 0;
         for (int i = 0; (i < numFilas && numeroEstudiantes != contadorGeneral) || i == 0; i++) {
