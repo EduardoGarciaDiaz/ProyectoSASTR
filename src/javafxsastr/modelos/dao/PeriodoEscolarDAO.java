@@ -1,4 +1,8 @@
-//TODO@Daniel
+/*
+ * Autor: Daniel García Arcos
+ * Fecha de creación: 05/06/2023
+ * Descripción: DAO de Periodo Escolar
+ */
 
 package javafxsastr.modelos.dao;
 
@@ -55,13 +59,13 @@ public class PeriodoEscolarDAO {
     }
     
     public PeriodoEscolar obtenerPeriodoPorId(int idPeriodoEscolar) throws DAOException {
-        PeriodoEscolar periodoEscolar = new PeriodoEscolar();
+        PeriodoEscolar periodoEscolar = null;
         try {
             PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(OBTENER_PERIODO_POR_ID);
             sentencia.setInt(1, idPeriodoEscolar);
             ResultSet resultado = sentencia.executeQuery();
             if (resultado.next()) {
-                new PeriodoEscolar(
+                periodoEscolar = new PeriodoEscolar(
                         resultado.getInt("idPeriodoEscolar"),
                         resultado.getString("fechaInicioPeriodoEscolar"),
                         resultado.getString("fechaFinPeriodoEscolar"),
@@ -74,4 +78,5 @@ public class PeriodoEscolarDAO {
         }
         return periodoEscolar;
     }
+    
 }

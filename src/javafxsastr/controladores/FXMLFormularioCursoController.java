@@ -128,7 +128,6 @@ public class FXMLFormularioCursoController implements Initializable {
         } else {
             lbTituloFormulario.setText("Añadir curso");
             cargarPeriodoActual();
-            System.out.println(periodoActual);
             lbPeriodoActual.setText(periodoActual.toString());
             btnAceptar.setDisable(true);
         }

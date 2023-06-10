@@ -27,7 +27,7 @@ public class PeriodoEscolar {
         this.esActual = esActual;
     }
 
-    public boolean isEsActual() {
+    public boolean esActual() {
         return esActual;
     }
 

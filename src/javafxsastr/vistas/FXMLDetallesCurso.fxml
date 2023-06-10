@@ -16,7 +16,7 @@
          <children>
             <Pane layoutX="1.0" layoutY="1.0" prefHeight="50.0" prefWidth="1228.0" style="-fx-background-color: #18529d;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="500.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Label layoutX="23.0" layoutY="9.0" text="Sistema de Apoyo al Seguimiento de Proyecto Guiado y Experiencia Recepcional" textFill="WHITE">
+                  <Label layoutX="23.0" layoutY="9.0" text="Sistema de Apoyo al Seguimiento de Trabajo Recepcional" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>
@@ -67,7 +67,7 @@
                         <Font name="System Bold" size="25.0" />
                      </font>
                   </Label>
-                  <Label layoutX="297.0" layoutY="136.0" text="Perio Escolar:">
+                  <Label layoutX="297.0" layoutY="136.0" text="Periodo Escolar:">
                      <font>
                         <Font name="System Bold" size="25.0" />
                      </font>
@@ -93,9 +93,9 @@
                      </font>
                   </Label>
                   <Circle fx:id="crlEstadoCurso" fill="#97eb55" layoutX="1528.0" layoutY="36.0" radius="22.0" stroke="BLACK" strokeType="INSIDE" />
-                  <ImageView fitHeight="50.0" fitWidth="63.0" layoutX="1427.0" layoutY="136.0" onMouseClicked="#clicEditarCurso" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="btnEditarCurso" fitHeight="50.0" fitWidth="46.0" layoutX="1435.0" layoutY="141.0" onMouseClicked="#clicEditarCurso" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../recursos/iconos/editarCurso.jpg" />
+                        <Image url="@../recursos/iconos/editar.png" />
                      </image>
                   </ImageView>
                   <ImageView fx:id="imvActivar" fitHeight="50.0" fitWidth="63.0" layoutX="1497.0" layoutY="136.0" onMouseClicked="#clicDesactivarCurso" pickOnBounds="true" preserveRatio="true">
@@ -113,7 +113,7 @@
                         <Font size="25.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lbPeriodoEsc" layoutX="483.0" layoutY="136.0" prefHeight="36.0" prefWidth="402.0">
+                  <Label fx:id="lbPeriodoEsc" layoutX="490.0" layoutY="136.0" prefHeight="36.0" prefWidth="402.0">
                      <font>
                         <Font size="25.0" />
                      </font>
