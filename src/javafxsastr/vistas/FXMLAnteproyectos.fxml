@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
@@ -119,12 +120,15 @@
             </Button>
          </children>
       </Pane>
-      <Pane fx:id="pnBotonCrearAnteproyecto" layoutX="1379.0" layoutY="850.0" onMouseClicked="#clicCrearAnteproyecto" prefHeight="68.0" prefWidth="244.0" style="-fx-background-color: black; -fx-background-radius: 13;">
+      <Pane fx:id="pnBotonCrearAnteproyecto" layoutX="1458.0" layoutY="861.0" onMouseClicked="#clicCrearAnteproyecto" opacity="0.7" prefHeight="68.0" prefWidth="255.0" style="-fx-background-color: black; -fx-background-radius: 13;">
          <children>
-            <Label layoutX="15.0" layoutY="14.0" text="Crear anteproyecto" textFill="WHITE">
+            <Label layoutX="15.0" layoutY="14.0" text="+ Crear anteproyecto" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
+               <padding>
+                  <Insets left="-9.0" />
+               </padding>
             </Label>
          </children>
       </Pane>

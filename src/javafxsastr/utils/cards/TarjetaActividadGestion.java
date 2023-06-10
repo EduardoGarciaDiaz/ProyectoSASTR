@@ -8,7 +8,9 @@
 
 package javafxsastr.utils.cards;
 
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -20,114 +22,146 @@ import javafxsastr.modelos.pojo.Actividad;
 public class TarjetaActividadGestion extends Pane {
     
     private Label lbNombreActividad;
-    private Label fechaInicio;
-    private Label fechaFin;
+    private Label fechas;
     private Actividad actividad;
-    private ImageView imvActividad = new ImageView(new Image("file:src/javafxsastr/recursos/iconos/actividad-entrega.png"));
+    private ImageView imvActividad = 
+            new ImageView(new Image("file:src/javafxsastr/recursos/iconos/actividad-entrega.png"));
+    private ImageView imvModificar
+            = new ImageView(new Image("file:src/javafxsastr/recursos/iconos/edicion.png"));
     private Pane fondoImagen;
+    private Pane fondoEstado;
+    private Pane fondoModificar;
     private Button btnVerDetalles;
-    private Button btnModificarActividad;
+    private CheckBox chbxCompletar;
     private Font fuenteTexto = new Font(20);
-    private Font fuenteTitulos = Font.font("System", FontWeight.BOLD, 20);
+    private Font fuenteTitulos = Font.font("System", FontWeight.BOLD, 23);
     
     public TarjetaActividadGestion(Actividad actividad) {
         this.actividad = actividad;
         inicializarElementos();
         establecerEstilos();
-        getChildren().addAll(lbNombreActividad, fechaInicio, fechaFin,
-                fondoImagen, btnVerDetalles, btnModificarActividad);
+        getChildren().addAll(lbNombreActividad, fechas, fondoEstado,
+                fondoImagen, btnVerDetalles, chbxCompletar, fondoModificar);
     }
    
     public void inicializarElementos() {
         lbNombreActividad = new Label(actividad.getNombreActividad());
-        fechaInicio = new Label(actividad.getFechaInicioActividad());
-        fechaFin = new Label(actividad.getFechaFinActividad());
+        fechas = new Label();
         btnVerDetalles = new Button("Ver detalles");
-        btnModificarActividad = new Button("Modificar actividad");
+        chbxCompletar = new CheckBox();
         fondoImagen = new Pane();
+        fondoEstado = new Pane();
+        fondoModificar = new Pane();
     }
     
     public Button getBotonVerDetalles() {
         return btnVerDetalles;
     }
     
-    public Button getBotonModificar() {
-        return btnModificarActividad;
+    public ImageView getBotonModificar() {
+        return imvModificar;
+    }
+    
+    public CheckBox getCheckBox() {
+        return chbxCompletar;
     }
     
     private void establecerEstilos() {
+        establecerEstiloFondoEstado();
         establecerEstiloFondoImagen();
-        establecerEstiloLabeTituloFechaFin();
-        establecerEstiloLabelTituloFechaInicio();
+        establecerEstiloFechas();
         establecerEstiloLabelTituloActividad();
         establecerEstiloTarjeta();
         configurarBotonVerDetalles();
         configurarBotonModificarActividad();
+        configurarCheckBox();
     }
     
     private void establecerEstiloTarjeta() {
-        this.setPrefSize(1563, 244);
+        this.setPrefSize(1150, 179);
         this.setStyle("-fx-background-color: white; -fx-background-radius: 15");
     }
     
+    private void establecerEstiloFondoEstado() {
+        fondoEstado.setPrefSize(150, 38);
+        fondoEstado.setLayoutX(130);
+        fondoEstado.setLayoutY(19);
+        Label lbEstado = new Label(actividad.getEstadoActividad());
+        fondoEstado.getChildren().add(lbEstado);
+        lbEstado.setLayoutX(9);
+        lbEstado.setLayoutY(5);
+        lbEstado.setPrefWidth(130);
+        lbEstado.setStyle("-fx-text-fill: white;");
+        lbEstado.setAlignment(Pos.CENTER);
+        switch (actividad.getEstadoActividad()) {
+            case "No completada":
+                fondoEstado.setStyle("-fx-background-color: #D04545; -fx-background-radius: 15");
+                break;
+            case "Completada":
+                fondoEstado.setStyle("-fx-background-color: #7EA0CD; -fx-background-radius: 15");
+                break;
+            case "Proxima":
+                fondoEstado.setStyle("-fx-background-color: #C5BE19; -fx-background-radius: 15");
+                break;
+            default:
+               System.out.println("La actividad viene sin estado");
+        }
+    }
+    
     private void establecerEstiloFondoImagen() {
-        fondoImagen.setPrefSize(95, 95);
-        fondoImagen.setLayoutX(31);
-        fondoImagen.setLayoutY(21);
+        fondoImagen.setPrefSize(80, 80);
+        fondoImagen.setLayoutX(20);
+        fondoImagen.setLayoutY(30);
         fondoImagen.setStyle("-fx-background-color: #d9d9d9; -fx-background-radius: 50");
         fondoImagen.getChildren().add(imvActividad);
-        imvActividad.setFitWidth(45);
-        imvActividad.setFitHeight(53);
-        imvActividad.setLayoutX(25);
+        imvActividad.setFitWidth(35);
+        imvActividad.setFitHeight(43);
+        imvActividad.setLayoutX(20);
         imvActividad.setLayoutY(21);
     }
     
     private void establecerEstiloLabelTituloActividad() {
-        Label tituloActividad = new Label("Nombre actividad");
-        tituloActividad.setFont(fuenteTitulos);
-        tituloActividad.setLayoutX(151);
-        tituloActividad.setLayoutY(25);
-        lbNombreActividad.setFont(fuenteTexto);
-        lbNombreActividad.setLayoutX(151);
-        lbNombreActividad.setLayoutY(58);
-        getChildren().add(tituloActividad);
+        lbNombreActividad.setFont(fuenteTitulos);
+        lbNombreActividad.setLayoutX(130);
+        lbNombreActividad.setLayoutY(72);
     }
     
-    private void establecerEstiloLabelTituloFechaInicio() {
-        Label tituloFechaInicio = new Label("Fecha inicio: ");
-        tituloFechaInicio.setFont(fuenteTitulos);
-        tituloFechaInicio.setLayoutX(151);
-        tituloFechaInicio.setLayoutY(105);
-        fechaInicio.setFont(fuenteTexto);
-        fechaInicio.setLayoutX(151);
-        fechaInicio.setLayoutY(133);
-        getChildren().add(tituloFechaInicio);
-    }
-    
-    private void establecerEstiloLabeTituloFechaFin() {
-        Label tituloFechaFin = new Label("Fecha fin: ");
-        tituloFechaFin.setFont(fuenteTitulos);
-        tituloFechaFin.setLayoutX(151);
-        tituloFechaFin.setLayoutY(165);
-        fechaFin.setFont(fuenteTexto);
-        fechaFin.setLayoutX(151);
-        fechaFin.setLayoutY(195);
-        getChildren().add(tituloFechaFin);
+    private void establecerEstiloFechas() {
+        fechas.setText(actividad.getFechaInicioActividad() + " - " + actividad.getFechaFinActividad());
+        fechas.setLayoutX(130);
+        fechas.setLayoutY(118);
+        fechas.setFont(fuenteTexto);
     }
     
     private void configurarBotonVerDetalles() {
         btnVerDetalles.setStyle("-fx-background-color: #C4DAEF; -fx-background-radius: 15;");
-        btnVerDetalles.setLayoutX(1350);
-        btnVerDetalles.setLayoutY(179);
-        btnVerDetalles.setPrefWidth(180);
-        btnVerDetalles.setPrefHeight(40);
+        btnVerDetalles.setLayoutX(970);
+        btnVerDetalles.setLayoutY(120);
+        btnVerDetalles.setPrefWidth(140);
+        btnVerDetalles.setPrefHeight(30);
+        btnVerDetalles.setFont(fuenteTexto);
     }
     
     private void configurarBotonModificarActividad() {
-        btnModificarActividad.setStyle("-fx-background-color: #C4DAEF; -fx-background-radius: 15;");
-        btnModificarActividad.setLayoutX(1150);
-        btnModificarActividad.setLayoutY(179);
-        btnModificarActividad.setPrefWidth(180);
-        btnModificarActividad.setPrefHeight(40);
+        fondoModificar.setPrefSize(36, 36);
+        fondoModificar.setLayoutX(900);
+        fondoModificar.setLayoutY(118);
+        imvModificar.setFitHeight(36);
+        imvModificar.setFitWidth(36);
+        imvModificar.setLayoutX(0);
+        imvModificar.setLayoutY(0);
+        fondoModificar.getChildren().add(imvModificar);
+    }
+    
+    private void configurarCheckBox() {
+        chbxCompletar.setLayoutX(1087);
+        chbxCompletar.setLayoutY(45);
+        if (actividad.getEstadoActividad().equals("No completada")) {
+            chbxCompletar.setDisable(true);
+        }
+        if (actividad.getEstadoActividad().equals("Completada")) {
+            chbxCompletar.selectedProperty().set(true);
+            chbxCompletar.setDisable(true);
+        }
     }
 }

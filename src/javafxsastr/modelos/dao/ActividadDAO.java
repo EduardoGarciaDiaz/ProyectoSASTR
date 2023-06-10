@@ -11,8 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafxsastr.modelos.ConexionBD;
 import javafxsastr.modelos.pojo.Actividad;
 import javafxsastr.utils.Codigos;
@@ -35,8 +33,8 @@ public class ActividadDAO {
             " fechaFinActividad, horaInicioActividad, horaFinActividad, fechaCreacionActividad, idAnteproyecto, idEstadoActividad,"
             + " idEstudiante) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
     private final String ACTUALIZAR_ACTIVIDAD = "UPDATE actividades SET nombreActividad = ?, detallesActividad = ?," +
-            " fechaInicioActividad = ?, fechaFinActividad = ?, horaInicioActividad = ?, horaFinActividad = ?  " +
-            "WHERE idActividad = ?";
+            " fechaInicioActividad = ?, fechaFinActividad = ?, horaInicioActividad = ?, horaFinActividad = ? , " +
+            "idEstadoActividad = ? WHERE idActividad = ?";
     private final String ELIMINAR_ACTIVIDAD = "DELETE FROM actividades WHERE idActividad = ?";
 
     private final String CONTAR_ACTIVIDADES_POR_ESTADO = "select count(*) from sastr.actividades\n" +
@@ -293,11 +291,13 @@ public class ActividadDAO {
             sentencia.setString(4, actividad.getFechaFinActividad());
             sentencia.setString(5, actividad.getHoraInicioActividad());
             sentencia.setString(6, actividad.getHoraFinActividad());
-            sentencia.setInt(7, actividad.getIdActividad());
+            sentencia.setInt(7, actividad.getIdEstadoActividad());
+            sentencia.setInt(8, actividad.getIdActividad());
             int filasAfectadas = sentencia.executeUpdate();
             respuesta = (filasAfectadas == 1) ? actividad.getIdActividad() : -1;
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
+            ex.printStackTrace();
             throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
                     Codigos.ERROR_CONSULTA);
         }

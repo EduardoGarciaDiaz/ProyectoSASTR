@@ -59,7 +59,7 @@ public class AcademicoDAO {
     private final String GUARDAR_ACADEMICO = "insert into sastr.academicos (numeroPersonalAcademico, idUsuario) values ( ?, ?);";
     private final String OBTENER_CODIRECTORES_POR_ANTEPROYECTO = "SELECT acad.idAcademico, usuarios.idUsuario, nombreUsuario AS nombreAcademico, "
             + "primerApellidoUsuario AS primerApellidoAcademico, numeroPersonalAcademico," 
-            + "segundoApellidoUsuario AS segundoApellidoUsuario, correoInstitucionalUsuario AS correoInstitucionalAcademico, " 
+            + "segundoApellidoUsuario AS segundoApellidoAcademico, correoInstitucionalUsuario AS correoInstitucionalAcademico, " 
             + "correoAlternoUsuario AS correoAlternoAcademico, contraseñaUsuario AS contraseñaAcademico, " 
             + "esAdministrador, usuarios.idEstadoUsuario, estados_usuario.nombreEstadoUsuario " 
             + "FROM sastr.usuarios " 

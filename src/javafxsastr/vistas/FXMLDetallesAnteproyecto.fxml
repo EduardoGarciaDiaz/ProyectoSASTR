@@ -25,9 +25,9 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <ScrollPane hbarPolicy="NEVER" layoutX="3.0" layoutY="76.0" maxHeight="137.0" prefHeight="100.0" prefWidth="533.0" style="-fx-background-color: white; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-color: transparent;">
+            <ScrollPane hbarPolicy="NEVER" layoutX="3.0" layoutY="76.0" maxHeight="295.0" prefWidth="533.0" style="-fx-background-color: white; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-color: transparent;">
                <content>
-                  <VBox fx:id="vbxEstudiantesDesasignados" prefHeight="3.0" prefWidth="523.0" spacing="5.0" style="-fx-background-color: white;" />
+                  <VBox fx:id="vbxEstudiantesDesasignados" maxHeight="295.0" prefWidth="523.0" spacing="2.0" style="-fx-background-color: white;" />
                </content>
             </ScrollPane>
          </children>
