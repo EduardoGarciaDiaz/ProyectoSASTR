@@ -498,5 +498,40 @@ public class EstudianteDAO {
         }
         return estudiantes;
     }
+    
+     public ArrayList<Estudiante> obtenerEstudiantesPorAcademico(int idAcademico) throws DAOException {
+        ArrayList<Estudiante> estudiantes = new ArrayList<>();
+        try {
+            PreparedStatement sentencia = ConexionBD.obtenerConexionBD()
+                    .prepareStatement(OBTENER_ESTUDIANTES_ASIGNADOS_POR_ACADEMICO);
+            sentencia.setInt(1, idAcademico);
+            ResultSet resultado = sentencia.executeQuery();
+            while (resultado.next()) {
+                Estudiante estudiante = new Estudiante();
+                estudiante.setIdEstudiante(resultado.getInt("idEstudiante"));
+                estudiante.setNombre(resultado.getString("nombreEstudiante"));
+                estudiante.setPrimerApellido(resultado.getString("primerApellidoEstudiante"));
+                estudiante.setSegundoApellido(resultado.getString("segundoApellidoEstudiante"));
+                estudiante.setMatriculaEstudiante(resultado.getString("matriculaEstudiante"));
+                estudiante.setCorreoInstitucional(resultado.getString("correoInstitucionalEstudiante"));
+                estudiante.setCorreoAlterno(resultado.getString("correoAlternoEstudiante"));
+                estudiante.setContraseña(resultado.getString("contraseñaUsuario"));
+                estudiante.setIdUsuario(resultado.getInt("idUsuario"));
+                estudiante.setIdAnteproyecto(resultado.getInt("idAnteproyecto"));
+                estudiante.setAnteproyectoEstudiante(resultado.getString("nombreTrabajoRecepcional"));
+                estudiante.setIdCurso(resultado.getInt("idCurso"));
+                estudiante.setCursoEstudiante(resultado.getString("nombreCurso"));
+                estudiante.setIdEstadoUsuario(resultado.getInt("idEstadoUsuario"));
+                estudiante.setEstadoUsuario(resultado.getString("nombreEstadoUsuario"));
+                estudiantes.add(estudiante);
+            }
+            ConexionBD.cerrarConexionBD();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
+                    Codigos.ERROR_CONSULTA);
+        }
+        return estudiantes;
+    }
 
 }
