@@ -21,11 +21,13 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafxsastr.JavaFXSASTR;
 import javafxsastr.modelos.dao.DAOException;
 import javafxsastr.modelos.dao.UsuarioDAO;
 import javafxsastr.modelos.pojo.Usuario;
+import javafxsastr.utils.CodigosVentanas;
 import javafxsastr.utils.Utilidades;
 
 public class FXMLInicioSesionController implements Initializable {
@@ -41,9 +43,6 @@ public class FXMLInicioSesionController implements Initializable {
     @FXML
     private Label lbErrorCredenciales;
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         agregarListenersACampos();
@@ -133,6 +132,22 @@ public class FXMLInicioSesionController implements Initializable {
                 }
             }
         });
+    }
+
+    @FXML
+    private void irVentanaAnteproyectosInvitado(MouseEvent event) {
+        try {
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLAnteproyectos.fxml"));
+            Parent vista = accesoControlador.load();
+            FXMLAnteproyectosController controladorVistaInicio = accesoControlador.getController();
+            controladorVistaInicio.setInvitado(CodigosVentanas.INICIO_SESION);
+            Stage escenario = (Stage) tfContraseñaUsuario.getScene().getWindow();
+            escenario.setScene(new Scene(vista));
+            escenario.setTitle("Inicio");
+            escenario.show();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
     
 }

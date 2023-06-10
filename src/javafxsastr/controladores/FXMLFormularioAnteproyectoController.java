@@ -58,6 +58,7 @@ import javafxsastr.modelos.pojo.Modalidad;
 import javafxsastr.modelos.pojo.RevisionAnteproyecto;
 import javafxsastr.modelos.pojo.Rubrica;
 import javafxsastr.utils.CampoDeBusqueda;
+import javafxsastr.utils.CodigosVentanas;
 import javafxsastr.utils.FiltrosTexto;
 import javafxsastr.utils.Utilidades;
 
@@ -911,7 +912,7 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLAnteproyectos.fxml"));
             Parent vista = accesoControlador.load();
             FXMLAnteproyectosController controladorVistaAnteproyectos = accesoControlador.getController();
-            controladorVistaAnteproyectos.setAcademico(academico, false);
+            controladorVistaAnteproyectos.setAcademico(academico, false, CodigosVentanas.INICIO);
             Stage escenario = (Stage) lbAñoCreacion.getScene().getWindow();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Inicio");

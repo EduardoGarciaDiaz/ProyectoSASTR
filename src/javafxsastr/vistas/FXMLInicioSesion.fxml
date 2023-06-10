@@ -61,7 +61,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label fx:id="lbErrorCredenciales" alignment="CENTER" contentDisplay="CENTER" layoutX="90.0" layoutY="639.0" prefHeight="70.0" prefWidth="440.0" style="-fx-text-alignment: center;" textFill="RED" wrapText="true">
+            <Label fx:id="lbErrorCredenciales" alignment="CENTER" contentDisplay="CENTER" layoutX="89.0" layoutY="631.0" prefHeight="70.0" prefWidth="440.0" style="-fx-text-alignment: center;" textFill="RED" wrapText="true">
                <font>
                   <Font size="18.0" />
                </font>
@@ -71,6 +71,11 @@
                   <Font size="20.0" />
                </font>
             </Label>
+            <Pane layoutX="403.0" layoutY="819.0" onMouseClicked="#irVentanaAnteproyectosInvitado" prefHeight="27.0" prefWidth="206.0">
+               <children>
+                  <Label alignment="CENTER" layoutX="4.0" layoutY="4.0" prefHeight="21.0" prefWidth="192.0" text="Ingresar como invitado" textAlignment="CENTER" textFill="#0066ff" />
+               </children>
+            </Pane>
          </children>
       </Pane>
       <Pane prefHeight="200.0" prefWidth="200.0" />

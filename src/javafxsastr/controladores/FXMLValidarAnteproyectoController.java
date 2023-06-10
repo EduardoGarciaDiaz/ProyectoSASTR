@@ -48,6 +48,7 @@ import javafxsastr.modelos.pojo.Anteproyecto;
 import javafxsastr.modelos.pojo.Estudiante;
 import javafxsastr.modelos.pojo.Lgac;
 import javafxsastr.modelos.pojo.Rubrica;
+import javafxsastr.utils.CodigosVentanas;
 import javafxsastr.utils.Utilidades;
 
 public class FXMLValidarAnteproyectoController implements Initializable {
@@ -474,7 +475,7 @@ public class FXMLValidarAnteproyectoController implements Initializable {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLAnteproyectos.fxml"));
             Parent vista = accesoControlador.load();
             FXMLAnteproyectosController controladorDetallesAnteproyecto = accesoControlador.getController();
-            controladorDetallesAnteproyecto.setAcademico(academico, true);
+            controladorDetallesAnteproyecto.setAcademico(academico, true, CodigosVentanas.INICIO);
             Stage escenario = (Stage) lbDuracion.getScene().getWindow();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Anteproyectos");

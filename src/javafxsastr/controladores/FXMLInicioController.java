@@ -37,6 +37,7 @@ import javafxsastr.modelos.dao.EstudianteDAO;
 import javafxsastr.modelos.pojo.Academico;
 import javafxsastr.modelos.pojo.Estudiante;
 import javafxsastr.modelos.pojo.Usuario;
+import javafxsastr.utils.CodigosVentanas;
 import javafxsastr.utils.ConstructorInicio;
 import javafxsastr.utils.Utilidades;
 
@@ -182,7 +183,7 @@ public class FXMLInicioController implements Initializable, INotificacionClicBot
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLAnteproyectos.fxml"));
             Parent vista = accesoControlador.load();
             FXMLAnteproyectosController controladorVistaAnteproyectos = accesoControlador.getController();
-            controladorVistaAnteproyectos.setAcademico(academico, esRCA);
+            controladorVistaAnteproyectos.setAcademico(academico, esRCA,CodigosVentanas.INICIO);
             Stage escenario = (Stage) menuContraido.getScene().getWindow();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Anteproyectos");

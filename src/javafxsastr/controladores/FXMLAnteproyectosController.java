@@ -38,6 +38,7 @@ import javafxsastr.interfaces.INotificacionClicBotonAnteproyectos;
 import javafxsastr.modelos.dao.AnteproyectoDAO;
 import javafxsastr.modelos.dao.CuerpoAcademicoDAO;
 import javafxsastr.modelos.dao.DAOException;
+import javafxsastr.modelos.dao.EstadoSeguimientoDAO;
 import javafxsastr.modelos.dao.EstudianteDAO;
 import javafxsastr.modelos.pojo.Academico;
 import javafxsastr.modelos.pojo.Anteproyecto;
@@ -52,6 +53,8 @@ public class FXMLAnteproyectosController implements Initializable, INotificacion
     private VBox contenedorTarjetasAnteproyectos;
     private Academico academico;
     private ObservableList<Anteproyecto> anteproyectos;
+    private boolean esInvitado = false;
+    private CodigosVentanas ventanaOrigen;
     @FXML
     private TextField tfCampoBusqueda;
     @FXML
@@ -66,11 +69,20 @@ public class FXMLAnteproyectosController implements Initializable, INotificacion
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    }    
+    }
     
-    public void setAcademico(Academico academico, boolean esRCA) {
+    public void setInvitado(CodigosVentanas codigoVentana) {
+        this.ventanaOrigen = codigoVentana;
+        esInvitado=true;
+        recuperarAnteproyectosPublicados();
+        cargarTarjetasAnteproyectos(anteproyectos);
+        pnBotonCrearAnteproyecto.setVisible(false);
+    }
+    
+    public void setAcademico(Academico academico, boolean esRCA,CodigosVentanas codigoVentana) {        
         this.esRCA = esRCA;
         this.academico = academico;
+        this.ventanaOrigen = codigoVentana;
         if (this.esRCA) {
             CuerpoAcademico cuerpoAcademico = recuperarCuerpoAcademicoDelRCA(academico.getIdAcademico());
             recuperarAnteproyectosDelCA(cuerpoAcademico.getIdCuerpoAcademico());
@@ -109,6 +121,16 @@ public class FXMLAnteproyectosController implements Initializable, INotificacion
         try {
             anteproyectos = FXCollections.observableArrayList(
                 new AnteproyectoDAO().obtenerAnteproyectosPorCuerpoAcademico(idCuerpoAcademico));
+        } catch (DAOException ex) {
+            manejarDAOException(ex);
+        }
+    }
+    
+    public void recuperarAnteproyectosPublicados() {
+        try {
+             int idEstadoSeguimiento = new EstadoSeguimientoDAO().obtenerIdEstadoSeguimiento("Publicado");
+            anteproyectos = FXCollections.observableArrayList(
+                new AnteproyectoDAO().obtenerAnteproyectosPorEstadoSeguimiento(idEstadoSeguimiento));
         } catch (DAOException ex) {
             manejarDAOException(ex);
         }
@@ -253,7 +275,11 @@ public class FXMLAnteproyectosController implements Initializable, INotificacion
 
     @FXML
     private void clicRegresar(MouseEvent event) {
-        irAVistaInicio(academico);
+        if(esInvitado) {
+            irAVistaIniciarSesion();
+        }else {
+            irAVistaInicio(academico);
+        }        
     }
     
     private void irAVistaInicio(Academico academico) {
@@ -267,6 +293,19 @@ public class FXMLAnteproyectosController implements Initializable, INotificacion
             escenario.setTitle("Inicio");
             escenario.show();
             
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    private void irAVistaIniciarSesion() {
+        try {
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLInicioSesion.fxml"));
+            Parent vista = accesoControlador.load();            
+            Stage escenario = (Stage) lbTituloVentana.getScene().getWindow();
+            escenario.setScene(new Scene(vista));
+            escenario.setTitle("Inicio Sesion");
+            escenario.show();            
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -331,13 +370,22 @@ public class FXMLAnteproyectosController implements Initializable, INotificacion
         try {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLDetallesAnteproyecto.fxml"));
             Parent vista = accesoControlador.load();
-            FXMLDetallesAnteproyectoController controladorDetallesAnteproyecto = accesoControlador.getController();
+            FXMLDetallesAnteproyectoController controladorDetallesAnteproyecto = accesoControlador.getController();        
+            switch (ventanaOrigen) {
+                case INICIO_SESION:
+                    controladorDetallesAnteproyecto.setInvitado(true, CodigosVentanas.ANTEPROYECTOS_INVITADO);
+                    break;
+                case INICIO:
+                    if (esRCA) {
+                        controladorDetallesAnteproyecto.setAcademico(academico, CodigosVentanas.VALIDAR_ANTEPROYECTOS);
+                    }else{                
+                       controladorDetallesAnteproyecto.setAcademico(academico, CodigosVentanas.MIS_ANTEPROYECTOS);   
+                    } 
+                    break;
+                default:
+                    throw new AssertionError();
+            }    
             controladorDetallesAnteproyecto.setAnteproyecto(anteproyecto);
-            if (esRCA) {
-                controladorDetallesAnteproyecto.setAcademico(academico, CodigosVentanas.VALIDAR_ANTEPROYECTOS);
-            } else {
-                controladorDetallesAnteproyecto.setAcademico(academico, CodigosVentanas.MIS_ANTEPROYECTOS);
-            }
             Stage escenario = (Stage) lbTituloVentana.getScene().getWindow();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Detalles Anteproyecto");

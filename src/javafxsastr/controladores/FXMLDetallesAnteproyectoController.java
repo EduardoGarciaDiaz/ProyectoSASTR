@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -43,8 +45,10 @@ import javafxsastr.interfaces.INotificacionRecargarDatos;
 import javafxsastr.interfaces.INotificacionSeleccionItem;
 import javafxsastr.modelos.dao.AcademicoDAO;
 import javafxsastr.modelos.dao.ActividadDAO;
+import javafxsastr.modelos.dao.AnteproyectoDAO;
 import javafxsastr.modelos.dao.DAOException;
 import javafxsastr.modelos.dao.DesasignacionDAO;
+import javafxsastr.modelos.dao.EstadoSeguimientoDAO;
 import javafxsastr.modelos.dao.EstudianteDAO;
 import javafxsastr.modelos.dao.LgacDAO;
 import javafxsastr.modelos.pojo.Academico;
@@ -132,6 +136,15 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
     @FXML
     private Button btnCancelarAsignacionEstudiante;
     
+     private final int ANTEPROYECTO_APROBADO = 3;
+    private final int ANTEPROYECTO_PUBLICADO = 4;
+    private final int ANTEPROYECTO_EN_DESARROLLO = 5;
+    private int numeroMaximoEstudiantes;
+    private final int NUMERO_MINIMO_ESTUDIANTES = 1;
+    private final DateTimeFormatter FORMATO_FECHA_MES = DateTimeFormatter.ofPattern("MMMM",
+        new Locale("es"));
+    private final DateTimeFormatter FORMATO_FECHA_COMPLETA = DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy",
+        new Locale("es"));
     private CodigosVentanas ventanaOrigen;
     private Anteproyecto anteproyecto;
     private Academico academico;
@@ -139,13 +152,7 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
     private ObservableList<Estudiante> estudiantesRegistrados;
     private ArrayList<Academico> codirectores = new ArrayList<>();
     private ArrayList<Lgac> lgacs = new ArrayList<>();
-    private final int ANTEPROYECTO_APROBADO = 3;
-    private int numeroMaximoEstudiantes;
-    private final int NUMERO_MINIMO_ESTUDIANTES = 1;
-    private final DateTimeFormatter FORMATO_FECHA_MES = DateTimeFormatter.ofPattern("MMMM",
-        new Locale("es"));
-    private final DateTimeFormatter FORMATO_FECHA_COMPLETA = DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy",
-        new Locale("es"));
+    private boolean esInvitado = false;
  
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -172,19 +179,27 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
         this.estudianteUsuario = estudianteUsuario;
         this.ventanaOrigen = origen;
     }
+    
+    public void setInvitado(Boolean esInvitado, CodigosVentanas origen) {
+         this.ventanaOrigen = origen;
+         this.esInvitado = esInvitado;                
+    }
         
     public void setAnteproyecto(Anteproyecto anteproyecto) {
         this.anteproyecto = anteproyecto;
-        numeroMaximoEstudiantes = anteproyecto.getNumeroMaximoAlumnosParticipantes();
-        obtenerEstudiantes();                
+        numeroMaximoEstudiantes = anteproyecto.getNumeroMaximoAlumnosParticipantes(); 
+        obtenerEstudiantes(); 
         mostrarDatosAnteproyecto();
-        obtenerInformacionAvance();
-        mostrarDesasignaciones();
+        if(!esInvitado) {
+            System.err.println("No es invitado");
+            obtenerInformacionAvance();
+            mostrarDesasignaciones();
+        }        
     }
     
     private void obtenerEstudiantes() {
         try {
-            estudiantesRegistrados = FXCollections.observableArrayList(new EstudianteDAO().obtenerEstudiantes());
+            estudiantesRegistrados = FXCollections.observableArrayList(new EstudianteDAO().obtenerEstudiantesSinAnteproyecto());
         } catch (DAOException ex) {
             manejarDAOException(ex);
         }
@@ -210,7 +225,9 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
             esDirector = false;
         } else {
             if(academico.getIdAcademico() == anteproyecto.getIdAcademico()
-                    && anteproyecto.getIdEstadoSeguimiento() == ANTEPROYECTO_APROBADO) {
+                    && (anteproyecto.getIdEstadoSeguimiento() == ANTEPROYECTO_APROBADO || 
+                    anteproyecto.getIdEstadoSeguimiento() == ANTEPROYECTO_EN_DESARROLLO ||
+                    anteproyecto.getIdEstadoSeguimiento() == ANTEPROYECTO_PUBLICADO)) {
                 validarAsignarPrimerEstudiante();
                 validarAsignarOtroEstudiante();
             } else {
@@ -221,17 +238,33 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
     }
     
     private void validarAsignarPrimerEstudiante() {
-        if (estudiantesParticipantes.size() < NUMERO_MINIMO_ESTUDIANTES) {
+        String estadoSeguimiento;
+        if (estudiantesParticipantes.size() < NUMERO_MINIMO_ESTUDIANTES) {            
             configurarAgregarPrimerEstudiante();
+            estadoSeguimiento = "Publicado";
+        }else {
+            estadoSeguimiento = "En desarrollo";
         }
+        cambiarEstadoAnteproyecto(estadoSeguimiento ); 
     }
     
-    private void validarAsignarOtroEstudiante() {
+     private void validarAsignarOtroEstudiante() {
         if (estudiantesParticipantes.size() < numeroMaximoEstudiantes
                 && estudiantesParticipantes.size() >= 1) {
             btnAsignarOtroEstudiante.setVisible(true);
         }
     }
+    
+    private void cambiarEstadoAnteproyecto(String estSeguimiento) {
+        try {
+            int idEstadoSeguimiento = new EstadoSeguimientoDAO().obtenerIdEstadoSeguimiento(estSeguimiento);            
+            new AnteproyectoDAO().actualizarEstadoSeguimiento(anteproyecto.getIdAnteproyecto(), idEstadoSeguimiento);
+        } catch (DAOException ex) {
+            manejarDAOException(ex);
+        }
+    }
+    
+   
  
     private void mostrarDatosLugarFecha() {
         LocalDate fechaCreacion = obtenerFecha();        
@@ -451,7 +484,7 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
                 + "-fx-background-radius: 15;"
                 + "-fx-background-color: #c9c9c9");
         btnAsignarEstudiante.setPrefSize(173, 0);
-        btnAsignarEstudiante.setOnMouseClicked((event) -> {
+        btnAsignarEstudiante.setOnMouseClicked((event) -> {            
             mostrarBusquedaEstudiantes();
             vbxSeccionesAnteproyecto.getChildren().remove(contenedorSinEstudiante);
         });
@@ -534,8 +567,13 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
                 break;
             case MIS_ANTEPROYECTOS:
                 irAVistaAnteproyectos(false);
+                break;
             case VALIDAR_ANTEPROYECTOS:
                 irAVistaAnteproyectos(true);
+                break;
+            case ANTEPROYECTOS_INVITADO:
+                irAVistaAnteproyectosInivtado();
+                break;
             default:
                 
         }
@@ -545,8 +583,23 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
         try {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLAnteproyectos.fxml"));
             Parent vista = accesoControlador.load();
-            FXMLAnteproyectosController controladorVistaAnteproyecto = accesoControlador.getController();
-            controladorVistaAnteproyecto.setAcademico(academico, esRCA);
+            FXMLAnteproyectosController controladorVistaAnteproyecto = accesoControlador.getController(); 
+            controladorVistaAnteproyecto.setAcademico(academico, esRCA, CodigosVentanas.INICIO);                      
+            Stage escenario = (Stage) lbMes.getScene().getWindow();
+            escenario.setScene(new Scene(vista));
+            escenario.setTitle("Anteproyectos");
+            escenario.show();            
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    private void irAVistaAnteproyectosInivtado() {
+        try {
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLAnteproyectos.fxml"));
+            Parent vista = accesoControlador.load();
+            FXMLAnteproyectosController controladorVistaAnteproyecto = accesoControlador.getController();           
+            controladorVistaAnteproyecto.setInvitado(CodigosVentanas.INICIO_SESION);                      
             Stage escenario = (Stage) lbMes.getScene().getWindow();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Anteproyectos");
