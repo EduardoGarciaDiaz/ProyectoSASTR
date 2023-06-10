@@ -72,8 +72,9 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
     private Actividad actividad;
     private Entrega entregaEdicion;
     private boolean esEdicion ; 
-    private File archivoEntregaSeleccion;
-    private ArrayList<File> archivosEntregaSeleccionados = new ArrayList<>();
+    private int numeroEntrega;
+    private Archivo archivoEntregaSeleccion;
+    private ArrayList<Archivo> archivosEntregaSeleccionados = new ArrayList<>();
     private Archivo archivoEntrega;
     private Usuario usuario;
     private Academico academico;
@@ -98,23 +99,27 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
         mostrarInformacionActividad(actividad);
         validarCamposVacios();
     }
+    
+    public void setNumeroEntrega(int numeroEntrega) {
+        this.numeroEntrega = numeroEntrega;
+    }
 
-    private void visualizarArchivo(File archivoEntrega) {
+    private void visualizarArchivo(Archivo archivoEntrega) {
         if (archivoEntrega != null) {
             agregarArchivo(archivoEntrega);
         }
     }
 
-    private void agregarArchivo(File archivoEntrega) {
+    private void agregarArchivo(Archivo archivoEntrega) {
         archivosEntregaSeleccionados.add(archivoEntrega);
         configurarBotonArchivo(archivoEntrega);
     }
 
-    private void eliminarArchivo(File archivoEntrega) {
+    private void eliminarArchivo(Archivo archivoEntrega) {
         archivosEntregaSeleccionados.remove(archivoEntrega);
     }
 
-    public void configurarBotonArchivo(File archivo) {
+    public void configurarBotonArchivo(Archivo archivo) {
         Pane contenedorArchivo = new Pane();
         contenedorArchivo.setPrefSize(285, 20);
         contenedorArchivo.setStyle("-fx-background-color: #C4DAEF; -fx-background-radius: 15");
@@ -125,11 +130,11 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
         imgIconoArchivo.setFitWidth(40);
         imgIconoArchivo.setLayoutX(12);
         imgIconoArchivo.setLayoutY(12);
-        Label lbNombreArchivo = new Label(archivo.getName());
+        Label lbNombreArchivo = new Label(archivo.getNombreArchivo());
         contenedorArchivo.getChildren().add(lbNombreArchivo);
         lbNombreArchivo.setLayoutX(75);
         lbNombreArchivo.setLayoutY(6);
-        Label lbPesoArchivo = new Label(String.valueOf(archivo.length() / 1024) + "KB");
+        Label lbPesoArchivo = new Label(String.valueOf(archivo.getArchivo().length / 1024) + "KB");
         contenedorArchivo.getChildren().add(lbPesoArchivo);
         lbPesoArchivo.setLayoutX(75);
         lbPesoArchivo.setLayoutY(40);
@@ -168,10 +173,7 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
         ArrayList<Archivo> archivos = obtenerArchivosDeEntrega();
         archivosEdicion.addAll(archivos);
         for (Archivo archivo : archivos) {
-            archivo.getNombreArchivo();
-            String rutaArchivo = archivo.getNombreArchivo();
-            File archivoFile = new File(rutaArchivo);
-            visualizarArchivo(archivoFile);
+            visualizarArchivo(archivo);
         }
     }
 
@@ -252,8 +254,8 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
             esTamañoValido = false;
             lbCampoComentariosError.setText("No puede tener más de 1000 caracteres");
         }
-        for (File archivo : archivosEntregaSeleccionados) {
-            totalPesoArchivos = totalPesoArchivos + (archivo.length() / 1024);
+        for (Archivo archivo : archivosEntregaSeleccionados) {
+            totalPesoArchivos = totalPesoArchivos + (archivo.getArchivo().length / 1024);
         }
         if (totalPesoArchivos > 16000) {
             esTamañoValido = false;
@@ -277,23 +279,23 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
                 }
             } else {
                 int contador = 0;
-                for (File archivos : archivosEntregaSeleccionados) {
+                for (Archivo archivos : archivosEntregaSeleccionados) {
                     archivoEntrega.setEsEntrega(true);
                     archivoEntrega.setIdEntrega(idEntrega);
-                    archivoEntrega.setNombreArchivo(archivos.getName());
+                    archivoEntrega.setNombreArchivo(archivos.getNombreArchivo());
                     if (esEdicion && archivosEdicion.size() > contador) {
                         archivoEntrega.setArchivo(archivosEdicion.get(contador).getArchivo());
                         archivoEntrega.setIdArchivo(archivosEdicion.get(contador).getIdArchivo());
                         respuesta = new ArchivoDAO().actualizarArchivo(archivoEntrega);
                     } else {
-                        archivoEntrega.setArchivo(Files.readAllBytes(archivos.toPath()));
+                        archivoEntrega.setArchivo(archivos.getArchivo());
                         archivosEdicion = new ArrayList<>();
                         respuesta = new ArchivoDAO().guardarArchivo(archivoEntrega);
                     }
                     contador++;
                     if (respuesta < 0) {
                         seEnviaronTodos = false;
-                        System.out.println("No se pudo cargar el archivo: " + archivos.getName());
+                        System.out.println("No se pudo cargar el archivo: " + archivos.getNombreArchivo());
                     }
                 }
                 if (archivosEdicion.size() > contador) {
@@ -302,9 +304,6 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
             }
         } catch (DAOException ex) {
             manejarDAOException(ex);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            System.out.println("Ocurrió un error al cargar los archivos.");
         }
         if (seEnviaronTodos) {
             Utilidades.mostrarDialogoSimple("Entrega enviada", "Entrega enviada exitosamente",
@@ -343,6 +342,7 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
 
     @FXML
     private void clicAdjuntarArchivo(ActionEvent event) {
+        File archivo;
         FileChooser ventanaSeleccionArchivo = new FileChooser();
         ventanaSeleccionArchivo.setTitle("Selecciona el archivo a enviar");
         FileChooser.ExtensionFilter filtroSeleccion = new FileChooser.ExtensionFilter(
@@ -350,8 +350,19 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
                 "*.PDF", "*.ZIP", "*.TXT", "*.XLSX", "*.DOCX", "*.PPTX", "*.PNG", "*.JPG");
         ventanaSeleccionArchivo.getExtensionFilters().add(filtroSeleccion);
         Stage escenarioBase = (Stage) lbEntrega.getScene().getWindow();
-        archivoEntregaSeleccion = ventanaSeleccionArchivo.showOpenDialog(escenarioBase);
-        visualizarArchivo(archivoEntregaSeleccion);
+        archivo = ventanaSeleccionArchivo.showOpenDialog(escenarioBase);
+        if (archivo != null) {
+            try {
+                archivoEntregaSeleccion = new Archivo();
+                archivoEntregaSeleccion.setArchivo(Files.readAllBytes(archivo.toPath()));
+                archivoEntregaSeleccion.setNombreArchivo(archivo.getName());
+                visualizarArchivo(archivoEntregaSeleccion);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                System.out.println("Error");
+            }
+        }
+  
     }
     
     @FXML
@@ -405,8 +416,20 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
     }
 
     private void irAVistaDetallesEntrega() {
-        //TODO
-        System.out.println("Ir a Vista Detalles de la entrega (ventana del estudiante)");
+        try {
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLDetallesEntrega.fxml"));
+            Parent vista = accesoControlador.load();
+            FXMLDetallesEntregaController controladorVistaDetallesEntrega = accesoControlador.getController();     
+            controladorVistaDetallesEntrega.setEstudiante(estudiante);
+            controladorVistaDetallesEntrega.setActividad(actividad);
+            controladorVistaDetallesEntrega.setEntrega(entregaEdicion, numeroEntrega);
+            Stage escenario = (Stage) lbEntrega.getScene().getWindow();
+            escenario.setScene(new Scene(vista));
+            escenario.setTitle("Detalles de Entrega");
+            escenario.show();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
 }
