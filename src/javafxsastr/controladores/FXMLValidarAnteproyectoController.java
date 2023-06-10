@@ -132,6 +132,7 @@ public class FXMLValidarAnteproyectoController implements Initializable {
     private final int LIM_CARACT_COMENTARIOS = 2000;
     private Anteproyecto anteproyecto;
     private Academico academico;
+    private ArrayList<Estudiante> estudiantesParticipantes = new ArrayList<>();
     private ObservableList<Estudiante> estudiantesRegistrados;
     private ArrayList<Integer> valores;
     private ArrayList<Academico> codirectores = new ArrayList<>();
@@ -230,21 +231,25 @@ public class FXMLValidarAnteproyectoController implements Initializable {
     }
     
     private void mostrarDatosAnteproyecto() {
-        mostrarDatosFecha();
-        mostrarDatosProyectoTitulacion();
-        mostrarDatosResponsableTrabajoRecepcional();        
-        mostrarDatosDescripciones();
-        mostrarDatosFinales();  
-        mostrarDatosLGACs();
-        mostrarCodirectores(codirectores);
+        if (anteproyecto != null && !anteproyecto.getFechaCreacion().isEmpty()) {
+            mostrarDatosLugarFecha();
+            mostrarDatosProyectoTitulacion();
+            mostrarDatosResponsableTrabajoRecepcional();        
+            mostrarDatosDescripciones();
+            mostrarDatosFinales();  
+            mostrarDatosLGACs();
+            mostrarCodirectores(codirectores);
+        } else {
+            System.err.println("El anteproyector recibido viene NULO");
+        }
     }
     
-    private void mostrarDatosFecha() {
+    private void mostrarDatosLugarFecha() {
         LocalDate fechaCreacion = obtenerFecha();
         String anio = String.valueOf(fechaCreacion.getYear());
-        String mes = String.valueOf(fechaCreacion.getMonth());
+        String mes = fechaCreacion.format(FORMATO_FECHA_MES);
         String ciudad = anteproyecto.getCiudadCreacion();
-        lbFecha.setText(fechaCreacion.toString());
+        lbFecha.setText(fechaCreacion.format(FORMATO_FECHA_COMPLETA));
         lbMes.setText(mes);
         lbAnio.setText(anio);
         lbLugar.setText(ciudad + ", Veracruz");
