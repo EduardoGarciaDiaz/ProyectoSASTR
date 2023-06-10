@@ -9,6 +9,7 @@ package javafxsastr.modelos.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import javafxsastr.modelos.ConexionBD;
 import javafxsastr.modelos.pojo.Desasignacion;
@@ -93,7 +94,7 @@ public class DesasignacionDAO {
     public int guardarDesasignacion(Desasignacion desasignacion) throws DAOException {
         int respuesta = -1;
         try {
-            PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(GUARDAR_DESASIGNACION);
+            PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(GUARDAR_DESASIGNACION, Statement.RETURN_GENERATED_KEYS);
             sentencia.setString(1, desasignacion.getMotivo());
             sentencia.setString(2, desasignacion.getComentarios());
             sentencia.setInt(3, desasignacion.getIdEstudiante());
@@ -105,6 +106,7 @@ public class DesasignacionDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
+            ex.printStackTrace();                    
            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
                    Codigos.ERROR_CONSULTA);
         }

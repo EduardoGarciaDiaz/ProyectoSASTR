@@ -1,24 +1,27 @@
 /*
  * Autor: Tristan Eduardo Suarez Santiago
- * Fecha de creación: 24/05/2023
+ * Fecha de creación: 03/06/2023
  * Descripción: Controller de la ventana validar Anteproyecto
  */
 package javafxsastr.controladores;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -28,16 +31,22 @@ import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafxsastr.JavaFXSASTR;
+import javafxsastr.modelos.dao.AcademicoDAO;
 import javafxsastr.modelos.dao.AnteproyectoDAO;
 import javafxsastr.modelos.dao.DAOException;
 import javafxsastr.modelos.dao.EstadoSeguimientoDAO;
 import javafxsastr.modelos.dao.EstudianteDAO;
+import javafxsastr.modelos.dao.LgacDAO;
 import javafxsastr.modelos.dao.RubricaDAO;
 import javafxsastr.modelos.pojo.Academico;
 import javafxsastr.modelos.pojo.Anteproyecto;
 import javafxsastr.modelos.pojo.Estudiante;
+import javafxsastr.modelos.pojo.Lgac;
 import javafxsastr.modelos.pojo.Rubrica;
 import javafxsastr.utils.Utilidades;
 
@@ -70,8 +79,6 @@ public class FXMLValidarAnteproyectoController implements Initializable {
     @FXML
     private Label lbNombreProyectoInvestigacion;
     @FXML
-    private Label lbLgacAlimenta;
-    @FXML
     private Label lbLineaInvestigacion;
     @FXML
     private Label lbDuracion;
@@ -83,10 +90,6 @@ public class FXMLValidarAnteproyectoController implements Initializable {
     private Label lbRequisitos;
     @FXML
     private Label lbDirector;
-    @FXML
-    private Label lbCodirector;
-    @FXML
-    private Label lbNumeroAlumnosParticipantes;
     @FXML
     private VBox vbxAlumnosParticipantes;
     @FXML
@@ -119,18 +122,40 @@ public class FXMLValidarAnteproyectoController implements Initializable {
     private RadioButton t2;
     @FXML
     private RadioButton t3;
+    @FXML
+    private VBox vbxLgacs;
+    @FXML
+    private VBox vbxCodirectores;
+    @FXML
+    private Label lbComentarios;
     
+    private final int LIM_CARACT_COMENTARIOS = 2000;
     private Anteproyecto anteproyecto;
     private Academico academico;
+    private ObservableList<Estudiante> estudiantesRegistrados;
     private ArrayList<Integer> valores;
-    
+    private ArrayList<Academico> codirectores = new ArrayList<>();
+    private ArrayList<Lgac> lgacs = new ArrayList<>();
+    private final int ANTEPROYECTO_APROBADO = 3;
+    private final int NUMERO_MAXIMO_ESTUDIANTES = 3;
+    private final int NUMERO_MINIMO_ESTUDIANTES = 1;
+    private final DateTimeFormatter FORMATO_FECHA_MES = DateTimeFormatter.ofPattern("MMMM",
+            new Locale("es"));
+    private final DateTimeFormatter FORMATO_FECHA_COMPLETA = DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy",
+            new Locale("es"));
+  
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        crearAnteproyectoTemporal();    //QUITAR
+        
+    }  
+    
+    public void setAnteproyectoAcademico(Anteproyecto anteproyecto, Academico academico) {
+        this.anteproyecto = anteproyecto;
+        this.academico = academico;
         mostrarDatosAnteproyecto();
         btnAprobar.setDisable(true);
         inicializarListeners();
-    }  
+    }
     
     private void inicializarListeners() {  
         NombreTR.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {            
@@ -174,13 +199,25 @@ public class FXMLValidarAnteproyectoController implements Initializable {
             public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
                validarBtnAprobar();
             }
-        });     
+        });
+        txaComentarios.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if(txaComentarios.getText().length() > LIM_CARACT_COMENTARIOS) {
+                    mostraMensajelimiteSuperado(LIM_CARACT_COMENTARIOS,"Comentarios",lbComentarios); 
+                    btnAprobar.setDisable(true);
+                }else {
+                    lbComentarios.setText("");                    
+                } 
+                validarBtnAprobar();
+            }
+        }); 
     }
     
-    public void crearAnteproyectoTemporal() {   //QUITAR
+     private void obtenerEstudiantes() {
         try {
-            anteproyecto = new AnteproyectoDAO().obtenerAnteproyectoPorId(5);
-        }catch(DAOException ex) {
+            estudiantesRegistrados = FXCollections.observableArrayList(new EstudianteDAO().obtenerEstudiantes());
+        } catch (DAOException ex) {
             manejarDAOException(ex);
         }
     }
@@ -197,8 +234,9 @@ public class FXMLValidarAnteproyectoController implements Initializable {
         mostrarDatosProyectoTitulacion();
         mostrarDatosResponsableTrabajoRecepcional();        
         mostrarDatosDescripciones();
-        mostrarDatosFinales();
-        
+        mostrarDatosFinales();  
+        mostrarDatosLGACs();
+        mostrarCodirectores(codirectores);
     }
     
     private void mostrarDatosFecha() {
@@ -237,24 +275,14 @@ public class FXMLValidarAnteproyectoController implements Initializable {
     }      
     
     private void mostrarDatosResponsableTrabajoRecepcional() {
-        ArrayList<Estudiante> estudiantesParticipantes = new ArrayList<>();
         String director = anteproyecto.getNombreDirector();
-        String codirector = "Falta Obtenerlo";
-        String numeroAlumnosParticipantes = String.valueOf(anteproyecto.getNumeroMaximoAlumnosParticipantes());
         try {
-            estudiantesParticipantes = new EstudianteDAO().obtenerEstudiantesPorIdAnteproyecto(
-                    anteproyecto.getIdAnteproyecto());
+            codirectores = new AcademicoDAO().obtenerCodirectores(anteproyecto.getIdAnteproyecto());
         } catch (DAOException ex) {
             manejarDAOException(ex);
         }
-        for(Estudiante estudiante : estudiantesParticipantes) {
-            System.out.println("estudiante " + estudiante.getNombre());
-            lbEstudianteParticipante.setText(estudiante.getNombre());
-        }
         lbDirector.setText(director);
-        lbCodirector.setText(codirector);
-        lbNumeroAlumnosParticipantes.setText(numeroAlumnosParticipantes);
-        
+        mostrarCodirectores(codirectores);        
     }
     
     private void mostrarDatosDescripciones() {
@@ -271,6 +299,41 @@ public class FXMLValidarAnteproyectoController implements Initializable {
         lbResultadosEsperados.setText(resultadosEsperados);
         lbBibliografiaRecomendada.setText(bibliografiaRecomendada);
         lbNotas.setText(notas);
+    }
+    
+    private void mostrarCodirectores(ArrayList<Academico> codirectores) {
+        for(Academico codirector : codirectores) {
+            configurarCodirectores(codirector);
+        }
+    }
+    
+    private void mostrarDatosLGACs() {
+        try {
+            lgacs = new LgacDAO().obtenerInformacionLGACsPorAnteproyecto(anteproyecto.getIdAnteproyecto());
+        } catch (DAOException ex) {
+            manejarDAOException(ex);
+        }
+        for (Lgac lgac : lgacs) {
+            configurarLgacs(lgac);
+        }
+    }
+    
+     public void configurarCodirectores(Academico academico) {
+        String nombreCodirector = academico.getNombre() + " " +academico.getPrimerApellido() + " " +academico.getSegundoApellido();
+        Label lbNombreCodirector = new Label(nombreCodirector);
+        lbNombreCodirector.setPrefSize(703, 30);
+        lbNombreCodirector.setFont(new Font(20.0));
+        vbxCodirectores.getChildren().add(lbNombreCodirector);
+    }
+     
+     public void configurarLgacs(Lgac lgac) {
+        String nombreLgac = lgac.getNombreLgac();
+        Label lbNombreLgac = new Label(nombreLgac);
+        lbNombreLgac.setPrefSize(655, Region.USE_COMPUTED_SIZE);
+        lbNombreLgac.setFont(new Font(20.0));
+        lbNombreLgac.setLayoutX(75);
+        lbNombreLgac.setLayoutY(6);
+        vbxLgacs.getChildren().add(lbNombreLgac);
     }
     
     private void validarBtnAprobar() {
@@ -360,7 +423,7 @@ public class FXMLValidarAnteproyectoController implements Initializable {
                 int exitoActualizaicon = new AnteproyectoDAO().actualizarEstadoSeguimiento(anteproyecto.getIdAnteproyecto(),
                             idEstadoSeguimiento);
                 if(exitoActualizaicon == 1) {
-                    if( estadoSeguimiento.equals("Validado")) {
+                    if( estadoSeguimiento.equals("Sin Publicar")) {
                      Utilidades.mostrarDialogoSimple("Registro Exitoso", 
                         "Se ha aprobado el anteproyecto correctamente", Alert.AlertType.INFORMATION);
                     }else {
@@ -378,6 +441,11 @@ public class FXMLValidarAnteproyectoController implements Initializable {
         }
     }
     
+    private void mostraMensajelimiteSuperado(int limiteCaracteres, String campo,  Label etiquetaError) { 
+        etiquetaError.setText("Cuidado, Exediste el limite de caracteres("+limiteCaracteres+") de este campo " + campo);
+        btnAprobar.setDisable(true);
+    }    
+    
      private void manejarDAOException(DAOException ex) {
         switch (ex.getCodigo()) {
             case ERROR_CONSULTA:
@@ -394,8 +462,18 @@ public class FXMLValidarAnteproyectoController implements Initializable {
     }
      
      private void cerrarVentana() {
-        Stage escenarioActual = (Stage) txaComentarios.getScene().getWindow();
-        escenarioActual.close();
+          try {
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLAnteproyectos.fxml"));
+            Parent vista = accesoControlador.load();
+            FXMLAnteproyectosController controladorDetallesAnteproyecto = accesoControlador.getController();
+            controladorDetallesAnteproyecto.setAcademico(academico, true);
+            Stage escenario = (Stage) lbDuracion.getScene().getWindow();
+            escenario.setScene(new Scene(vista));
+            escenario.setTitle("Anteproyectos");
+            escenario.show();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }  
 
     @FXML
@@ -405,12 +483,12 @@ public class FXMLValidarAnteproyectoController implements Initializable {
 
     @FXML
     private void clicRechazar(ActionEvent event) {
-        guardarRevision("Rechazado");
+        guardarRevision("Por Corregir");
     }
     
     @FXML
     private void clicAprobar(ActionEvent event) {
-        guardarRevision("Validado");
+        guardarRevision("Sin Publicar");
     }
     
 }

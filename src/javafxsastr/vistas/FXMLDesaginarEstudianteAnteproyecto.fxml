@@ -28,7 +28,7 @@
                   <Font size="30.0" />
                </font>
             </TextArea>
-            <Button layoutX="65.0" layoutY="422.0" mnemonicParsing="false" onAction="#clicBtnCancelar" prefHeight="53.0" prefWidth="199.0" style="-fx-background-color: FCCFCF; -fx-background-radius: 15;" text="Cancelar">
+            <Button fx:id="btnCancelar" layoutX="65.0" layoutY="422.0" mnemonicParsing="false" onAction="#clicBtnCancelar" prefHeight="53.0" prefWidth="199.0" style="-fx-background-color: FCCFCF; -fx-background-radius: 15;" text="Cancelar">
                <font>
                   <Font size="25.0" />
                </font>
@@ -58,6 +58,7 @@
                   </Label>
                </children>
             </Pane>
+            <Label fx:id="lbJustificacion" layoutX="65.0" layoutY="372.0" prefHeight="21.0" prefWidth="939.0" textFill="RED" />
          </children>
       </Pane>
    </children>

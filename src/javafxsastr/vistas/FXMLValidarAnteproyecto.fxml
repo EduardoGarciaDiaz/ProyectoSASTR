@@ -231,7 +231,7 @@
                                  <children>
                                     <Pane prefWidth="422.0">
                                        <children>
-                                          <Label prefHeight="32.0" prefWidth="369.0" text="LGAC que alimenta:  ">
+                                          <Label prefHeight="32.0" prefWidth="258.0" text="LGAC que alimenta:  ">
                                              <font>
                                                 <Font size="22.0" />
                                              </font>
@@ -241,11 +241,7 @@
                                           </Label>
                                        </children>
                                     </Pane>
-                                    <Label fx:id="lbLgacAlimenta" prefWidth="655.0" text="lgac" wrapText="true">
-                                       <font>
-                                          <Font size="20.0" />
-                                       </font>
-                                    </Label>
+                                    <VBox fx:id="vbxLgacs" maxWidth="654.0" prefHeight="32.0" prefWidth="654.0" />
                                  </children>
                               </HBox>
                            </children>
@@ -363,7 +359,7 @@
                                  <children>
                                     <Pane prefWidth="422.0">
                                        <children>
-                                          <Label prefHeight="32.0" prefWidth="369.0" text="Codirector">
+                                          <Label prefHeight="32.0" prefWidth="147.0" text="Codirector">
                                              <font>
                                                 <Font size="22.0" />
                                              </font>
@@ -373,29 +369,11 @@
                                           </Label>
                                        </children>
                                     </Pane>
-                                    <Label fx:id="lbCodirector" prefWidth="655.0" wrapText="true">
-                                       <font>
-                                          <Font size="20.0" />
-                                       </font>
-                                    </Label>
+                                    <VBox fx:id="vbxCodirectores" maxWidth="745.0" prefHeight="32.0" prefWidth="633.0" />
                                  </children>
                               </HBox>
                            </children>
                         </VBox>
-                        <Pane prefHeight="44.0" prefWidth="1080.0">
-                           <children>
-                              <Label layoutX="9.0" layoutY="4.0" text="Alumnos participantes:">
-                                 <font>
-                                    <Font size="22.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="lbNumeroAlumnosParticipantes" layoutX="425.0" layoutY="-1.0" prefHeight="32.0" prefWidth="312.0">
-                                 <font>
-                                    <Font size="20.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </Pane>
                         <VBox fx:id="vbxAlumnosParticipantes" prefWidth="100.0" style="-fx-background-color: white;">
                            <children>
                               <HBox prefWidth="200.0">
@@ -410,18 +388,6 @@
                               </HBox>
                               <HBox prefWidth="200.0">
                                  <children>
-                                    <Pane prefWidth="422.0">
-                                       <children>
-                                          <Label prefHeight="32.0" prefWidth="369.0" text="Segundo alumno">
-                                             <font>
-                                                <Font size="22.0" />
-                                             </font>
-                                             <padding>
-                                                <Insets left="9.0" />
-                                             </padding>
-                                          </Label>
-                                       </children>
-                                    </Pane>
                                     <Label fx:id="lbEstudianteParticipante2" prefHeight="30.0" prefWidth="459.0" wrapText="true">
                                        <font>
                                           <Font size="20.0" />
@@ -574,5 +540,6 @@
       </Label>
       <Button layoutX="1228.0" layoutY="875.0" mnemonicParsing="false" onAction="#clicRechazar" prefHeight="30.0" prefWidth="153.0" style="-fx-background-color: F59999; -fx-background-radius: 13;" text="Rechazar" />
       <Button fx:id="btnAprobar" layoutX="1535.0" layoutY="875.0" mnemonicParsing="false" onAction="#clicAprobar" prefHeight="27.0" prefWidth="153.0" style="-fx-background-color: #97CE9A; -fx-background-radius: 13;" text="Aprobar" />
+      <Label fx:id="lbComentarios" layoutX="1201.0" layoutY="838.0" prefHeight="21.0" prefWidth="500.0" textFill="RED" wrapText="true" />
    </children>
 </AnchorPane>

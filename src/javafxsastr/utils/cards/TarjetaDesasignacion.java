@@ -14,24 +14,33 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafxsastr.utils.Utilidades;
+import javafxsastr.modelos.pojo.Desasignacion;
+
 
 public class TarjetaDesasignacion extends Pane {
     private int idEstudiante;
     private Label lbNombreEstudiante;
     private Button btnVerJustificacion;
+    private Desasignacion desasignacion;
         
     public TarjetaDesasignacion() {
     }
 
-    public TarjetaDesasignacion(int idEstudiante, String nombreEstudiante) {
+    public TarjetaDesasignacion(Desasignacion desasignacion) {
+        this.desasignacion = desasignacion;
         inicializarElementos();
         establecerEstilos();
-        this.idEstudiante = idEstudiante;
-        this.lbNombreEstudiante.setText(nombreEstudiante);
+        this.idEstudiante = desasignacion.getIdEstudiante();
+        this.lbNombreEstudiante.setText(desasignacion.getNombreEstudiante());
         getChildren().addAll(lbNombreEstudiante, btnVerJustificacion);
+    }
+    
+    public Button getBtnVerJustficacion() {
+        return btnVerJustificacion;
+    }
+    
+    public Desasignacion getDesasignacion() {
+        return desasignacion;
     }
     
     private void inicializarElementos() {
@@ -55,7 +64,7 @@ public class TarjetaDesasignacion extends Pane {
     private void establecerEstiloNombreEstudiante() {
         lbNombreEstudiante.setPrefSize(360.0, 27.0);
         lbNombreEstudiante.setLayoutX(6.0);
-        lbNombreEstudiante.setLayoutY(7.0);
+        lbNombreEstudiante.setLayoutY(7);
         lbNombreEstudiante.setTextAlignment(TextAlignment.LEFT);
         lbNombreEstudiante.setWrapText(true);
         lbNombreEstudiante.setFont(new Font(18.0));
@@ -63,21 +72,13 @@ public class TarjetaDesasignacion extends Pane {
     }
     
     private void establecerEstiloBotonVerAvance() {
-        btnVerJustificacion.setPrefSize(136.0, 31.0);
+        btnVerJustificacion.setPrefSize(116.0, 25.0);
         btnVerJustificacion.setLayoutX(369.0);
         btnVerJustificacion.setLayoutY(4.0);
         btnVerJustificacion.setFont(new Font(16.0));
         btnVerJustificacion.setStyle("-fx-border-color: transparent;"
                 + "-fx-background-radius: 15;"
-                + "-fx-background-color: #c9c9c9");
-        btnVerJustificacion.setOnAction((event) -> {
-            Stage  escenarioBase = new Stage();
-            escenarioBase.setScene(Utilidades.inicializarEscena("vistas/FXMLJustificacionDesasignacion.fxml"));    //CAMBIAR A LA RUTA 
-            escenarioBase.setTitle("Avance del estudiante");
-            escenarioBase.initModality(Modality.APPLICATION_MODAL);
-            escenarioBase.showAndWait();
-            
-        });
+                + "-fx-background-color: #c9c9c9");       
     }
     
 }

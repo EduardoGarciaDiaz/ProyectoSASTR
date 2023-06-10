@@ -115,7 +115,7 @@ public class FXMLAnteproyectosController implements Initializable, INotificacion
     
     public void cargarTarjetasAnteproyectos(ObservableList<Anteproyecto> anteproyectosCarga) {
         for (Anteproyecto anteproyecto : anteproyectosCarga) {
-            TarjetaAnteproyecto tarjeta = new TarjetaAnteproyecto(anteproyecto, this);
+            TarjetaAnteproyecto tarjeta = new TarjetaAnteproyecto(anteproyecto, this);            
             contenedorTarjetasAnteproyectos.getChildren().add(tarjeta);
         }
     }
@@ -225,6 +225,7 @@ public class FXMLAnteproyectosController implements Initializable, INotificacion
 
     @Override
     public void notificarClicValidarAnteproyecto(Anteproyecto anteproyecto) {
+        irAVistaValidarAnteproyecto(anteproyecto);
     }
 
     @Override
@@ -335,6 +336,21 @@ public class FXMLAnteproyectosController implements Initializable, INotificacion
             Stage escenario = (Stage) lbTituloVentana.getScene().getWindow();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Detalles Anteproyecto");
+            escenario.show();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+     private void irAVistaValidarAnteproyecto(Anteproyecto anteproyecto) {
+        try {
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLValidarAnteproyecto.fxml"));
+            Parent vista = accesoControlador.load();
+            FXMLValidarAnteproyectoController controladorDetallesAnteproyecto = accesoControlador.getController();
+            controladorDetallesAnteproyecto.setAnteproyectoAcademico(anteproyecto, academico);
+            Stage escenario = (Stage) lbTituloVentana.getScene().getWindow();
+            escenario.setScene(new Scene(vista));
+            escenario.setTitle("Validar Anteproyecto");
             escenario.show();
         } catch (IOException ex) {
             ex.printStackTrace();

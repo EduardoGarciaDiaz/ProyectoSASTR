@@ -36,12 +36,13 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafxsastr.JavaFXSASTR;
+import javafxsastr.interfaces.INotificacionRecargarDatos;
 import javafxsastr.interfaces.INotificacionSeleccionItem;
 import javafxsastr.modelos.dao.AcademicoDAO;
 import javafxsastr.modelos.dao.ActividadDAO;
-import javafxsastr.modelos.dao.AnteproyectoDAO;
 import javafxsastr.modelos.dao.DAOException;
 import javafxsastr.modelos.dao.DesasignacionDAO;
 import javafxsastr.modelos.dao.EstudianteDAO;
@@ -55,7 +56,7 @@ import javafxsastr.utils.CampoDeBusqueda;
 import javafxsastr.utils.Utilidades;
 import javafxsastr.utils.cards.TarjetaDesasignacion;
 
-public class FXMLDetallesAnteproyectoController implements Initializable {
+public class FXMLDetallesAnteproyectoController implements Initializable, INotificacionRecargarDatos {
     
     @FXML
     private Label lbMes;
@@ -274,6 +275,7 @@ public class FXMLDetallesAnteproyectoController implements Initializable {
     }
     
     private void mostrarEstudiantes(ArrayList<Estudiante> estudiantesParticipantes) {
+        vbxAlumnosParticipantes.setSpacing(10);        
         for(Estudiante e : estudiantesParticipantes) {
             configurarEstudianteParticipante(e, false);
         }
@@ -353,11 +355,15 @@ public class FXMLDetallesAnteproyectoController implements Initializable {
                 manejarDAOException(ex);
             }
             if (!desasignaciones.isEmpty()) {
+                vbxEstudiantesDesasignados.getChildren().clear();
+                vbxEstudiantesDesasignados.setSpacing(50);
                 lbNingunDesasignado.setText("");
                 for(Desasignacion desasignacion : desasignaciones) {
-                    vbxEstudiantesDesasignados.getChildren().add(new TarjetaDesasignacion(desasignacion.getIdEstudiante(),
-                            desasignacion.getNombreEstudiante()));
-                }
+                    TarjetaDesasignacion tarjeta = new TarjetaDesasignacion(desasignacion);                   
+                    tarjeta.getBtnVerJustficacion().setOnAction((event) -> {
+                        verDesasignacion(desasignacion);
+                    });
+                    vbxEstudiantesDesasignados.getChildren().add(tarjeta);                }
             }
         } else {
             System.err.println("El anteproyector recibido viene NULO");
@@ -398,10 +404,6 @@ public class FXMLDetallesAnteproyectoController implements Initializable {
     public void configurarCampoDeBusqueda() {
         btnAsignarOtroEstudiante.setVisible(false);
         vbxAlumnosParticipantes.getChildren().add(paneBusqueda);
-    }
-    
-    public void desasignarEstudiante(Estudiante estudiante) {
-        //TODO 
     }
     
     public void configurarAgregarPrimerEstudiante() {
@@ -446,7 +448,7 @@ public class FXMLDetallesAnteproyectoController implements Initializable {
         vbxLgacs.getChildren().add(lbNombreLgac);
     }
     
-    public void configurarEstudianteParticipante(Estudiante estudiante, boolean esRecienAsignado) {
+    public void configurarEstudianteParticipante(Estudiante estudiante, boolean esRecienAsignado) {       
         String nombreEstudiante = estudiante.getNombre() + " " +estudiante.getPrimerApellido() + " " +estudiante.getSegundoApellido();
         HBox contenedorEstudiante = new HBox();
         contenedorEstudiante.setPrefSize(200, Region.USE_COMPUTED_SIZE);
@@ -472,10 +474,25 @@ public class FXMLDetallesAnteproyectoController implements Initializable {
             }
         }
         btnDesasignarEstudiante.setOnMouseClicked((event) -> {
-            desasignarEstudiante(estudiante);                                       //TO-DO VALIDAR DESASIGNACION
-            vbxAlumnosParticipantes.getChildren().remove(contenedorEstudiante);   
+            desasignarEstudiante(estudiante);           
         });
         vbxAlumnosParticipantes.getChildren().add(contenedorEstudiante);
+    }
+    
+    public void desasignarEstudiante(Estudiante estudiante) {
+        try {
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLDesaginarEstudianteAnteproyecto.fxml"));
+            Parent vista = accesoControlador.load();
+            FXMLDesaginarEstudianteAnteproyectoController controladorVista = accesoControlador.getController();
+            controladorVista.iniciarDesasignacion(estudiante, anteproyecto, this);
+            Stage escenario = new Stage();
+            escenario.setScene(new Scene(vista));
+            escenario.setTitle("Desasignar Estudiante");
+            escenario.initModality(Modality.APPLICATION_MODAL);
+            escenario.showAndWait();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
     
     public void configurarCodirectores(Academico academico) {
@@ -500,8 +517,7 @@ public class FXMLDetallesAnteproyectoController implements Initializable {
             Stage escenario = (Stage) lbMes.getScene().getWindow();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Anteproyectos");
-            escenario.show();
-            
+            escenario.show();            
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -561,6 +577,38 @@ public class FXMLDetallesAnteproyectoController implements Initializable {
             default:
                 throw new AssertionError();
         }
+    }
+    
+    public void verDesasignacion(Desasignacion desasignacionVer) {
+        try {
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLDesaginarEstudianteAnteproyecto.fxml"));
+            Parent vista = accesoControlador.load();
+            FXMLDesaginarEstudianteAnteproyectoController controladorVista = accesoControlador.getController();
+            controladorVista.verDesasignaicones(true, desasignacionVer);
+            Stage escenario = new Stage();
+            escenario.setScene(new Scene(vista));
+            escenario.setTitle("Desasignar Estudiante");
+            escenario.initModality(Modality.APPLICATION_MODAL);
+            escenario.showAndWait();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void notitficacionRecargarDatos() {
+       //metodo de la intefaz sin uso en esta clase
+    }
+
+    @Override
+    public void notitficacionRecargarDatosPorEdicion(boolean fueEditado) {       
+        mostrarDesasignaciones();
+        vbxAlumnosParticipantes.getChildren().clear();
+        vbxCodirectores.getChildren().clear();
+        mostrarDatosResponsableTrabajoRecepcional();
+        validarAsignarPrimerEstudiante();
+        validarAsignarOtroEstudiante();
+        
     }
     
 }

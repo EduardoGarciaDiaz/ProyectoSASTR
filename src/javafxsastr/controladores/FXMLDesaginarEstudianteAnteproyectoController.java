@@ -1,16 +1,13 @@
 /*
  * Autor: Tristan Eduardo Suarez Santiago
- * Fecha de creación: 24/05/2023
+ * Fecha de creación: 04/06/2023
  * Descripción: Controller de la ventana AñadirCuerpoAcademico
  */
 package javafxsastr.controladores;
 
-import com.sun.corba.se.impl.util.Utility;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -21,12 +18,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-import javafxsastr.interfaces.INotificacionSeleccionItem;
+import javafxsastr.interfaces.INotificacionRecargarDatos;
 import javafxsastr.modelos.dao.DAOException;
 import javafxsastr.modelos.dao.DesasignacionDAO;
 import javafxsastr.modelos.dao.EstudianteDAO;
+import javafxsastr.modelos.pojo.Anteproyecto;
 import javafxsastr.modelos.pojo.Desasignacion;
 import javafxsastr.modelos.pojo.Estudiante;
 import javafxsastr.utils.Utilidades;
@@ -38,30 +37,47 @@ public class FXMLDesaginarEstudianteAnteproyectoController implements Initializa
     @FXML
     private Button btnGuardar;
     @FXML
+    private Button btnCancelar;
+    @FXML
     private ComboBox<String> cmbMotivos;
+    @FXML
+    private Label lbJustificacion;
     
+    private final int LIMIT_CARAC_JUSTIFICACION = 200;
     private ObservableList<String> motivos;
     private Estudiante estudianteDesasignar;
-    private INotificacionSeleccionItem interfazNotificaiconDesasignacion;
-    private int idAnteproyecto;
+    private INotificacionRecargarDatos interfazNotificaiconDesasignacion;
+    private Anteproyecto anteproyectoModificacion;
+    private boolean esSoloVisto;
+    
+   
     
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-       iniciarListeners();
-       btnGuardar.setDisable(true);
-       llenarComboJustificaion();
-        try {
-            this.estudianteDesasignar = (new EstudianteDAO().obtenerEstudiante(1));
-        } catch (DAOException ex) {
-            Logger.getLogger(FXMLDesaginarEstudianteAnteproyectoController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        this.idAnteproyecto = 5;
-    }  
+    public void initialize(URL url, ResourceBundle rb) {      
+        
+    } 
     
-    private void iniciarDesasignacion(Estudiante estudiante,int idAnteproyecto,INotificacionSeleccionItem interfazNotificacion) {
+    public void iniciarDesasignacion(Estudiante estudiante,Anteproyecto anteproyecto,INotificacionRecargarDatos interfazNotificacion) {
         this.interfazNotificaiconDesasignacion = interfazNotificacion;
         this.estudianteDesasignar = estudiante;
-        this.idAnteproyecto = 5;//idAnteproyecto;
+        this.anteproyectoModificacion = anteproyecto;
+        iniciarListeners();
+        btnGuardar.setDisable(true);
+        llenarComboJustificaion();        
+    }
+    
+    public void verDesasignaicones(boolean esVista, Desasignacion desasignacion) {
+        this.esSoloVisto = esVista;
+        cmbMotivos.setValue(desasignacion.getMotivo());
+        txaJustificacion.setText(desasignacion.getComentarios());
+        btnGuardar.setStyle("-fx-background-color: #D9D9D9");  
+        btnGuardar.setText("Cerrar");
+        cmbMotivos.setEditable(false);
+        txaJustificacion.setEditable(false);
+        btnCancelar.setVisible(false);
+        btnGuardar.setOnAction((event) -> {
+            cerrarVentana();
+        });
     }
     
     private void iniciarListeners() {
@@ -73,13 +89,20 @@ public class FXMLDesaginarEstudianteAnteproyectoController implements Initializa
         txaJustificacion.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-               validarCampos();
+                if(txaJustificacion.getText().length() > LIMIT_CARAC_JUSTIFICACION) {
+                    mostraMensajelimiteSuperado(LIMIT_CARAC_JUSTIFICACION,"Justificacion",lbJustificacion); 
+                    btnGuardar.setDisable(true);
+                }else {
+                   lbJustificacion.setText(""); 
+                   validarCampos();                   
+                }                
             }
         });
     }
     
     private void validarCampos() {
-        if(cmbMotivos.getSelectionModel().getSelectedItem() != null && txaJustificacion.getText().length() > 10) {
+        if(cmbMotivos.getSelectionModel().getSelectedItem() != null && txaJustificacion.getText().trim().length() > 5 
+                && txaJustificacion.getText().trim().length() <= 200) {
             btnGuardar.setDisable(false);
         }else {
             btnGuardar.setDisable(true);
@@ -95,17 +118,15 @@ public class FXMLDesaginarEstudianteAnteproyectoController implements Initializa
                 desasignacion.setMotivo(cmbMotivos.getSelectionModel().getSelectedItem());
                 desasignacion.setComentarios(txaJustificacion.getText());
                 desasignacion.setIdEstudiante(estudianteDesasignar.getIdEstudiante());
-                desasignacion.setIdAnteproyecto(idAnteproyecto);
+                desasignacion.setIdAnteproyecto(anteproyectoModificacion.getIdAnteproyecto());
                 int insertDesasignacion = new DesasignacionDAO().guardarDesasignacion(desasignacion);
-                if(insertDesasignacion != -1) { 
-                    
-                     //interfazNotificaiconDesasignacion.notificarPerdidaDelFoco();
+                if(insertDesasignacion != -1) {              
                       Utilidades.mostrarDialogoSimple("Desasignacion exitosa",
                         "Se desasigno exitosamente al estudiante : "+estudianteDesasignar.getNombre()+" "
                                 +estudianteDesasignar.getPrimerApellido(), Alert.AlertType.INFORMATION);
+                      interfazNotificaiconDesasignacion.notitficacionRecargarDatosPorEdicion(true);
                       cerrarVentana();
-                }
-                
+                }                
             }
         } catch (DAOException ex) {  
             ex.printStackTrace();
@@ -126,6 +147,11 @@ public class FXMLDesaginarEstudianteAnteproyectoController implements Initializa
        motivos.addAll(justificaciones);
        llenarCombo();
     }
+    
+    private void mostraMensajelimiteSuperado(int limiteCaracteres, String campo,  Label etiquetaError) { 
+        etiquetaError.setText("Cuidado, Exediste el limite de caracteres("+limiteCaracteres+") de este campo " + campo);
+        btnGuardar.setDisable(true);
+    }    
     
     private void llenarCombo() {
         cmbMotivos.setItems(motivos);

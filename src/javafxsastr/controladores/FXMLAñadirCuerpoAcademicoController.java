@@ -499,7 +499,7 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
      
     private void mostraMensajelimiteSuperado(int limiteCaracteres, String campo,  Label etiquetaError) { 
         etiquetaError.setText("Cuidado, Exediste el limite de caracteres("+limiteCaracteres+") de este campo " + campo);
-        btnGuardar.setDisable(esEdicion);
+        btnGuardar.setDisable(true);
     }    
 
     @FXML
