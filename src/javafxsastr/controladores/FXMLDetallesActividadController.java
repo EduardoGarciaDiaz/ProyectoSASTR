@@ -142,9 +142,7 @@ public class FXMLDetallesActividadController implements Initializable {
 
     @FXML
     private void clicRegresar(MouseEvent event) {
-            //TODO Redirigir a la pantalla que la activó
-        Stage escenerioBase = (Stage) lbNombreActividad.getScene().getWindow();
-        escenerioBase.close();
+        irAVistaActividades(estudiante);
     }
 
     @FXML
@@ -183,6 +181,20 @@ public class FXMLDetallesActividadController implements Initializable {
             escenario.show();
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+    }
+    
+    private void irAVistaActividades(Estudiante estudiante) {
+        try {
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLActividades.fxml"));
+            Parent vista = accesoControlador.load();
+            FXMLActividadesController controladorVistaActividades = accesoControlador.getController();
+            controladorVistaActividades.setEstudiante(estudiante);
+            Stage escenario = (Stage) lbEntrega.getScene().getWindow();
+            escenario.setScene(new Scene(vista));
+            escenario.setTitle("Actividades");
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
     }

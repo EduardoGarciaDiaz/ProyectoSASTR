@@ -5,6 +5,7 @@
  */
 package javafxsastr.controladores;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Time;
 import java.text.ParseException;
@@ -23,7 +24,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
@@ -129,7 +133,6 @@ public class FXMLFormularioActividadController implements Initializable {
         btnGuardar.setDisable(true);
         menuDatos = false;
         inicializarListeners();   
-        obtenerDatosRelacionadoAlEstudiante();
         if(isEdicion) {
             lbTtituloVentana.setText("Actualizar Actividad");
         }        
@@ -151,7 +154,9 @@ public class FXMLFormularioActividadController implements Initializable {
     public void iniciarFormularioNUevo(Estudiante estudianteN, boolean edicion, Actividad act ) {        
         isEdicion = edicion;
         this.estudiante = estudianteN;
+        obtenerDatosRelacionadoAlEstudiante();
         if(isEdicion) {
+            lbTtituloVentana.setText("Modificar actividad");
             actividadEdicion = act;           
             cargarInformacion();
         }        
@@ -281,7 +286,8 @@ public class FXMLFormularioActividadController implements Initializable {
         actividadEditada.setFechaInicioActividad(dtpInicio.getValue().toString());
         actividadEditada.setFechaFinActividad(dtpFin.getValue().toString());
         actividadEditada.setHoraInicioActividad(txfHoraInicio.getText()+":00");
-        actividadEditada.setHoraFinActividad(txfHoraFin.getText()+":00");               
+        actividadEditada.setHoraFinActividad(txfHoraFin.getText()+":00");  
+        actividadEditada.setIdEstadoActividad(1);
         try {
             int exito = new ActividadDAO().actualizarActividad(actividadEditada);
             if(exito != -1) {
@@ -420,7 +426,22 @@ public class FXMLFormularioActividadController implements Initializable {
 
     @FXML
     private void clicBtnRegresar(MouseEvent event) {
-        cerrarVentana();
+        irAVistaActividades(estudiante);
+        
+    }
+    
+    private void irAVistaActividades(Estudiante estudiante) {
+        try {
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLActividades.fxml"));
+            Parent vista = accesoControlador.load();
+            FXMLActividadesController controladorVistaActividades = accesoControlador.getController();
+            controladorVistaActividades.setEstudiante(estudiante);
+            Stage escenario = (Stage) lbActPorVencer.getScene().getWindow();
+            escenario.setScene(new Scene(vista));
+            escenario.setTitle("Actividades");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
 
