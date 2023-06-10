@@ -193,7 +193,8 @@ public class FXMLConsultarAvanceEstudianteController implements Initializable {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLDetallesAnteproyecto.fxml"));
             Parent vista = accesoControlador.load();
             FXMLDetallesAnteproyectoController controladorDetallesAnteproyecto = accesoControlador.getController();
-            controladorDetallesAnteproyecto.setAnteproyectoAcademico(anteproyecto, null);
+            controladorDetallesAnteproyecto.setAnteproyecto(anteproyecto);
+            controladorDetallesAnteproyecto.setEstudiante(estudiante, ventanaOrigen);
             Stage escenario = (Stage) lbActividadesCompletadas.getScene().getWindow();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Detalles Anteproyecto");

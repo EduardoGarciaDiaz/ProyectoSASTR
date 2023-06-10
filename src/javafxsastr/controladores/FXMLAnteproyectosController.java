@@ -42,6 +42,7 @@ import javafxsastr.modelos.dao.EstudianteDAO;
 import javafxsastr.modelos.pojo.Academico;
 import javafxsastr.modelos.pojo.Anteproyecto;
 import javafxsastr.modelos.pojo.CuerpoAcademico;
+import javafxsastr.utils.CodigosVentanas;
 import javafxsastr.utils.Utilidades;
 import javafxsastr.utils.cards.TarjetaAnteproyecto;
 
@@ -210,7 +211,6 @@ public class FXMLAnteproyectosController implements Initializable, INotificacion
 
     @Override
     public void notificarClicBotonVerDetallesAnteproyecto(Anteproyecto anteproyecto) {
-        System.out.println("ante "+anteproyecto.getIdAnteproyecto());
         irAVistaDetallesAnteproyecto(anteproyecto);
     }
 
@@ -332,7 +332,12 @@ public class FXMLAnteproyectosController implements Initializable, INotificacion
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLDetallesAnteproyecto.fxml"));
             Parent vista = accesoControlador.load();
             FXMLDetallesAnteproyectoController controladorDetallesAnteproyecto = accesoControlador.getController();
-            controladorDetallesAnteproyecto.setAnteproyectoAcademico(anteproyecto, academico);
+            controladorDetallesAnteproyecto.setAnteproyecto(anteproyecto);
+            if (esRCA) {
+                controladorDetallesAnteproyecto.setAcademico(academico, CodigosVentanas.VALIDAR_ANTEPROYECTOS);
+            } else {
+                controladorDetallesAnteproyecto.setAcademico(academico, CodigosVentanas.MIS_ANTEPROYECTOS);
+            }
             Stage escenario = (Stage) lbTituloVentana.getScene().getWindow();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Detalles Anteproyecto");
