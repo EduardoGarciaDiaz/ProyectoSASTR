@@ -136,7 +136,7 @@ public class FXMLConsultarAvanceEstudianteController implements Initializable {
     }
     
     private void setDatosAnteproyecto() {
-        if (anteproyecto != null) {
+        if (anteproyecto.getIdAnteproyecto() > 0) {
             lbNombreTrabajoRecepcional.setText(anteproyecto.getNombreTrabajoRecepcional());
             lbModalidadAnteproyecto.setText(anteproyecto.getNombreModalidad());
         } else {

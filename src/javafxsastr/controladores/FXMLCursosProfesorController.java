@@ -64,7 +64,7 @@ public class FXMLCursosProfesorController implements Initializable {
     }
     
     private void cargarTarjetasCursos() {
-        int filas = Math.round((float) cursosActuales.size()/4);
+        int filas = (int)Math.ceil((float) cursosActuales.size()/4);
         Iterator<Curso> cursoIterator = cursosActuales.iterator();
         if (cursoIterator.hasNext()) {
             for (int i = 0; i < filas; i++) {
