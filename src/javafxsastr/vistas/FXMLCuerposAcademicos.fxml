@@ -38,7 +38,7 @@
             </Label>
          </children>
       </Pane>
-      <Label fx:id="lbTituloVentana" layoutX="78.0" layoutY="61.0" prefHeight="45.0" prefWidth="320.0" text="Cuerpos Académicos">
+      <Label fx:id="lbTituloVentana" layoutX="78.0" layoutY="61.0" prefHeight="45.0" prefWidth="362.0" text="Cuerpos Académicos">
          <font>
             <Font size="30.0" />
          </font>

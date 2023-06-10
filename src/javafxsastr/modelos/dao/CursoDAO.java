@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javafxsastr.modelos.ConexionBD;
 import javafxsastr.modelos.pojo.Curso;
@@ -352,8 +353,8 @@ public class CursoDAO {
                 curso.setBloqueCurso(resultado.getString("nombreBloque"));
                 curso.setExperienciaEducativaCurso(resultado.getString("nombreExperienciaEducativa"));
                 curso.setNrcCurso(resultado.getString("nombreNrc"));
-                curso.setInicioPeriodoEscolar(resultado.getString("fechaInicioPeriodoEscolar"));
-                curso.setFinPeriodoEscolar(resultado.getString("fechaFinPeriodoEscolar"));
+                curso.setInicioPeriodoEscolar(resultado.getDate("fechaInicioPeriodoEscolar").toString());
+                curso.setFinPeriodoEscolar(resultado.getDate("fechaFinPeriodoEscolar").toString());
                 curso.setEstadoCurso(resultado.getString("nombreEstadoCurso"));
                 curso.setAcademicoCurso(resultado.getString("nombreCompletoAcademico"));
             }

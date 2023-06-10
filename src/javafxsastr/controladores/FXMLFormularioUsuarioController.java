@@ -30,6 +30,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafxsastr.JavaFXSASTR;
 import javafxsastr.interfaces.INotificacionRecargarDatos;
+import javafxsastr.modelos.ConexionBD;
 import javafxsastr.modelos.dao.AcademicoDAO;
 import javafxsastr.modelos.dao.DAOException;
 import javafxsastr.modelos.dao.EstudianteDAO;
@@ -87,6 +88,7 @@ public class FXMLFormularioUsuarioController implements Initializable {
     private Usuario usuarioEdicion;
     private boolean esEdicion;
     private boolean vieneDeDetallesCurso = false;
+    private boolean vieneDeCuerpoAcademico = false;
     private Academico academicoEdicion;
     private Estudiante estudianteEdicion;
     private INotificacionRecargarDatos interfaz;
@@ -158,6 +160,11 @@ public class FXMLFormularioUsuarioController implements Initializable {
     
     public void vieneDeVentanaDetallesCurso(boolean esVentanaDetallesCurso, INotificacionRecargarDatos interfaN) {
         this.vieneDeDetallesCurso = esVentanaDetallesCurso;
+        interfaz =  interfaN;
+    }
+    
+    public void vieneDeVentanaCuerposAcademicos(boolean esVentanaCA, INotificacionRecargarDatos interfaN) {
+        this.vieneDeCuerpoAcademico= esVentanaCA;
         interfaz =  interfaN;
     }
     
@@ -462,11 +469,15 @@ public class FXMLFormularioUsuarioController implements Initializable {
             if (esEdicion) {
                 Utilidades.mostrarDialogoSimple("Modificación exitosa", "Usuario modificado con éxto",
                     Alert.AlertType.INFORMATION);
-                irAVistaVerUsuario(estudianteNuevo, usuario);
+                if(vieneDeDetallesCurso) {
+                    cerrarVentana();
+                }else {
+                    irAVistaVerUsuario(estudianteNuevo, usuario);
+                }                
             } else {
                 Utilidades.mostrarDialogoSimple("Estudiante registrado con éxito", "Usuario registrado correctamente en el sistema",
-                    Alert.AlertType.INFORMATION);
-                irAVistaUsuarios(usuario);
+                    Alert.AlertType.INFORMATION);                
+                cerrarVentana();
             }
 
         }
@@ -492,7 +503,7 @@ public class FXMLFormularioUsuarioController implements Initializable {
             } else {
                 Utilidades.mostrarDialogoSimple("Académico registrado con éxito", "Usuario registrado correctamente en el sistema",
                     Alert.AlertType.INFORMATION);
-                irAVistaUsuarios(usuario);
+                cerrarVentana();
             }
         }
     }
@@ -505,30 +516,39 @@ public class FXMLFormularioUsuarioController implements Initializable {
             cancelarRegistro = Utilidades.mostrarDialogoConfirmacion("Cancelar modificación de usuario",
                 "¿Estás seguro de que deseas cancelar la modificación del usuario?");
             if (cancelarRegistro) {
-                irAVistaVerUsuario(usuarioEdicion, usuario);
+                cerrarVentana();
             }
         } else {
             cancelarRegistro = Utilidades.mostrarDialogoConfirmacion("Cancelar registro de usuario",
                 "¿Estás seguro de que deseas cancelar el registro del usuario?");
             if (cancelarRegistro) {
-                irAVistaUsuarios(usuario);
+                cerrarVentana();
              }
         }
        
         
     }
     
+    
     @FXML
     private void clicRegresar(MouseEvent event) {
+       cerrarVentana();
+    }
+    
+    private void cerrarVentana() {
         if(vieneDeDetallesCurso){
             irAVistaVerDetallesCursos();
         }else {
-            if (esEdicion) {
-            irAVistaVerUsuario(usuarioEdicion, usuario);
+             if(vieneDeCuerpoAcademico) {
+            irAVistaCuerpoAcademico();
             }else {
-            irAVistaUsuarios(usuario);
-            }   
-        }
+                if (esEdicion) {
+                irAVistaVerUsuario(usuarioEdicion, usuario);
+                }else {
+                irAVistaUsuarios(usuario);
+                }   
+            }
+        }       
     }
 
     @FXML
@@ -568,6 +588,12 @@ public class FXMLFormularioUsuarioController implements Initializable {
     
     private void irAVistaVerDetallesCursos() {
        interfaz.notitficacionRecargarDatos();
+       Stage escenario = (Stage) lbContrasenaVacia.getScene().getWindow();
+       escenario.close();
+    }
+    
+    private void irAVistaCuerpoAcademico() {
+       interfaz.notitficacionRecargarDatosPorEdicion(true);
        Stage escenario = (Stage) lbContrasenaVacia.getScene().getWindow();
        escenario.close();
     }

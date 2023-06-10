@@ -61,7 +61,7 @@
                   <Font size="26.0" />
                </font>
             </Label>
-            <TextArea fx:id="txaDescripcionLgac" layoutX="59.0" layoutY="293.0" prefHeight="275.0" prefWidth="673.0" promptText="Descripcion De la LGAC" style="-fx-background-radius: 5;">
+            <TextArea fx:id="txaDescripcionLgac" layoutX="59.0" layoutY="293.0" prefHeight="275.0" prefWidth="673.0" promptText="Descripcion De la LGAC" style="-fx-background-radius: 5;" wrapText="true">
                <font>
                   <Font size="30.0" />
                </font></TextArea>

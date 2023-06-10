@@ -118,7 +118,7 @@ public class FXMLAñadirLgacController implements Initializable {
     
     private void inicializarFiltros() {
         FiltrosTexto.filtroLetrasNumeros(txfNombreLgac);
-        FiltrosTexto.filtroLetrasNumerosPuntos(txaDescripcionLgac);
+        FiltrosTexto.filtroLetrasNumerosPuntosComasSignosComunes(txaDescripcionLgac);
     }
     
     private void validarBtnGuardar() {
@@ -238,6 +238,7 @@ public class FXMLAñadirLgacController implements Initializable {
                 Parent vista = accesoControlador.load();
                 FXMLCuerposAcademicosController controladorVista = accesoControlador.getController();  
                 controladorVista.setUsuario(ususarioActual);
+                controladorVista.setterVistaLgacs();
                 escenarioActual.setScene(new Scene(vista));
                 escenarioActual.setTitle("Cuerpos Academicos"); 
                 escenarioActual.show();

@@ -48,7 +48,7 @@ public class TarjetaCuerpoAcademico extends Pane {
         lbNombreDisciplina = new Label("Disciplina: " + cuerpoAcademico.getDisciplinaCuerpoAcademico());
         lbNombreResponsableCA = new Label("Responsable: "+cuerpoAcademico.getNombreResponsableCA());
         fondoImagen = new Pane();
-        btnModificarCuerpoAcademico = new Button("Modificar cuerpo academico");
+        btnModificarCuerpoAcademico = new Button("Ver Detalles CA");
     }
     
     private void establecerEstiloTarjeta() {
