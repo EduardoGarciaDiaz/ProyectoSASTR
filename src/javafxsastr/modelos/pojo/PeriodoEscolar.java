@@ -6,16 +6,36 @@
 
 package javafxsastr.modelos.pojo;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+
 public class PeriodoEscolar {
     
     private int idPeriodoEscolar;
     private String fechaInicioPeriodoEscolar;
     private String fechaFinPeriodoEscolar;
+    private boolean esActual;
+    private final DateTimeFormatter FORMATO_FECHA_PERIODO_ESCOLAR = DateTimeFormatter.ofPattern("MMM' 'yyyy",
+            new Locale("es"));
 
-    public PeriodoEscolar(int idPeriodoEscolar, String fechaInicioPeriodoEscolar, String fechaFinPeriodoEscolar) {
+    public PeriodoEscolar(int idPeriodoEscolar, String fechaInicioPeriodoEscolar, 
+            String fechaFinPeriodoEscolar, boolean esActual) {
         this.idPeriodoEscolar = idPeriodoEscolar;
         this.fechaInicioPeriodoEscolar = fechaInicioPeriodoEscolar;
         this.fechaFinPeriodoEscolar = fechaFinPeriodoEscolar;
+        this.esActual = esActual;
+    }
+
+    public boolean isEsActual() {
+        return esActual;
+    }
+
+    public void setEsActual(boolean esActual) {
+        this.esActual = esActual;
+    }
+
+    public PeriodoEscolar() {
     }
 
     public int getIdPeriodoEscolar() {
@@ -44,7 +64,11 @@ public class PeriodoEscolar {
 
     @Override
     public String toString() {
-        return fechaInicioPeriodoEscolar + " - " + fechaFinPeriodoEscolar;
+        LocalDate fechaInicio = LocalDate.parse(getFechaInicioPeriodoEscolar());
+        LocalDate fechaFin = LocalDate.parse(getFechaFinPeriodoEscolar());
+        String fechaInicioFormateada = fechaInicio.format(FORMATO_FECHA_PERIODO_ESCOLAR);
+        String fechaFinFormateada = fechaFin.format(FORMATO_FECHA_PERIODO_ESCOLAR);
+        return fechaInicioFormateada + " - " + fechaFinFormateada;
     }
     
 }
