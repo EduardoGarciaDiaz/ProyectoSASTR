@@ -78,6 +78,7 @@ public class FXMLUsuariosController implements Initializable {
     }
     
     private void cargarTarjetasUsuarios(ObservableList<Usuario> usuarios) {
+        contenedorTarjetasUsuarios.getChildren().clear();
         for (Usuario usuario : usuarios) {
             TarjetaUsuario tarjeta = new TarjetaUsuario(usuario);
             tarjeta.getBotonVerDetalles().setOnAction((event) -> {
