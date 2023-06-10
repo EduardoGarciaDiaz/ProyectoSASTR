@@ -53,6 +53,7 @@ import javafxsastr.modelos.pojo.Desasignacion;
 import javafxsastr.modelos.pojo.Estudiante;
 import javafxsastr.modelos.pojo.Lgac;
 import javafxsastr.utils.CampoDeBusqueda;
+import javafxsastr.utils.CodigosVentanas;
 import javafxsastr.utils.Utilidades;
 import javafxsastr.utils.cards.TarjetaDesasignacion;
 
@@ -123,6 +124,7 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
     @FXML
     private ListView<Estudiante> lvEstudiantes;
     private Estudiante estudiante;
+    private Estudiante estudianteUsuario;
     @FXML
     private Pane paneBusqueda;
     @FXML
@@ -130,6 +132,7 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
     @FXML
     private Button btnCancelarAsignacionEstudiante;
     
+    private CodigosVentanas ventanaOrigen;
     private Anteproyecto anteproyecto;
     private Academico academico;
     private ArrayList<Estudiante> estudiantesParticipantes = new ArrayList<>();
@@ -140,31 +143,43 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
     private int numeroMaximoEstudiantes;
     private final int NUMERO_MINIMO_ESTUDIANTES = 1;
     private final DateTimeFormatter FORMATO_FECHA_MES = DateTimeFormatter.ofPattern("MMMM",
-            new Locale("es"));
+        new Locale("es"));
     private final DateTimeFormatter FORMATO_FECHA_COMPLETA = DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy",
-            new Locale("es"));
+        new Locale("es"));
  
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
     }
-    
-    public void setAnteproyectoAcademico(Anteproyecto anteproyecto, Academico academico) {
-        this.anteproyecto = anteproyecto;
+    /*
+    public void setAnteproyectoAcademico(Anteproyecto anteproyecto, Academico academico) {      
+        System.out.println("SE cambió, ahora es un SET separado para cada Objeto");
+        //this.anteproyecto = anteproyecto;
+        //this.academico = academico;
+        //numeroMaximoEstudiantes = anteproyecto.getNumeroMaximoAlumnosParticipantes();
+        //obtenerEstudiantes();                
+        //mostrarDatosAnteproyecto();
+        //obtenerInformacionAvance();
+        //mostrarDesasignaciones();
+    }
+    */
+    public void setAcademico(Academico academico, CodigosVentanas origen) {
         this.academico = academico;
+        this.ventanaOrigen = origen;
+    }
+    
+    public void setEstudiante(Estudiante estudianteUsuario, CodigosVentanas origen) {
+        this.estudianteUsuario = estudianteUsuario;
+        this.ventanaOrigen = origen;
+    }
+        
+    public void setAnteproyecto(Anteproyecto anteproyecto) {
+        this.anteproyecto = anteproyecto;
         numeroMaximoEstudiantes = anteproyecto.getNumeroMaximoAlumnosParticipantes();
         obtenerEstudiantes();                
         mostrarDatosAnteproyecto();
         obtenerInformacionAvance();
         mostrarDesasignaciones();
-    }
-        
-    public void setAnteproyecto(Anteproyecto anteproyecto) {
-        this.anteproyecto = anteproyecto;
-    }
-    
-    public void setAcademico(Academico academico) {
-        this.academico = academico;
     }
     
     private void obtenerEstudiantes() {
@@ -513,15 +528,25 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
 
     @FXML
     private void clicRegresar(MouseEvent event) {
-        irAVistaAnteproyectos();
+        switch (ventanaOrigen) {
+            case MI_ANTEPROYECTO:
+                //TODO
+                break;
+            case MIS_ANTEPROYECTOS:
+                irAVistaAnteproyectos(false);
+            case VALIDAR_ANTEPROYECTOS:
+                irAVistaAnteproyectos(true);
+            default:
+                
+        }
     }
     
-    private void irAVistaAnteproyectos() {
+    private void irAVistaAnteproyectos(boolean esRCA) {
         try {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLAnteproyectos.fxml"));
             Parent vista = accesoControlador.load();
             FXMLAnteproyectosController controladorVistaAnteproyecto = accesoControlador.getController();
-            controladorVistaAnteproyecto.setAcademico(academico, false);
+            controladorVistaAnteproyecto.setAcademico(academico, esRCA);
             Stage escenario = (Stage) lbMes.getScene().getWindow();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Anteproyectos");
@@ -616,7 +641,8 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
         mostrarDatosResponsableTrabajoRecepcional();
         validarAsignarPrimerEstudiante();
         validarAsignarOtroEstudiante();
-        
     }
+    
+    
     
 }

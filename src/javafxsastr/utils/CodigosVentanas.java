@@ -17,9 +17,9 @@ public enum CodigosVentanas {
     CONSULTAR_AVANCE_DE_ESTUDIANTE("16"),
     MIS_ANTEPROYECTOS("17"),
     VALIDAR_ANTEPROYECTOS("18"),
-    MI_ANTEPROYECTO("19");
+    MI_ANTEPROYECTO("19"),
+    INICIO("20");
     
- 
     private final String codigo;
 
     private CodigosVentanas(String codigo) {
