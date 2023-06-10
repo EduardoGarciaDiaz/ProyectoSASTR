@@ -59,14 +59,13 @@ public class FXMLCursosController implements Initializable {
     private Academico academico;
     private Curso cursoConsutla;
     private final String ESTILO_SELECCIONADO = "-fx-background-color: ACACAC;"
-                                        + "-fx-background-radius: 15;";
+                                                + "-fx-background-radius: 15;";
     private final String ESTILO_NORMAL = "-fx-background-color: C9C9C9;"
-                                    + "-fx-background-radius: 15;";
+                                                + "-fx-background-radius: 15;";
 
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        
     }
     
     public void setUsuario(Academico academico) {
@@ -152,6 +151,7 @@ public class FXMLCursosController implements Initializable {
 
     @FXML
     private void clicTodos(ActionEvent event) {
+        vbxCursos.getChildren().clear();
         btnTodos.setStyle(ESTILO_SELECCIONADO);
         btnProyectoGuiado.setStyle(ESTILO_NORMAL);
         btnExperienciaRecepcional.setStyle(ESTILO_NORMAL);

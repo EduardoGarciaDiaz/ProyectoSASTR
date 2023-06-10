@@ -166,8 +166,9 @@ public class FXMLConsultarAvancesController implements Initializable {
                     = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLConsultarAvanceEstudiante.fxml"));
             Parent vista = accesoControlador.load();
             FXMLConsultarAvanceEstudianteController controladorVistaCursos = accesoControlador.getController();
-            controladorVistaCursos.setEstudiante(estudiante, CodigosVentanas.CONSULTAR_AVANCES_ESTUDIANTES);
-            controladorVistaCursos.setCursoAcademico(curso, academico);
+            controladorVistaCursos.setEstudianteAcademico(
+                    estudiante, academico, CodigosVentanas.CONSULTAR_AVANCES_ESTUDIANTES);
+            controladorVistaCursos.setCurso(curso);
             Stage escenario = (Stage) lbBloque.getScene().getWindow();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Avance del estudiante");

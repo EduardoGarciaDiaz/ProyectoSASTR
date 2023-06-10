@@ -84,7 +84,8 @@ public class FXMLConsultarAvanceEstudianteController implements Initializable {
         
     }    
     
-    public void setEstudiante(Estudiante estudiante, CodigosVentanas origen) {
+    public void setEstudianteAcademico(Estudiante estudiante, Academico academico, CodigosVentanas origen) {
+        this.academicoAuxiliar = academico;
         this.estudiante = estudiante;
         this.ventanaOrigen = origen;
         obtenerActividades();
@@ -95,9 +96,8 @@ public class FXMLConsultarAvanceEstudianteController implements Initializable {
         setDatosAvanceGeneral();
     }
     
-    public void setCursoAcademico(Curso curso, Academico academico) {
+    public void setCurso(Curso curso) {
         this.cursoAuxiliar = curso;
-        this.academicoAuxiliar = academico;
     }
     
     private void obtenerActividades() {
@@ -136,7 +136,7 @@ public class FXMLConsultarAvanceEstudianteController implements Initializable {
     }
     
     private void setDatosAnteproyecto() {
-        if (anteproyecto != null) {
+        if (anteproyecto.getIdAnteproyecto() > 0) {
             lbNombreTrabajoRecepcional.setText(anteproyecto.getNombreTrabajoRecepcional());
             lbModalidadAnteproyecto.setText(anteproyecto.getNombreModalidad());
         } else {
@@ -204,8 +204,20 @@ public class FXMLConsultarAvanceEstudianteController implements Initializable {
         }
     }
     
-    private void irAVistaEstudiantesAsignados() {
-        
+    private void irAVistaEstudiantesAsignados(Academico academico) {
+        try {
+            FXMLLoader accesoControlador 
+                    = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLEstudiantesAsignados.fxml"));
+            Parent vista = accesoControlador.load();
+            FXMLEstudiantesAsignadosController controladorVistaCursos = accesoControlador.getController();
+            controladorVistaCursos.setDirector(academico);
+            Stage escenario = (Stage) lbActividadesCompletadas.getScene().getWindow();
+            escenario.setScene(new Scene(vista));
+            escenario.setTitle("Estudiantes");
+            escenario.show();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
     
     private void irAVistaConsultarAvancesCurso(Curso curso, Academico academico) {
@@ -228,7 +240,7 @@ public class FXMLConsultarAvanceEstudianteController implements Initializable {
     private void cllicBtnRegresar(MouseEvent event) {
         switch (ventanaOrigen) {
             case ESTUDIANTES_ASIGNADOS:
-                //TODO
+                irAVistaEstudiantesAsignados(academicoAuxiliar);
                 break;
             case CONSULTAR_AVANCES_ESTUDIANTES:
                 irAVistaConsultarAvancesCurso(cursoAuxiliar, academicoAuxiliar);

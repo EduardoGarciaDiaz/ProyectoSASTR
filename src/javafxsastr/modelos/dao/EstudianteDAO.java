@@ -33,7 +33,7 @@ public class EstudianteDAO {
             "LEFT JOIN anteproyectos a ON e.idAnteproyecto = a.idAnteproyecto " +
             "LEFT JOIN cursos_estudiantes ce ON e.idEstudiante = ce.idEstudiante " +
             "LEFT JOIN cursos c ON ce.idCurso = c.idCurso " +
-            "INNER JOIN estados_usuario eu ON u.idEstadoUsuario = eu.idEstadoUsuario";
+            "INNER JOIN estados_usuario eu ON u.idEstadoUsuario = eu.idEstadoUsuario ";
     private final String OBTENER_ESTUDIANTE = "SELECT e.idEstudiante, u.nombreUsuario AS nombreEstudiante, " +
             "u.primerApellidoUsuario AS primerApellidoEstudiante, u.segundoApellidoUsuario AS segundoApellidoEstudiante, "
             +
@@ -94,7 +94,8 @@ public class EstudianteDAO {
             "INNER JOIN estados_usuario eu ON u.idEstadoUsuario = eu.idEstadoUsuario " +
             "WHERE u.idUsuario = ?";
     private final String GUARDAR_ESTUDIANTE = "INSERT INTO estudiantes (matriculaEstudiante, idUsuario) VALUES (?, ?);";
-    private final String ACTUALIZAR_ESTUDIANTE = "UPDATE estudiantes SET matriculaEstudiante = ?, idUsuario = ?, idAnteproyecto = ? " +
+    private final String ACTUALIZAR_ESTUDIANTE = "UPDATE estudiantes SET matriculaEstudiante = ?, idUsuario = ?, idAnteproyecto = ? "
+            +
             "WHERE idEstudiante = ?";
     private final String ELIMINAR_ESTUDIANTE = "DELETE FROM estudiantes WHERE idEstudiante = ?;";
     private final String DESASIGNAR_ESTUDIANTE = "Update estudiantes Set idAnteproyecto = ? where idEstudiante = ?";
@@ -130,7 +131,12 @@ public class EstudianteDAO {
             "WHERE e.idAnteproyecto = ?";
     private final String VERIFICAR_SI_ANTEPROYECTO_ESTA_ASIGNADO = "SELECT EXISTS"
             + "(SELECT idAnteproyecto FROM estudiantes WHERE idAnteproyecto = ?) as estaAsignado;";
-    private final String OBTENER_ESTUDIANTES_SIN_ANTEPROYECTO = OBTENER_ESTUDIANTES+" Where e.idAnteproyecto is null";
+    private final String OBTENER_ESTUDIANTES_SIN_ANTEPROYECTO = OBTENER_ESTUDIANTES + " Where e.idAnteproyecto is null";
+
+    private final String OBTENER_ESTUDIANTES_ASIGNADOS_POR_ACADEMICO = OBTENER_ESTUDIANTES +
+            "INNER JOIN academicos acad "
+            + "ON a.idAcademico = acad.idAcademico "
+            + "WHERE acad.idAcademico = ? and a.idEstadoSeguimiento = 5";
 
     public ArrayList<Estudiante> obtenerEstudiantes() throws DAOException {
         ArrayList<Estudiante> estudiantes = new ArrayList<>();
@@ -426,7 +432,7 @@ public class EstudianteDAO {
         }
         return estudiantes;
     }
-    
+
     public int eliminarEstudiante(int idEstudiante) throws DAOException {
         int respuesta = -1;
         try {
@@ -458,83 +464,12 @@ public class EstudianteDAO {
         }
         return estaAsignado;
     }
-    
-     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     public ArrayList<Estudiante> obtenerEstudiantesSinAnteproyecto() throws DAOException {
         ArrayList<Estudiante> estudiantes = new ArrayList<>();
         try {
-            PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(OBTENER_ESTUDIANTES_SIN_ANTEPROYECTO);
+            PreparedStatement sentencia = ConexionBD.obtenerConexionBD()
+                    .prepareStatement(OBTENER_ESTUDIANTES_SIN_ANTEPROYECTO);
             ResultSet resultado = sentencia.executeQuery();
             while (resultado.next()) {
                 Estudiante estudiante = new Estudiante();
@@ -563,5 +498,5 @@ public class EstudianteDAO {
         }
         return estudiantes;
     }
-    
+
 }

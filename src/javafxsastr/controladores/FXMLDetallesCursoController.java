@@ -15,7 +15,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -36,10 +35,12 @@ import javafxsastr.interfaces.INotificacionRecargarDatos;
 import javafxsastr.modelos.dao.CursoDAO;
 import javafxsastr.modelos.dao.DAOException;
 import javafxsastr.modelos.dao.EstudianteDAO;
+import javafxsastr.modelos.dao.PeriodoEscolarDAO;
 import javafxsastr.modelos.dao.UsuarioDAO;
 import javafxsastr.modelos.pojo.Academico;
 import javafxsastr.modelos.pojo.Curso;
 import javafxsastr.modelos.pojo.Estudiante;
+import javafxsastr.modelos.pojo.PeriodoEscolar;
 import javafxsastr.modelos.pojo.Usuario;
 import javafxsastr.utils.Utilidades;
 import javafxsastr.utils.cards.TarjetaAgregarAlumno;
@@ -65,20 +66,22 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
     private Label lbNrc;
     @FXML
     private Label lbSeccion;
-    private FlowPane fwpAlmacenAlumnos;
     @FXML
     private ScrollPane slpAlamcenEstudinates;
     @FXML
     private VBox hbxAlmacenEstdantes;
     @FXML
     private ImageView imvActivar;
+    @FXML
+    private ImageView btnEditarCurso;
      
     private final int DESACTIVAR = 2;
     private final int ACTIVAR = 1;
     private Academico academico;
     private ObservableList<Estudiante> estudiantes;
     private Curso cursoActual;
-   
+    private PeriodoEscolar periodoEscolar;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {        
     }
@@ -86,9 +89,15 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
     public void setUsuarioYCurso(Academico academico, Curso curso) {
         this.academico = academico;
         this.cursoActual = curso;
+        if (cursoActual != null) {
+            obtenerPeriodoEscolar();
+        } else {
+            System.err.println("El curso viene NULO");
+        }
         cargarDetallesCurso();
         obtenerEstudiantesCurso();
         llenarEstudiantes();
+
     }
     
     public void editarUsuario(Estudiante estudiante) {         
@@ -97,6 +106,22 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
     
     public void agregarAlumno() {
        irVistaAgregarAlumno();
+    }
+    
+    private void obtenerPeriodoEscolar() {
+        try {
+            periodoEscolar = new PeriodoEscolarDAO().obtenerPeriodoPorId(cursoActual.getIdPeriodoEscolar());
+            if (periodoEscolar != null) {
+                if (!periodoEscolar.esActual()) {
+                    btnEditarCurso.setDisable(true);
+                    btnEditarCurso.setVisible(false);
+                }
+            } else {
+                System.out.println("El periodo viene NULO");
+            }
+        } catch (DAOException ex) {
+            manejarDAOException(ex);
+        }
     }
     
     private void iniciarVentana(){     
@@ -109,8 +134,8 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
     private void cargarDetallesCurso() {
         lbNombreCurso.setText(cursoActual.getNombreCurso());
         lbExpEdu.setText(cursoActual.getExperienciaEducativaCurso());
-        lbPeriodoEsc.setText(cursoActual.getFechaInicioCurso() + "-" + cursoActual.getFinPeriodoEscolar());
         lbDocente.setText(cursoActual.getAcademicoCurso());
+        lbPeriodoEsc.setText(periodoEscolar.toString());
         lbBloque.setText(cursoActual.getBloqueCurso());
         lbNrc.setText(cursoActual.getNrcCurso());
         lbSeccion.setText(cursoActual.getSeccionCurso());
@@ -141,7 +166,6 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
     
     private void llenarEstudiantes() {
         hbxAlmacenEstdantes.setSpacing(20);   
-       // hbxAlmacenEstdantes.setPadding(new Insets(5));
         int numeroEstudiantes = estudiantes.size();       
         int elementosPorFila = 4;  
         int numFilas = Math.round(numeroEstudiantes/elementosPorFila) + 1;    
@@ -311,6 +335,10 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
 
     @FXML
     private void clicEditarCurso(MouseEvent event) {
+            irAVistaEditarCurso(); 
+    }
+    
+    private void irAVistaEditarCurso() {
         try {              
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLFormularioCurso.fxml"));
             Parent vista = accesoControlador.load();

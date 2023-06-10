@@ -35,6 +35,7 @@ import javafxsastr.modelos.dao.CursoDAO;
 import javafxsastr.modelos.dao.DAOException;
 import javafxsastr.modelos.dao.EstudianteDAO;
 import javafxsastr.modelos.pojo.Academico;
+import javafxsastr.modelos.pojo.Anteproyecto;
 import javafxsastr.modelos.pojo.Estudiante;
 import javafxsastr.modelos.pojo.Usuario;
 import javafxsastr.utils.CodigosVentanas;
@@ -84,7 +85,9 @@ public class FXMLInicioController implements Initializable, INotificacionClicBot
             Estudiante estudiante = new EstudianteDAO().obtenerEstudiantePorIdUsuario(this.usuario.getIdUsuario());
             if (estudiante.getIdEstudiante() > 0) {
                 this.estudiante = estudiante;
-                crearVistaEstudiante();
+                if (estudiante.getIdAnteproyecto() > 0) {
+                    crearVistaEstudiante();
+                }
             }
             if (this.usuario.getEsAdministrador()) {
                 if (this.academico != null) {
@@ -109,9 +112,9 @@ public class FXMLInicioController implements Initializable, INotificacionClicBot
     public void crearVistaEstudiante() {
         ConstructorInicio.crearPantallaInicio(this)
                 .cargarBotonIconoCronograma(vbxMenuContraido)
-                .cargarBotonIconoAvance(vbxMenuContraido)
                 .cargarBotonTextoCronograma(vbxMenuDesplegado)
-                .cargarBotonTextoAvance(vbxMenuDesplegado);
+                .cargarBotonIconoMiAnteproyecto(vbxMenuContraido)
+                .cargarBotonTextoMiAnteproyecto(vbxMenuDesplegado);
     }
       
     public void prepararVistaParaAcademico(Academico academico) {
@@ -132,7 +135,10 @@ public class FXMLInicioController implements Initializable, INotificacionClicBot
             
             boolean esDirector = new AnteproyectoDAO().verificarSiAcademicoEsDirector(academico.getIdAcademico());
             if (esDirector) {
-                constructorInicio.cargarBotonIconoAnteproyecto(vbxMenuContraido)
+                constructorInicio
+                        .cargarBotonIconoEstudiantes(vbxMenuContraido)
+                        .cargarBotonTextoEstudiantes(vbxMenuDesplegado)
+                        .cargarBotonIconoAnteproyecto(vbxMenuContraido)
                         .cargarBotonTextoAnteproyectos(vbxMenuDesplegado);
             }
             pbnBotonCrearAnteproyecto.setVisible(true);
@@ -266,6 +272,38 @@ public class FXMLInicioController implements Initializable, INotificacionClicBot
             ex.printStackTrace();
         }
     }
+    
+    private void irAVistaEstudiantesAsignados() {
+        try {
+            FXMLLoader accesoControlador 
+                    = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLEstudiantesAsignados.fxml"));
+            Parent vista = accesoControlador.load();
+            FXMLEstudiantesAsignadosController controladorVistaEstudiantes = accesoControlador.getController();
+            controladorVistaEstudiantes.setDirector(academico);
+            Stage escenario = (Stage) lbTituloVentana.getScene().getWindow();
+            escenario.setScene(new Scene(vista));
+            escenario.setTitle("Estudiantes");
+            escenario.show();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    private void irAVistaDetallesAnteproyecto(Anteproyecto anteproyecto) {
+        try {
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLDetallesAnteproyecto.fxml"));
+            Parent vista = accesoControlador.load();
+            FXMLDetallesAnteproyectoController controladorDetallesAnteproyecto = accesoControlador.getController();
+            controladorDetallesAnteproyecto.setAnteproyecto(anteproyecto);
+            controladorDetallesAnteproyecto.setEstudiante(estudiante, CodigosVentanas.INICIO);
+            Stage escenario = (Stage) lbTituloVentana.getScene().getWindow();
+            escenario.setScene(new Scene(vista));
+            escenario.setTitle("Detalles Anteproyecto");
+            escenario.show();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
 
     @Override
     public void notificarClicBotonUsuarios() {
@@ -300,6 +338,22 @@ public class FXMLInicioController implements Initializable, INotificacionClicBot
     @Override
     public void notificarClicBotonGestionCursos() {
         irAVistaGestionCursos();
+    }
+    
+    @Override
+    public void notificarClicBotonEstudiantes() {
+        irAVistaEstudiantesAsignados();
+    }
+    
+    @Override
+    public void notificarClicBotonMiAnteproyecto() {
+        try {
+            Anteproyecto anteproyecto
+                    = new AnteproyectoDAO().obtenerAnteproyectosPorEstudiante(estudiante.getIdEstudiante());
+            irAVistaDetallesAnteproyecto(anteproyecto);
+        } catch (DAOException ex) {
+            manejarDAOException(ex);
+        }
     }
     
     private void manejarDAOException(DAOException ex) {
