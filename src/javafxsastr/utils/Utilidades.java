@@ -8,6 +8,9 @@
 package javafxsastr.utils;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,6 +21,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
 public class Utilidades {
+    
+    private final static DateTimeFormatter FORMATO_FECHA = DateTimeFormatter.ofPattern("dd-MM-yyy",
+            new Locale("es"));
+    private final static DateTimeFormatter FORMATO_FECHA_PERIODO_ESCOLAR = DateTimeFormatter.ofPattern("MMM' 'yyyy",
+            new Locale("es"));
     
     public static void mostrarDialogoSimple(String titulo, String mensaje, Alert.AlertType tipo) {
         Alert alertaSimple = new Alert(tipo);
@@ -48,6 +56,16 @@ public class Utilidades {
             System.out.println("ERROR: " + ex.getMessage());
         }
         return escena;
-    }   
+    } 
+    
+    public static String formatearFechaNormal(String fecha) {
+        LocalDate fechaLocalDate = LocalDate.parse(fecha);
+        return fechaLocalDate.format(FORMATO_FECHA);
+    }
+    
+    public static String formatearFechaPeriodo(String fecha) {
+        LocalDate fechaLocalDate = LocalDate.parse(fecha);
+        return fechaLocalDate.format(FORMATO_FECHA_PERIODO_ESCOLAR);
+    }
         
 }

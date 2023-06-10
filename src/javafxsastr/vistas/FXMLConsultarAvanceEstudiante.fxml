@@ -14,7 +14,7 @@
    <children>
       <Pane prefHeight="50.0" prefWidth="1228.0" style="-fx-background-color: #18529d;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="500.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label layoutX="23.0" layoutY="9.0" text="Sistema de Apoyo al Seguimiento de Proyecto Guiado y Experiencia Recepcional" textFill="WHITE">
+            <Label layoutX="23.0" layoutY="9.0" text="Sistema de Apoyo al Seguimiento de Experiencia Recepcional" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
@@ -40,7 +40,7 @@
             </ImageView>
          </children>
       </Pane>
-      <ImageView fx:id="clicBtnRegresar" fitHeight="38.0" fitWidth="40.0" layoutX="17.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="clicBtnRegresar" fitHeight="38.0" fitWidth="40.0" layoutX="17.0" layoutY="64.0" onMouseClicked="#cllicBtnRegresar" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../recursos/iconos/flecha.png" />
          </image>
@@ -143,7 +143,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Button layoutX="435.0" layoutY="219.0" mnemonicParsing="false" onAction="#clicVerDetallesAnteproyecto" prefHeight="38.0" prefWidth="160.0" style="-fx-background-color: #28AD56; -fx-background-radius: 15;" text="Ver detalles" textFill="WHITE">
+            <Button fx:id="btnVerDetallesAnteproyecto" layoutX="435.0" layoutY="219.0" mnemonicParsing="false" onAction="#clicVerDetallesAnteproyecto" prefHeight="38.0" prefWidth="160.0" style="-fx-background-color: #28AD56; -fx-background-radius: 15;" text="Ver detalles" textFill="WHITE">
                <font>
                   <Font size="18.0" />
                </font>
@@ -202,7 +202,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label fx:id="lbPorcentaje" layoutX="480.0" layoutY="15.0" prefHeight="103.0" prefWidth="122.0">
+            <Label fx:id="lbPorcentaje" layoutX="442.0" layoutY="15.0" prefHeight="103.0" prefWidth="160.0">
                <font>
                   <Font size="60.0" />
                </font>

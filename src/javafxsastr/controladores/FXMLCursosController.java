@@ -173,10 +173,6 @@ public class FXMLCursosController implements Initializable {
         btnExperienciaRecepcional.setStyle(ESTILO_SELECCIONADO);
         configurarFiltroBusqueda("Experiencia Recepcional");
     }
-    
-    private void clicAñadirCurso(MouseEvent event) {
-        System.out.println("Añadir curso...");
-    }
 
     @FXML
     private void clicAnadirCurso(ActionEvent event) {
@@ -189,6 +185,7 @@ public class FXMLCursosController implements Initializable {
             Parent vista = accesoControlador.load();
             FXMLFormularioCursoController controladorVistaFormularioCurso = accesoControlador.getController();
             controladorVistaFormularioCurso.setUsuario(academico);
+            controladorVistaFormularioCurso.inicializarInformacionFormulario(false, null, null);
             Stage escenario = (Stage) lbTituloVentana.getScene().getWindow();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Formulario Cursos");

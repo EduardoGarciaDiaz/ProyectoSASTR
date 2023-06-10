@@ -83,8 +83,8 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
     public void initialize(URL url, ResourceBundle rb) {        
     }
     
-    public void setUsuarioYCurso(Academico academicoN, Curso curso) {
-        this.academico = academicoN;
+    public void setUsuarioYCurso(Academico academico, Curso curso) {
+        this.academico = academico;
         this.cursoActual = curso;
         cargarDetallesCurso();
         obtenerEstudiantesCurso();

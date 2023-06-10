@@ -355,7 +355,7 @@ public class FXMLFormularioActividadController implements Initializable {
            curso = cursoDao.ordenarCursosPorEstudiante(estudiante.getIdEstudiante());
            anteproyecto = anteproyectoDao.obtenerAnteproyectosPorEstudiante(estudiante.getIdEstudiante());
            academico = academicoDao.obtenerAcademicoPorId(curso.getIdAcademico());
-           codirectores =  FXCollections.observableArrayList(new AcademicoDAO().obtenerCodirectoresProAnteproyecto(anteproyecto.getIdAnteproyecto()));
+           //codirectores =  FXCollections.observableArrayList(new AcademicoDAO().obtenerCodirectoresProAnteproyecto(anteproyecto.getIdAnteproyecto()));
            porVnecer = acatividadesDao.totalActividades(1,estudiante.getIdEstudiante());
            realizadas = acatividadesDao.totalActividades(4,estudiante.getIdEstudiante());
            revisadas = acatividadesDao.totalActividades(3,estudiante.getIdEstudiante());
@@ -378,13 +378,13 @@ public class FXMLFormularioActividadController implements Initializable {
              lbAnteproyecto.setText(anteproyecto.getNombreTrabajoRecepcional());
          lbDirector.setText(anteproyecto.getNombreDirector());
          }
-         String codirectoresNombre= "";
-         if(!codirectores.isEmpty()) {             
-             for (int i = 0; i < codirectores.size(); i++) {
-                 codirectoresNombre = codirectoresNombre+codirectores.get(i).getNombre()+" "+codirectores.get(i).getPrimerApellido()+"\n";
-             }
-         }        
-         lbCodirector.setText(codirectoresNombre);
+//         String codirectoresNombre= "";
+//         if(!codirectores.isEmpty()) {             
+//             for (int i = 0; i < codirectores.size(); i++) {
+//                 codirectoresNombre = codirectoresNombre+codirectores.get(i).getNombre()+" "+codirectores.get(i).getPrimerApellido()+"\n";
+//             }
+//         }        
+//         lbCodirector.setText(codirectoresNombre);
          lbActSinPendientes.setText(porVnecer+" Actividades sin realizar");
          lbActRevisadas.setText(realizadas+" Actividades realizadas");
          lbActPorVencer.setText(revisadas+" Actiivdades revisadas");

@@ -63,6 +63,10 @@ public class TarjetaAvanceEstudiante extends Pane {
                 lbAvance, lbActividadCompletada, lbActividadNoCompletada, lbActividadRestante, btnVerAvance);
     }
     
+    public Button getBotonVerAvance() {
+        return btnVerAvance;
+    }
+    
     private void inicializarElementos() {
         fondoImagen = new Pane();
         ivIconoEstudiante = new ImageView(new Image("file:src/javafxsastr/recursos/iconos/estudiante.png"));
@@ -235,14 +239,6 @@ public class TarjetaAvanceEstudiante extends Pane {
         btnVerAvance.setStyle("-fx-border-color: transparent;"
                 + "-fx-background-radius: 15;"
                 + "-fx-background-color: #c9c9c9");
-        btnVerAvance.setOnAction((event) -> {
-            Stage  escenarioBase = new Stage();
-            escenarioBase.setScene(Utilidades.inicializarEscena("vistas/FXMLAvanceEstudiante.fxml"));    //CAMBIAR A LA RUTA 
-            escenarioBase.setTitle("Avance del estudiante");
-            escenarioBase.initModality(Modality.APPLICATION_MODAL);
-            escenarioBase.showAndWait();
-            
-        });
     }
     
 }
