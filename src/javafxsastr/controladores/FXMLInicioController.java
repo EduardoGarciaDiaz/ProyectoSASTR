@@ -75,12 +75,12 @@ public class FXMLInicioController implements Initializable, INotificacionClicBot
     public void setUsuario(Usuario usuario) {
         try {
             this.usuario = usuario;
-            Academico academico = new AcademicoDAO().obtenerAcademicoPorIdUsuario(usuario.getIdUsuario());
+            Academico academico = new AcademicoDAO().obtenerAcademicoPorIdUsuario(this.usuario.getIdUsuario());
             if (academico.getIdAcademico() > 0) {
                 this.academico = academico;
                 prepararVistaParaAcademico(this.academico);
             }
-            Estudiante estudiante = new EstudianteDAO().obtenerEstudiantePorIdUsuario(usuario.getIdUsuario());
+            Estudiante estudiante = new EstudianteDAO().obtenerEstudiantePorIdUsuario(this.usuario.getIdUsuario());
             if (estudiante.getIdEstudiante() > 0) {
                 this.estudiante = estudiante;
                 crearVistaEstudiante();
@@ -117,6 +117,7 @@ public class FXMLInicioController implements Initializable, INotificacionClicBot
         try {
             ConstructorInicio constructorInicio = new ConstructorInicio().crearPantallaInicio(this);
             boolean esProfesor = new CursoDAO().verificarSiAcademicoImparteCurso(academico.getIdAcademico());
+            System.out.println(esProfesor);
             if (esProfesor) {
                 constructorInicio.cargarBotonIconoCurso(vbxMenuContraido)
                         .cargarBotonTextoCursos(vbxMenuDesplegado);
@@ -237,14 +238,13 @@ public class FXMLInicioController implements Initializable, INotificacionClicBot
 
     private void irAVistaCursos() {
         try {
-            //TODO Cambiar la pantalla a la que redirige
-            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLCursos.fxml"));
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLCursosProfesor.fxml"));
             Parent vista = accesoControlador.load();
-            FXMLCursosController controladorVistaCuesos = accesoControlador.getController();
-            controladorVistaCuesos.setUsuario(academico);
+            FXMLCursosProfesorController controladorVistaCursos = accesoControlador.getController();
+            controladorVistaCursos.setProfesor(academico);
             Stage escenario = (Stage) menuContraido.getScene().getWindow();
             escenario.setScene(new Scene(vista));
-            escenario.setTitle("Cursos");
+            escenario.setTitle("Cursos del profesor");
             escenario.show();
         } catch (IOException ex) {
             ex.printStackTrace();

@@ -173,10 +173,6 @@ public class FXMLCursosController implements Initializable {
         btnExperienciaRecepcional.setStyle(ESTILO_SELECCIONADO);
         configurarFiltroBusqueda("Experiencia Recepcional");
     }
-    
-    private void clicAñadirCurso(MouseEvent event) {
-        System.out.println("Añadir curso...");
-    }
 
     @FXML
     private void clicAnadirCurso(ActionEvent event) {
@@ -184,32 +180,31 @@ public class FXMLCursosController implements Initializable {
     }
     
     private void irAVistaFormularioController() {
-        try {
+        try {          
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLFormularioCurso.fxml"));
             Parent vista = accesoControlador.load();
             FXMLFormularioCursoController controladorVistaFormularioCurso = accesoControlador.getController();
             controladorVistaFormularioCurso.setUsuario(academico);
+            controladorVistaFormularioCurso.inicializarInformacionFormulario(false, null, null);
             Stage escenario = (Stage) lbTituloVentana.getScene().getWindow();
             escenario.setScene(new Scene(vista));
-            escenario.setTitle("Formulario Usuario");
-            escenario.show();
-            
+            escenario.setTitle("Formulario Cursos");
+            escenario.show();            
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
     
     private void irAVistaInicio(Academico academico) {
-        try {
+        try {            
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLInicio.fxml"));
             Parent vista = accesoControlador.load();
             FXMLInicioController controladorVistaInicio = accesoControlador.getController();
             controladorVistaInicio.setUsuario(academico);
             Stage escenario = (Stage) lbTituloVentana.getScene().getWindow();
             escenario.setScene(new Scene(vista));
-            escenario.setTitle("Formulario Curso");
-            escenario.show();
-            
+            escenario.setTitle("Inicio");
+            escenario.show();            
         } catch (IOException ex) {
             ex.printStackTrace();
         }

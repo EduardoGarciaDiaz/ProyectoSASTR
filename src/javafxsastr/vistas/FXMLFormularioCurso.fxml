@@ -57,7 +57,6 @@
       </Label>
       <ComboBox fx:id="cmbExperienciasEducativas" layoutX="100.0" layoutY="290.0" onAction="#clicSeleccionCombo" prefHeight="50.0" prefWidth="375.0" promptText="Seleccionar experiencia educativa" style="-fx-background-radius: 15; -fx-background-color: white;" />
       <ComboBox fx:id="cmbNrcs" layoutX="488.0" layoutY="290.0" onAction="#clicSeleccionCombo" prefHeight="50.0" prefWidth="281.0" promptText="Seleccionar NRC" style="-fx-background-radius: 15; -fx-background-color: white;" />
-      <ComboBox fx:id="cmbPeriodosEscolares" layoutX="98.0" layoutY="410.0" onAction="#clicSeleccionCombo" prefHeight="50.0" prefWidth="247.0" promptText="Seleccionar periodo escolar" style="-fx-background-radius: 15; -fx-background-color: white;" />
       <ComboBox fx:id="cmbSecciones" layoutX="371.0" layoutY="410.0" onAction="#clicSeleccionCombo" prefHeight="50.0" prefWidth="185.0" promptText="Seleccionar sección" style="-fx-background-radius: 15; -fx-background-color: white;" />
       <ComboBox fx:id="cmbBloques" layoutX="587.0" layoutY="410.0" onAction="#clicSeleccionCombo" prefHeight="50.0" prefWidth="185.0" promptText="Seleccionar bloque" style="-fx-background-radius: 15; -fx-background-color: white;" />
       <Label layoutX="98.0" layoutY="248.0" prefHeight="35.0" prefWidth="236.0" text="Experiencia educativa">
@@ -113,5 +112,10 @@
       </ImageView>
       <Label fx:id="lbMensajeDeError" alignment="CENTER" contentDisplay="CENTER" layoutX="103.0" layoutY="847.0" prefHeight="53.0" prefWidth="670.0" textFill="#d31111" wrapText="true" />
       <Line endX="560.0" layoutX="680.0" layoutY="500.0" rotate="90.0" startX="-100.0" />
+      <Label fx:id="lbPeriodoActual" layoutX="98.0" layoutY="426.0" prefHeight="21.0" prefWidth="227.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

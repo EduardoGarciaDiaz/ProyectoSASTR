@@ -23,7 +23,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -66,6 +65,10 @@ public class FXMLCuerposAcademicosController implements Initializable {
         this.usuario = usuario;
     }
     
+    public void setterVistaLgacs() {
+        cargarLgacs();
+    }
+    
     private void obtenerCuerposAcademicos() {
         try {
             cuerposAcademicos = FXCollections.observableArrayList(
@@ -88,7 +91,7 @@ public class FXMLCuerposAcademicosController implements Initializable {
         for (CuerpoAcademico cuerposAcademico : cuerposAcademicos) {
             TarjetaCuerpoAcademico tarjeta = new TarjetaCuerpoAcademico(cuerposAcademico);
             tarjeta.getBotonModificarCuerpoAcademico().setOnAction((event) -> {
-                clicModificarCuerpoAcademico(cuerposAcademico);                
+                clicVerDetallesCuerpoAcademico(cuerposAcademico);                
             });
             contenedorTarjetasCuerpoAcademico.getChildren().add(tarjeta);
         }
@@ -111,7 +114,16 @@ public class FXMLCuerposAcademicosController implements Initializable {
         cargarTarjetasCuerpoAcademico();
      }
    
-    
+    private void cargarLgacs() {
+        contenedorTarjetasCuerpoAcademico.getChildren().clear();
+        obtenerLgacs();
+        SortedList<Lgac> sortedList = new SortedList<>(lgacs,
+                    Comparator.comparing(Lgac::toString));
+        cargarTarjetasLgacs();
+        lbCaLgac.setText("Añadir LGAC");
+        lbTituloVentana.setText("LGAC");
+        consultandoCA = false;
+    }
     
 
     public void manejarDAOException(DAOException ex) {
@@ -134,7 +146,7 @@ public class FXMLCuerposAcademicosController implements Initializable {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLAñadirCuerpoAcademico.fxml"));
             Parent vista = accesoControlador.load();
             FXMLAñadirCuerpoAcademicoController controladorVistaInicio = accesoControlador.getController();
-            controladorVistaInicio.cargarDatos(null, false, usuario);
+            controladorVistaInicio.cargarDatos(null, false, usuario,false);
             Stage escenario = (Stage) lbTituloVentana.getScene().getWindow();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Registro Cuerpos Academicos");
@@ -173,12 +185,12 @@ public class FXMLCuerposAcademicosController implements Initializable {
         }   
     }
     
-    private void clicModificarCuerpoAcademico(CuerpoAcademico cuerpoAcademicoEdicion ) {
+    private void clicVerDetallesCuerpoAcademico(CuerpoAcademico cuerpoAcademicoEdicion ) {
         try {
              FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLAñadirCuerpoAcademico.fxml"));
              Parent vista = accesoControlador.load();
             FXMLAñadirCuerpoAcademicoController controladorVistaInicio = accesoControlador.getController();
-            controladorVistaInicio.cargarDatos(cuerpoAcademicoEdicion, true, usuario);
+            controladorVistaInicio.cargarDatos(cuerpoAcademicoEdicion, true, usuario, false);
             Stage escenario = (Stage) lbTituloVentana.getScene().getWindow();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Modificar CA");
@@ -223,18 +235,13 @@ public class FXMLCuerposAcademicosController implements Initializable {
         contenedorTarjetasCuerpoAcademico.getChildren().clear();
         verCuerposAcademicos();
         lbCaLgac.setText("Añadir CA");
+        lbTituloVentana.setText("Cuerpos Academicos");
         consultandoCA = true;
     }
 
     @FXML
     private void clicVerLgacs(ActionEvent event) {
-        contenedorTarjetasCuerpoAcademico.getChildren().clear();
-        obtenerLgacs();
-        SortedList<Lgac> sortedList = new SortedList<>(lgacs,
-                    Comparator.comparing(Lgac::toString));
-        cargarTarjetasLgacs();
-        lbCaLgac.setText("Añadir LGAC");
-        consultandoCA = false;
+        cargarLgacs();
     }
     
 }

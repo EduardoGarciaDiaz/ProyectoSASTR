@@ -30,6 +30,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
@@ -97,6 +98,14 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
     private Label lbDiciplina;
     @FXML
     private Label lbDescripcion;
+    @FXML
+    private Button btnAñadirUsuario;
+    @FXML
+    private Button btnCancelar;
+    @FXML
+    private Button btnAñadirLgac;
+    @FXML
+    private ImageView imvEliminar;
     
     Academico academico = null;
     Lgac lgacSelected = null;
@@ -116,37 +125,50 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
     private Lgac lgac;
     private int idAcademicoSeleccionado; 
     private CuerpoAcademico cuerpoAcademicoEdicion;
-    private boolean esEdicion;
+    private boolean esVerDetalles;
     private int responsableOriginalEdicion = -1;
     private Usuario usuario;
-    
+    private boolean esEdicion;
    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         ConfigurarTabla();
-        btnGuardar.setDisable(true);
         lgacsEntabla=  FXCollections.observableArrayList();        
         recuperarDatos();
         recuperarAreas();
         inicializarLisneters();  
         inicializarFiltrosDeTexto();
-        if(esEdicion) {
-            lbTituloventana.setText("Modificar Cuerpo Academico");
+        if(esVerDetalles) {            
+            lbTituloventana.setText("Detalles Cuerpo Academico");
+        }else {
+            btnGuardar.setDisable(true);
         }
     }  
     public void recargarDatos() {
        
     }
     
-    public void cargarDatos(CuerpoAcademico cu, boolean edicion, Usuario usuarioActual) {
-        esEdicion = edicion; 
+    public void cargarDatos(CuerpoAcademico cu, boolean verDetalles, Usuario usuarioActual, boolean esEdicion) {
+        this.esVerDetalles = verDetalles; 
+        this.esEdicion = esEdicion;
         this.usuario = usuarioActual;
-        if(esEdicion) {
+        if(esVerDetalles) {
             cuerpoAcademicoEdicion = cu;
             responsableOriginalEdicion = cu.getIdAcademico();       
-            idAcademicoSeleccionado = cu.getIdAcademico();
-           ObservableList<Lgac> lgacsEdicion = FXCollections.observableArrayList();
-            try {
+            idAcademicoSeleccionado = cu.getIdAcademico(); 
+            CargarInformacionCuerpoAcademico();
+            if(esEdicion) {
+                bloquearCamposEdicion(true);
+            }else{ 
+                bloquearCamposEdicion(false);
+            }  
+            
+        }
+    }
+    
+    private void CargarInformacionCuerpoAcademico() {
+        ObservableList<Lgac> lgacsEdicion = FXCollections.observableArrayList();
+        try {
             Academico academicoResponsable = new AcademicoDAO().obtenerAcademicoPorId(
                                     cuerpoAcademicoEdicion.getIdAcademico());
             int idCA = cuerpoAcademicoEdicion.getIdCuerpoAcademico();   
@@ -155,18 +177,40 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
             txfNombreCA.setText(cuerpoAcademicoEdicion.getNombreCuerpoAcademico());
             txaDescripcionCA.setText(cuerpoAcademicoEdicion.getDescripcion());
             txfDiciplinaCA.setText(cuerpoAcademicoEdicion.getDisciplinaCuerpoAcademico());
-            int areaPosicion = obtenerPosicionComboArea(cuerpoAcademicoEdicion.getIdArea());
-            cmbAreas.getSelectionModel().select(areaPosicion);            
+            cmbAreas.getSelectionModel().select(obtenerAreaPorId(cuerpoAcademicoEdicion.getIdArea()));            
             lbNombreResponsable.setText(cuerpoAcademicoEdicion.getNombreResponsableCA());
             lbCorreoResponsable.setText(academicoResponsable.getCorreoInstitucional()); 
             tblvLgacs.setItems(lgacsEdicion);
-            lgacsEntabla.addAll(lgacsEdicion);
+            lgacsEntabla.addAll(lgacsEdicion);            
         } catch (DAOException ex) {
             ex.printStackTrace();
              manejarDAOException(ex);
+        }        
+     } 
+   
+    
+    private void bloquearCamposEdicion(boolean esEditable) {
+        txfNombreCA.setEditable(esEditable);
+        txaDescripcionCA.setEditable(esEditable);
+        txfDiciplinaCA.setEditable(esEditable);        
+        bsdAcademico.setEditable(esEditable);
+        bsdLgac.setEditable(esEditable);
+        btnEliminar.setVisible(esEditable);
+        btnAñadirLgac.setVisible(esEditable);
+        btnAñadirUsuario.setVisible(esEditable);
+        btnCancelar.setVisible(esEditable);
+        imvEliminar.setVisible(esEditable);
+        if(esEditable) {
+            btnGuardar.setText("Guardar CA");
+            btnGuardar.setDisable(true);
+            cmbAreas.setDisable(false);
+            CargarInformacionCuerpoAcademico();
+        }else {
+            cmbAreas.setDisable(true);
+            btnGuardar.setText("Modificar"); 
+            btnGuardar.setDisable(false);
+            
         }
-        btnGuardar.setDisable(true);
-        }      
     }
     
     private void inicializarLisneters() {       
@@ -181,11 +225,11 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
                 }                
             }
         });
-         cmbAreas.valueProperty().addListener((ObservableValue<? extends Area> observable, Area oldValue, Area newValue) -> {
+           cmbAreas.valueProperty().addListener((ObservableValue<? extends Area> observable, Area oldValue, Area newValue) -> {
               if (newValue != null) {
-                  validarBtnGuardar();                  
+                   validarBtnGuardar(); 
               }
-        });                 
+        });        
         txfDiciplinaCA.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -257,7 +301,7 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
         );    
     }
     
-    private   void inicializarFiltrosDeTexto() {              
+    private void inicializarFiltrosDeTexto() {              
         FiltrosTexto.filtroLetrasNumeros(txfNombreCA);
         FiltrosTexto.filtroLetrasNumeros(txfDiciplinaCA);
         FiltrosTexto.filtroLetrasNumerosPuntos(txaDescripcionCA);
@@ -287,7 +331,7 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
             int exito = cuerpoAcademicoDao.agregarCuerpoAcademico(cuerpoNuevo);
             if(exito != -1) {
                 Utilidades.mostrarDialogoSimple("Registro exitoso", "Se registro el cuerpo academico exitosamente",
-                                                                                            Alert.AlertType.CONFIRMATION);               
+                                                                                            Alert.AlertType.INFORMATION);               
                 for (int i = 0; i < lgacsEntabla.size(); i++) {
                     cuerpoAcademicoDao.agregarRelacionCUconLgac(exito, lgacsEntabla.get(i).getIdLgac());
                 }
@@ -320,7 +364,7 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
                     }                    
             }            
             Utilidades.mostrarDialogoSimple("Actualizacion exitosa", "Se actualizo el cuerpo academico exitosamente",
-                                                                                              Alert.AlertType.CONFIRMATION);  
+                                                                                              Alert.AlertType.INFORMATION);  
             cerrarVentana();
         } catch (DAOException ex) {
              manejarDAOException(ex);
@@ -351,7 +395,7 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
         }
     }  
     
-    private void validarBtnGuardar() {       
+    private void validarBtnGuardar() {  
         if(!cmbAreas.getSelectionModel().isEmpty()) {
             nombreCa = txfNombreCA.getText() ;
             area = cmbAreas.getSelectionModel().getSelectedItem().getIdArea();
@@ -456,15 +500,15 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
         } catch (DAOException ex) {
             manejarDAOException(ex);
         }
-    }
-    
-     private int obtenerPosicionComboArea(int idArea) {
-        for (int i = 0; i < areas.size(); i++) {
-            if(areas.get(i).getIdArea()== idArea) {
-                return i;
-            }
+    }  
+     
+    private Area obtenerAreaPorId(int idArea) {
+    for (Area area : areas) {
+        if (area.getIdArea() == idArea) {
+            return area;
         }
-        return 0;   
+    }
+    return null;
     }
     
     private void cerrarVentana() {
@@ -509,10 +553,16 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
 
     @FXML
     private void clicBtnGuardar(ActionEvent event) {
-        if(esEdicion) {            
-            if(validarExistenciaResponsable()) {
+        if(esVerDetalles) { 
+            if(esEdicion) {
+                if(validarExistenciaResponsable()) {
                  actualizarCuerpoAcademico();
-            }           
+                } 
+            }else {
+                bloquearCamposEdicion(true);
+                esEdicion = true;
+            }
+                      
         }else {
             if(validarExistenciaCuerpoAcademico()) {
                 if(validarExistenciaResponsable()) {
@@ -567,17 +617,18 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
 
     @FXML
     private void clicBtnAñadirUsuario(ActionEvent event) {       
-        try {
+        try {           
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLFormularioUsuario.fxml"));
             Parent vista = accesoControlador.load();
-            FXMLFormularioUsuarioController controladorVistaInicio = accesoControlador.getController();
-            controladorVistaInicio.setUsuario(usuario);
-            Stage escenario = (Stage) lbCorreoResponsable.getScene().getWindow();
+            FXMLFormularioUsuarioController controladorVistaVerUsuario = accesoControlador.getController();     
+            controladorVistaVerUsuario.vieneDeVentanaCuerposAcademicos(true, this);
+            Stage escenario = new Stage();
             escenario.setScene(new Scene(vista));
-            escenario.setTitle("Inicio");
-            escenario.show();
+            escenario.setTitle("Modificar Usuarios");
+            escenario.initModality(Modality.APPLICATION_MODAL);
+            escenario.showAndWait();
         } catch (IOException ex) {
-            Utilidades.mostrarDialogoSimple("Fallo al cargar la venta","No se pudo cargar la ventana Añadir Usuario", Alert.AlertType.ERROR);
+            ex.printStackTrace();
         }
     }
 

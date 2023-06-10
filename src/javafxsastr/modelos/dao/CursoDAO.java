@@ -10,7 +10,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafxsastr.modelos.ConexionBD;
 import javafxsastr.modelos.pojo.Curso;
 import javafxsastr.utils.Codigos;
@@ -56,6 +59,8 @@ public class CursoDAO {
             "WHERE est.idEstudiante = ? and ec.idEstadoCurso = ?";
     private final String GUARDAR_RELACIONESTUDIANTE_CURSO = "INSERT INTO sastr.cursos_estudiantes "
             + "( idCurso, idEstudiante) VALUES (?,?);";
+    private final String OBTENER_CURSOS_ACTUALES_DEL_PROFESOR = OBTENER_CURSOS
+            + "where a.idAcademico = ? and pe.esActual = 1;";
 
     public ArrayList<Curso> obtenerCursos() throws DAOException {
         ArrayList<Curso> cursos = new ArrayList<>();
@@ -352,8 +357,8 @@ public class CursoDAO {
                 curso.setBloqueCurso(resultado.getString("nombreBloque"));
                 curso.setExperienciaEducativaCurso(resultado.getString("nombreExperienciaEducativa"));
                 curso.setNrcCurso(resultado.getString("nombreNrc"));
-                curso.setInicioPeriodoEscolar(resultado.getString("fechaInicioPeriodoEscolar"));
-                curso.setFinPeriodoEscolar(resultado.getString("fechaFinPeriodoEscolar"));
+                curso.setInicioPeriodoEscolar(resultado.getDate("fechaInicioPeriodoEscolar").toString());
+                curso.setFinPeriodoEscolar(resultado.getDate("fechaFinPeriodoEscolar").toString());
                 curso.setEstadoCurso(resultado.getString("nombreEstadoCurso"));
                 curso.setAcademicoCurso(resultado.getString("nombreCompletoAcademico"));
             }
@@ -385,6 +390,44 @@ public class CursoDAO {
                     Codigos.ERROR_CONSULTA);
         }
         return respuesta;
+    }
+    
+    public ArrayList<Curso> obtenerCursosDelProfesor(int idProfesor) throws DAOException {
+        ArrayList<Curso> cursos = new ArrayList<>();
+        try {
+            PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(OBTENER_CURSOS_ACTUALES_DEL_PROFESOR);
+            sentencia.setInt(1, idProfesor);
+            ResultSet resultado = sentencia.executeQuery();
+            while (resultado.next()) {
+                Curso curso = new Curso();
+                curso.setIdCurso(resultado.getInt("idCurso"));
+                curso.setNombreCurso(resultado.getString("nombreCurso"));
+                curso.setFechaInicioCurso(resultado.getString("fechaInicioCurso"));
+                curso.setFechaFinCurso(resultado.getString("fechaFinCurso"));
+                curso.setIdSeccion(resultado.getInt("idSeccion"));
+                curso.setIdBloque(resultado.getInt("idBloque"));
+                curso.setIdExperienciaEducativa(resultado.getInt("idExperienciaEducativa"));
+                curso.setIdNRC(resultado.getInt("idNrc"));
+                curso.setIdPeriodoEscolar(resultado.getInt("idPeriodoEscolar"));
+                curso.setIdEstadoCurso(resultado.getInt("idEstadoCurso"));
+                curso.setIdAcademico(resultado.getInt("idAcademico"));
+                curso.setSeccionCurso(resultado.getString("nombreSeccion"));
+                curso.setBloqueCurso(resultado.getString("nombreBloque"));
+                curso.setExperienciaEducativaCurso(resultado.getString("nombreExperienciaEducativa"));
+                curso.setNrcCurso(resultado.getString("nombreNrc"));
+                curso.setInicioPeriodoEscolar(resultado.getString("fechaInicioPeriodoEscolar"));
+                curso.setFinPeriodoEscolar(resultado.getString("fechaFinPeriodoEscolar"));
+                curso.setEstadoCurso(resultado.getString("nombreEstadoCurso"));
+                curso.setAcademicoCurso(resultado.getString("nombreCompletoAcademico"));
+                cursos.add(curso);
+            }
+            System.out.println(cursos);
+            ConexionBD.cerrarConexionBD();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            throw new DAOException("Error de consulta al obtener los cursos actuales del profesor", Codigos.ERROR_CONSULTA);
+        }
+        return cursos;
     }
 
 }
