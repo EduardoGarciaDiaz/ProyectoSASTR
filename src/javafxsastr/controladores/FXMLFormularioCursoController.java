@@ -98,6 +98,10 @@ public class FXMLFormularioCursoController implements Initializable {
     private PeriodoEscolar periodoActual;
     @FXML
     private Label lbPeriodoActual;    
+    private ExperienciaEducativa experienciaEdicion;
+    private Nrc nrcEdicion;
+    private Seccion secccionEdicion;
+    private Bloque bloqueEdicion;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -107,7 +111,6 @@ public class FXMLFormularioCursoController implements Initializable {
         cargarSecciones();
         cargarbloques();
         agregarListenerCampos();
-        btnAceptar.setDisable(true);
         inicializarCamposDeBusqueda();
     }    
     
@@ -149,23 +152,44 @@ public class FXMLFormularioCursoController implements Initializable {
     
     private void setInformacionCursoEdicion(Curso cursoEdicion) {
         tfNombreCurso.setText(cursoEdicion.getNombreCurso());
-        int posicionExperienciaEducativa = obtenerPosicionComboExperienciaEducativa(cursoEdicion.getIdExperienciaEducativa());
-        cmbExperienciasEducativas.getSelectionModel().select(posicionExperienciaEducativa);
-        int posicionNrc = obtenerPosicionComboNrc(cursoEdicion.getIdNRC());
-        cmbNrcs.getSelectionModel().select(posicionNrc);
+        for (ExperienciaEducativa experienciasEducativa : experienciasEducativas) {
+            if (cursoEdicion.getIdExperienciaEducativa() == experienciasEducativa.getIdExperienciaEducativa()) {
+                cmbExperienciasEducativas.getSelectionModel().select(experienciasEducativa);
+                experienciaEdicion = experienciasEducativa;
+            }
+        }
+        for (Nrc nrc : nrcs) {
+            if (cursoEdicion.getIdNRC() == nrc.getIdNrc()) {
+                cmbNrcs.getSelectionModel().select(nrc);
+                nrcEdicion = nrc;
+            }
+        }
         try {
             periodoActual = new PeriodoEscolarDAO().obtenerPeriodoPorId(cursoEdicion.getIdPeriodoEscolar());
             lbPeriodoActual.setText(periodoActual.toString());
         } catch (DAOException ex) {
             manejarDAOException(ex);
         }
-        int posicionSeccion = obtenerPosicionComboSecciones(cursoEdicion.getIdSeccion());
-        cmbSecciones.getSelectionModel().select(posicionSeccion);
-        int posicionBloque = obtenerPosicionComboBloques(cursoEdicion.getIdBloque());
-        cmbBloques.getSelectionModel().select(posicionBloque);
-        int posicionProfesor = obtenerPosicionProfesor(cursoEdicion.getIdAcademico());
-        lvprofesores.getSelectionModel().select(posicionProfesor);        
+        for (Seccion seccione : secciones) {
+            if (seccione.getIdSeccion() == cursoEdicion.getIdSeccion()) {
+                cmbSecciones.getSelectionModel().select(seccione);
+                secccionEdicion = seccione;
+            }
+        }
+        for (Bloque bloque : bloques) {
+            if (bloque.getIdBloque() == cursoEdicion.getIdBloque()) {
+                cmbBloques.getSelectionModel().select(bloque);
+                bloqueEdicion = bloque;
+            }
+        }
+        for (Academico profesor : profesores) {
+            if (profesor.getIdAcademico() == cursoEdicion.getIdAcademico()) {
+                lvprofesores.getSelectionModel().select(profesor);
+                profesorSeleccionado = profesor;
+            }
+        } 
         tfProfesor.setText(lvprofesores.getSelectionModel().getSelectedItem().toString());
+        lvprofesores.setVisible(false);
         dpFechaInicioClases.setValue(LocalDate.parse(cursoEdicion.getFechaInicioCurso()));
         dpFechaFinClases.setValue(LocalDate.parse(cursoEdicion.getFechaFinCurso()));
     }
@@ -299,43 +323,53 @@ public class FXMLFormularioCursoController implements Initializable {
     private void clicBtnAceptar(ActionEvent event) {
         if (validarCamposObligatoriosLlenos()) {
             if (validarFechas()){
-                if (esEdicion) {
-                actualizarCurso(crearCursoValido());
-                Utilidades.mostrarDialogoSimple("Curso modificado.", 
+                if (tfNombreCurso.getText().trim().length() < 40) {
+                    if (esEdicion) {
+                        actualizarCurso(crearCursoValido());
+                        Utilidades.mostrarDialogoSimple("Curso modificado.", 
                             "Cambios realizados correctamente.", Alert.AlertType.INFORMATION);
-                } else {
-                    registrarCurso(crearCursoValido());
-                    Utilidades.mostrarDialogoSimple("Curso registrado.", 
+                    } else {
+                        registrarCurso(crearCursoValido());
+                        Utilidades.mostrarDialogoSimple("Curso registrado.", 
                             "El curso se creó correctamente en el sistema", Alert.AlertType.INFORMATION);
+                    }
+                    cerrarVentana();
+                } else {
+                    lbMensajeDeError.setText("El nombre del curso no puede tener más de 40 caracteres.");
                 }
-                cerrarVentana();
             } else {
                 lbTituloFormulario.requestFocus();
                 lbMensajeDeError.setText("No puedes seleccionar una fecha de fin de clases posterior a la de fin del periodo"
-                        + "ni una previa a la de inicio del periodo");
+                        + " ni una previa a la de inicio del periodo");
                 btnAceptar.setDisable(true);
             }
         }
     }
     
     private boolean validarFechas() {
-        boolean fechasValidas = true;
-        if (periodoActual != null) {
-            LocalDate fechaFinPeriodoEscolar = LocalDate.parse(periodoActual.getFechaFinPeriodoEscolar());
-            LocalDate fechaInicioPeriodoEscolar = LocalDate.parse(periodoActual.getFechaInicioPeriodoEscolar());
-            if (!dpFechaFinClases.getValue().isAfter(fechaFinPeriodoEscolar)) {
-                fechasValidas = false;
-            }
-            if (!dpFechaInicioClases.getValue().isBefore(fechaFinPeriodoEscolar)) {
-                fechasValidas = false;
-            }
+    boolean fechasValidas = true;
+    if (periodoActual != null) {
+        LocalDate fechaFinPeriodoEscolar = LocalDate.parse(periodoActual.getFechaFinPeriodoEscolar());
+        LocalDate fechaInicioPeriodoEscolar = LocalDate.parse(periodoActual.getFechaInicioPeriodoEscolar());
+        LocalDate fechaInicioClases = dpFechaInicioClases.getValue();
+        LocalDate fechaFinClases = dpFechaFinClases.getValue();
+        if (fechaInicioClases.isBefore(fechaInicioPeriodoEscolar) 
+                || fechaInicioClases.isAfter(fechaFinClases)
+                || fechaInicioClases.isAfter(fechaFinPeriodoEscolar)) {
+            fechasValidas = false;
         }
-        return fechasValidas;
+        if (fechaFinClases.isBefore(fechaInicioClases) 
+                || fechaFinClases.isAfter(fechaFinPeriodoEscolar)
+                || fechaFinClases.isBefore(fechaInicioPeriodoEscolar)) {
+            fechasValidas = false;
+        }
     }
+    return fechasValidas;
+}
     
     private Curso crearCursoValido() {
         Curso curso = new Curso();
-        curso.setNombreCurso(tfNombreCurso.getText());
+        curso.setNombreCurso(tfNombreCurso.getText().trim().replaceAll(" +", " "));
         curso.setIdPeriodoEscolar(periodoActual.getIdPeriodoEscolar());
         curso.setIdExperienciaEducativa(cmbExperienciasEducativas.getSelectionModel().getSelectedItem().getIdExperienciaEducativa());
         curso.setIdNRC(cmbNrcs.getSelectionModel().getSelectedItem().getIdNrc());
@@ -360,6 +394,7 @@ public class FXMLFormularioCursoController implements Initializable {
     private void actualizarCurso(Curso cursoModificado) {
         CursoDAO cursoDAO = new CursoDAO();
         cursoModificado.setIdCurso(cursoEdicion.getIdCurso());
+        cursoModificado.setIdEstadoCurso(cursoEdicion.getIdEstadoCurso());
         try {
             cursoDAO.actualizarCurso(cursoModificado);
         } catch (DAOException ex) {
@@ -446,20 +481,24 @@ public class FXMLFormularioCursoController implements Initializable {
     private void agregarListenerCampoVacio(TextInputControl campoTexto){
         campoTexto.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, 
                 Boolean oldValue, Boolean newValue) -> {
-            if (newValue) {
+            if (oldValue) {
+                if (campoTexto.getText().isEmpty()) {
+                    campoTexto.setStyle("-fx-border-color: red");
+                }
+            } else {
                 campoTexto.setStyle("-fx-border-color: gray");
                 lbMensajeDeError.setText("");
             }
-            if (oldValue) {
-                if (campoTexto.getText().trim().isEmpty()) {
-                    campoTexto.setStyle("-fx-border-color: red");
-                    lbMensajeDeError.setText("Campos obligatorios vacios.");
-                }
+        });
+        campoTexto.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
                 if (validarCamposObligatoriosLlenos()) {
                     btnAceptar.setDisable(false);
                 } else {
                     btnAceptar.setDisable(true);
                 }
+            } else {
+                btnAceptar.setDisable(true);
             }
         });
     }
@@ -468,9 +507,13 @@ public class FXMLFormularioCursoController implements Initializable {
         boolean camposLlenos = false;
         if ((!tfNombreCurso.getText().trim().isEmpty())
                 && cmbExperienciasEducativas.getSelectionModel().getSelectedItem()!= null
+                || experienciaEdicion != null
                 && cmbNrcs.getSelectionModel().getSelectedItem() != null
+                || nrcEdicion != null
                 && cmbSecciones.getSelectionModel().getSelectedItem() != null
+                || secccionEdicion != null
                 && cmbBloques.getSelectionModel().getSelectedItem() != null
+                || bloqueEdicion != null
                 && profesorSeleccionado != null
                 && dpFechaFinClases.getValue() != null
                 && dpFechaInicioClases.getValue() != null) {

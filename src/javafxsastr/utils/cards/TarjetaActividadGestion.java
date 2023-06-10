@@ -18,6 +18,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafxsastr.modelos.pojo.Actividad;
+import javafxsastr.utils.Utilidades;
 
 public class TarjetaActividadGestion extends Pane {
     
@@ -127,7 +128,11 @@ public class TarjetaActividadGestion extends Pane {
     }
     
     private void establecerEstiloFechas() {
-        fechas.setText(actividad.getFechaInicioActividad() + " - " + actividad.getFechaFinActividad());
+        fechas.setText(
+                Utilidades.formatearFechaNormal(actividad.getFechaInicioActividad())
+                + " - " 
+                + Utilidades.formatearFechaNormal(actividad.getFechaFinActividad())
+        );
         fechas.setLayoutX(130);
         fechas.setLayoutY(118);
         fechas.setFont(fuenteTexto);

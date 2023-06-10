@@ -116,7 +116,7 @@ public class FXMLActividadesController implements Initializable {
                 verificarSiEsNoCompletada(actividadRecuperada);
                 actividades.add(actividadRecuperada);
             }
-            FXCollections.sort(actividades, Comparator.comparing(Actividad::getFechaFinActividad));
+            FXCollections.sort(actividades, Comparator.comparing(Actividad::getEstadoActividad));
         } catch (DAOException ex) {
             manejarDAOException(ex);
         }
@@ -147,6 +147,8 @@ public class FXMLActividadesController implements Initializable {
                         actividades.clear();
                         obtenerActividadesDelEstudiante();
                         cargarTarjetasActividades();
+                    } else {
+                        tarjeta.getCheckBox().selectedProperty().setValue(false);
                     }
                 }
             });
@@ -204,21 +206,24 @@ public class FXMLActividadesController implements Initializable {
     }
     
      private void setInformacion() {
-         if(curso != null) {
-             lbCurso.setText(curso.getNombreCurso());
-             lbNrc.setText(curso.getNrcCurso());
-             lbPeriodo.setText(curso.getFechaInicioCurso()+"-"+curso.getFinPeriodoEscolar());
-         }
-         if(academico != null) {
-             lbDocente.setText(academico.getNombre()+" "+academico.getPrimerApellido());
-         }
-         if(anteproyecto != null) {
-             lbAnteproyecto.setText(anteproyecto.getNombreTrabajoRecepcional());
-         lbDirector.setText(anteproyecto.getNombreDirector());
-         }
-         lbActSinPendientes.setText(actividadesPorVencer+" Actividades sin realizar");
-         lbActRevisadas.setText(actividadesRealizadas+" Actividades realizadas");
-         lbActPorVencer.setText(actividadesRevisadas+" Actiivdades revisadas");
+        if(curso != null) {
+            lbCurso.setText(curso.getNombreCurso());
+            lbNrc.setText(curso.getNrcCurso());
+            lbPeriodo.setText(
+                    Utilidades.formatearFechaPeriodo(curso.getFechaInicioCurso())
+                    + " - "
+                    +Utilidades.formatearFechaPeriodo(curso.getFinPeriodoEscolar()));
+        }
+        if(academico != null) {
+            lbDocente.setText(academico.getNombre()+" "+academico.getPrimerApellido());
+        }
+        if(anteproyecto != null) {
+            lbAnteproyecto.setText(anteproyecto.getNombreTrabajoRecepcional());
+            lbDirector.setText(anteproyecto.getNombreDirector());
+        }
+        lbActSinPendientes.setText(actividadesPorVencer+" Actividades sin realizar");
+        lbActRevisadas.setText(actividadesRealizadas+" Actividades realizadas");
+        lbActPorVencer.setText(actividadesRevisadas+" Actiivdades revisadas");
      }
     
     private void irAVistaInicio(Estudiante estudiante) {

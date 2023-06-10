@@ -243,6 +243,7 @@ public class FXMLAnteproyectosController implements Initializable, INotificacion
 
     @Override
     public void notificarClicBotonCorregirAnteproyectoe(Anteproyecto anteproyecto) {
+        
     }
 
     @Override

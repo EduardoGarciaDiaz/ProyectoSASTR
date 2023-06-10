@@ -22,7 +22,7 @@ import javafx.scene.control.ButtonType;
 
 public class Utilidades {
     
-    private final static DateTimeFormatter FORMATO_FECHA = DateTimeFormatter.ofPattern("dd-MM-yyy",
+    private final static DateTimeFormatter FORMATO_FECHA = DateTimeFormatter.ofPattern("dd-MMM-yyy",
             new Locale("es"));
     private final static DateTimeFormatter FORMATO_FECHA_PERIODO_ESCOLAR = DateTimeFormatter.ofPattern("MMM' 'yyyy",
             new Locale("es"));
