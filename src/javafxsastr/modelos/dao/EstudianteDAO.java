@@ -459,7 +459,79 @@ public class EstudianteDAO {
         return estaAsignado;
     }
     
-     public ArrayList<Estudiante> obtenerEstudiantesSinAnteproyecto() throws DAOException {
+     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    public ArrayList<Estudiante> obtenerEstudiantesSinAnteproyecto() throws DAOException {
         ArrayList<Estudiante> estudiantes = new ArrayList<>();
         try {
             PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(OBTENER_ESTUDIANTES_SIN_ANTEPROYECTO);
