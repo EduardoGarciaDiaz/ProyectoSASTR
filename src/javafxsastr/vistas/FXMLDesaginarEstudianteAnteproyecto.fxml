@@ -48,7 +48,10 @@
                </children>
             </Pane>
             <ComboBox fx:id="cmbMotivos" layoutX="293.0" layoutY="98.0" prefHeight="34.0" prefWidth="199.0" promptText="&lt;motivo&gt;" style="-fx-background-color: EAE4E4; -fx-background-radius: 13;" />
-            <Pane prefHeight="34.0" prefWidth="810.0" style="-fx-background-color: #18529D;" />
+            <Pane prefHeight="34.0" prefWidth="810.0" style="-fx-background-color: #18529D;">
+               <children>
+                  <Label layoutX="7.0" layoutY="7.0" text="Sistema de Apoyo al Seguimiento de Trabajo Recepcional" textFill="WHITE" />
+               </children></Pane>
             <Pane layoutX="808.0" prefHeight="34.0" prefWidth="369.0" style="-fx-background-color: #28AD56;">
                <children>
                   <Label layoutX="59.0" layoutY="-3.0" prefHeight="34.0" prefWidth="251.0" text="Universidad Veracruzana" textFill="WHITE">

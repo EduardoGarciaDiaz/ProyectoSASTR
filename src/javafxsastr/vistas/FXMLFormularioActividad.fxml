@@ -14,7 +14,7 @@
    <children>
       <Pane layoutX="1.0" layoutY="1.0" prefHeight="50.0" prefWidth="1228.0" style="-fx-background-color: #18529d;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="500.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label layoutX="23.0" layoutY="9.0" text="Sistema de Apoyo al Seguimiento de Proyecto Guiado y Experiencia Recepcional" textFill="WHITE">
+            <Label layoutX="23.0" layoutY="9.0" text="Sistema de Apoyo al Seguimiento de Trabajo Recepcional" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
@@ -169,12 +169,12 @@
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <Label fx:id="lbDocente" layoutX="94.0" layoutY="109.0" prefHeight="35.0" prefWidth="308.0">
+                        <Label fx:id="lbDocente" layoutX="95.0" layoutY="109.0" prefHeight="35.0" prefWidth="308.0">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <Label fx:id="lbPeriodo" layoutX="177.0" layoutY="147.0" prefHeight="35.0" prefWidth="218.0">
+                        <Label fx:id="lbPeriodo" layoutX="178.0" layoutY="147.0" prefHeight="35.0" prefWidth="218.0">
                            <font>
                               <Font size="17.0" />
                            </font>
@@ -213,7 +213,7 @@
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <Label fx:id="lbCodirector" layoutX="119.0" layoutY="147.0" prefHeight="35.0" prefWidth="270.0">
+                        <Label fx:id="lbCodirector" layoutX="119.0" layoutY="147.0" prefHeight="58.0" prefWidth="270.0" wrapText="true">
                            <font>
                               <Font size="20.0" />
                            </font>
