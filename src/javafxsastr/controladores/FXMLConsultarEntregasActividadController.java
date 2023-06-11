@@ -159,10 +159,11 @@ public class FXMLConsultarEntregasActividadController implements Initializable {
                 fechaRevision = "";
             }
             Entrega entrega = entregas.get(i);
+            int numeroEntregaSeleccionado = numeroEntrega;
             TarjetaEntregasActividad tarjetaEntregaActividad = new TarjetaEntregasActividad(numeroEntrega,fechaEntregaFormateada,
                     horaEntrega, fechaRevision);
             tarjetaEntregaActividad.getBotonRevisar().setOnAction((event) -> {
-                irAVistaRevisarEntrega(entrega);
+                irAVistaRevisarEntrega(entrega, numeroEntregaSeleccionado);
             });
             vbxCardsEntregas.getChildren().add(tarjetaEntregaActividad);
         }
@@ -241,11 +242,12 @@ public class FXMLConsultarEntregasActividadController implements Initializable {
         }
     }
     
-    private void irAVistaRevisarEntrega(Entrega entrega) {
+    private void irAVistaRevisarEntrega(Entrega entrega, int numeroEntrega) {
         try {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLRevisarEntrega.fxml"));
             Parent vista = accesoControlador.load();
             FXMLRevisarEntregaController controladorVistaRevisarEntrega = accesoControlador.getController();
+            controladorVistaRevisarEntrega.setNumeroEntrega(numeroEntrega);
             controladorVistaRevisarEntrega.inicializarContenidoEntrega(entrega, academico, actividad, estudiante);
             controladorVistaRevisarEntrega.setCurso(curso);
             Stage escenario = (Stage) lbDetallesActividad.getScene().getWindow();

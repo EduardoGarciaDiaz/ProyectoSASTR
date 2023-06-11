@@ -62,7 +62,7 @@
                   <Font name="System Bold" size="20.0" />
                </font>
             </Label>
-            <Label layoutX="118.0" layoutY="58.0" text="Avance no.">
+            <Label layoutX="115.0" layoutY="58.0" text="Entrega no.">
                <font>
                   <Font size="20.0" />
                </font>
@@ -100,6 +100,11 @@
             <Label layoutX="585.0" layoutY="22.0" text="Hora de recibido">
                <font>
                   <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbNumeroEntrega" layoutX="220.0" layoutY="58.0" prefHeight="30.0" prefWidth="82.0">
+               <font>
+                  <Font size="20.0" />
                </font>
             </Label>
          </children>

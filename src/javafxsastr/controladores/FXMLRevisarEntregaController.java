@@ -60,6 +60,8 @@ public class FXMLRevisarEntregaController implements Initializable {
     @FXML
     private Label lbHoraRecibido;
     @FXML
+    private Label lbNumeroEntrega;
+    @FXML
     private TextArea txaComentariosEstudiante;
     @FXML
     private HBox hbxContenedorArchivosAlumno;
@@ -77,7 +79,8 @@ public class FXMLRevisarEntregaController implements Initializable {
     private Actividad actividad;
     private Estudiante estudiante;
     private Curso curso;
-    
+    private int numeroEntrega;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     }    
@@ -99,10 +102,15 @@ public class FXMLRevisarEntregaController implements Initializable {
     public void setCurso(Curso curso) {
         this.curso = curso;
     }
+    
+    public void setNumeroEntrega(int numeroEntrega) {
+        this.numeroEntrega = numeroEntrega;
+    }
         
     private void setDatosEntrega(Actividad actividad){
         lbFechaRecibido.setText(entrega.getFechaEntrega());
         lbHoraRecibido.setText(entrega.getHoraEntrega());
+        lbNumeroEntrega.setText(String.valueOf(numeroEntrega));
         txaComentariosEstudiante.setText(entrega.getComentarioAlumno());
         lbNombreActividad.setText(actividad.getNombreActividad());
         if (entrega.getComentarioDirector() != null) {
@@ -164,22 +172,21 @@ public class FXMLRevisarEntregaController implements Initializable {
             imgIconoEliminar.setLayoutX(150);
             imgIconoEliminar.setLayoutY(5);
             contenedorArchivo.setId(String.valueOf(archivo.getIdArchivo()));
-            contenedorArchivo.setOnMouseClicked((event) -> {
+            imgIconoEliminar.setOnMouseClicked((event) -> {
                 contenedorArchivo.setVisible(false);
                 eliminarArchivo(contenedorArchivo, archivo);
             });
+            imgIconoArchivo.setOnMouseClicked((event) -> {
+                descargarArchivo(archivo);
+            });            
             hbxContenedorArchivosRevision.getChildren().add(contenedorArchivo);
         }
 
     }
     
     private void eliminarArchivo(Pane contenedorArchivo, Archivo archivo){
-        System.out.println("Archivo a eliminar " + archivo.getNombreArchivo());
         hbxContenedorArchivosRevision.getChildren().remove(contenedorArchivo);
         archivosRevision.remove(archivo);
-        for(Archivo arch : archivosRevision ) {
-            System.out.println("Ar " + arch.getNombreArchivo());
-        }
     }
     
     private void descargarArchivo(Archivo archivo){
