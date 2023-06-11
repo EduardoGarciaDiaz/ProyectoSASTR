@@ -81,8 +81,6 @@ public class FXMLConsultarEntregasActividadController implements Initializable {
             new Locale("es"));
     private final DateTimeFormatter FORMATO_FECHA_CON_DIAGONAL = DateTimeFormatter.ofPattern("dd'/'MMMM'/'yyyy",
             new Locale("es"));
-    private final SimpleDateFormat FORMATO_FECHA_PARA_DATE = new SimpleDateFormat("dd'/'MMMM'/'yyyy",
-            new Locale("es"));
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -174,11 +172,13 @@ public class FXMLConsultarEntregasActividadController implements Initializable {
         try {
             if (actividad != null) {
                 ArrayList<HistorialCambios> cambios = new HistorialCambiosDAO().obtenerInformacionHistorialCambios(actividad.getIdActividad());
-                for (HistorialCambios cambio : cambios) {                    
-                    String fechaModificacionFormateada = cambio.getFechaDeModificacion(); 
-                    String fechaAnteriorFormateada = cambio.getFechaAnterior();
-                    String fechaNueva = cambio.getFechaNueva();
-                    String fechaNuevaFormateada = FORMATO_FECHA_PARA_DATE.format(fechaNueva);
+                for (HistorialCambios cambio : cambios) {        
+                    LocalDate fechaModificacion = LocalDate.parse(cambio.getFechaDeModificacion());
+                    LocalDate fechaAnterior = LocalDate.parse(cambio.getFechaAnterior());
+                    LocalDate fechaNueva = LocalDate.parse(cambio.getFechaNueva());
+                    String fechaModificacionFormateada = fechaModificacion.format(FORMATO_FECHA_CON_DIAGONAL);
+                    String fechaAnteriorFormateada = fechaAnterior.format(FORMATO_FECHA_CON_DIAGONAL);
+                    String fechaNuevaFormateada = fechaNueva.format(FORMATO_FECHA_CON_DIAGONAL);
                     String cambioHecho = "Se cambió la fecha de la actividad de " + fechaAnteriorFormateada + " a " + fechaNuevaFormateada;
                     vbxCardsCambios.getChildren().add(new TarjetaCambioActividad(cambioHecho, fechaModificacionFormateada));
                 } 
