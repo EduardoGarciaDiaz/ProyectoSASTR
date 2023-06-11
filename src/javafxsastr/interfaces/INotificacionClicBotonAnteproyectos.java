@@ -22,4 +22,6 @@ public interface INotificacionClicBotonAnteproyectos {
     public void notificarClicValidarAnteproyecto(Anteproyecto anteproyecto);
     
     public void notificarClicPublicarAnteproyecto(Anteproyecto anteproyecto);
+    
+    public void notificarClicDespublicarAnteproyecto(Anteproyecto anteproyecto);
 }

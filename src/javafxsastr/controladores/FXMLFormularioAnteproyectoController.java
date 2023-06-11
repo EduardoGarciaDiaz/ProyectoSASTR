@@ -597,11 +597,7 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
         });
         campoTexto.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.isEmpty()) {
-                if (validarCamposObligatoriosLLenos()) {
-                    btnEnviar.setDisable(false);
-                } else {
-                    btnEnviar.setDisable(true);
-                }
+                validacionCamposLLenos();
             } else {
                 btnEnviar.setDisable(true);
             }
@@ -628,11 +624,7 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
                     codirectoresSeleccionado.add(codirectorSeleccionado);
                     tfCodirector.setText("");
                     configurarComponenteCodirectorSeleccionado(codirectorSeleccionado);
-                    if (validarCamposObligatoriosLLenos()) {
-                        btnEnviar.setDisable(false);
-                    } else {
-                        btnEnviar.setDisable(true);
-                    }
+                    validacionCamposLLenos();
                 } else {
                     Utilidades.mostrarDialogoSimple("Acción no permitida",
                         "El academico ya ha sido seleccionado o es usted.", Alert.AlertType.INFORMATION);
@@ -641,7 +633,7 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
 
             @Override
             public void notificarPerdidaDelFoco() {
-                validarCamposObligatoriosLLenos();
+                validacionCamposLLenos();
             }
         });
     }
@@ -746,11 +738,7 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
             }
             listView.getSelectionModel().clearSelection();
         }
-        if (validarCamposObligatoriosLLenos()) {
-            btnEnviar.setDisable(false);
-        } else {
-            btnEnviar.setDisable(true);
-        }
+        validacionCamposLLenos();
     }  
     
     @FXML
@@ -801,7 +789,7 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
             lgacsSeleccionadas.add(lgacSeleccionada);
             configurarComponenteLgacSeleccionada(lgacSeleccionada);
             configurarFiltroLgac();   
-            validarCamposObligatoriosLLenos();
+            validacionCamposLLenos();
         }
     }
     
@@ -869,6 +857,7 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
                 lgacsSeleccionadas.remove(seleccionada);
                 vbxContenedorLgac.getChildren().remove(padreBoton);
                 configurarFiltroLgac();
+                validacionCamposLLenos();
             }
         });
     }
@@ -903,6 +892,7 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
                 codirectoresSeleccionado.remove(seleccionado);
                 vbxContenedorDirectores.getChildren().remove(padreBoton);
                 lbNombreDirector.requestFocus();
+                validacionCamposLLenos();
             }
         });
     }
@@ -934,6 +924,19 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
                         "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
             default:
                 throw new AssertionError();
+        }
+    }
+
+    @FXML
+    private void seleccionComboNumeroEstudiantes(ActionEvent event) {
+        validacionCamposLLenos();
+    }
+    
+    public void validacionCamposLLenos() {
+        if (validarCamposObligatoriosLLenos()) {
+            btnEnviar.setDisable(false);
+        } else {
+            btnEnviar.setDisable(true);
         }
     }
     

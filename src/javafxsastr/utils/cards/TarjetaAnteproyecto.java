@@ -127,9 +127,9 @@ public class TarjetaAnteproyecto extends Pane {
     
     private void configurarBotonAccion() {
         btnAccion.setStyle("-fx-background-color: #C4DAEF; -fx-background-radius: 15;");
-        btnAccion.setLayoutX(1350);
+        btnAccion.setLayoutX(1250);
         btnAccion.setLayoutY(179);
-        btnAccion.setPrefWidth(180);
+        btnAccion.setPrefWidth(250);
         btnAccion.setPrefHeight(40);
         if ("Borrador".equals(anteproyecto.getEstadoSeguimiento())) {
             btnAccion.setText("Editar anteproyecto");
@@ -146,28 +146,46 @@ public class TarjetaAnteproyecto extends Pane {
            btnAccion.setOnAction( (event) -> {
                interfaz.notificarClicBotonCorregirAnteproyectoe(anteproyecto);
            });
-       } else if ("Sin publicar".equals(anteproyecto.getEstadoSeguimiento())) {
+       } else if ("Validado".equals(anteproyecto.getEstadoSeguimiento())) {
            btnAccion.setText("Ver detalles de anteproyecto");
            agregarBotonPublicar();
            btnAccion.setOnAction((event) -> {
                interfaz.notificarClicBotonVerDetallesAnteproyecto(anteproyecto);
            });
-       } else {
+        } else if ("Publicado".equals(anteproyecto.getEstadoSeguimiento())) {
            btnAccion.setText("Ver detalles de anteproyecto");
+           agregarBotonDespublicar();
            btnAccion.setOnAction((event) -> {
                interfaz.notificarClicBotonVerDetallesAnteproyecto(anteproyecto);
            });
-       }
+       } else {
+            btnAccion.setText("Ver detalles de anteproyecto");
+            btnAccion.setOnAction((event) -> {
+            interfaz.notificarClicBotonVerDetallesAnteproyecto(anteproyecto);
+           });
+        }
     }
     
     private void agregarBotonPublicar() {
         Button btnPublicar = new Button("Publicar anteproyecto");
         btnPublicar.setStyle("-fx-background-color: #C4DAEF; -fx-background-radius: 15;");
-        btnPublicar.setLayoutX(1255);
-        btnPublicar.setLayoutY(179);
+        btnPublicar.setLayoutX(1250);
+        btnPublicar.setLayoutY(100);
         btnPublicar.setPrefWidth(180);
         btnPublicar.setOnAction((event) -> {
             interfaz.notificarClicPublicarAnteproyecto(anteproyecto);
+        });
+        this.getChildren().add(btnPublicar);
+    }
+    
+    private void agregarBotonDespublicar() {
+        Button btnPublicar = new Button("Despublicar anteproyecto");
+        btnPublicar.setStyle("-fx-background-color: #C4DAEF; -fx-background-radius: 15;");
+        btnPublicar.setLayoutX(1250);
+        btnPublicar.setLayoutY(100);
+        btnPublicar.setPrefWidth(180);
+        btnPublicar.setOnAction((event) -> {
+            interfaz.notificarClicDespublicarAnteproyecto(anteproyecto);
         });
         this.getChildren().add(btnPublicar);
     }
