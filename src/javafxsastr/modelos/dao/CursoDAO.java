@@ -24,8 +24,7 @@ public class CursoDAO {
             "c.idExperienciaEducativa, e.nombreExperienciaEducativa, c.idNrc, n.nombreNrc, c.idPeriodoEscolar, " +
             "pe.fechaInicioPeriodoEscolar, pe.fechaFinPeriodoEscolar, c.idSeccion, s.nombreSeccion, c.idBloque, " +
             "b.nombreBloque, c.idAcademico, " +
-            "CONCAT(u.nombreUsuario,' ', u.primerApellidoUsuario,' ', u.segundoApellidoUsuario) AS nombreCompletoAcademico, "
-            +
+            "CONCAT(u.nombreUsuario,' ', u.primerApellidoUsuario,' ', u.segundoApellidoUsuario) AS nombreCompletoAcademico, " +
             "c.idEstadoCurso, ec.nombreEstadoCurso " +
             "FROM cursos c " +
             "INNER JOIN experiencias_educativas e ON c.idExperienciaEducativa = e.idExperienciaEducativa " +
@@ -53,8 +52,8 @@ public class CursoDAO {
     private final String ELIMINAR_CURSO = "DELETE FROM cursos WHERE idCurso = ?";
     private final String VERIFICAR_SI_ACADEMICO_IMPARTE_CURSO = "SELECT EXISTS"
             + "(SELECT idAcademico FROM cursos WHERE idAcademico = ?) as esProfesor;";
-    private final String OBTENER_CURSOS_POR_ESTUDIANTE = OBTENER_CURSOS
-            + "INNER JOIN cursos_estudiantes cu on c.idCurso = cu.idCurso " +
+    private final String OBTENER_CURSOS_POR_ESTUDIANTE = OBTENER_CURSOS +
+            "INNER JOIN cursos_estudiantes cu on c.idCurso = cu.idCurso " +
             "INNER JOIN estudiantes est ON cu.idEstudiante = est.idEstudiante " +
             "WHERE est.idEstudiante = ? and ec.idEstadoCurso = ?";
     private final String GUARDAR_RELACIONESTUDIANTE_CURSO = "INSERT INTO sastr.cursos_estudiantes "
@@ -332,7 +331,7 @@ public class CursoDAO {
         return esProfesor;
     }
 
-    public Curso ordenarCursosPorEstudiante(int idEstudiante) throws DAOException {
+    public Curso obtenerCursosPorEstudiante(int idEstudiante) throws DAOException {
         Curso curso = null;
         try {
             PreparedStatement sentencia = ConexionBD.obtenerConexionBD()
