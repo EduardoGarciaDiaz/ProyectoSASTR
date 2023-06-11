@@ -324,7 +324,7 @@ public class FXMLFormularioUsuarioController implements Initializable {
             }
         }
         if (esEdicion) {
-            if (!validarExistenciaOtroAdministrador()) {
+            if (!chbxEsAdministrador.isSelected() && !validarExistenciaOtroAdministrador()) {
                 datosValidos = false;
                 Utilidades.mostrarDialogoSimple("Operación no posible", 
                             "No puedes dejar al sistema sin un administrador. "
@@ -439,17 +439,11 @@ public class FXMLFormularioUsuarioController implements Initializable {
     
     private boolean validarExistenciaOtroAdministrador() {
         boolean existeOtroAdministrador = false;
-        int contadorAdministradores = 0;
         try {
-            ArrayList<Usuario> usuarios = new UsuarioDAO().obtenerUsuarios();
-            for (Usuario user : usuarios) {
-                if (user.getEsAdministrador() && user.getIdEstadoUsuario() == 1) {
-                    contadorAdministradores++;
-                }
-                if (contadorAdministradores > 1) {
-                    existeOtroAdministrador = true;
-                    return existeOtroAdministrador;
-                }
+            int numeroAdministradores = new UsuarioDAO().consultarNumeroAdministradores();
+            if (numeroAdministradores > 1) {
+                existeOtroAdministrador = true;
+                return existeOtroAdministrador;
             }
         } catch (DAOException ex) {
             manejarDAOException(ex);

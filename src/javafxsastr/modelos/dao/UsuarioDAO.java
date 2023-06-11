@@ -13,39 +13,38 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import javafxsastr.modelos.ConexionBD;
-import javafxsastr.modelos.pojo.Estudiante;
 import javafxsastr.modelos.pojo.Usuario;
 import javafxsastr.utils.Codigos;
 
 public class UsuarioDAO {
     
     private final String OBTENER_USUARIO_POR_ID = "SELECT " +
-        "idUsuario, nombreUsuario, primerApellidoUsuario, segundoApellidoUsuario, correoInstitucionalUsuario, " +
-        "correoAlternoUsuario, contraseñaUsuario, esAdministrador, usuarios.idEstadoUsuario, estados_usuario.nombreEstadoUsuario " +
-        "FROM sastr.usuarios " +
-        "INNER JOIN sastr.estados_usuario on usuarios.idEstadoUsuario = estados_usuario.idEstadoUsuario " +
-        "WHERE idUsuario = ?;";
+            "idUsuario, nombreUsuario, primerApellidoUsuario, segundoApellidoUsuario, correoInstitucionalUsuario, " +
+            "correoAlternoUsuario, contraseñaUsuario, esAdministrador, usuarios.idEstadoUsuario, estados_usuario.nombreEstadoUsuario " +
+            "FROM sastr.usuarios " +
+            "INNER JOIN sastr.estados_usuario on usuarios.idEstadoUsuario = estados_usuario.idEstadoUsuario " +
+            "WHERE idUsuario = ?;";
     private final String OBTENER_USUARIO = "SELECT " +
-        "idUsuario, nombreUsuario, primerApellidoUsuario, segundoApellidoUsuario, correoInstitucionalUsuario, " +
-        "correoAlternoUsuario, contraseñaUsuario, esAdministrador, usuarios.idEstadoUsuario, estados_usuario.nombreEstadoUsuario " +
-        "FROM sastr.usuarios " +
-        "inner JOIN sastr.estados_usuario on usuarios.idEstadoUsuario = estados_usuario.idEstadoUsuario " +
-        "WHERE correoInstitucionalUsuario = ? AND contraseñaUsuario = ?;";
+            "idUsuario, nombreUsuario, primerApellidoUsuario, segundoApellidoUsuario, correoInstitucionalUsuario, " +
+            "correoAlternoUsuario, contraseñaUsuario, esAdministrador, usuarios.idEstadoUsuario, estados_usuario.nombreEstadoUsuario " +
+            "FROM sastr.usuarios " +
+            "inner JOIN sastr.estados_usuario on usuarios.idEstadoUsuario = estados_usuario.idEstadoUsuario " +
+            "WHERE correoInstitucionalUsuario = ? AND contraseñaUsuario = ?;";
     private final String OBTENER_USUARIOS = "SELECT " +
-        "idUsuario, nombreUsuario, primerApellidoUsuario, segundoApellidoUsuario, correoInstitucionalUsuario, " +
-        "correoAlternoUsuario, contraseñaUsuario, esAdministrador, usuarios.idEstadoUsuario, estados_usuario.nombreEstadoUsuario " +
-        "FROM sastr.usuarios " +
-        "inner JOIN sastr.estados_usuario on usuarios.idEstadoUsuario = estados_usuario.idEstadoUsuario";
+            "idUsuario, nombreUsuario, primerApellidoUsuario, segundoApellidoUsuario, correoInstitucionalUsuario, " +
+            "correoAlternoUsuario, contraseñaUsuario, esAdministrador, usuarios.idEstadoUsuario, estados_usuario.nombreEstadoUsuario " +
+            "FROM sastr.usuarios " +
+            "inner JOIN sastr.estados_usuario on usuarios.idEstadoUsuario = estados_usuario.idEstadoUsuario";
     private final String OBTENER_USUARIOS_POR_ESTADO = "SELECT" +
-        "idUsuario, nombreUsuario, primerApellidoUsuario, segundoApellidoUsuario, correoInstitucionalUsuario, " +
-        "correoAlternoUsuario, contraseñaUsuario, esAdministrador, usuarios.idEstadoUsuario, estados_usuario.nombreEstadoUsuario " + 
-        "FROM sastr.usuarios " +
-        "inner JOIN sastr.estados_usuario on usuarios.idEstadoUsuario = estados_usuario.idEstadoUsuario " +
-        "WHERE usuarios.idEstadoUsuario = ?;";
-    private final String GUARDAR_USUARIO = "insert into usuarios "
-            + "(nombreUsuario, primerApellidoUsuario, segundoApellidoUsuario, correoInstitucionalUsuario, "
-            + "correoAlternoUsuario, contraseñaUsuario, esAdministrador, idEstadoUsuario) "
-            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+            "idUsuario, nombreUsuario, primerApellidoUsuario, segundoApellidoUsuario, correoInstitucionalUsuario, " +
+            "correoAlternoUsuario, contraseñaUsuario, esAdministrador, usuarios.idEstadoUsuario, estados_usuario.nombreEstadoUsuario " + 
+            "FROM sastr.usuarios " +
+            "inner JOIN sastr.estados_usuario on usuarios.idEstadoUsuario = estados_usuario.idEstadoUsuario " +
+            "WHERE usuarios.idEstadoUsuario = ?;";
+    private final String GUARDAR_USUARIO = "insert into usuarios " +
+            "(nombreUsuario, primerApellidoUsuario, segundoApellidoUsuario, correoInstitucionalUsuario, " +
+            "correoAlternoUsuario, contraseñaUsuario, esAdministrador, idEstadoUsuario) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?);"; 
     private final String ACTUALIZAR_USUARIO = "UPDATE usuarios SET "+
             "nombreUsuario = ?, primerApellidoUsuario = ?, segundoApellidoUsuario = ?, correoInstitucionalUsuario = ?, "+ 
             "correoAlternoUsuario = ?, contraseñaUsuario = ?, esAdministrador = ?, idEstadoUsuario = ? "+
@@ -57,6 +56,8 @@ public class UsuarioDAO {
     private final String CONSULTAR_USUARIO_ACADEMICO_INEXISTENTES = "SELECT u.idUsuario, u.nombreUsuario FROM usuarios u " +
             "INNER JOIN academicos a ON u.idUsuario = a.idUsuario " +
             "WHERE u.correoInstitucionalUsuario = ? OR a.numeroPersonalAcademico = ?;";
+    private final String CONSULTAR_NUMERO_ADMINISTRADORES = "SELECT COUNT(*) AS numeroAdministradores " +
+            "FROM usuarios WHERE esAdministrador = 1 AND idEstadoUsuario = 1;";
            
     public Usuario obtenerUsuarioPorId(int idUsuario) throws DAOException {
         Usuario usuario = new Usuario();
@@ -203,7 +204,6 @@ public class UsuarioDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
             throw new DAOException("Lo sentimos, hubo un problema al consultar la informacion del usuario.", Codigos.ERROR_CONSULTA);
         }
         return esExistente;
@@ -230,7 +230,6 @@ public class UsuarioDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
             throw new DAOException("Lo sentimos, hubo un problema al registrar el usuario.", Codigos.ERROR_CONSULTA);
         }
         return respuesta;
@@ -253,7 +252,6 @@ public class UsuarioDAO {
             respuesta = (filasAfectadas == 1) ? usuario.getIdUsuario() : -1;
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
             throw new DAOException("Lo sentimos, hubo un problema al actualizar el usuario", Codigos.ERROR_CONSULTA);
         }
         return respuesta;
@@ -272,5 +270,21 @@ public class UsuarioDAO {
         }
         return respuesta;
     }
+    
+    public int consultarNumeroAdministradores() throws DAOException{
+        int numeroAdministradores = 0;
+        try {
+            PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(CONSULTAR_NUMERO_ADMINISTRADORES);
+            ResultSet resultado = sentencia.executeQuery();
+            if (resultado.next()) {
+                numeroAdministradores = resultado.getInt("numeroAdministradores");
+            }
+            ConexionBD.cerrarConexionBD();
+        } catch (SQLException ex) {
+            throw new DAOException("Lo sentimos, hubo un problema al consultar el numero de administradores activos.",
+                    Codigos.ERROR_CONSULTA);
+        }
+        return numeroAdministradores;
+    }
+    
 }
-

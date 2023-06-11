@@ -97,16 +97,17 @@ public class FXMLVerUsuarioController implements Initializable {
             boolean respuesta = Utilidades.mostrarDialogoConfirmacion
                 ("Desactivar usuario", "¿Estás seguro de que deseas desactivar al usuario?");
             if (respuesta) {
-                if (validarExistenciaOtroAdministrador()) {
+                if (usuarioVisualizacion.getEsAdministrador() && !validarExistenciaOtroAdministrador()) {
+                    Utilidades.mostrarDialogoSimple("Operación no posible", 
+                                    "No puedes dejar al sistema sin un administrador. "
+                                    + "Asegúrate de que exista otro administrador en el sistema.", Alert.AlertType.WARNING);
+                } else {
                     usuarioVisualizacion.setIdEstadoUsuario(2);
                     actualizarUsuario(usuarioVisualizacion);
                     Utilidades.mostrarDialogoSimple("Usuario desactivado", 
                             "El usuario se ha desactivado correctamente", Alert.AlertType.INFORMATION);
                     clicBtnDesativar.setText("Activar");
-                } else {
-                    Utilidades.mostrarDialogoSimple("Operación no posible", 
-                                    "No puedes dejar al sistema sin un administrador. "
-                                    + "Asegúrate de que exista otro administrador en el sistema.", Alert.AlertType.WARNING);
+                    
                 }
             }
         } else {
@@ -124,17 +125,11 @@ public class FXMLVerUsuarioController implements Initializable {
     
     private boolean validarExistenciaOtroAdministrador() {
         boolean existeOtroAdministrador = false;
-        int contadorAdministradores = 0;
         try {
-            ArrayList<Usuario> usuarios = new UsuarioDAO().obtenerUsuarios();
-            for (Usuario user : usuarios) {
-                if (user.getEsAdministrador() && user.getIdEstadoUsuario() == 1) {
-                    contadorAdministradores++;
-                }
-                if (contadorAdministradores > 1) {
-                    existeOtroAdministrador = true;
-                    return existeOtroAdministrador;
-                }
+            int numeroAdministradores = new UsuarioDAO().consultarNumeroAdministradores();
+            if (numeroAdministradores > 1) {
+                existeOtroAdministrador = true;
+                return existeOtroAdministrador;
             }
         } catch (DAOException ex) {
             manejarDAOException(ex);
