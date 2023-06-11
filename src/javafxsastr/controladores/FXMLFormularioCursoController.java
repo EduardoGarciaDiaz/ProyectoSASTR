@@ -347,25 +347,21 @@ public class FXMLFormularioCursoController implements Initializable {
     }
     
     private boolean validarFechas() {
-    boolean fechasValidas = true;
-    if (periodoActual != null) {
-        LocalDate fechaFinPeriodoEscolar = LocalDate.parse(periodoActual.getFechaFinPeriodoEscolar());
-        LocalDate fechaInicioPeriodoEscolar = LocalDate.parse(periodoActual.getFechaInicioPeriodoEscolar());
-        LocalDate fechaInicioClases = dpFechaInicioClases.getValue();
-        LocalDate fechaFinClases = dpFechaFinClases.getValue();
-        if (fechaInicioClases.isBefore(fechaInicioPeriodoEscolar) 
-                || fechaInicioClases.isAfter(fechaFinClases)
-                || fechaInicioClases.isAfter(fechaFinPeriodoEscolar)) {
-            fechasValidas = false;
+        boolean fechasValidas = true;
+        if (periodoActual != null) {
+            LocalDate fechaFinPeriodoEscolar = LocalDate.parse(periodoActual.getFechaFinPeriodoEscolar());
+            LocalDate fechaInicioPeriodoEscolar = LocalDate.parse(periodoActual.getFechaInicioPeriodoEscolar());
+            LocalDate fechaInicioClases = dpFechaInicioClases.getValue();
+            LocalDate fechaFinClases = dpFechaFinClases.getValue();
+            if (fechaInicioClases.isBefore(fechaInicioPeriodoEscolar) || fechaInicioClases.isAfter(fechaFinClases)) {
+                fechasValidas = false;
+            }
+            if (fechaFinClases.isBefore(fechaInicioClases) || fechaFinClases.isAfter(fechaFinPeriodoEscolar)) {
+                fechasValidas = false;
+            }
         }
-        if (fechaFinClases.isBefore(fechaInicioClases) 
-                || fechaFinClases.isAfter(fechaFinPeriodoEscolar)
-                || fechaFinClases.isBefore(fechaInicioPeriodoEscolar)) {
-            fechasValidas = false;
-        }
+        return fechasValidas;
     }
-    return fechasValidas;
-}
     
     private Curso crearCursoValido() {
         Curso curso = new Curso();
