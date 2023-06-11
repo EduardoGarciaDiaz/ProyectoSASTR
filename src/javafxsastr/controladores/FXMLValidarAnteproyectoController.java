@@ -308,6 +308,7 @@ public class FXMLValidarAnteproyectoController implements Initializable {
     }
     
     private void mostrarCodirectores(ArrayList<Academico> codirectores) {
+        vbxCodirectores.getChildren().clear();
         for(Academico codirector : codirectores) {
             configurarCodirectores(codirector);
         }

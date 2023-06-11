@@ -136,7 +136,6 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
     @FXML
     private Button btnCancelarAsignacionEstudiante;
     
-     private final int ANTEPROYECTO_APROBADO = 3;
     private final int ANTEPROYECTO_PUBLICADO = 4;
     private final int ANTEPROYECTO_EN_DESARROLLO = 5;
     private int numeroMaximoEstudiantes;
@@ -225,8 +224,7 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
             esDirector = false;
         } else {
             if(academico.getIdAcademico() == anteproyecto.getIdAcademico()
-                    && (anteproyecto.getIdEstadoSeguimiento() == ANTEPROYECTO_APROBADO || 
-                    anteproyecto.getIdEstadoSeguimiento() == ANTEPROYECTO_EN_DESARROLLO ||
+                    && (anteproyecto.getIdEstadoSeguimiento() == ANTEPROYECTO_EN_DESARROLLO ||
                     anteproyecto.getIdEstadoSeguimiento() == ANTEPROYECTO_PUBLICADO)) {
                 validarAsignarPrimerEstudiante();
                 validarAsignarOtroEstudiante();

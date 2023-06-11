@@ -72,14 +72,14 @@ public class FXMLAnteproyectosController implements Initializable, INotificacion
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    }
+    } 
     
     public void setInvitado(CodigosVentanas codigoVentana) {
         this.ventanaOrigen = codigoVentana;
         esInvitado=true;
         recuperarAnteproyectosPublicados();
         cargarTarjetasAnteproyectos(anteproyectos);
-        pnBotonCrearAnteproyecto.setVisible(false);
+        pnBotonCrearAnteproyecto.setVisible(false);        
     }
     
     public void setAcademico(Academico academico, boolean esRCA,CodigosVentanas codigoVentana) {        
@@ -142,7 +142,7 @@ public class FXMLAnteproyectosController implements Initializable, INotificacion
     
     public void cargarTarjetasAnteproyectos(ObservableList<Anteproyecto> anteproyectosCarga) {
         for (Anteproyecto anteproyecto : anteproyectosCarga) {
-            TarjetaAnteproyecto tarjeta = new TarjetaAnteproyecto(anteproyecto, this);            
+            TarjetaAnteproyecto tarjeta = new TarjetaAnteproyecto(anteproyecto, this, esRCA);            
             contenedorTarjetasAnteproyectos.getChildren().add(tarjeta);
         }
     }

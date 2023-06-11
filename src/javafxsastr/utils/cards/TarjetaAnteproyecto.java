@@ -16,6 +16,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafxsastr.controladores.FXMLAnteproyectosController;
 import javafxsastr.interfaces.INotificacionClicBotonAnteproyectos;
 import javafxsastr.modelos.dao.DAOException;
 import javafxsastr.modelos.dao.EstudianteDAO;
@@ -23,7 +24,7 @@ import javafxsastr.modelos.pojo.Anteproyecto;
 import javafxsastr.modelos.pojo.Estudiante;
 
 public class TarjetaAnteproyecto extends Pane {
-    
+    private boolean esRCA;
     private Label lbNombreTrabajoRecepcional;
     private Label lbNombreDirector;
     private Label lbEstudiantes;
@@ -35,7 +36,8 @@ public class TarjetaAnteproyecto extends Pane {
     private Font fuenteTitulos = Font.font("System", FontWeight.BOLD, 20);
     private INotificacionClicBotonAnteproyectos interfaz;
     
-    public TarjetaAnteproyecto(Anteproyecto anteproyecto, INotificacionClicBotonAnteproyectos interfaz) {
+    public TarjetaAnteproyecto(Anteproyecto anteproyecto, INotificacionClicBotonAnteproyectos interfaz, boolean esRca) {
+        this.esRCA = esRca;
         this.anteproyecto = anteproyecto;
         this.interfaz = interfaz;
         inicializarElementos();
@@ -126,6 +128,7 @@ public class TarjetaAnteproyecto extends Pane {
     }
     
     private void configurarBotonAccion() {
+        
         btnAccion.setStyle("-fx-background-color: #C4DAEF; -fx-background-radius: 15;");
         btnAccion.setLayoutX(1250);
         btnAccion.setLayoutY(179);
@@ -148,13 +151,17 @@ public class TarjetaAnteproyecto extends Pane {
            });
        } else if ("Validado".equals(anteproyecto.getEstadoSeguimiento())) {
            btnAccion.setText("Ver detalles de anteproyecto");
-           agregarBotonPublicar();
-           btnAccion.setOnAction((event) -> {
-               interfaz.notificarClicBotonVerDetallesAnteproyecto(anteproyecto);
-           });
+            if(esRCA) {
+                agregarBotonPublicar();
+            }
+            btnAccion.setOnAction((event) -> { 
+                interfaz.notificarClicBotonVerDetallesAnteproyecto(anteproyecto);
+            });        
         } else if ("Publicado".equals(anteproyecto.getEstadoSeguimiento())) {
-           btnAccion.setText("Ver detalles de anteproyecto");
-           agregarBotonDespublicar();
+           btnAccion.setText("Ver detalles de anteproyecto");          
+           if(esRCA) {
+                agregarBotonDespublicar();
+           }
            btnAccion.setOnAction((event) -> {
                interfaz.notificarClicBotonVerDetallesAnteproyecto(anteproyecto);
            });
