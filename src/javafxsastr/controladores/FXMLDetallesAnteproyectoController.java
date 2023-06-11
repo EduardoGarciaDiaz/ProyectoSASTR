@@ -138,8 +138,8 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
     @FXML
     private Button btnCancelarAsignacionEstudiante;
     
-    private ConsultarAvanceEstudianteSingleton consultarAvanceEstudiante
-           = ConsultarAvanceEstudianteSingleton.obtenerConsultarAvanceEstudiante(null, null, null, null);
+    private ConsultarAvanceEstudianteSingleton consultarAvanceEstudiante = ConsultarAvanceEstudianteSingleton.
+            obtenerConsultarAvanceEstudiante(null, null, null, null);
     private final int ANTEPROYECTO_APROBADO = 3;
     private final int ANTEPROYECTO_PUBLICADO = 4;
     private final int ANTEPROYECTO_EN_DESARROLLO = 5;
@@ -161,21 +161,9 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
     private Curso cursoAvanceEstudiante;
  
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        
+    public void initialize(URL url, ResourceBundle rb) {  
     }
-    /*
-    public void setAnteproyectoAcademico(Anteproyecto anteproyecto, Academico academico) {      
-        System.out.println("SE cambió, ahora es un SET separado para cada Objeto");
-        //this.anteproyecto = anteproyecto;
-        //this.academico = academico;
-        //numeroMaximoEstudiantes = anteproyecto.getNumeroMaximoAlumnosParticipantes();
-        //obtenerEstudiantes();                
-        //mostrarDatosAnteproyecto();
-        //obtenerInformacionAvance();
-        //mostrarDesasignaciones();
-    }
-    */
+
     public void setAcademico(Academico academico, CodigosVentanas origen) {
         this.academico = academico;
         this.ventanaOrigen = origen;
@@ -208,7 +196,7 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
         numeroMaximoEstudiantes = anteproyecto.getNumeroMaximoAlumnosParticipantes(); 
         obtenerEstudiantes(); 
         mostrarDatosAnteproyecto();
-        if(!esInvitado) {
+        if (!esInvitado) {
             obtenerInformacionAvance();
             mostrarDesasignaciones();
         }        
@@ -241,7 +229,7 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
             btnAsignarOtroEstudiante.setVisible(false);
             esDirector = false;
         } else {
-            if(academico.getIdAcademico() == anteproyecto.getIdAcademico()
+            if (academico.getIdAcademico() == anteproyecto.getIdAcademico()
                     && (anteproyecto.getIdEstadoSeguimiento() == ANTEPROYECTO_APROBADO || 
                     anteproyecto.getIdEstadoSeguimiento() == ANTEPROYECTO_EN_DESARROLLO ||
                     anteproyecto.getIdEstadoSeguimiento() == ANTEPROYECTO_PUBLICADO)) {
@@ -259,7 +247,7 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
         if (estudiantesParticipantes.size() < NUMERO_MINIMO_ESTUDIANTES) {            
             configurarAgregarPrimerEstudiante();
             estadoSeguimiento = "Publicado";
-        }else {
+        } else {
             estadoSeguimiento = "En desarrollo";
         }
         cambiarEstadoAnteproyecto(estadoSeguimiento ); 
@@ -346,13 +334,13 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
     
     private void mostrarEstudiantes(ArrayList<Estudiante> estudiantesParticipantes) {
         vbxAlumnosParticipantes.setSpacing(10);        
-        for(Estudiante e : estudiantesParticipantes) {
+        for (Estudiante e : estudiantesParticipantes) {
             configurarEstudianteParticipante(e, false);
         }
     }
     
     private void mostrarCodirectores(ArrayList<Academico> codirectores) {
-        for(Academico codirector : codirectores) {
+        for (Academico codirector : codirectores) {
             configurarCodirectores(codirector);
         }
     }
@@ -413,7 +401,7 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
         } catch (DAOException ex) {
             manejarDAOException(ex);
         }
-            return actividades;
+        return actividades;
     }
     
     private void mostrarDesasignaciones() {
@@ -595,7 +583,7 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
                 irAVistaAvanceEstudiante(estudiante, ventanaOrigenAvanceEstudiante, cursoAvanceEstudiante);
                 break;
             default:
-                
+                System.out.println("Ventana de regreso no encontrada");
         }
     }
     
@@ -716,6 +704,7 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
             case ERROR_CONEXION_BD:
                 Utilidades.mostrarDialogoSimple("Error de conexion", 
                         "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
+                break;
             default:
                 throw new AssertionError();
         }
@@ -751,7 +740,5 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
         validarAsignarPrimerEstudiante();
         validarAsignarOtroEstudiante();
     }
-    
-    
     
 }
