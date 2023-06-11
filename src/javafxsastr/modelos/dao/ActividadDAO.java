@@ -67,13 +67,13 @@ public class ActividadDAO {
             "FROM actividades a " +
             "INNER JOIN anteproyectos ante ON a.idAnteproyecto= ante.idAnteproyecto " +
             "INNER JOIN estados_actividad ea ON a.idEstadoActividad = ea.idEstadoActividad " +
-            "WHERE ante.idAnteproyecto = ? AND a.idEstadoActividad = 1;	";
+            "WHERE ante.idAnteproyecto = ? AND a.idEstadoActividad = 2;	";
     private final String OBTENER_NUMERO_ACTIVIDADES_NO_COMPLETADAS_ANTEPROYECTO = "SELECT COUNT(a.idActividad) AS numeroActividades "
             +
             "FROM actividades a " +
             "INNER JOIN anteproyectos ante ON a.idAnteproyecto= ante.idAnteproyecto " +
             "INNER JOIN estados_actividad ea ON a.idEstadoActividad = ea.idEstadoActividad " +
-            "WHERE ante.idAnteproyecto = ? AND a.idEstadoActividad = 2;	";
+            "WHERE ante.idAnteproyecto = ? AND a.idEstadoActividad = 3;	";
 
     public ArrayList<Actividad> obtenerActividades() throws DAOException {
         ArrayList<Actividad> actividades = new ArrayList<>();

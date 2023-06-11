@@ -128,13 +128,13 @@ public class FXMLActividadesController implements Initializable {
             });
             tarjeta.getCheckBox().setOnAction((event) -> {
                 if (actividad.getEstadoActividad().equals("Proxima")) {
-                    boolean marcarComoCompletada 
-                            = Utilidades.mostrarDialogoConfirmacion("Marcar actividad como completada",
+                    boolean marcarComoCompletada = Utilidades.mostrarDialogoConfirmacion("Marcar actividad como completada",
                                 "¿Estás seguro de que deseas marcar la actividad como completada?");
                     if (marcarComoCompletada) {
                         try {
                             actividad.setIdEstadoActividad(2);
                             new ActividadDAO().actualizarActividad(actividad);
+                            obtenerDatosRelacionadoAlEstudiante();
                         } catch (DAOException ex) {
                             manejarDAOException(ex);
                         }
