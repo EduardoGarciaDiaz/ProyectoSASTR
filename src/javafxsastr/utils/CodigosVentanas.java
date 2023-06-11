@@ -20,7 +20,8 @@ public enum CodigosVentanas {
     VALIDAR_ANTEPROYECTOS("18"),
     MI_ANTEPROYECTO("19"),
     INICIO("20"),
-    INICIO_SESION("21");
+    INICIO_SESION("21"),
+    ENTREGAS_ACTIVIDAD_DIRECTOR("22");
     
     private final String codigo;
 

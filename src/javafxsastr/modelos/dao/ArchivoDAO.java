@@ -26,7 +26,7 @@ public class ArchivoDAO {
     private static final String REGISTRAR_ARCHIVO = "Insert into archivos(nombreArchivo, archivo, esEntrega, idEntrega) Values (?,?,?,?)";
     private static final String ACTUALIZAR_ARCHIVO = "Update archivos set nombreArchivo = ?, archivo = ?, esEntrega = ?, idEntrega = ? " +
                                             " where idArchivo = ?";
-    private static final String ELIMINAR_ARCHIVO = "Delete from archivos where idArchivo = ?";
+    private static final String ELIMINAR_ARCHIVO = "Delete from archivos where idEntrega = ? AND esEntrega = 0";
     private static final String CONSULTAR_ARCHIVOS_POR_ENTREGA = "Select idArchivo, nombreArchivo, archivo, esEntrega, archivos.idEntrega " +
                                             "From archivos "+
                                             "Inner Join entregas On archivos.idEntrega = entregas.idEntrega "+

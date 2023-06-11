@@ -75,13 +75,9 @@ public class FXMLConsultarAvanceEstudianteController implements Initializable {
     private ImageView clicBtnRegresar;
     @FXML
     private Button btnVerDetallesAnteproyecto;
-    
-    /**
-     * Initializes the controller class.
-     */
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
     }    
     
     public void setEstudianteAcademico(Estudiante estudiante, Academico academico, CodigosVentanas origen) {
@@ -122,7 +118,7 @@ public class FXMLConsultarAvanceEstudianteController implements Initializable {
             System.out.println(actividad.getNombreActividad());
             TarjetaActividad tarjeta = new TarjetaActividad(actividad);
             tarjeta.getBotonVerDetalles().setOnAction((event) -> {
-                iraVentanaEntregasActividad(actividad.getIdActividad());
+                irAVistaConsultarEntregasActividad(actividad);
             });
             vbxContenedorTarjetasActividades.getChildren().add(tarjeta);
         }
@@ -230,6 +226,24 @@ public class FXMLConsultarAvanceEstudianteController implements Initializable {
             Stage escenario = (Stage) lbActividadesCompletadas.getScene().getWindow();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Avances de estudiantes");
+            escenario.show();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    private void irAVistaConsultarEntregasActividad(Actividad actividad) {
+        try {
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLConsultarEntregasActividad.fxml"));
+            Parent vista = accesoControlador.load();
+            FXMLConsultarEntregasActividadController controladorVistaEntregasActividades = accesoControlador.getController();
+            controladorVistaEntregasActividades.setAcademico(academicoAuxiliar);
+            controladorVistaEntregasActividades.setActividad(actividad);
+            controladorVistaEntregasActividades.setEstudiante(estudiante);
+            controladorVistaEntregasActividades.setCurso(cursoAuxiliar);
+            Stage escenario = (Stage) lbActividadesCompletadas.getScene().getWindow();
+            escenario.setScene(new Scene(vista));
+            escenario.setTitle("Entregas de la actividad");
             escenario.show();
         } catch (IOException ex) {
             ex.printStackTrace();
