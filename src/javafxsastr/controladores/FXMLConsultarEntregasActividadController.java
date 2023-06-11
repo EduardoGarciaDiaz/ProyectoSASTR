@@ -6,6 +6,7 @@
 
 package javafxsastr.controladores;
 
+import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -22,20 +23,29 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafxsastr.JavaFXSASTR;
 import javafxsastr.modelos.dao.ActividadDAO;
 import javafxsastr.modelos.dao.DAOException;
 import javafxsastr.modelos.dao.EntregaDAO;
 import javafxsastr.modelos.dao.HistorialCambiosDAO;
+import javafxsastr.modelos.pojo.Academico;
 import javafxsastr.modelos.pojo.Actividad;
+import javafxsastr.modelos.pojo.Curso;
 import javafxsastr.modelos.pojo.Entrega;
+import javafxsastr.modelos.pojo.Estudiante;
 import javafxsastr.modelos.pojo.HistorialCambios;
+import javafxsastr.utils.CodigosVentanas;
 import javafxsastr.utils.Utilidades;
 import javafxsastr.utils.cards.TarjetaCambioActividad;
 import javafxsastr.utils.cards.TarjetaEntregasActividad;
@@ -61,8 +71,10 @@ public class FXMLConsultarEntregasActividadController implements Initializable {
     @FXML
     private Button btnFecha;
     
+    private Academico academico;
     private Actividad actividad;
-    private int idActividad;   
+    private Curso curso;
+    private Estudiante estudiante;
     private ObservableList<Entrega> entregas;
     private boolean esBtnFechaPresionado = true;
     private final DateTimeFormatter FORMATO_FECHA_COMPLETA = DateTimeFormatter.ofPattern("EEEE dd 'de' MMMM 'de' yyyy",
@@ -74,17 +86,25 @@ public class FXMLConsultarEntregasActividadController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+    }
+    
+    public void setAcademico(Academico academico) {
+        this.academico = academico;
+    }
+    
+    public void setActividad(Actividad actividad) {
+        this.actividad = actividad;
         mostrarInformacionActividad();
         obtenerListaEntregas();
         obtenerListaCambios();
     }
     
-    public void setActividad(Actividad actividad) {
-       this.actividad = actividad;
+    public void setEstudiante(Estudiante estudiante) {
+        this.estudiante = estudiante;
     }
     
-    public void setIdActividad(int idActividad) {
-        this.idActividad = idActividad;
+    public void setCurso(Curso curso) {
+        this.curso = curso;
     }
     
     public void mostrarInformacionActividad() {
@@ -140,11 +160,15 @@ public class FXMLConsultarEntregasActividadController implements Initializable {
             if ("null".equals(fechaRevision)) {
                 fechaRevision = "";
             }
-            vbxCardsEntregas.getChildren().add(new TarjetaEntregasActividad(numeroEntrega,fechaEntregaFormateada,
-                    horaEntrega,fechaRevision));
+            Entrega entrega = entregas.get(i);
+            TarjetaEntregasActividad tarjetaEntregaActividad = new TarjetaEntregasActividad(numeroEntrega,fechaEntregaFormateada,
+                    horaEntrega, fechaRevision);
+            tarjetaEntregaActividad.getBotonRevisar().setOnAction((event) -> {
+                irAVistaRevisarEntrega(entrega);
+            });
+            vbxCardsEntregas.getChildren().add(tarjetaEntregaActividad);
         }
     }
-    
     
     private void obtenerListaCambios() {
         try {
@@ -169,8 +193,7 @@ public class FXMLConsultarEntregasActividadController implements Initializable {
     
     @FXML
     private void clicRegresar(MouseEvent event) {
-        Stage escenerioBase = (Stage) lbNombreActividad.getScene().getWindow();
-        escenerioBase.close();
+        irAVistaAvanceEstudiante();
     }
 
     @FXML
@@ -201,6 +224,38 @@ public class FXMLConsultarEntregasActividadController implements Initializable {
         mostrarEntregas(new SortedList<>(FXCollections.observableList(listaOrdenada), fechaComparator.reversed()), true);
         }
     }    
+    
+    private void irAVistaAvanceEstudiante() {
+        try {
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLConsultarAvanceEstudiante.fxml"));
+            Parent vista = accesoControlador.load();
+            FXMLConsultarAvanceEstudianteController controladorVistaAvanceEstudiante = accesoControlador.getController();
+            controladorVistaAvanceEstudiante.setEstudianteAcademico(estudiante, academico, CodigosVentanas.ENTREGAS_ACTIVIDAD_DIRECTOR);
+            controladorVistaAvanceEstudiante.setCurso(curso);
+            Stage escenario = (Stage) lbDetallesActividad.getScene().getWindow();
+            escenario.setScene(new Scene(vista));
+            escenario.setTitle("Entregas de la actividad");
+            escenario.show();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    private void irAVistaRevisarEntrega(Entrega entrega) {
+        try {
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLRevisarEntrega.fxml"));
+            Parent vista = accesoControlador.load();
+            FXMLRevisarEntregaController controladorVistaRevisarEntrega = accesoControlador.getController();
+            controladorVistaRevisarEntrega.inicializarContenidoEntrega(entrega, academico, actividad, estudiante);
+            controladorVistaRevisarEntrega.setCurso(curso);
+            Stage escenario = (Stage) lbDetallesActividad.getScene().getWindow();
+            escenario.setScene(new Scene(vista));
+            escenario.setTitle("Entregas de la actividad");
+            escenario.show();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
     
     private void manejarDAOException(DAOException ex) {
         switch (ex.getCodigo()) {

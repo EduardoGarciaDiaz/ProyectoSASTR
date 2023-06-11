@@ -20,7 +20,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -34,19 +37,20 @@ import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafxsastr.JavaFXSASTR;
 import javafxsastr.modelos.dao.ArchivoDAO;
 import javafxsastr.modelos.dao.DAOException;
 import javafxsastr.modelos.dao.EntregaDAO;
 import javafxsastr.modelos.pojo.Academico;
+import javafxsastr.modelos.pojo.Actividad;
 import javafxsastr.modelos.pojo.Archivo;
+import javafxsastr.modelos.pojo.Curso;
 import javafxsastr.modelos.pojo.Entrega;
+import javafxsastr.modelos.pojo.Estudiante;
 import javafxsastr.utils.Utilidades;
 
 public class FXMLRevisarEntregaController implements Initializable {
 
-    private Entrega entrega;
-    private ObservableList<Archivo> archivosEntrega;
-    private Academico academico;
     @FXML
     private Label lbNumeroAvance;
     @FXML
@@ -66,33 +70,47 @@ public class FXMLRevisarEntregaController implements Initializable {
     private ObservableList<Archivo> archivosRevision = FXCollections.observableArrayList();
     @FXML
     private Button btnEnviarRevision;
+    
+    private Entrega entrega;
+    private ObservableList<Archivo> archivosEntrega;
+    private Academico academico;
+    private Actividad actividad;
+    private Estudiante estudiante;
+    private Curso curso;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        agregarListenerCampoComentarios();
     }    
 
-    public void inicializarContenidoEntrega(Entrega entrega, Academico academico, String nombreActividad) {
-        this.academico = academico;
+    public void inicializarContenidoEntrega(Entrega entrega, Academico academico, Actividad actividad, Estudiante estudiante) {
+        agregarListenerCampoComentarios();
         this.entrega = entrega;
+        this.academico = academico;
+        this.actividad = actividad;
+        this.estudiante = estudiante;
         if (entrega != null) {
-            setDatosEntrega(nombreActividad);
+            setDatosEntrega(actividad);
             obtenerArchivos();
             cargarArchivos();
             btnEnviarRevision.setDisable(true);
         }
     }
     
-    public void setDatosEntrega(String nombreActividad){
+    public void setCurso(Curso curso) {
+        this.curso = curso;
+    }
+        
+    private void setDatosEntrega(Actividad actividad){
         lbFechaRecibido.setText(entrega.getFechaEntrega());
         lbHoraRecibido.setText(entrega.getHoraEntrega());
         txaComentariosEstudiante.setText(entrega.getComentarioAlumno());
-        lbNombreActividad.setText(nombreActividad);
+        lbNombreActividad.setText(actividad.getNombreActividad());
         if (entrega.getComentarioDirector() != null) {
             txaComentariosDirector.setText(entrega.getComentarioDirector());
         }
     }
     
-    public void obtenerArchivos(){
+    private void obtenerArchivos(){
         try {
             archivosEntrega = FXCollections.observableArrayList(
                 new ArchivoDAO().consultarArchivosPorEntrega(entrega.getIdEntrega()));
@@ -101,7 +119,8 @@ public class FXMLRevisarEntregaController implements Initializable {
         }
     }
     
-    public void cargarArchivos() {
+    private void cargarArchivos() {
+        hbxContenedorArchivosRevision.getChildren().clear();
         for (Archivo archivo : archivosEntrega) {
             if (!archivo.getEsEntrega()) {
                 archivosRevision.add(archivo);
@@ -110,7 +129,7 @@ public class FXMLRevisarEntregaController implements Initializable {
         }
     }
     
-    public void configurarBotonArchivo(Archivo archivo) {
+    private void configurarBotonArchivo(Archivo archivo) {
         Pane contenedorArchivo = new Pane();
         contenedorArchivo.setPrefSize(200, 20);
         contenedorArchivo.setStyle("-fx-background-color: #2E718D; -fx-background-radius: 15");
@@ -146,6 +165,7 @@ public class FXMLRevisarEntregaController implements Initializable {
             imgIconoEliminar.setLayoutY(5);
             contenedorArchivo.setId(String.valueOf(archivo.getIdArchivo()));
             contenedorArchivo.setOnMouseClicked((event) -> {
+                contenedorArchivo.setVisible(false);
                 eliminarArchivo(contenedorArchivo, archivo);
             });
             hbxContenedorArchivosRevision.getChildren().add(contenedorArchivo);
@@ -154,8 +174,12 @@ public class FXMLRevisarEntregaController implements Initializable {
     }
     
     private void eliminarArchivo(Pane contenedorArchivo, Archivo archivo){
+        System.out.println("Archivo a eliminar " + archivo.getNombreArchivo());
         hbxContenedorArchivosRevision.getChildren().remove(contenedorArchivo);
         archivosRevision.remove(archivo);
+        for(Archivo arch : archivosRevision ) {
+            System.out.println("Ar " + arch.getNombreArchivo());
+        }
     }
     
     private void descargarArchivo(Archivo archivo){
@@ -188,6 +212,7 @@ public class FXMLRevisarEntregaController implements Initializable {
     
     @FXML
     private void clicRegresar(MouseEvent event) {
+        irAVistaConsultarEntregasActividad();
     }
 
     @FXML
@@ -220,6 +245,13 @@ public class FXMLRevisarEntregaController implements Initializable {
         Entrega entregaValida = prepararEntregaValida();
         actualizarEntrega(entregaValida);
         guardarArchivosRevision();
+        Utilidades.mostrarDialogoSimple("Revisión enviada", "Revisión enviada correctamente", Alert.AlertType.INFORMATION);
+        irAVistaConsultarEntregasActividad();
+    }
+    
+    @FXML
+    private void activarBtnEnviarRevision(KeyEvent event) {
+        btnEnviarRevision.setDisable(false);
     }
     
     private Entrega prepararEntregaValida() {
@@ -254,6 +286,24 @@ public class FXMLRevisarEntregaController implements Initializable {
         }
     }
     
+    private void irAVistaConsultarEntregasActividad() {
+        try {
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLConsultarEntregasActividad.fxml"));
+            Parent vista = accesoControlador.load();
+            FXMLConsultarEntregasActividadController controladorVistaEntregasActividades = accesoControlador.getController();
+            controladorVistaEntregasActividades.setAcademico(academico);
+            controladorVistaEntregasActividades.setActividad(actividad);
+            controladorVistaEntregasActividades.setEstudiante(estudiante);
+            controladorVistaEntregasActividades.setCurso(curso);
+            Stage escenario = (Stage) lbNombreActividad.getScene().getWindow();
+            escenario.setScene(new Scene(vista));
+            escenario.setTitle("Entregas de la actividad");
+            escenario.show();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
     private void manejarDAOException(DAOException ex) {
         switch (ex.getCodigo()) {
             case ERROR_CONSULTA:
@@ -268,11 +318,5 @@ public class FXMLRevisarEntregaController implements Initializable {
                 throw new AssertionError();
         }
     }
-
-    @FXML
-    private void activarBtnEnviarRevision(KeyEvent event) {
-        btnEnviarRevision.setDisable(false);
-    }
-    
     
 }

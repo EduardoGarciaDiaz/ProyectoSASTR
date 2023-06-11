@@ -26,7 +26,6 @@ public class TarjetaEntregasActividad extends Pane{
     private Label lbFechaEntrega;
     private Label lbHoraEntrega;
     private Label lbFechaRevision;
-    
     private boolean esRevisada = false;
     
     public TarjetaEntregasActividad(int numeroEntrega, String fechaEntrega, String horaEntrega, String fechaRevision) {
@@ -43,6 +42,10 @@ public class TarjetaEntregasActividad extends Pane{
                 lbHoraEntrega, lbFechaRevision);
     }
 
+    public Button getBotonRevisar() {
+        return btnRevisar;
+    }
+            
     private void inicializarElementos() {
         fondoImagen = new Pane();
         lbNumeroEntrega = new Label();
@@ -120,15 +123,6 @@ public class TarjetaEntregasActividad extends Pane{
         btnRevisar.setStyle("-fx-border-color: transparent;"
                 + "-fx-background-radius: 15;"
                 + "-fx-background-color: #C4DAEF");
-        btnRevisar.setOnAction((event) -> {
-            //TODO CAMBIAR ESCENA A LA QUE SE DIRIGE
-            Stage  escenarioBase = new Stage();
-            escenarioBase.setScene(Utilidades.inicializarEscena("vistas/FXMLFormularioUsuario.fxml")); //CAMBIAR A LA RUTA 
-            escenarioBase.setTitle("Entrega del estudiante");
-            escenarioBase.initModality(Modality.APPLICATION_MODAL);
-            escenarioBase.showAndWait();
-            
-        });
     }
     
 }

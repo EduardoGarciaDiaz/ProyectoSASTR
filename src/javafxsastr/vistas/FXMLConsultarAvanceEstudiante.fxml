@@ -202,7 +202,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label fx:id="lbPorcentaje" layoutX="442.0" layoutY="15.0" prefHeight="103.0" prefWidth="160.0">
+            <Label fx:id="lbPorcentaje" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="331.0" layoutY="15.0" prefHeight="103.0" prefWidth="271.0">
                <font>
                   <Font size="60.0" />
                </font>
