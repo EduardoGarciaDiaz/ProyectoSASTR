@@ -8,11 +8,8 @@ package javafxsastr.controladores;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,7 +20,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -109,9 +105,8 @@ public class FXMLActividadesController implements Initializable {
     
     public void obtenerActividadesDelEstudiante() {
         try {
-            ObservableList<Actividad> actividadesRecuperadas
-                    = FXCollections.observableArrayList(
-                        new ActividadDAO().obtenerActividadesPorEstudiante(estudiante.getIdEstudiante()));
+            ObservableList<Actividad> actividadesRecuperadas= FXCollections.observableArrayList(new ActividadDAO()
+                    .obtenerActividadesPorEstudiante(estudiante.getIdEstudiante()));
             for (Actividad actividadRecuperada : actividadesRecuperadas) {
                 verificarSiEsNoCompletada(actividadRecuperada);
                 actividades.add(actividadRecuperada);
@@ -197,14 +192,16 @@ public class FXMLActividadesController implements Initializable {
         AcademicoDAO academicoDao = new AcademicoDAO(); 
         ActividadDAO acatividadesDao = new ActividadDAO();
         try {
-           curso = cursoDao.ordenarCursosPorEstudiante(estudiante.getIdEstudiante());
-           anteproyecto = anteproyectoDao.obtenerAnteproyectosPorEstudiante(estudiante.getIdEstudiante());
-           academico = academicoDao.obtenerAcademicoPorId(curso.getIdAcademico());
-           actividadesPorVencer = acatividadesDao.totalActividades(1,estudiante.getIdEstudiante());
-           actividadesRealizadas = acatividadesDao.totalActividades(2,estudiante.getIdEstudiante());
-           actividadesRevisadas = acatividadesDao.totalActividades(3,estudiante.getIdEstudiante());
+            curso = cursoDao.obtenerCursosPorEstudiante(estudiante.getIdEstudiante());
+            if (curso != null) {
+                academico = academicoDao.obtenerAcademicoPorId(curso.getIdAcademico());
+            }
+            anteproyecto = anteproyectoDao.obtenerAnteproyectosPorEstudiante(estudiante.getIdEstudiante());
+            actividadesPorVencer = acatividadesDao.totalActividades(1,estudiante.getIdEstudiante());
+            actividadesRealizadas = acatividadesDao.totalActividades(2,estudiante.getIdEstudiante());
+            actividadesRevisadas = acatividadesDao.totalActividades(3,estudiante.getIdEstudiante());
         } catch (DAOException ex) {
-            Logger.getLogger(FXMLFormularioActividadController.class.getName()).log(Level.SEVERE, null, ex);
+            manejarDAOException(ex);
         } 
         setInformacion();
     }
@@ -248,17 +245,17 @@ public class FXMLActividadesController implements Initializable {
     
     private void irAModificarActividad(Estudiante estudiante, Actividad actividad, boolean esModificacion) {
         try {
-                    FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLFormularioActividad.fxml"));
-                    Parent vista = accesoControlador.load();
-                    FXMLFormularioActividadController controladorVistaInicio = accesoControlador.getController(); 
-                    controladorVistaInicio.iniciarFormularioNUevo(estudiante, esModificacion, actividad);
-                    Stage escenario = (Stage) lbTituloVentana.getScene().getWindow();
-                    escenario.setScene(new Scene(vista));
-                    escenario.setTitle("Inicio");
-                    escenario.show();
-                } catch (IOException ex) {
-                    Utilidades.mostrarDialogoSimple("ERROR","No se pido cargar la catividad", Alert.AlertType.ERROR);
-                }
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLFormularioActividad.fxml"));
+            Parent vista = accesoControlador.load();
+            FXMLFormularioActividadController controladorVistaInicio = accesoControlador.getController(); 
+            controladorVistaInicio.iniciarFormularioNUevo(estudiante, esModificacion, actividad);
+            Stage escenario = (Stage) lbTituloVentana.getScene().getWindow();
+            escenario.setScene(new Scene(vista));
+            escenario.setTitle("Modificar Actividad");
+            escenario.show();
+        } catch (IOException ex) {
+            Utilidades.mostrarDialogoSimple("ERROR","No se pido cargar la catividad", Alert.AlertType.ERROR);
+        }
     }
     
     private void irAVerDetallesActividad(Estudiante estudiante, Actividad actividad) {
@@ -308,6 +305,7 @@ public class FXMLActividadesController implements Initializable {
                 ex.printStackTrace();
                 Utilidades.mostrarDialogoSimple("Error de conexion", 
                         "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
+                break;
             default:
                 throw new AssertionError();
         }
