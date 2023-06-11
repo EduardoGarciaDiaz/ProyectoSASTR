@@ -150,12 +150,10 @@ public class FXMLConsultarEntregasActividadController implements Initializable {
         try {
             if (actividad != null) {
                 ArrayList<HistorialCambios> cambios = new HistorialCambiosDAO().obtenerInformacionHistorialCambios(actividad.getIdActividad());
-                for (HistorialCambios cambio : cambios) {
-                    Date fechaModificacion = cambio.getFechaDeModificacion();
-                    String fechaModificacionFormateada = FORMATO_FECHA_PARA_DATE.format(fechaModificacion);
-                    Date fechaAnterior = cambio.getFechaAnterior();
-                    String fechaAnteriorFormateada = FORMATO_FECHA_PARA_DATE.format(fechaAnterior);
-                    Date fechaNueva = cambio.getFechaNueva();
+                for (HistorialCambios cambio : cambios) {                    
+                    String fechaModificacionFormateada = cambio.getFechaDeModificacion(); 
+                    String fechaAnteriorFormateada = cambio.getFechaAnterior();
+                    String fechaNueva = cambio.getFechaNueva();
                     String fechaNuevaFormateada = FORMATO_FECHA_PARA_DATE.format(fechaNueva);
                     String cambioHecho = "Se cambió la fecha de la actividad de " + fechaAnteriorFormateada + " a " + fechaNuevaFormateada;
                     vbxCardsCambios.getChildren().add(new TarjetaCambioActividad(cambioHecho, fechaModificacionFormateada));

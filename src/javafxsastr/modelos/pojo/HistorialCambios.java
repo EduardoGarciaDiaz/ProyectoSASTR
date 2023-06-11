@@ -5,23 +5,21 @@
  */
 package javafxsastr.modelos.pojo;
 
-import java.sql.Date;
-import java.sql.Time;
 
 public class HistorialCambios {
     
     private int idHistorialCambio;
-    private Date fechaDeModificacion;
-    private Date fechaAnterior;
-    private Time horaAnterior;
-    private Date fechaNueva;
-    private Time horaNueva;
+    private String fechaDeModificacion;
+    private String fechaAnterior;
+    private String horaAnterior;
+    private String fechaNueva;
+    private String horaNueva;
     private int idActividad;
 
     public HistorialCambios() {
     }
 
-    public HistorialCambios(int idHistorialCambio, Date fechaDeModificacion, Date fechaAnterior, Time horaAnterior, Date fechaNueva, Time horaNueva, int idActividad) {
+    public HistorialCambios(int idHistorialCambio, String fechaDeModificacion, String fechaAnterior, String horaAnterior, String fechaNueva, String horaNueva, int idActividad) {
         this.idHistorialCambio = idHistorialCambio;
         this.fechaDeModificacion = fechaDeModificacion;
         this.fechaAnterior = fechaAnterior;
@@ -39,43 +37,43 @@ public class HistorialCambios {
         this.idHistorialCambio = idHistorialCambio;
     }
 
-    public Date getFechaDeModificacion() {
+    public String getFechaDeModificacion() {
         return fechaDeModificacion;
     }
 
-    public void setFechaDeModificacion(Date fechaDeModificacion) {
+    public void setFechaDeModificacion(String fechaDeModificacion) {
         this.fechaDeModificacion = fechaDeModificacion;
     }
 
-    public Date getFechaAnterior() {
+    public String getFechaAnterior() {
         return fechaAnterior;
     }
 
-    public void setFechaAnterior(Date fechaAnterior) {
+    public void setFechaAnterior(String fechaAnterior) {
         this.fechaAnterior = fechaAnterior;
     }
 
-    public Time getHoraAnterior() {
+    public String getHoraAnterior() {
         return horaAnterior;
     }
 
-    public void setHoraAnterior(Time horaAnterior) {
+    public void setHoraAnterior(String horaAnterior) {
         this.horaAnterior = horaAnterior;
     }
 
-    public Date getFechaNueva() {
+    public String getFechaNueva() {
         return fechaNueva;
     }
 
-    public void setFechaNueva(Date fechaNueva) {
+    public void setFechaNueva(String fechaNueva) {
         this.fechaNueva = fechaNueva;
     }
 
-    public Time getHoraNueva() {
+    public String getHoraNueva() {
         return horaNueva;
     }
 
-    public void setHoraNueva(Time horaNueva) {
+    public void setHoraNueva(String horaNueva) {
         this.horaNueva = horaNueva;
     }
 
@@ -87,5 +85,8 @@ public class HistorialCambios {
         this.idActividad = idActividad;
     }
     
+    
+
+   
     
 }
