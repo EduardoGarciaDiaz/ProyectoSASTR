@@ -149,7 +149,7 @@ public class FXMLConsultarAvanceEstudianteController implements Initializable {
             int actividadesRestantes = totalActividades - actividadesCompletadas - actividadesNoRealizadas;
             double porcentajeAvance = 0.0;
             if (totalActividades != 0) {
-                porcentajeAvance = (double) actividadesCompletadas * 100 / totalActividades;
+                porcentajeAvance = actividadesCompletadas * 100 / totalActividades;
             }
             lbActividadesCompletadas.setText(actividadesCompletadas+"/"+totalActividades+" actividades completadas.");
             lbActividadesNoRealizadas.setText(actividadesNoRealizadas+"/"+totalActividades+" actividades no realizadas.");
