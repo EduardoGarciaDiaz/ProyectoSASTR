@@ -31,7 +31,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafxsastr.JavaFXSASTR;
 import javafxsastr.interfaces.INotificacionRecargarDatos;
-import javafxsastr.modelos.ConexionBD;
 import javafxsastr.modelos.dao.AcademicoDAO;
 import javafxsastr.modelos.dao.DAOException;
 import javafxsastr.modelos.dao.EstudianteDAO;
@@ -228,24 +227,6 @@ public class FXMLFormularioUsuarioController implements Initializable {
     }
     
     private void agregarListenerCampoVacio(TextInputControl campoTexto, Label etiqueta){
-        /*campoTexto.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            if (newValue) {
-                campoTexto.setStyle("-fx-border-color: gray");
-                etiqueta.setText("");
-            }
-            if (oldValue) {
-                if (campoTexto.getText().trim().isEmpty()) {
-                    campoTexto.setStyle("-fx-border-color: red");
-                    etiqueta.setText("Campo obligatorio");
-
-                }
-                if (validarCamposObligatoriosLLenos()) {
-                    btnGuardar.setDisable(false);
-                } else {
-                    btnGuardar.setDisable(true);
-                }
-            }
-        });*/
         campoTexto.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -260,11 +241,7 @@ public class FXMLFormularioUsuarioController implements Initializable {
                 } else {
                     etiqueta.setText("Campo obligatorio");
                     campoTexto.setStyle("-fx-border-color: red");
-                    //if (validarCamposObligatoriosLLenos()) {
-                        //btnGuardar.setDisable(false);
-                    //} else {
-                        btnGuardar.setDisable(true);
-                    //}
+                    btnGuardar.setDisable(true);
                 }
             }
         });
@@ -346,12 +323,15 @@ public class FXMLFormularioUsuarioController implements Initializable {
                 }
             }
         }
-        if (!validarExistenciaOtroAdministrador()) {
-            datosValidos = false;
-            Utilidades.mostrarDialogoSimple("Operación no posible", 
+        if (esEdicion) {
+            if (!validarExistenciaOtroAdministrador()) {
+                datosValidos = false;
+                Utilidades.mostrarDialogoSimple("Operación no posible", 
                             "No puedes dejar al sistema sin un administrador. "
                             + "Asegúrate de que exista otro administrador en el sistema.", Alert.AlertType.WARNING);
+            }
         }
+
         if (datosValidos) {
             int respuesta;
             if ("Estudiante".equals(tipoUsuarioSeleccionado)) {
