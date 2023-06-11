@@ -25,7 +25,7 @@ public class FiltrosTexto {
     private static final Pattern PATRON_CONTRASENA_VALIDA = Pattern.compile("^(?=.*[A-Z])(?=.*[\\W_]).{7,16}$");
     private static final Pattern PATRON_SOLO_LETRA_NUMEROS = Pattern.compile("^[\\p{L}0-9\\s]*$");
     private static final Pattern PATRON_SOLO_LETRA_NUMEROS_PUNTOS = Pattern.compile("^[\\p{L}0-9.\\s]*$");
-    private static final Pattern PATRON_LET_NUM_SIG_ORT = Pattern.compile("^[a-zA-Z0-9\\s.,!?'-]+$");
+    private static final Pattern PATRON_LET_NUM_SIG_ORT = Pattern.compile("^[\\p{L}\\p{M}0-9\\s.,!?'-]+$");
     private static final Pattern PATRON_HORA_MINUTOS = Pattern.compile("^([01]?\\d|2[0-3]):[0-5]\\d$");
     
     public static  void filtroLetrasNumeros(TextInputControl campoTexto) {              

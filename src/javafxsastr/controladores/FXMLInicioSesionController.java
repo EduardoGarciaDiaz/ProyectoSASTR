@@ -56,9 +56,15 @@ public class FXMLInicioSesionController implements Initializable {
             } 
             if (tfContraseñaUsuario.getText().isEmpty()) {
                 lbCampoContraseñaRequerido.setText("Campo requerido");
-            } 
+            }
             if (!tfCorreoUsuario.getText().isEmpty() && !tfContraseñaUsuario.getText().isEmpty()) {
-                autenticarUsuario(tfCorreoUsuario.getText(), tfContraseñaUsuario.getText());
+                if (tfCorreoUsuario.getText()
+                        .toLowerCase()
+                        .equals(tfCorreoUsuario.getText())) {
+                    autenticarUsuario(tfCorreoUsuario.getText(), tfContraseñaUsuario.getText());
+                } else {
+                    lbErrorCredenciales.setText("Ingresa el correo en minúsculas, por favor.");
+                }
             }
         } catch (DAOException ex) {
             manejarDAOException(ex);

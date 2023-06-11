@@ -175,7 +175,8 @@ public class FXMLAñadirLgacController implements Initializable {
                 int exito = lgacDao.actualizarLgac(lgacNuevo);
                 if(exito != -1) {
                     Utilidades.mostrarDialogoSimple("Actualizacion exitoso","La LGAC "+txfNombreLgac.getText()+" se actualizo correctamente", 
-                            Alert.AlertType.CONFIRMATION);           
+                            Alert.AlertType.INFORMATION);   
+                    cerrarVentana();
                 }else {
                     System.err.println(exito);                
                     Utilidades.mostrarDialogoSimple("Registro Fallido","Ocurrio un error al registrar la LGAC, intenetelo mas tarde",
@@ -185,10 +186,11 @@ public class FXMLAñadirLgacController implements Initializable {
                 int exito = lgacDao.guardarLgac(lgacNuevo);
                 if(exito != -1) {
                     Utilidades.mostrarDialogoSimple("Registro exitoso","La LGAC "+txfNombreLgac.getText()+" se registro correctamente", 
-                            Alert.AlertType.CONFIRMATION);
+                            Alert.AlertType.INFORMATION);
                     txfNombreLgac.clear();
                     txaDescripcionLgac.clear();
                     btnGuardar.setDisable(true);
+                    cerrarVentana();
                 }else {
                     System.err.println(exito);                
                     Utilidades.mostrarDialogoSimple("Registro Fallido","Ocurrio un error al registrar la LGAC, intenetelo mas tarde",

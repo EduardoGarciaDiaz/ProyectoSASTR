@@ -8,15 +8,20 @@
 
 package javafxsastr.utils.cards;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafxsastr.utils.Utilidades;
+import javafxsastr.modelos.dao.AcademicoDAO;
+import javafxsastr.modelos.dao.CursoDAO;
+import javafxsastr.modelos.dao.DAOException;
+import javafxsastr.modelos.pojo.Academico;
+import javafxsastr.modelos.pojo.ConsultarAvanceEstudianteSingleton;
+import javafxsastr.utils.CodigosVentanas;
 
 public class TarjetaEntregasActividad extends Pane{
     
@@ -52,11 +57,24 @@ public class TarjetaEntregasActividad extends Pane{
         lbFechaEntrega = new Label();
         lbHoraEntrega = new Label();
         lbFechaRevision = new Label();
-        if (esRevisada) {
-            btnRevisar = new Button("Mod. Revisión");
+        ConsultarAvanceEstudianteSingleton consultarAvanceEstudiante 
+                = ConsultarAvanceEstudianteSingleton
+                .obtenerConsultarAvanceEstudiante(null, null, null, null);
+        if (consultarAvanceEstudiante.getVentanaOrigen() == CodigosVentanas.CONSULTAR_AVANCES_ESTUDIANTES) {
+            if (esRevisada) {
+                btnRevisar = new Button("Ver revisión");
+            } else {
+                btnRevisar = new Button("No disponible");
+                btnRevisar.setDisable(true);
+            }
         } else {
-            btnRevisar = new Button("Revisar");
+            if (esRevisada) {
+                btnRevisar = new Button("Mod. revisión");
+            } else {
+                btnRevisar = new Button("Revisar");
+            }
         }
+
     }
 
     private void establecerEstilos() {

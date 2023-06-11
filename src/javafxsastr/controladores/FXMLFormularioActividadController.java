@@ -1,24 +1,21 @@
 /*
  * Autor: Tristan Eduardo Suarez Santiago
  * Fecha de creación: 02/06/2023
- * Descripción: Controller de la ventana AñadirCuerpoAcademico
+ * Descripción: Controller de la ventana FormularioActividad
  */
+
 package javafxsastr.controladores;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Time;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -77,14 +74,13 @@ public class FXMLFormularioActividadController implements Initializable {
     private final int LIMIT_CARAC_DETALLES = 1000;
     
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-             
+    public void initialize(URL url, ResourceBundle rb) {  
     } 
     
     public void iniciarFormularioNUevo(Estudiante estudianteN, boolean edicion, Actividad act ) {        
         isEdicion = edicion;
         this.estudiante = estudianteN;
-        if(isEdicion) {
+        if (isEdicion) {
             lbTtituloVentana.setText("Modificar actividad");
             actividadEdicion = act;           
             cargarInformacion();
@@ -120,10 +116,10 @@ public class FXMLFormularioActividadController implements Initializable {
         txfNombreActividad.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if(txfNombreActividad.getText().length() <= LIMIT_CARAC_NOMBRE) {
+                if (txfNombreActividad.getText().length() <= LIMIT_CARAC_NOMBRE) {
                     validarBtnGuardar();
                     lbNombreLgac.setText("");
-                }else { 
+                } else { 
                     mostraMensajelimiteSuperado(LIMIT_CARAC_NOMBRE,"Nombre Actividad",lbNombreLgac);
                 }            
             }
@@ -131,10 +127,10 @@ public class FXMLFormularioActividadController implements Initializable {
         txaDetallesActividad.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if(txaDetallesActividad.getText().length() <= LIMIT_CARAC_DETALLES) {
+                if (txaDetallesActividad.getText().length() <= LIMIT_CARAC_DETALLES) {
                     validarBtnGuardar();
                     lbDescirpcionLgac.setText("");
-                }else { 
+                } else { 
                     mostraMensajelimiteSuperado(LIMIT_CARAC_DETALLES,"Detalles Actividad",lbDescirpcionLgac);
                 }  
             }
@@ -153,15 +149,15 @@ public class FXMLFormularioActividadController implements Initializable {
         });
         dtpInicio.onMouseEnteredProperty().addListener(new ChangeListener<EventHandler<? super MouseEvent>>(){
             @Override
-            public void changed(ObservableValue<? extends EventHandler<? super MouseEvent>> observable, EventHandler<? super MouseEvent> oldValue, EventHandler<? super MouseEvent> newValue) {
-                
+            public void changed(ObservableValue<? extends EventHandler<? super MouseEvent>> observable,
+                    EventHandler<? super MouseEvent> oldValue, EventHandler<? super MouseEvent> newValue) {
                 validarBtnGuardar();
             }
         });
         dtpFin.onMouseEnteredProperty().addListener(new ChangeListener<EventHandler<? super MouseEvent>>(){
             @Override
-            public void changed(ObservableValue<? extends EventHandler<? super MouseEvent>> observable, EventHandler<? super MouseEvent> oldValue, EventHandler<? super MouseEvent> newValue) {
-               
+            public void changed(ObservableValue<? extends EventHandler<? super MouseEvent>> observable,
+                    EventHandler<? super MouseEvent> oldValue, EventHandler<? super MouseEvent> newValue) {
                 validarBtnGuardar();
             }
         });        
@@ -173,13 +169,13 @@ public class FXMLFormularioActividadController implements Initializable {
     }
     
     private void validarBtnGuardar() {
-        if( txfNombreActividad.getText().trim().length() < 5 || txaDetallesActividad.getText().trim().length() < 10 || 
+        if (txfNombreActividad.getText().trim().length() < 5 || txaDetallesActividad.getText().trim().length() < 10 || 
                 txfNombreActividad.getText().trim().length() > LIMIT_CARAC_NOMBRE || 
                 txaDetallesActividad.getText().trim().length() > LIMIT_CARAC_DETALLES
                 || dtpInicio.getValue() == null || dtpFin.getValue() == null ||
                 txfHoraInicio.getText().isEmpty() || txfHoraFin.getText().isEmpty()) {
             btnGuardar.setDisable(true);
-        }else {
+        } else {
             btnGuardar.setDisable(false);
         }
     }
@@ -187,18 +183,18 @@ public class FXMLFormularioActividadController implements Initializable {
    public void validarFechas() { 
         LocalDate fechaInicioActividad = dtpInicio.getValue();
         LocalDate fechaFinActividad = dtpFin.getValue();           
-        if(fechaInicioActividad.isAfter(fechaFinActividad)) {
+        if (fechaInicioActividad.isAfter(fechaFinActividad)) {
                Utilidades.mostrarDialogoSimple("Error","Fechas Invalidas", Alert.AlertType.ERROR);
-            }else{
+            } else {
                validarHora(fechaInicioActividad, fechaFinActividad);
             }        
     }
    
     private void validarHora(TextField textHora) {
-        if(Pattern.matches("^([01]?\\d|2[0-3]):[0-5]\\d$", textHora.getText())){
+        if (Pattern.matches("^([01]?\\d|2[0-3]):[0-5]\\d$", textHora.getText())){
             validarBtnGuardar();
             textHora.setStyle("-fx-border-width: 2;");
-        }else {
+        } else {
             btnGuardar.setDisable(true);
             textHora.setStyle("-fx-border-color:RED; -fx-border-width: 2;");
         }
@@ -208,17 +204,17 @@ public class FXMLFormularioActividadController implements Initializable {
     private void validarHora(LocalDate fechaInicioActividad, LocalDate fechaFinActividad ) {
         LocalTime horaInico = LocalTime.of((Integer.parseInt(txfHoraInicio.getText().substring(0,2))),
                                        Integer.parseInt(txfHoraInicio.getText().substring(3,5)));
-       LocalTime horaFin = LocalTime.of((Integer.parseInt(txfHoraFin.getText().substring(0,2))),
+        LocalTime horaFin = LocalTime.of((Integer.parseInt(txfHoraFin.getText().substring(0,2))),
                                        Integer.parseInt(txfHoraFin.getText().substring(3,5))); 
-        if(fechaInicioActividad.isEqual(fechaFinActividad)){
-            if(!horaFin.isBefore(horaInico)) {
+        if (fechaInicioActividad.isEqual(fechaFinActividad)){
+            if (!horaFin.isBefore(horaInico)) {
                 Utilidades.mostrarDialogoSimple("Error","Horas Invalidas", Alert.AlertType.ERROR);
                 txfHoraInicio.setStyle("-fx-border-color:RED; -fx-border-width: 2;");
                 txfHoraFin.setStyle("-fx-border-color:RED; -fx-border-width: 2;");
-            }else {
+            } else {
                 aceptarActividad();
             }          
-        }else {
+        } else {
             aceptarActividad();
         }
     }
@@ -226,14 +222,14 @@ public class FXMLFormularioActividadController implements Initializable {
     private void aceptarActividad() {
        txfHoraFin.setStyle("-fx-border-width: 2;");
        txfHoraInicio.setStyle("-fx-border-width: 2;");
-        if(isEdicion) {
+        if (isEdicion) {
             actualizarActividad();
-        }else {
-            registrarActiivad(); 
+        } else {
+            registrarActividad(); 
         }
     }
     
-    private void registrarActiivad() {
+    private void registrarActividad() {
         Actividad actividadNueva = new Actividad();
         actividadNueva.setNombreActividad(txfNombreActividad.getText());
         actividadNueva.setDetallesActividad(txaDetallesActividad.getText());
@@ -253,7 +249,7 @@ public class FXMLFormularioActividadController implements Initializable {
             limpiarCampos();
         } catch (DAOException ex) {
             ex.printStackTrace();
-            Utilidades.mostrarDialogoSimple("Error", "HUbo un error al registrar la actividad", 
+            Utilidades.mostrarDialogoSimple("Error", "Hubo un error al registrar la actividad", 
                     Alert.AlertType.ERROR);
         }
     }
@@ -270,9 +266,9 @@ public class FXMLFormularioActividadController implements Initializable {
         actividadEditada.setIdEstadoActividad(1);
         try {
             int exito = new ActividadDAO().actualizarActividad(actividadEditada);
-            if(exito != -1) {
+            if (exito != -1) {
                 HistorialCambiosDAO hisCamDao = new HistorialCambiosDAO();                
-                if(!actividadEditada.getFechaInicioActividad().equals(actividadEdicion.getFechaInicioActividad())) {
+                if (!actividadEditada.getFechaInicioActividad().equals(actividadEdicion.getFechaInicioActividad())) {
                     HistorialCambios cambioFecha = new HistorialCambios();
                     cambioFecha.setIdActividad(actividadEdicion.getIdActividad());
                     String fechaAnterior = actividadEdicion.getFechaInicioActividad();
@@ -287,7 +283,7 @@ public class FXMLFormularioActividadController implements Initializable {
                     cambioFecha.setHoraNueva(horaNueva);
                     hisCamDao.guardarHistorialCambios(cambioFecha);  
                 }
-                if(!actividadEditada.getFechaFinActividad().equals(actividadEdicion.getFechaFinActividad())) {
+                if (!actividadEditada.getFechaFinActividad().equals(actividadEdicion.getFechaFinActividad())) {
                     HistorialCambios cambioFecha = new HistorialCambios();
                     cambioFecha.setIdActividad(actividadEdicion.getIdActividad());
                     String fechaAnterior = actividadEdicion.getFechaFinActividad();
@@ -306,7 +302,7 @@ public class FXMLFormularioActividadController implements Initializable {
             Utilidades.mostrarDialogoSimple("Actualizacion Exitoso","Actividad actualizada con exito", 
                     Alert.AlertType.INFORMATION);
             irAVistaActividades(estudiante);        
-        }catch (DAOException ex) {
+        } catch (DAOException ex) {
             ex.printStackTrace();
             Utilidades.mostrarDialogoSimple("Error", "Hubo un error al modificar la actividad", 
                     Alert.AlertType.ERROR);
@@ -323,7 +319,7 @@ public class FXMLFormularioActividadController implements Initializable {
     }
     
      private void mostraMensajelimiteSuperado(int limiteCaracteres, String campo,  Label etiquetaError) { 
-        etiquetaError.setText("Cuidado, Exediste el limite de caracteres("+limiteCaracteres+") de este campo " + campo);
+        etiquetaError.setText("Cuidado, Excediste el limite de caracteres("+limiteCaracteres+") de este campo " + campo);
         btnGuardar.setDisable(true);
     }    
      
@@ -339,26 +335,11 @@ public class FXMLFormularioActividadController implements Initializable {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-    }
+    } 
     
-    private void manejarDAOException(DAOException ex) {
-        switch (ex.getCodigo()) {
-            case ERROR_CONSULTA:
-                ex.printStackTrace();
-                System.out.println("Ocurrió un error de consulta.");
-                break;
-            case ERROR_CONEXION_BD:
-                ex.printStackTrace();
-                Utilidades.mostrarDialogoSimple("Error de conexion", 
-                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
-            default:
-                throw new AssertionError();
-        }
-    }
-
     @FXML
     private void clicBtnCancelar(ActionEvent event) {
-        if(Utilidades.mostrarDialogoConfirmacion("Cancelar Captura de Actividad ", 
+        if (Utilidades.mostrarDialogoConfirmacion("Cancelar Captura de Actividad ", 
                 "¿Estás seguro de que deseas cancelar el registro de la actividad?")){
             irAVistaActividades(estudiante);
         }       
@@ -372,6 +353,22 @@ public class FXMLFormularioActividadController implements Initializable {
     @FXML
     private void clicBtnRegresar(MouseEvent event) {
         irAVistaActividades(estudiante); 
-    } 
+    }
+    
+    private void manejarDAOException(DAOException ex) {
+        switch (ex.getCodigo()) {
+            case ERROR_CONSULTA:
+                ex.printStackTrace();
+                System.out.println("Ocurrió un error de consulta.");
+                break;
+            case ERROR_CONEXION_BD:
+                ex.printStackTrace();
+                Utilidades.mostrarDialogoSimple("Error de conexion", 
+                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
+                break;
+            default:
+                throw new AssertionError();
+        }
+    }
     
 }

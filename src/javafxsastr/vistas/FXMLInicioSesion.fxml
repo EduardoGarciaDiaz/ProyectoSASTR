@@ -25,7 +25,7 @@
          </effect>
       </ImageView>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0d64b555" height="940.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1411.0" />
-      <Label layoutX="117.0" layoutY="137.0" prefHeight="289.0" prefWidth="690.0" text="Sistema de Apoyo al Seguimiento de Trabajo Recepcional" textFill="WHITE" wrapText="true">
+      <Label layoutX="106.0" layoutY="137.0" prefHeight="289.0" prefWidth="755.0" text="Sistema de Apoyo al Seguimiento de Trabajo Recepcional" textFill="WHITE" wrapText="true">
          <font>
             <Font name="System Bold" size="46.0" />
          </font>
@@ -36,7 +36,7 @@
                <font>
                   <Font name="System Bold" size="40.0" />
                </font></Label>
-            <TextField fx:id="tfCorreoUsuario" layoutX="80.0" layoutY="299.0" prefHeight="78.0" prefWidth="444.0" promptText="Ingrese su correo institucional" style="-fx-background-radius: 15;">
+            <TextField fx:id="tfCorreoUsuario" layoutX="80.0" layoutY="299.0" prefHeight="78.0" prefWidth="444.0" promptText="Ej. correominusculas@uv.mx" style="-fx-background-radius: 15;">
                <font>
                   <Font size="22.0" />
                </font>
@@ -46,7 +46,7 @@
                   <Font size="22.0" />
                </font>
             </PasswordField>
-            <Button layoutX="89.0" layoutY="549.0" mnemonicParsing="false" onAction="#clicIniciarSesion" prefHeight="78.0" prefWidth="444.0" style="-fx-background-color: #18529D; -fx-background-radius: 15;" text="Iniciar Sesión" textFill="WHITE">
+            <Button layoutX="84.0" layoutY="553.0" mnemonicParsing="false" onAction="#clicIniciarSesion" prefHeight="78.0" prefWidth="444.0" style="-fx-background-color: #18529D; -fx-background-radius: 15;" text="Iniciar Sesión" textFill="WHITE">
                <font>
                   <Font size="25.0" />
                </font>
@@ -71,11 +71,14 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <Pane layoutX="403.0" layoutY="819.0" onMouseClicked="#irVentanaAnteproyectosInvitado" prefHeight="27.0" prefWidth="206.0">
+            <Pane layoutX="206.0" layoutY="806.0" onMouseClicked="#irVentanaAnteproyectosInvitado" prefHeight="27.0" prefWidth="206.0">
                <children>
-                  <Label alignment="CENTER" layoutX="4.0" layoutY="4.0" prefHeight="21.0" prefWidth="192.0" text="Ingresar como invitado" textAlignment="CENTER" textFill="#0066ff" />
-               </children>
-            </Pane>
+                  <Label alignment="CENTER" layoutX="6.0" layoutY="1.0" prefHeight="21.0" prefWidth="192.0" text="Ingresar como invitado" textAlignment="CENTER" textFill="#0066ff">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+               </children></Pane>
          </children>
       </Pane>
       <Pane prefHeight="200.0" prefWidth="200.0" />

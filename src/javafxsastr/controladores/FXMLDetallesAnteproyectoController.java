@@ -53,6 +53,8 @@ import javafxsastr.modelos.dao.EstudianteDAO;
 import javafxsastr.modelos.dao.LgacDAO;
 import javafxsastr.modelos.pojo.Academico;
 import javafxsastr.modelos.pojo.Anteproyecto;
+import javafxsastr.modelos.pojo.ConsultarAvanceEstudianteSingleton;
+import javafxsastr.modelos.pojo.Curso;
 import javafxsastr.modelos.pojo.Desasignacion;
 import javafxsastr.modelos.pojo.Estudiante;
 import javafxsastr.modelos.pojo.Lgac;
@@ -136,6 +138,9 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
     @FXML
     private Button btnCancelarAsignacionEstudiante;
     
+    private ConsultarAvanceEstudianteSingleton consultarAvanceEstudiante = ConsultarAvanceEstudianteSingleton.
+            obtenerConsultarAvanceEstudiante(null, null, null, null);
+    private final int ANTEPROYECTO_APROBADO = 3;
     private final int ANTEPROYECTO_PUBLICADO = 4;
     private final int ANTEPROYECTO_EN_DESARROLLO = 5;
     private int numeroMaximoEstudiantes;
@@ -145,6 +150,7 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
     private final DateTimeFormatter FORMATO_FECHA_COMPLETA = DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy",
         new Locale("es"));
     private CodigosVentanas ventanaOrigen;
+    private CodigosVentanas ventanaOrigenAvanceEstudiante;
     private Anteproyecto anteproyecto;
     private Academico academico;
     private ArrayList<Estudiante> estudiantesParticipantes = new ArrayList<>();
@@ -152,23 +158,12 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
     private ArrayList<Academico> codirectores = new ArrayList<>();
     private ArrayList<Lgac> lgacs = new ArrayList<>();
     private boolean esInvitado = false;
+    private Curso cursoAvanceEstudiante;
  
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        
+    public void initialize(URL url, ResourceBundle rb) {  
     }
-    /*
-    public void setAnteproyectoAcademico(Anteproyecto anteproyecto, Academico academico) {      
-        System.out.println("SE cambió, ahora es un SET separado para cada Objeto");
-        //this.anteproyecto = anteproyecto;
-        //this.academico = academico;
-        //numeroMaximoEstudiantes = anteproyecto.getNumeroMaximoAlumnosParticipantes();
-        //obtenerEstudiantes();                
-        //mostrarDatosAnteproyecto();
-        //obtenerInformacionAvance();
-        //mostrarDesasignaciones();
-    }
-    */
+
     public void setAcademico(Academico academico, CodigosVentanas origen) {
         this.academico = academico;
         this.ventanaOrigen = origen;
@@ -183,14 +178,25 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
          this.ventanaOrigen = origen;
          this.esInvitado = esInvitado;                
     }
+    
+    /*
+    Define los datos para poder regresar a Ver avance del estudiante cuando la ventana de
+    origen sea esta.
+    */
+    public void setDatosVerAvanceEstudiante(Estudiante estudiante, 
+            CodigosVentanas origenAvanceEstudiante,
+            Curso cursoOrigen) {
+        this.estudiante = estudiante;
+        this.ventanaOrigenAvanceEstudiante = origenAvanceEstudiante;
+        cursoAvanceEstudiante = cursoOrigen;
+    }
         
     public void setAnteproyecto(Anteproyecto anteproyecto) {
         this.anteproyecto = anteproyecto;
         numeroMaximoEstudiantes = anteproyecto.getNumeroMaximoAlumnosParticipantes(); 
         obtenerEstudiantes(); 
         mostrarDatosAnteproyecto();
-        if(!esInvitado) {
-            System.err.println("No es invitado");
+        if (!esInvitado) {
             obtenerInformacionAvance();
             mostrarDesasignaciones();
         }        
@@ -223,8 +229,9 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
             btnAsignarOtroEstudiante.setVisible(false);
             esDirector = false;
         } else {
-            if(academico.getIdAcademico() == anteproyecto.getIdAcademico()
-                    && (anteproyecto.getIdEstadoSeguimiento() == ANTEPROYECTO_EN_DESARROLLO ||
+            if (academico.getIdAcademico() == anteproyecto.getIdAcademico()
+                    && (anteproyecto.getIdEstadoSeguimiento() == ANTEPROYECTO_APROBADO || 
+                    anteproyecto.getIdEstadoSeguimiento() == ANTEPROYECTO_EN_DESARROLLO ||
                     anteproyecto.getIdEstadoSeguimiento() == ANTEPROYECTO_PUBLICADO)) {
                 validarAsignarPrimerEstudiante();
                 validarAsignarOtroEstudiante();
@@ -240,7 +247,7 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
         if (estudiantesParticipantes.size() < NUMERO_MINIMO_ESTUDIANTES) {            
             configurarAgregarPrimerEstudiante();
             estadoSeguimiento = "Publicado";
-        }else {
+        } else {
             estadoSeguimiento = "En desarrollo";
         }
         cambiarEstadoAnteproyecto(estadoSeguimiento ); 
@@ -327,13 +334,13 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
     
     private void mostrarEstudiantes(ArrayList<Estudiante> estudiantesParticipantes) {
         vbxAlumnosParticipantes.setSpacing(10);        
-        for(Estudiante e : estudiantesParticipantes) {
+        for (Estudiante e : estudiantesParticipantes) {
             configurarEstudianteParticipante(e, false);
         }
     }
     
     private void mostrarCodirectores(ArrayList<Academico> codirectores) {
-        for(Academico codirector : codirectores) {
+        for (Academico codirector : codirectores) {
             configurarCodirectores(codirector);
         }
     }
@@ -394,7 +401,7 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
         } catch (DAOException ex) {
             manejarDAOException(ex);
         }
-            return actividades;
+        return actividades;
     }
     
     private void mostrarDesasignaciones() {
@@ -560,8 +567,8 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
     @FXML
     private void clicRegresar(MouseEvent event) {
         switch (ventanaOrigen) {
-            case MI_ANTEPROYECTO:
-                //TODO
+            case INICIO:
+                irAVistaInicio(estudianteUsuario);
                 break;
             case MIS_ANTEPROYECTOS:
                 irAVistaAnteproyectos(false);
@@ -572,8 +579,11 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
             case ANTEPROYECTOS_INVITADO:
                 irAVistaAnteproyectosInivtado();
                 break;
+            case CONSULTAR_AVANCE_DE_ESTUDIANTE:
+                irAVistaAvanceEstudiante(estudiante, ventanaOrigenAvanceEstudiante, cursoAvanceEstudiante);
+                break;
             default:
-                
+                System.out.println("Ventana de regreso no encontrada");
         }
     }
     
@@ -602,6 +612,42 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Anteproyectos");
             escenario.show();            
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    private void irAVistaInicio(Estudiante estudiante) {
+        try {
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLInicio.fxml"));
+            Parent vista = accesoControlador.load();
+            FXMLInicioController controladorVistaInicio = accesoControlador.getController();
+            controladorVistaInicio.setUsuario(estudiante);
+            Stage escenario = (Stage) lbActividadesCompletadas.getScene().getWindow();
+            escenario.setScene(new Scene(vista));
+            escenario.setTitle("Inicio");
+            escenario.show();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    private void irAVistaAvanceEstudiante(Estudiante estudiante, CodigosVentanas origenVentanaAvance, Curso curso) {
+        try {
+            FXMLLoader accesoControlador 
+                    = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLConsultarAvanceEstudiante.fxml"));
+            Parent vista = accesoControlador.load();
+            FXMLConsultarAvanceEstudianteController controladorVistaAvanceEstudiante = accesoControlador.getController();
+            controladorVistaAvanceEstudiante.setEstudianteAcademico(
+                    consultarAvanceEstudiante.getEstudiante(),
+                    consultarAvanceEstudiante.getAcademico(),
+                    consultarAvanceEstudiante.getVentanaOrigen(),
+                    consultarAvanceEstudiante.getCurso()
+            );
+            Stage escenario = (Stage) lbActividadesCompletadas.getScene().getWindow();
+            escenario.setScene(new Scene(vista));
+            escenario.setTitle("Avance del estudiante");
+            escenario.show();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -658,6 +704,7 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
             case ERROR_CONEXION_BD:
                 Utilidades.mostrarDialogoSimple("Error de conexion", 
                         "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
+                break;
             default:
                 throw new AssertionError();
         }
@@ -693,7 +740,5 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
         validarAsignarPrimerEstudiante();
         validarAsignarOtroEstudiante();
     }
-    
-    
     
 }

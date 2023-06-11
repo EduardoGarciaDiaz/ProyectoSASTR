@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
@@ -57,7 +58,7 @@
             <Image url="@../recursos/iconos/flecha.png" />
          </image>
       </ImageView>
-      <Pane fx:id="pnCrearCuerpoAcademico" layoutX="1408.0" layoutY="850.0" onMouseClicked="#clicCrearCuerpoAcademico" prefHeight="68.0" prefWidth="244.0" style="-fx-background-color: black; -fx-background-radius: 13;">
+      <Pane fx:id="pnCrearCuerpoAcademico" layoutX="1408.0" layoutY="850.0" onMouseClicked="#clicCrearCuerpoAcademico" opacity="0.7" prefHeight="68.0" prefWidth="244.0" style="-fx-background-color: black; -fx-background-radius: 13;">
          <children>
             <Label fx:id="lbCaLgac" alignment="CENTER" layoutX="27.0" layoutY="17.0" prefHeight="35.0" prefWidth="193.0" text="Añadir CA" textFill="WHITE">
                <font>

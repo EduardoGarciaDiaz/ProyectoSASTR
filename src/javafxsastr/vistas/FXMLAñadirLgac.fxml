@@ -40,14 +40,14 @@
             </ImageView>
          </children>
       </Pane>
-      <Pane layoutX="42.0" layoutY="142.0" prefHeight="762.0" prefWidth="1075.0">
+      <Pane layoutX="158.0" layoutY="161.0" prefHeight="762.0" prefWidth="1019.0">
          <children>
             <Label layoutX="59.0" layoutY="48.0" prefHeight="50.0" prefWidth="97.0" text="Nombre">
                <font>
                   <Font size="26.0" />
                </font>
             </Label>
-            <TextField fx:id="txfNombreLgac" layoutX="59.0" layoutY="110.0" prefHeight="69.0" prefWidth="936.0" promptText="Nombre LGAC" style="-fx-background-radius: 15;">
+            <TextField fx:id="txfNombreLgac" layoutX="59.0" layoutY="110.0" prefHeight="69.0" prefWidth="673.0" promptText="Nombre LGAC" style="-fx-background-radius: 15;">
                <font>
                   <Font size="30.0" />
                </font></TextField>
@@ -56,7 +56,7 @@
                   <Font size="26.0" />
                </font>
             </Label>
-            <TextArea fx:id="txaDescripcionLgac" layoutX="59.0" layoutY="293.0" prefHeight="275.0" prefWidth="936.0" promptText="Descripcion De la LGAC" style="-fx-background-radius: 5;" wrapText="true">
+            <TextArea fx:id="txaDescripcionLgac" layoutX="59.0" layoutY="293.0" prefHeight="275.0" prefWidth="673.0" promptText="Descripcion De la LGAC" style="-fx-background-radius: 5;" wrapText="true">
                <font>
                   <Font size="30.0" />
                </font></TextArea>
@@ -65,7 +65,7 @@
                   <Font size="25.0" />
                </font>
             </Button>
-            <Button fx:id="btnGuardar" layoutX="716.0" layoutY="680.0" mnemonicParsing="false" onAction="#clicBtnGuardar" prefHeight="54.0" prefWidth="199.0" style="-fx-background-color: D4F1C9; -fx-background-radius: 15;" text="Guardar">
+            <Button fx:id="btnGuardar" layoutX="510.0" layoutY="680.0" mnemonicParsing="false" onAction="#clicBtnGuardar" prefHeight="54.0" prefWidth="199.0" style="-fx-background-color: D4F1C9; -fx-background-radius: 15;" text="Guardar">
                <font>
                   <Font size="25.0" />
                </font>
@@ -74,14 +74,14 @@
             <Label fx:id="lbDescirpcionLgac" layoutX="59.0" layoutY="568.0" prefHeight="21.0" prefWidth="520.0" textFill="RED" />
          </children>
       </Pane>
-      <Pane layoutY="50.0" prefHeight="63.0" prefWidth="369.0">
+      <Pane layoutX="75.0" layoutY="50.0" prefHeight="63.0" prefWidth="369.0">
          <children>
-            <ImageView fitHeight="38.0" fitWidth="96.0" layoutX="35.0" layoutY="13.0" onMouseClicked="#clicBtnRegresar" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="38.0" fitWidth="96.0" layoutX="-40.0" layoutY="13.0" onMouseClicked="#clicBtnRegresar" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../recursos/iconos/BACK.JPG" />
+                  <Image url="@../recursos/iconos/flecha.png" />
                </image>
             </ImageView>
-            <Label fx:id="lbTituloVentana" layoutX="110.0" layoutY="5.0" text="Registrar LGAC" textFill="#434343">
+            <Label fx:id="lbTituloVentana" layoutX="35.0" layoutY="5.0" text="Registrar LGAC" textFill="#434343">
                <font>
                   <Font name="System Bold" size="36.0" />
                </font>

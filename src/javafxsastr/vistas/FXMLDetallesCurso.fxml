@@ -92,7 +92,7 @@
                         <Font name="System Bold" size="25.0" />
                      </font>
                   </Label>
-                  <Circle fx:id="crlEstadoCurso" fill="#97eb55" layoutX="1528.0" layoutY="36.0" radius="22.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Circle fx:id="crlEstadoCurso" fill="#c3e0be" layoutX="1528.0" layoutY="36.0" radius="22.0" stroke="BLACK" strokeType="INSIDE" />
                   <ImageView fx:id="btnEditarCurso" fitHeight="50.0" fitWidth="46.0" layoutX="1435.0" layoutY="141.0" onMouseClicked="#clicEditarCurso" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../recursos/iconos/editar.png" />
