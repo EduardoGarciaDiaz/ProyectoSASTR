@@ -77,34 +77,22 @@ public class FXMLRevisarEntregaController implements Initializable {
     private ObservableList<Archivo> archivosEntrega;
     private Academico academico;
     private Actividad actividad;
-    private Estudiante estudiante;
-    private Curso curso;
-    private int numeroEntrega;
-
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     }    
 
-    public void inicializarContenidoEntrega(Entrega entrega, Academico academico, Actividad actividad, Estudiante estudiante) {
+    public void inicializarContenidoEntrega(Entrega entrega, Academico academico, Actividad actividad) {
         agregarListenerCampoComentarios();
         this.entrega = entrega;
         this.academico = academico;
         this.actividad = actividad;
-        this.estudiante = estudiante;
         if (entrega != null) {
             setDatosEntrega(actividad);
             obtenerArchivos();
             cargarArchivos();
             btnEnviarRevision.setDisable(true);
         }
-    }
-    
-    public void setCurso(Curso curso) {
-        this.curso = curso;
-    }
-    
-    public void setNumeroEntrega(int numeroEntrega) {
-        this.numeroEntrega = numeroEntrega;
     }
         
     private void setDatosEntrega(Actividad actividad){
@@ -298,10 +286,7 @@ public class FXMLRevisarEntregaController implements Initializable {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLConsultarEntregasActividad.fxml"));
             Parent vista = accesoControlador.load();
             FXMLConsultarEntregasActividadController controladorVistaEntregasActividades = accesoControlador.getController();
-            controladorVistaEntregasActividades.setAcademico(academico);
             controladorVistaEntregasActividades.setActividad(actividad);
-            controladorVistaEntregasActividades.setEstudiante(estudiante);
-            controladorVistaEntregasActividades.setCurso(curso);
             Stage escenario = (Stage) lbNombreActividad.getScene().getWindow();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Entregas de la actividad");

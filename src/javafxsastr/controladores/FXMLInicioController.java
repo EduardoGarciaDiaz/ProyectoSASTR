@@ -298,7 +298,7 @@ public class FXMLInicioController implements Initializable, INotificacionClicBot
             controladorDetallesAnteproyecto.setEstudiante(estudiante, CodigosVentanas.INICIO);
             Stage escenario = (Stage) lbTituloVentana.getScene().getWindow();
             escenario.setScene(new Scene(vista));
-            escenario.setTitle("Detalles Anteproyecto");
+            escenario.setTitle("Mi Anteproyecto");
             escenario.show();
         } catch (IOException ex) {
             ex.printStackTrace();
