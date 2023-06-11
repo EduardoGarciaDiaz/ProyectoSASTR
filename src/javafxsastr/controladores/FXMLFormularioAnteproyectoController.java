@@ -571,8 +571,8 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
     
     private void agregarFiltros() {
         FiltrosTexto.filtroLetrasNumeros(tfCiudad);
-        FiltrosTexto.filtroLetrasNumerosPuntos(tfNombreTrabajoRecepcional);
-        FiltrosTexto.filtroLetrasNumerosPuntos(tfLineaInvestigacion);
+        FiltrosTexto.filtroLetrasNumerosPuntosComasSignosComunes(tfNombreTrabajoRecepcional);
+        FiltrosTexto.filtroLetrasNumerosPuntosComasSignosComunes(tfLineaInvestigacion);
         FiltrosTexto.filtroLetrasNumerosPuntos(tfDuracionAproximada);
         FiltrosTexto.filtroLetrasNumerosPuntos(tfCodirector);
         FiltrosTexto.filtroLetrasNumerosPuntos(tfCuerpoAcademico);

@@ -239,7 +239,6 @@ public class FXMLValidarAnteproyectoController implements Initializable {
             mostrarDatosDescripciones();
             mostrarDatosFinales();  
             mostrarDatosLGACs();
-            mostrarCodirectores(codirectores);
         } else {
             System.err.println("El anteproyector recibido viene NULO");
         }
