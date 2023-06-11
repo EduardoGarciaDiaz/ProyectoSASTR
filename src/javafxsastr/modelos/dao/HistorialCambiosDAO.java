@@ -9,6 +9,7 @@ package javafxsastr.modelos.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import javafxsastr.modelos.ConexionBD;
 import javafxsastr.modelos.pojo.HistorialCambios;
@@ -30,11 +31,11 @@ public class HistorialCambiosDAO {
             ResultSet resultadoConsulta = sentencia.executeQuery();
             while(resultadoConsulta.next()) {
                 HistorialCambios historialCambios = new HistorialCambios();
-                historialCambios.setFechaDeModificacion(resultadoConsulta.getDate("fechaDeModificacion"));
-                historialCambios.setFechaAnterior(resultadoConsulta.getDate("fechaAnterior"));
-                historialCambios.setHoraAnterior(resultadoConsulta.getTime("horaAnterior"));
-                historialCambios.setFechaNueva(resultadoConsulta.getDate("fechaNueva"));
-                historialCambios.setHoraNueva(resultadoConsulta.getTime("horaNueva"));
+                historialCambios.setFechaDeModificacion(resultadoConsulta.getDate("fechaDeModificacion").toString());
+                historialCambios.setFechaAnterior(resultadoConsulta.getDate("fechaAnterior").toString());
+                historialCambios.setHoraAnterior(resultadoConsulta.getTime("horaAnterior").toString());
+                historialCambios.setFechaNueva(resultadoConsulta.getDate("fechaNueva").toString());
+                historialCambios.setHoraNueva(resultadoConsulta.getTime("horaNueva").toString());
                historialCambiosConsultados.add(historialCambios);              
             }
             ConexionBD.cerrarConexionBD();
@@ -49,12 +50,12 @@ public class HistorialCambiosDAO {
         
             PreparedStatement sentencia;
         try {
-            sentencia = ConexionBD.obtenerConexionBD().prepareStatement(Consulta_Historial_Cambios);
-            sentencia.setDate(1, historialNuevo.getFechaDeModificacion());
-            sentencia.setDate(2, historialNuevo.getFechaAnterior());
-            sentencia.setTime(3, historialNuevo.getHoraAnterior());
-            sentencia.setDate(4, historialNuevo.getFechaNueva());
-            sentencia.setTime(5, historialNuevo.getHoraNueva());
+            sentencia = ConexionBD.obtenerConexionBD().prepareStatement(Guardar_Historial_Cambios_Nuevo, Statement.RETURN_GENERATED_KEYS);
+            sentencia.setString(1, historialNuevo.getFechaDeModificacion());
+            sentencia.setString(2, historialNuevo.getFechaAnterior());
+            sentencia.setString(3, historialNuevo.getHoraAnterior());
+            sentencia.setString(4, historialNuevo.getFechaNueva());
+            sentencia.setString(5, historialNuevo.getHoraNueva());
             sentencia.setInt(6, historialNuevo.getIdActividad());
             sentencia.executeUpdate();
             ResultSet resultadoRegistroNuevo = sentencia.getGeneratedKeys();
@@ -63,6 +64,7 @@ public class HistorialCambiosDAO {
             }
             ConexionBD.cerrarConexionBD();            
         }catch (SQLException ex) {
+            ex.printStackTrace();
             throw new DAOException("Lo sentimos, hubo un problema al registrar esta modificacion", Codigos.ERROR_CONSULTA);
          }
         return respuestaExito;
