@@ -429,11 +429,11 @@ public class FXMLValidarAnteproyectoController implements Initializable {
                             idEstadoSeguimiento);
                 if(exitoActualizaicon == 1) {
                         if( estadoSeguimiento.equals("Rechazado")) {
-                     Utilidades.mostrarDialogoSimple("Registro Exitoso", 
-                        "Se ha aprobado el anteproyecto correctamente", Alert.AlertType.INFORMATION);
+                     Utilidades.mostrarDialogoSimple("Rechazado", 
+                        "Se ha rechazado el anteproyecto correctamente", Alert.AlertType.INFORMATION);
                         }else {
-                            Utilidades.mostrarDialogoSimple("Registro Exitoso", 
-                            "Se ha rechazado el anteproyecto", Alert.AlertType.INFORMATION);
+                            Utilidades.mostrarDialogoSimple("Aprobado", 
+                            "Se ha aprobado el anteproyecto", Alert.AlertType.INFORMATION);
                     }               
                 }else {
                 Utilidades.mostrarDialogoSimple("Error","Fallo actualizar el estado de seguimiento", 
@@ -450,7 +450,7 @@ public class FXMLValidarAnteproyectoController implements Initializable {
     }
     
     private void mostraMensajelimiteSuperado(int limiteCaracteres, String campo,  Label etiquetaError) { 
-        etiquetaError.setText("Cuidado, Exediste el limite de caracteres("+limiteCaracteres+") de este campo " + campo);
+        etiquetaError.setText("Cuidado, Excediste el limite de caracteres("+limiteCaracteres+") de este campo " + campo);
         btnAprobar.setDisable(true);
     }    
     
