@@ -13,7 +13,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -32,20 +31,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafxsastr.JavaFXSASTR;
-import javafxsastr.modelos.dao.ActividadDAO;
 import javafxsastr.modelos.dao.DAOException;
 import javafxsastr.modelos.dao.EntregaDAO;
 import javafxsastr.modelos.dao.HistorialCambiosDAO;
-import javafxsastr.modelos.pojo.Academico;
 import javafxsastr.modelos.pojo.Actividad;
-import javafxsastr.modelos.pojo.Curso;
+import javafxsastr.modelos.pojo.ConsultarAvanceEstudianteSingleton;
 import javafxsastr.modelos.pojo.Entrega;
-import javafxsastr.modelos.pojo.Estudiante;
 import javafxsastr.modelos.pojo.HistorialCambios;
-import javafxsastr.utils.CodigosVentanas;
 import javafxsastr.utils.Utilidades;
 import javafxsastr.utils.cards.TarjetaCambioActividad;
 import javafxsastr.utils.cards.TarjetaEntregasActividad;
@@ -71,10 +65,9 @@ public class FXMLConsultarEntregasActividadController implements Initializable {
     @FXML
     private Button btnFecha;
     
-    private Academico academico;
+    private ConsultarAvanceEstudianteSingleton consultarAvanceEstudiante
+           = ConsultarAvanceEstudianteSingleton.obtenerConsultarAvanceEstudiante(null, null, null, null);
     private Actividad actividad;
-    private Curso curso;
-    private Estudiante estudiante;
     private ObservableList<Entrega> entregas;
     private boolean esBtnFechaPresionado = true;
     private final DateTimeFormatter FORMATO_FECHA_COMPLETA = DateTimeFormatter.ofPattern("EEEE dd 'de' MMMM 'de' yyyy",
@@ -86,23 +79,11 @@ public class FXMLConsultarEntregasActividadController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
     }
     
-    public void setAcademico(Academico academico) {
-        this.academico = academico;
-    }
-    
     public void setActividad(Actividad actividad) {
         this.actividad = actividad;
         mostrarInformacionActividad();
         obtenerListaEntregas();
         obtenerListaCambios();
-    }
-    
-    public void setEstudiante(Estudiante estudiante) {
-        this.estudiante = estudiante;
-    }
-    
-    public void setCurso(Curso curso) {
-        this.curso = curso;
     }
     
     public void mostrarInformacionActividad() {
@@ -229,9 +210,14 @@ public class FXMLConsultarEntregasActividadController implements Initializable {
         try {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLConsultarAvanceEstudiante.fxml"));
             Parent vista = accesoControlador.load();
-            FXMLConsultarAvanceEstudianteController controladorVistaAvanceEstudiante = accesoControlador.getController();
-            controladorVistaAvanceEstudiante.setEstudianteAcademico(estudiante, academico, CodigosVentanas.ENTREGAS_ACTIVIDAD_DIRECTOR);
-            controladorVistaAvanceEstudiante.setCurso(curso);
+            FXMLConsultarAvanceEstudianteController controladorVistaAvanceEstudiante 
+                    = accesoControlador.getController();
+            controladorVistaAvanceEstudiante.setEstudianteAcademico(
+                    consultarAvanceEstudiante.getEstudiante(),
+                    consultarAvanceEstudiante.getAcademico(),
+                    consultarAvanceEstudiante.getVentanaOrigen(),
+                    consultarAvanceEstudiante.getCurso()
+            );
             Stage escenario = (Stage) lbDetallesActividad.getScene().getWindow();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Entregas de la actividad");
@@ -246,8 +232,8 @@ public class FXMLConsultarEntregasActividadController implements Initializable {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLRevisarEntrega.fxml"));
             Parent vista = accesoControlador.load();
             FXMLRevisarEntregaController controladorVistaRevisarEntrega = accesoControlador.getController();
-            controladorVistaRevisarEntrega.inicializarContenidoEntrega(entrega, academico, actividad, estudiante);
-            controladorVistaRevisarEntrega.setCurso(curso);
+            controladorVistaRevisarEntrega.inicializarContenidoEntrega(
+                    entrega, consultarAvanceEstudiante.getAcademico(), actividad);
             Stage escenario = (Stage) lbDetallesActividad.getScene().getWindow();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Entregas de la actividad");

@@ -50,13 +50,13 @@ public class ActividadDAO {
             "FROM actividades a " +
             "INNER JOIN estudiantes e ON a.idEstudiante = e.idEstudiante " +
             "INNER JOIN estados_actividad ea ON a.idEstadoActividad = ea.idEstadoActividad " +
-            "WHERE e.idEstudiante = ? AND a.idEstadoActividad = 1;";
+            "WHERE e.idEstudiante = ? AND a.idEstadoActividad = 2;";
     private final String OBTENER_NUMERO_ACTIVIDADES_NO_COMPLETADAS = "SELECT COUNT(a.idActividad) AS numeroActividades "
             +
             "FROM actividades a " +
             "INNER JOIN estudiantes e ON a.idEstudiante = e.idEstudiante " +
             "INNER JOIN estados_actividad ea ON a.idEstadoActividad = ea.idEstadoActividad " +
-            "WHERE e.idEstudiante = ? AND a.idEstadoActividad = 2;";
+            "WHERE e.idEstudiante = ? AND a.idEstadoActividad = 3;";
     private final String OBTENER_NUMERO_ACTIVIDADES_POR_ANTEPROYECTO = "SELECT COUNT(a.idActividad) AS numeroActividades "
             +
             "FROM actividades a " +

@@ -33,6 +33,7 @@ import javafxsastr.modelos.dao.DAOException;
 import javafxsastr.modelos.pojo.Academico;
 import javafxsastr.modelos.pojo.Actividad;
 import javafxsastr.modelos.pojo.Anteproyecto;
+import javafxsastr.modelos.pojo.ConsultarAvanceEstudianteSingleton;
 import javafxsastr.modelos.pojo.Curso;
 import javafxsastr.modelos.pojo.Estudiante;
 import javafxsastr.utils.CodigosVentanas;
@@ -75,15 +76,18 @@ public class FXMLConsultarAvanceEstudianteController implements Initializable {
     private ImageView clicBtnRegresar;
     @FXML
     private Button btnVerDetallesAnteproyecto;
+    private ConsultarAvanceEstudianteSingleton consultarAvanceEstudiante;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     }    
     
-    public void setEstudianteAcademico(Estudiante estudiante, Academico academico, CodigosVentanas origen) {
+    public void setEstudianteAcademico(Estudiante estudiante, Academico academico, CodigosVentanas origen, Curso curso) {
         this.academicoAuxiliar = academico;
         this.estudiante = estudiante;
         this.ventanaOrigen = origen;
+        consultarAvanceEstudiante
+                = ConsultarAvanceEstudianteSingleton.obtenerConsultarAvanceEstudiante(academico, estudiante, ventanaOrigen, curso);
         obtenerActividades();
         cargarTarjetasActividades();
         obtenerAnteproyecto();
@@ -190,7 +194,8 @@ public class FXMLConsultarAvanceEstudianteController implements Initializable {
             Parent vista = accesoControlador.load();
             FXMLDetallesAnteproyectoController controladorDetallesAnteproyecto = accesoControlador.getController();
             controladorDetallesAnteproyecto.setAnteproyecto(anteproyecto);
-            controladorDetallesAnteproyecto.setEstudiante(estudiante, ventanaOrigen);
+            controladorDetallesAnteproyecto.setAcademico(academicoAuxiliar, CodigosVentanas.CONSULTAR_AVANCE_DE_ESTUDIANTE);
+            controladorDetallesAnteproyecto.setDatosVerAvanceEstudiante(estudiante, ventanaOrigen, cursoAuxiliar);
             Stage escenario = (Stage) lbActividadesCompletadas.getScene().getWindow();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Detalles Anteproyecto");
@@ -221,8 +226,8 @@ public class FXMLConsultarAvanceEstudianteController implements Initializable {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLConsultarAvances.fxml"));
             Parent vista = accesoControlador.load();
             FXMLConsultarAvancesController controladorVistaAvances = accesoControlador.getController();
-            controladorVistaAvances.setCursoAcademico(curso, academico);
-            controladorVistaAvances.setIdCurso(curso.getIdCurso());
+            controladorVistaAvances.setCursoAcademico(consultarAvanceEstudiante.getCurso(), academico);
+            controladorVistaAvances.setIdCurso(consultarAvanceEstudiante.getCurso().getIdCurso());
             Stage escenario = (Stage) lbActividadesCompletadas.getScene().getWindow();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Avances de estudiantes");
@@ -237,10 +242,7 @@ public class FXMLConsultarAvanceEstudianteController implements Initializable {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLConsultarEntregasActividad.fxml"));
             Parent vista = accesoControlador.load();
             FXMLConsultarEntregasActividadController controladorVistaEntregasActividades = accesoControlador.getController();
-            controladorVistaEntregasActividades.setAcademico(academicoAuxiliar);
             controladorVistaEntregasActividades.setActividad(actividad);
-            controladorVistaEntregasActividades.setEstudiante(estudiante);
-            controladorVistaEntregasActividades.setCurso(cursoAuxiliar);
             Stage escenario = (Stage) lbActividadesCompletadas.getScene().getWindow();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Entregas de la actividad");
@@ -252,7 +254,7 @@ public class FXMLConsultarAvanceEstudianteController implements Initializable {
 
     @FXML
     private void cllicBtnRegresar(MouseEvent event) {
-        switch (ventanaOrigen) {
+        switch (consultarAvanceEstudiante.getVentanaOrigen()) {
             case ESTUDIANTES_ASIGNADOS:
                 irAVistaEstudiantesAsignados(academicoAuxiliar);
                 break;
