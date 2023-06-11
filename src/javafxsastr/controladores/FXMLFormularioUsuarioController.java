@@ -324,7 +324,7 @@ public class FXMLFormularioUsuarioController implements Initializable {
             }
         }
         if (esEdicion) {
-            if (!chbxEsAdministrador.isSelected() && !validarExistenciaOtroAdministrador()) {
+            if (usuarioEdicion.getEsAdministrador() && !chbxEsAdministrador.isSelected() && !validarExistenciaOtroAdministrador()) {
                 datosValidos = false;
                 Utilidades.mostrarDialogoSimple("Operación no posible", 
                             "No puedes dejar al sistema sin un administrador. "
