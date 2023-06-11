@@ -31,7 +31,7 @@ public class FiltrosTexto {
     public static  void filtroLetrasNumeros(TextInputControl campoTexto) {              
             UnaryOperator<TextFormatter.Change> filtroTextoIngresado = change -> {
                 String textoIngresado = change.getControlNewText();
-                if (PATRON_SOLO_LETRA_NUMEROS.matcher(textoIngresado).matches()) {
+                if (PATRON_SOLO_LETRA_NUMEROS.matcher(textoIngresado).matches() || textoIngresado.equals("")) {
                     return change;
                 } else {
                     return null;
@@ -44,7 +44,7 @@ public class FiltrosTexto {
     public static  void filtroHoraMinutos(TextInputControl campoTexto) {              
             UnaryOperator<TextFormatter.Change> filtroTextoIngresado = change -> {
                 String textoIngresado = change.getControlNewText();
-                if (PATRON_HORA_MINUTOS.matcher(textoIngresado).matches()) {
+                if (PATRON_HORA_MINUTOS.matcher(textoIngresado).matches() || textoIngresado.equals("")) {
                     return change;
                 } else {
                     return null;
@@ -57,7 +57,7 @@ public class FiltrosTexto {
      public static  void filtroLetrasNumerosPuntos(TextInputControl campoTexto) {              
             UnaryOperator<TextFormatter.Change> filtroTextoIngresado = change -> {
                 String textoIngresado = change.getControlNewText();
-                if (PATRON_SOLO_LETRA_NUMEROS_PUNTOS.matcher(textoIngresado).matches()) {
+                if (PATRON_SOLO_LETRA_NUMEROS_PUNTOS.matcher(textoIngresado).matches() || textoIngresado.equals("")) {
                     return change;
                 } else {
                     return null;
@@ -70,7 +70,7 @@ public class FiltrosTexto {
     public static  void filtroLetrasNumerosPuntosComasSignosComunes(TextInputControl campoTexto) {              
             UnaryOperator<TextFormatter.Change> filtroTextoIngresado = change -> {
                 String textoIngresado = change.getControlNewText();
-                if (PATRON_LET_NUM_SIG_ORT.matcher(textoIngresado).matches()) {
+                if (PATRON_LET_NUM_SIG_ORT.matcher(textoIngresado).matches() || textoIngresado.equals("")) {
                     return change;
                 } else {
                     return null;

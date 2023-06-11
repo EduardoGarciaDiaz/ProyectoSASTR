@@ -14,14 +14,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -35,27 +30,15 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.shape.Line;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import javafxsastr.JavaFXSASTR;
-import javafxsastr.interfaces.INotificacionSeleccionItem;
-import javafxsastr.modelos.dao.AcademicoDAO;
 import javafxsastr.modelos.dao.ActividadDAO;
 import javafxsastr.modelos.dao.AnteproyectoDAO;
-import javafxsastr.modelos.dao.CursoDAO;
 import javafxsastr.modelos.dao.DAOException;
-import javafxsastr.modelos.dao.EstudianteDAO;
 import javafxsastr.modelos.dao.HistorialCambiosDAO;
-import javafxsastr.modelos.pojo.Academico;
 import javafxsastr.modelos.pojo.Actividad;
 import javafxsastr.modelos.pojo.Anteproyecto;
-import javafxsastr.modelos.pojo.Curso;
 import javafxsastr.modelos.pojo.Estudiante;
 import javafxsastr.modelos.pojo.HistorialCambios;
 import javafxsastr.utils.FiltrosTexto;
@@ -82,19 +65,11 @@ public class FXMLFormularioActividadController implements Initializable {
     private TextField txfHoraInicio;
     @FXML
     private TextField txfHoraFin;
-    private Label lbActPorVencer;
     @FXML
     private Label lbTtituloVentana;
 
     private Estudiante estudiante;
     private Anteproyecto anteproyecto;
-    private Curso curso;
-    private Academico academico;
-    private ObservableList<Academico> codirectores;
-    private boolean menuDatos;
-    private int porVnecer;
-    private int realizadas;
-    private int revisadas;
     private boolean isEdicion = false;
     private Actividad actividadEdicion;
     private final int ESTADO_PROXIMA = 1; 
@@ -113,19 +88,27 @@ public class FXMLFormularioActividadController implements Initializable {
             lbTtituloVentana.setText("Modificar actividad");
             actividadEdicion = act;           
             cargarInformacion();
-        }   
-        btnGuardar.setDisable(true);
-        menuDatos = false;
+        }
+        btnGuardar.setDisable(false);
+        obtenerAnteproyecto();        
         inicializarListeners();  
         iniciarFiltros(); 
+    }
+    
+    private void obtenerAnteproyecto() {
+        try {
+            this.anteproyecto = new AnteproyectoDAO().obtenerAnteproyectosPorEstudiante(estudiante.getIdEstudiante());
+        } catch (DAOException ex) {
+            manejarDAOException(ex);
+        }
     }
     
      private void cargarInformacion() {     
         Actividad actividad = actividadEdicion;
         txfNombreActividad.setText(actividad.getNombreActividad());
         txaDetallesActividad.setText(actividad.getDetallesActividad());
-        txfHoraFin.setText(actividad.getHoraFinActividad());
-        txfHoraInicio.setText(actividad.getHoraInicioActividad());
+        txfHoraFin.setText(actividad.getHoraFinActividad().substring(0,5));
+        txfHoraInicio.setText(actividad.getHoraInicioActividad().substring(0,5));
         LocalDate fechaInicio = LocalDate.parse(actividad.getFechaInicioActividad());
         dtpInicio.setValue(fechaInicio);
         LocalDate fechaFin = LocalDate.parse(actividad.getFechaFinActividad());
@@ -159,13 +142,13 @@ public class FXMLFormularioActividadController implements Initializable {
         txfHoraInicio.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-               validarBtnGuardar();               
+                validarHora(txfHoraInicio);
             }
         });
         txfHoraFin.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-               validarBtnGuardar();                
+                validarHora(txfHoraFin);
             }
         });
         dtpInicio.onMouseEnteredProperty().addListener(new ChangeListener<EventHandler<? super MouseEvent>>(){
@@ -187,12 +170,12 @@ public class FXMLFormularioActividadController implements Initializable {
     private void iniciarFiltros() {
         FiltrosTexto.filtroLetrasNumerosPuntosComasSignosComunes(txfNombreActividad);
         FiltrosTexto.filtroLetrasNumerosPuntosComasSignosComunes(txaDetallesActividad);
-        FiltrosTexto.filtroHoraMinutos(txfHoraInicio);
-        FiltrosTexto.filtroHoraMinutos(txfHoraFin);
     }
     
     private void validarBtnGuardar() {
-        if( txfNombreActividad.getText().isEmpty() || txaDetallesActividad.getText().length()== 0
+        if( txfNombreActividad.getText().trim().length() < 5 || txaDetallesActividad.getText().trim().length() < 10 || 
+                txfNombreActividad.getText().trim().length() > LIMIT_CARAC_NOMBRE || 
+                txaDetallesActividad.getText().trim().length() > LIMIT_CARAC_DETALLES
                 || dtpInicio.getValue() == null || dtpFin.getValue() == null ||
                 txfHoraInicio.getText().isEmpty() || txfHoraFin.getText().isEmpty()) {
             btnGuardar.setDisable(true);
@@ -203,24 +186,32 @@ public class FXMLFormularioActividadController implements Initializable {
     
    public void validarFechas() { 
         LocalDate fechaInicioActividad = dtpInicio.getValue();
-        LocalDate fechaFinActividad = dtpFin.getValue();        
-        LocalDate periodoEscolarInicio = LocalDate.parse(curso.getInicioPeriodoEscolar());
-        LocalDate periodoEscolarFin = LocalDate.parse(curso.getFinPeriodoEscolar());    
-        if(fechaInicioActividad.isBefore(periodoEscolarInicio) ||
-                    fechaInicioActividad.isAfter(fechaFinActividad) || fechaFinActividad.isAfter(periodoEscolarFin)) {
+        LocalDate fechaFinActividad = dtpFin.getValue();           
+        if(fechaInicioActividad.isAfter(fechaFinActividad)) {
                Utilidades.mostrarDialogoSimple("Error","Fechas Invalidas", Alert.AlertType.ERROR);
             }else{
                validarHora(fechaInicioActividad, fechaFinActividad);
             }        
     }
+   
+    private void validarHora(TextField textHora) {
+        if(Pattern.matches("^([01]?\\d|2[0-3]):[0-5]\\d$", textHora.getText())){
+            validarBtnGuardar();
+            textHora.setStyle("-fx-border-width: 2;");
+        }else {
+            btnGuardar.setDisable(true);
+            textHora.setStyle("-fx-border-color:RED; -fx-border-width: 2;");
+        }
+            
+    }
     
     private void validarHora(LocalDate fechaInicioActividad, LocalDate fechaFinActividad ) {
-        LocalTime horaInico = LocalTime.of((Integer.parseInt(txfHoraInicio.getText().substring(0,1))),
-                                       Integer.parseInt(txfHoraInicio.getText().substring(3,4)));
-       LocalTime horaFin = LocalTime.of((Integer.parseInt(txfHoraFin.getText().substring(0,1))),
-                                       Integer.parseInt(txfHoraFin.getText().substring(3,4))); 
+        LocalTime horaInico = LocalTime.of((Integer.parseInt(txfHoraInicio.getText().substring(0,2))),
+                                       Integer.parseInt(txfHoraInicio.getText().substring(3,5)));
+       LocalTime horaFin = LocalTime.of((Integer.parseInt(txfHoraFin.getText().substring(0,2))),
+                                       Integer.parseInt(txfHoraFin.getText().substring(3,5))); 
         if(fechaInicioActividad.isEqual(fechaFinActividad)){
-            if(horaFin.isBefore(horaInico)) {
+            if(!horaFin.isBefore(horaInico)) {
                 Utilidades.mostrarDialogoSimple("Error","Horas Invalidas", Alert.AlertType.ERROR);
                 txfHoraInicio.setStyle("-fx-border-color:RED; -fx-border-width: 2;");
                 txfHoraFin.setStyle("-fx-border-color:RED; -fx-border-width: 2;");
@@ -280,33 +271,33 @@ public class FXMLFormularioActividadController implements Initializable {
         try {
             int exito = new ActividadDAO().actualizarActividad(actividadEditada);
             if(exito != -1) {
-                SimpleDateFormat fecha = new SimpleDateFormat("yyyy-MM-dd");
-                SimpleDateFormat hora = new SimpleDateFormat("HH:mm:ss");
                 HistorialCambiosDAO hisCamDao = new HistorialCambiosDAO();                
                 if(!actividadEditada.getFechaInicioActividad().equals(actividadEdicion.getFechaInicioActividad())) {
                     HistorialCambios cambioFecha = new HistorialCambios();
-                    Date fechaAnterior = fecha.parse(actividadEdicion.getFechaInicioActividad());
-                    Date fechaNueva = fecha.parse(actividadEditada.getFechaInicioActividad());
-                    Date fechaModiciacion = fecha.parse(LocalDate.now().toString());
-                    Time horaAnterior = (Time) hora.parse(actividadEdicion.getHoraInicioActividad());
-                    Time horaNueva = (Time) hora.parse(actividadEditada.getHoraInicioActividad());
-                    cambioFecha.setFechaAnterior((java.sql.Date) fechaAnterior);
-                    cambioFecha.setFechaNueva((java.sql.Date) fechaNueva);
-                    cambioFecha.setFechaDeModificacion((java.sql.Date) fechaModiciacion);
+                    cambioFecha.setIdActividad(actividadEdicion.getIdActividad());
+                    String fechaAnterior = actividadEdicion.getFechaInicioActividad();
+                    String fechaNueva = actividadEditada.getFechaInicioActividad();
+                    String fechaModiciacion = LocalDate.now().toString();
+                    String horaAnterior = actividadEdicion.getHoraInicioActividad();   
+                    String horaNueva = actividadEditada.getHoraInicioActividad();
+                    cambioFecha.setFechaAnterior(fechaAnterior);
+                    cambioFecha.setFechaNueva(fechaNueva);
+                    cambioFecha.setFechaDeModificacion(fechaModiciacion);
                     cambioFecha.setHoraAnterior(horaAnterior);
                     cambioFecha.setHoraNueva(horaNueva);
                     hisCamDao.guardarHistorialCambios(cambioFecha);  
                 }
                 if(!actividadEditada.getFechaFinActividad().equals(actividadEdicion.getFechaFinActividad())) {
                     HistorialCambios cambioFecha = new HistorialCambios();
-                    Date fechaAnterior = fecha.parse(actividadEdicion.getFechaFinActividad());
-                    Date fechaNueva = fecha.parse(actividadEditada.getFechaFinActividad());
-                    Date fechaModiciacion = fecha.parse(LocalDate.now().toString());  
-                    Time horaAnterior = (Time) hora.parse(actividadEdicion.getHoraFinActividad());
-                    Time horaNueva = (Time) hora.parse(actividadEditada.getHoraFinActividad());
-                    cambioFecha.setFechaAnterior((java.sql.Date) fechaAnterior);
-                    cambioFecha.setFechaNueva((java.sql.Date) fechaNueva);
-                    cambioFecha.setFechaDeModificacion((java.sql.Date) fechaModiciacion);
+                    cambioFecha.setIdActividad(actividadEdicion.getIdActividad());
+                    String fechaAnterior = actividadEdicion.getFechaFinActividad();
+                    String fechaNueva = actividadEditada.getFechaFinActividad();
+                    String fechaModiciacion = LocalDate.now().toString();            
+                    String horaAnterior = actividadEdicion.getHoraFinActividad();                   
+                    String horaNueva = actividadEditada.getHoraFinActividad();           
+                    cambioFecha.setFechaAnterior(fechaAnterior);
+                    cambioFecha.setFechaNueva(fechaNueva);
+                    cambioFecha.setFechaDeModificacion( fechaModiciacion);
                     cambioFecha.setHoraAnterior(horaAnterior);
                     cambioFecha.setHoraNueva(horaNueva);
                     hisCamDao.guardarHistorialCambios(cambioFecha);           
@@ -314,12 +305,9 @@ public class FXMLFormularioActividadController implements Initializable {
             }
             Utilidades.mostrarDialogoSimple("Actualizacion Exitoso","Actividad actualizada con exito", 
                     Alert.AlertType.INFORMATION);
-            irAVistaActividades(estudiante);
-        }catch (ParseException ex) {
-                        Utilidades.mostrarDialogoSimple("Error", "Hubo un error al castear la fechas", 
-                    Alert.AlertType.ERROR);
-                    }  
-        catch (DAOException ex) {
+            irAVistaActividades(estudiante);        
+        }catch (DAOException ex) {
+            ex.printStackTrace();
             Utilidades.mostrarDialogoSimple("Error", "Hubo un error al modificar la actividad", 
                     Alert.AlertType.ERROR);
         }      
@@ -345,11 +333,26 @@ public class FXMLFormularioActividadController implements Initializable {
             Parent vista = accesoControlador.load();
             FXMLActividadesController controladorVistaActividades = accesoControlador.getController();
             controladorVistaActividades.setEstudiante(estudiante);
-            Stage escenario = (Stage) lbActPorVencer.getScene().getWindow();
+            Stage escenario = (Stage) lbTtituloVentana.getScene().getWindow();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Actividades");
         } catch (IOException ex) {
             ex.printStackTrace();
+        }
+    }
+    
+    private void manejarDAOException(DAOException ex) {
+        switch (ex.getCodigo()) {
+            case ERROR_CONSULTA:
+                ex.printStackTrace();
+                System.out.println("Ocurrió un error de consulta.");
+                break;
+            case ERROR_CONEXION_BD:
+                ex.printStackTrace();
+                Utilidades.mostrarDialogoSimple("Error de conexion", 
+                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
+            default:
+                throw new AssertionError();
         }
     }
 

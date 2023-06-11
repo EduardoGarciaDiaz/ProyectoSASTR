@@ -158,9 +158,14 @@ public class FXMLActividadesController implements Initializable {
     
     private void verificarSiEsNoCompletada(Actividad actividad) {
         LocalDate fechaFin = LocalDate.parse(actividad.getFechaFinActividad());
-        if (actividad.getEstadoActividad().equals("Proxima") 
-                && fechaFin.isBefore(LocalDate.now())) {
+        if (actividad.getEstadoActividad().equals("Proxima") && fechaFin.isBefore(LocalDate.now())) {
             actividad.setEstadoActividad("No completada");
+            actividad.setIdEstadoActividad(3);
+            try {
+                new ActividadDAO().actualizarActividad(actividad);
+            } catch (DAOException ex) {
+                manejarDAOException(ex);
+            }
         }
     }
     
@@ -196,7 +201,7 @@ public class FXMLActividadesController implements Initializable {
            anteproyecto = anteproyectoDao.obtenerAnteproyectosPorEstudiante(estudiante.getIdEstudiante());
            academico = academicoDao.obtenerAcademicoPorId(curso.getIdAcademico());
            actividadesPorVencer = acatividadesDao.totalActividades(1,estudiante.getIdEstudiante());
-           actividadesRealizadas = acatividadesDao.totalActividades(4,estudiante.getIdEstudiante());
+           actividadesRealizadas = acatividadesDao.totalActividades(2,estudiante.getIdEstudiante());
            actividadesRevisadas = acatividadesDao.totalActividades(3,estudiante.getIdEstudiante());
         } catch (DAOException ex) {
             Logger.getLogger(FXMLFormularioActividadController.class.getName()).log(Level.SEVERE, null, ex);
@@ -220,9 +225,9 @@ public class FXMLActividadesController implements Initializable {
             lbAnteproyecto.setText(anteproyecto.getNombreTrabajoRecepcional());
             lbDirector.setText(anteproyecto.getNombreDirector());
         }
-        lbActSinPendientes.setText(actividadesPorVencer+" Actividades sin realizar");
+        lbActSinPendientes.setText(actividadesPorVencer+" Actividades pendientes");
         lbActRevisadas.setText(actividadesRealizadas+" Actividades realizadas");
-        lbActPorVencer.setText(actividadesRevisadas+" Actiivdades revisadas");
+        lbActPorVencer.setText(actividadesRevisadas+" Actiivdades sin completar");
      }
     
     private void irAVistaInicio(Estudiante estudiante) {
