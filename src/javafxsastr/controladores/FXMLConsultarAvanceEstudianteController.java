@@ -86,6 +86,7 @@ public class FXMLConsultarAvanceEstudianteController implements Initializable {
         this.academicoAuxiliar = academico;
         this.estudiante = estudiante;
         this.ventanaOrigen = origen;
+        ConsultarAvanceEstudianteSingleton.setConsultarAvanceEstudiante(null);
         consultarAvanceEstudiante
                 = ConsultarAvanceEstudianteSingleton.obtenerConsultarAvanceEstudiante(academico, estudiante, ventanaOrigen, curso);
         obtenerActividades();

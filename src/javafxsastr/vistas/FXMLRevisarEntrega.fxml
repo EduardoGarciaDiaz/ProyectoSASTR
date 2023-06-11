@@ -165,7 +165,7 @@
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-      <TextArea fx:id="txaComentariosDirector" layoutX="1031.0" layoutY="198.0" onKeyTyped="#activarBtnEnviarRevision" prefHeight="289.0" prefWidth="663.0" wrapText="true">
+      <TextArea fx:id="txaComentariosDirector" layoutX="1031.0" layoutY="198.0" onKeyTyped="#activarBtnEnviarRevision" prefHeight="289.0" prefWidth="663.0" style="-fx-background-color: white;" wrapText="true">
          <font>
             <Font size="18.0" />
          </font></TextArea>
@@ -185,7 +185,7 @@
                   </AnchorPane>
               </content>
             </ScrollPane>
-            <Button layoutX="461.0" layoutY="168.0" mnemonicParsing="false" onAction="#clicBtnAdjuntarArchivo" prefHeight="38.0" prefWidth="173.0" style="-fx-background-radius: 15; -fx-background-insets: 0; -fx-background-color: #efefef;" text="Adjuntar archivos">
+            <Button fx:id="btnAdjuntarArchivo" layoutX="461.0" layoutY="168.0" mnemonicParsing="false" onAction="#clicBtnAdjuntarArchivo" prefHeight="38.0" prefWidth="173.0" style="-fx-background-radius: 15; -fx-background-insets: 0; -fx-background-color: #efefef;" text="Adjuntar archivos">
                <graphic>
                   <ImageView fitHeight="26.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                      <image>

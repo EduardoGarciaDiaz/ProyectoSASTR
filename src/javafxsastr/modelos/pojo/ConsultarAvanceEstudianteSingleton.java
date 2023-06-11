@@ -57,5 +57,11 @@ public class ConsultarAvanceEstudianteSingleton {
     public Curso getCurso() {
         return curso;
     }
+
+    public static void setConsultarAvanceEstudiante(ConsultarAvanceEstudianteSingleton consultarAvanceEstudiante) {
+        ConsultarAvanceEstudianteSingleton.consultarAvanceEstudiante = consultarAvanceEstudiante;
+    }
+    
+    
     
 }

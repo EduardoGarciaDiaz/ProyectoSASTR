@@ -44,9 +44,9 @@ import javafxsastr.modelos.dao.EntregaDAO;
 import javafxsastr.modelos.pojo.Academico;
 import javafxsastr.modelos.pojo.Actividad;
 import javafxsastr.modelos.pojo.Archivo;
-import javafxsastr.modelos.pojo.Curso;
+import javafxsastr.modelos.pojo.ConsultarAvanceEstudianteSingleton;
 import javafxsastr.modelos.pojo.Entrega;
-import javafxsastr.modelos.pojo.Estudiante;
+import javafxsastr.utils.CodigosVentanas;
 import javafxsastr.utils.Utilidades;
 
 public class FXMLRevisarEntregaController implements Initializable {
@@ -72,7 +72,11 @@ public class FXMLRevisarEntregaController implements Initializable {
     private ObservableList<Archivo> archivosRevision = FXCollections.observableArrayList();
     @FXML
     private Button btnEnviarRevision;
+    @FXML
+    private Button btnAdjuntarArchivo;
     
+    private ConsultarAvanceEstudianteSingleton consultarAvanceEstudiante
+           = ConsultarAvanceEstudianteSingleton.obtenerConsultarAvanceEstudiante(null, null, null, null);
     private Entrega entrega;
     private ObservableList<Archivo> archivosEntrega;
     private Academico academico;
@@ -93,6 +97,10 @@ public class FXMLRevisarEntregaController implements Initializable {
             obtenerArchivos();
             cargarArchivos();
             btnEnviarRevision.setDisable(true);
+        }
+        if (!validarSiEsDirector()) {
+            txaComentariosDirector.setEditable(false);
+            btnAdjuntarArchivo.setDisable(true);
         }
     }
     
@@ -133,7 +141,7 @@ public class FXMLRevisarEntregaController implements Initializable {
     private void configurarBotonArchivo(Archivo archivo) {
         Pane contenedorArchivo = new Pane();
         contenedorArchivo.setPrefSize(200, 20);
-        contenedorArchivo.setStyle("-fx-background-color: #2E718D; -fx-background-radius: 15");
+        contenedorArchivo.setStyle("-fx-background-color: #C4DAEF; -fx-background-radius: 15");
         ImageView imgIconoArchivo = new ImageView(new Image("file:src/javafxsastr/recursos/iconos/archivo.png"));
         contenedorArchivo.getChildren().add(imgIconoArchivo);
         imgIconoArchivo.setFitHeight(37);
@@ -145,7 +153,8 @@ public class FXMLRevisarEntregaController implements Initializable {
         contenedorArchivo.getChildren().add(lbNombreArchivo);
         lbNombreArchivo.setLayoutX(50);
         lbNombreArchivo.setLayoutY(16);
-        if (archivo.getEsEntrega()) {
+        if (archivo.getEsEntrega() 
+                || (!validarSiEsDirector())) {
             ImageView imgIconoDescarga = new ImageView(new Image("file:src/javafxsastr/recursos/iconos/descargas.png"));
             contenedorArchivo.getChildren().add(imgIconoDescarga);
             imgIconoDescarga.setFitHeight(38);
@@ -156,7 +165,11 @@ public class FXMLRevisarEntregaController implements Initializable {
             contenedorArchivo.setOnMouseClicked((event) -> {
                 descargarArchivo(archivo);
             });
-            hbxContenedorArchivosAlumno.getChildren().add(contenedorArchivo);
+            if (!archivo.getEsEntrega()) {
+                hbxContenedorArchivosRevision.getChildren().add(contenedorArchivo);
+            } else {
+                hbxContenedorArchivosAlumno.getChildren().add(contenedorArchivo);
+            }
         } else {
             ImageView imgIconoEliminar = new ImageView(new Image("file:src/javafxsastr/recursos/iconos/eliminar-archivo-adjunto.png"));
             contenedorArchivo.getChildren().add(imgIconoEliminar);
@@ -200,7 +213,9 @@ public class FXMLRevisarEntregaController implements Initializable {
     private void agregarListenerCampoComentarios() {
         txaComentariosDirector.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
-                btnEnviarRevision.setDisable(false);
+                if (validarSiEsDirector()) {
+                    btnEnviarRevision.setDisable(false);
+                }
             }
             if (oldValue) {
                 if (txaComentariosDirector.getText().isEmpty()) {
@@ -251,7 +266,9 @@ public class FXMLRevisarEntregaController implements Initializable {
     
     @FXML
     private void activarBtnEnviarRevision(KeyEvent event) {
-        btnEnviarRevision.setDisable(false);
+        if (validarSiEsDirector()) {
+            btnEnviarRevision.setDisable(false);
+        }
     }
     
     private Entrega prepararEntregaValida() {
@@ -299,6 +316,10 @@ public class FXMLRevisarEntregaController implements Initializable {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+    
+    private boolean validarSiEsDirector() {
+        return consultarAvanceEstudiante.getVentanaOrigen() != CodigosVentanas.CONSULTAR_AVANCES_ESTUDIANTES;
     }
     
     private void manejarDAOException(DAOException ex) {
