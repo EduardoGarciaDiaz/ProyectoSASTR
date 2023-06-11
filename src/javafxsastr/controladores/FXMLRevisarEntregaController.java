@@ -77,6 +77,7 @@ public class FXMLRevisarEntregaController implements Initializable {
     private ObservableList<Archivo> archivosEntrega;
     private Academico academico;
     private Actividad actividad;
+    int numeroEntrega;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -93,6 +94,10 @@ public class FXMLRevisarEntregaController implements Initializable {
             cargarArchivos();
             btnEnviarRevision.setDisable(true);
         }
+    }
+    
+    public void setNumeroEntrega(int numeroEntrega) {
+        this.numeroEntrega = numeroEntrega;
     }
         
     private void setDatosEntrega(Actividad actividad){
