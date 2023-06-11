@@ -98,6 +98,16 @@
                   <TextField fx:id="txfHoraInicio" layoutX="2.0" layoutY="156.0" prefHeight="38.0" prefWidth="199.0" promptText="HH:MM" style="-fx-background-radius: 13;" />
                   <Label layoutY="-5.0" prefHeight="38.0" prefWidth="254.0" text="Hora de Inicio:" />
                   <Label layoutY="111.0" prefHeight="38.0" prefWidth="254.0" text="Hora de fin:" />
+                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="164.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../recursos/iconos/clock.jpg" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="162.0" layoutY="160.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../recursos/iconos/clock.jpg" />
+                     </image>
+                  </ImageView>
                </children>
             </Pane>
          </children>
