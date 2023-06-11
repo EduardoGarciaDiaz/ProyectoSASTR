@@ -8,6 +8,7 @@ package javafxsastr.controladores;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -345,8 +346,11 @@ public class FXMLFormularioUsuarioController implements Initializable {
                 }
             }
         }
-        if (esAdministrador==false) {
-            //TODO VERIFICAR QUE SI ES EDICION, DEBE HABER UN ADMINISTRADOR EN EL SISTEMA
+        if (!validarExistenciaOtroAdministrador()) {
+            datosValidos = false;
+            Utilidades.mostrarDialogoSimple("Operación no posible", 
+                            "No puedes dejar al sistema sin un administrador. "
+                            + "Asegúrate de que exista otro administrador en el sistema.", Alert.AlertType.WARNING);
         }
         if (datosValidos) {
             int respuesta;
@@ -453,6 +457,26 @@ public class FXMLFormularioUsuarioController implements Initializable {
         return esExistente;
     }
     
+    private boolean validarExistenciaOtroAdministrador() {
+        boolean existeOtroAdministrador = false;
+        int contadorAdministradores = 0;
+        try {
+            ArrayList<Usuario> usuarios = new UsuarioDAO().obtenerUsuarios();
+            for (Usuario user : usuarios) {
+                if (user.getEsAdministrador() && user.getIdEstadoUsuario() == 1) {
+                    contadorAdministradores++;
+                }
+                if (contadorAdministradores > 1) {
+                    existeOtroAdministrador = true;
+                    return existeOtroAdministrador;
+                }
+            }
+        } catch (DAOException ex) {
+            manejarDAOException(ex);
+        }
+        return existeOtroAdministrador;
+    }
+    
     public void guardarEstudiante(Estudiante estudianteNuevo) {
         int respuestaEstudiante = 0;
         try {
@@ -524,11 +548,8 @@ public class FXMLFormularioUsuarioController implements Initializable {
             if (cancelarRegistro) {
                 cerrarVentana();
              }
-        }
-       
-        
+        }        
     }
-    
     
     @FXML
     private void clicRegresar(MouseEvent event) {

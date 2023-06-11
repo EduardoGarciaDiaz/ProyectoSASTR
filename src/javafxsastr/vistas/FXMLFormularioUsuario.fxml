@@ -9,7 +9,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="940.0" prefWidth="1728.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxsastr.controladores.FXMLFormularioUsuarioController">
+<AnchorPane id="AnchorPane" prefHeight="940.0" prefWidth="1728.0" style="-fx-background-color: EFEFEF;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxsastr.controladores.FXMLFormularioUsuarioController">
    <children>
       <Pane layoutX="1.0" layoutY="1.0" prefHeight="50.0" prefWidth="1228.0" style="-fx-background-color: #18529d;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="500.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -54,12 +54,12 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <TextField fx:id="tfNombre" layoutX="97.0" layoutY="190.0" prefHeight="58.0" prefWidth="551.0" promptText="Javier">
+      <TextField fx:id="tfNombre" layoutX="97.0" layoutY="190.0" prefHeight="58.0" prefWidth="551.0" promptText="Javier" style="-fx-background-radius: 15;">
          <font>
             <Font size="20.0" />
          </font>
       </TextField>
-      <TextField fx:id="tfPrimerApellido" layoutX="97.0" layoutY="330.0" prefHeight="58.0" prefWidth="553.0" promptText="Sánchez">
+      <TextField fx:id="tfPrimerApellido" layoutX="97.0" layoutY="330.0" prefHeight="58.0" prefWidth="553.0" promptText="Sánchez" style="-fx-background-radius: 15;">
          <font>
             <Font size="20.0" />
          </font>
@@ -79,17 +79,17 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <TextField fx:id="tfSegundoApellido" layoutX="680.0" layoutY="329.0" prefHeight="58.0" prefWidth="553.0" promptText="García">
+      <TextField fx:id="tfSegundoApellido" layoutX="680.0" layoutY="329.0" prefHeight="58.0" prefWidth="553.0" promptText="García" style="-fx-background-radius: 15;">
          <font>
             <Font size="20.0" />
          </font>
       </TextField>
-      <TextField fx:id="tfCorreoInstitucional" layoutX="98.0" layoutY="453.0" prefHeight="58.0" prefWidth="556.0" promptText="correo@uv.mx">
+      <TextField fx:id="tfCorreoInstitucional" layoutX="98.0" layoutY="453.0" prefHeight="58.0" prefWidth="556.0" promptText="correo@uv.mx" style="-fx-background-radius: 15;">
          <font>
             <Font size="20.0" />
          </font>
       </TextField>
-      <TextField fx:id="tfContrasena" layoutX="103.0" layoutY="586.0" prefHeight="58.0" prefWidth="551.0">
+      <TextField fx:id="tfContrasena" layoutX="103.0" layoutY="586.0" prefHeight="58.0" prefWidth="551.0" style="-fx-background-radius: 15;">
          <font>
             <Font size="20.0" />
          </font>
@@ -104,12 +104,12 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <TextField fx:id="tfIdentificadorTipoUsuario" layoutX="101.0" layoutY="729.0" prefHeight="58.0" prefWidth="395.0" visible="false">
+      <TextField fx:id="tfIdentificadorTipoUsuario" layoutX="101.0" layoutY="729.0" prefHeight="58.0" prefWidth="395.0" style="-fx-background-radius: 15;" visible="false">
          <font>
             <Font size="20.0" />
          </font>
       </TextField>
-      <ComboBox fx:id="cbTipoUsuario" layoutX="688.0" layoutY="587.0" prefHeight="55.0" prefWidth="424.0" promptText="Selecciona un tipo de usuario" />
+      <ComboBox fx:id="cbTipoUsuario" layoutX="688.0" layoutY="587.0" prefHeight="55.0" prefWidth="424.0" promptText="Selecciona un tipo de usuario" style="-fx-background-radius: 15;" />
       <CheckBox fx:id="chbxEsAdministrador" layoutX="1011.0" layoutY="98.0" mnemonicParsing="false" text="Es Administrador">
          <font>
             <Font size="24.0" />
@@ -121,12 +121,12 @@
             <Image url="@../recursos/iconos/registro-usuario.png" />
          </image>
       </ImageView>
-      <Button fx:id="btnGuardar" layoutX="770.0" layoutY="840.0" mnemonicParsing="false" onAction="#clicGuardar" prefHeight="55.0" prefWidth="340.0" text="Crear">
+      <Button fx:id="btnGuardar" layoutX="770.0" layoutY="840.0" mnemonicParsing="false" onAction="#clicGuardar" prefHeight="55.0" prefWidth="340.0" style="-fx-background-color: D4F1C9; -fx-background-radius: 15;" text="Crear">
          <font>
             <Font size="24.0" />
          </font>
       </Button>
-      <Button layoutX="199.0" layoutY="838.0" mnemonicParsing="false" onAction="#clicCancelar" prefHeight="55.0" prefWidth="340.0" text="Cancelar">
+      <Button layoutX="199.0" layoutY="838.0" mnemonicParsing="false" onAction="#clicCancelar" prefHeight="55.0" prefWidth="340.0" style="-fx-background-color: FCCFCF; -fx-background-radius: 15;" text="Cancelar">
          <font>
             <Font size="24.0" />
          </font>
