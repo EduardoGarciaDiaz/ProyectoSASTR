@@ -305,7 +305,7 @@ public class FXMLInicioController implements Initializable, INotificacionClicBot
         }
     }
 
-    @Override
+    @Override 
     public void notificarClicBotonUsuarios() {
         irAVistaUsuarios(usuario);
     }
