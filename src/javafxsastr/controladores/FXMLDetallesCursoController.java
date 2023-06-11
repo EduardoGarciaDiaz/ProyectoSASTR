@@ -23,7 +23,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -89,6 +88,7 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
     public void setUsuarioYCurso(Academico academico, Curso curso) {
         this.academico = academico;
         this.cursoActual = curso;
+        setLogoActivo();
         if (cursoActual != null) {
             obtenerPeriodoEscolar();
         } else {
@@ -153,14 +153,13 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
     
     private void obtenerEstudiantesCurso() {        
         estudiantes = FXCollections.observableArrayList(); 
-        if(cursoActual != null) {
+        if (cursoActual != null) {
             int idCurso = cursoActual.getIdCurso();
-        try {
-            estudiantes.addAll(new EstudianteDAO().obtenerEstudiantesPorIdCurso(idCurso));
-        } catch (DAOException ex) {
-            ex.printStackTrace();
-            manejarDAOException(ex);
-        }
+            try {
+                estudiantes.addAll(new EstudianteDAO().obtenerEstudiantesPorIdCurso(idCurso));
+            } catch (DAOException ex) {
+                manejarDAOException(ex);
+            }
         }        
     }
     
@@ -212,7 +211,7 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
     }
     
     private void desactivarUsuario(Estudiante estudiante) {
-        if(Utilidades.mostrarDialogoConfirmacion("Desactivar Estudiante de curso",
+        if (Utilidades.mostrarDialogoConfirmacion("Desactivar Estudiante de curso",
                 "¿Estas seguro que deseas desactivar al estudiante del curso?")) {
             try {
                 Usuario usuario = new UsuarioDAO().obtenerUsuarioPorId(estudiante.getIdUsuario());
@@ -226,7 +225,7 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
     }
     
     private void activarUsuario(Estudiante estudiante) {
-        if(Utilidades.mostrarDialogoConfirmacion("Activar Estudiante de curso",
+        if (Utilidades.mostrarDialogoConfirmacion("Activar Estudiante de curso",
                 "¿Estas seguro que deseas activar al estudiante del curso?")) {
             try {
                 Usuario usuario = new UsuarioDAO().obtenerUsuarioPorId(estudiante.getIdUsuario());
@@ -260,7 +259,7 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
     }
      
     private void setLogoActivo() {
-        if(cursoActual.getIdEstadoCurso()== 1) {
+        if (cursoActual.getIdEstadoCurso()== 1) {
            imvActivar.setImage(new Image("file:src/javafxsastr/recursos/iconos/desactivarCurso.jpg")); 
            crlEstadoCurso.setFill(Color.web("#C3E0BE"));
         }else {
@@ -268,22 +267,7 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
             crlEstadoCurso.setFill(Color.web("#EBE555"));
         }        
     }
-            
-    private void manejarDAOException(DAOException ex) {
-        switch (ex.getCodigo()) {
-            case ERROR_CONSULTA:
-                System.out.println("Ocurrió un error de consulta.");
-                ex.printStackTrace();
-                break;
-            case ERROR_CONEXION_BD:
-                Utilidades.mostrarDialogoSimple("Error de conexion", 
-                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", 
-                        Alert.AlertType.ERROR);
-            default:
-                throw new AssertionError();
-        }
-    }
-    
+               
     private void cerrarVentana() {
         Stage escenarioActual = (Stage) lbBloque.getScene().getWindow();
         escenarioActual.close();
@@ -326,7 +310,6 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
         }
         iniciarVentana();
     }
-    
 
     @FXML
     private void clicBtnRegresar(MouseEvent event) {
@@ -335,7 +318,23 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
 
     @FXML
     private void clicEditarCurso(MouseEvent event) {
-            irAVistaEditarCurso(); 
+        irAVistaEditarCurso(); 
+    }
+    
+    @FXML
+    private void clicDesactivarCurso(MouseEvent event) {
+        if(cursoActual.getIdEstadoCurso() == 1) {
+            if(Utilidades.mostrarDialogoConfirmacion("Desactivar Estudiante de curso",
+                "¿Estas seguro que deseas desactivar el curso?")) {
+                      desactivarCurso(cursoActual);
+            }          
+        }else {
+            if(Utilidades.mostrarDialogoConfirmacion("Activar Estudiante de curso",
+                "¿Estas seguro que deseas activar el curso?")) {
+                      activarCurso(cursoActual);
+            }         
+        }
+        setLogoActivo();
     }
     
     private void irAVistaEditarCurso() {
@@ -353,22 +352,6 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
             ex.printStackTrace();
         }
         iniciarVentana();
-    }
-
-    @FXML
-    private void clicDesactivarCurso(MouseEvent event) {
-        if(cursoActual.getIdEstadoCurso() == 1) {
-            if(Utilidades.mostrarDialogoConfirmacion("Desactivar Estudiante de curso",
-                "¿Estas seguro que deseas desactivar el curso?")) {
-                      desactivarCurso(cursoActual);
-            }          
-        }else {
-            if(Utilidades.mostrarDialogoConfirmacion("Activar Estudiante de curso",
-                "¿Estas seguro que deseas activar el curso?")) {
-                      activarCurso(cursoActual);
-            }         
-        }
-        setLogoActivo();
     }
     
     private void irAVistaCursos() {
@@ -398,4 +381,19 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
        }
     }
     
+    private void manejarDAOException(DAOException ex) {
+        switch (ex.getCodigo()) {
+            case ERROR_CONSULTA:
+                System.out.println("Ocurrió un error de consulta.");
+                ex.printStackTrace();
+                break;
+            case ERROR_CONEXION_BD:
+                Utilidades.mostrarDialogoSimple("Error de conexion", 
+                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", 
+                        Alert.AlertType.ERROR);
+            default:
+                throw new AssertionError();
+        }
+    }
+   
 }
