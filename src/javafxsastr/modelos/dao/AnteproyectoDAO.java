@@ -60,7 +60,8 @@ public class AnteproyectoDAO {
             "on MS.idModalidad = A.idModalidad " +
             "left join sastr.cuerpos_academicos CA " +
             "on A.idCuerpoAcademico = CA.idCuerpoAcademico "
-            + "where A.idCuerpoAcademico = ? AND A.idEstadoSeguimiento != 1";
+            + "where A.idCuerpoAcademico = ? AND A.idEstadoSeguimiento != 1 "
+            + "AND A.idEstadoSeguimiento != 7";
     private final String OBTENER_ANTEPROYECTOS_POR_ACADEMICO = "SELECT  " +
             "idAnteproyecto, fechaCreacionAnteproyecto, nombreProyectoInvestigacion, ciudadCreacionAnteproyecto, " +
             "lineaInvestigacion, duracionAproximadaAnteproyecto, nombreTrabajoRecepcional, requisitosAnteproyecto, " +

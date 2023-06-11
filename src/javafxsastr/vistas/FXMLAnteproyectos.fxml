@@ -84,36 +84,31 @@
                   <Font size="18.0" />
                </font>
             </Button>
-            <Button layoutX="25.0" layoutY="24.0" mnemonicParsing="false" onAction="#clicBtnTodos" prefHeight="31.0" prefWidth="140.0" style="-fx-background-radius: 15; -fx-background-color: #C4DAEF;" text="Todos">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Button>
          </children>
       </Pane>
-      <Pane fx:id="contenedorBotonesRCA" layoutX="60.0" layoutY="131.0" prefHeight="86.0" prefWidth="894.0" visible="false">
+      <Pane fx:id="contenedorBotonesRCA" layoutX="60.0" layoutY="131.0" prefHeight="86.0" prefWidth="1066.0" visible="false">
          <children>
-            <Button layoutX="725.0" layoutY="24.0" mnemonicParsing="false" onAction="#clicBtnConcluidos" prefHeight="31.0" prefWidth="140.0" style="-fx-background-radius: 15; -fx-background-color: #C4DAEF;" text="Concluidos">
+            <Button layoutX="829.0" layoutY="16.0" mnemonicParsing="false" onAction="#clicBtnConcluidos" prefHeight="31.0" prefWidth="140.0" style="-fx-background-radius: 15; -fx-background-color: #C4DAEF;" text="Concluidos">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
-            <Button layoutX="550.0" layoutY="23.0" mnemonicParsing="false" onAction="#clicBtnNoAsignados" prefHeight="31.0" prefWidth="140.0" style="-fx-background-radius: 15; -fx-background-color: #C4DAEF;" text="No asignados">
+            <Button layoutX="666.0" layoutY="17.0" mnemonicParsing="false" onAction="#clicBtnNoAsignados" prefHeight="31.0" prefWidth="140.0" style="-fx-background-radius: 15; -fx-background-color: #C4DAEF;" text="No asignados">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
-            <Button layoutX="375.0" layoutY="24.0" mnemonicParsing="false" onAction="#clicBtnAsignados" prefHeight="31.0" prefWidth="140.0" style="-fx-background-radius: 15; -fx-background-color: #C4DAEF;" text="Asignados">
+            <Button layoutX="502.0" layoutY="16.0" mnemonicParsing="false" onAction="#clicBtnAsignados" prefHeight="31.0" prefWidth="140.0" style="-fx-background-radius: 15; -fx-background-color: #C4DAEF;" text="Asignados">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
-            <Button layoutX="195.0" layoutY="24.0" mnemonicParsing="false" onAction="#clicBtnSinPublicar" prefHeight="31.0" prefWidth="140.0" style="-fx-background-radius: 15; -fx-background-color: #C4DAEF;" text="Sin publicar">
+            <Button layoutX="340.0" layoutY="19.0" mnemonicParsing="false" onAction="#clicBtnSinPublicar" prefHeight="31.0" prefWidth="140.0" style="-fx-background-radius: 15; -fx-background-color: #C4DAEF;" text="Sin publicar">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
-            <Button layoutX="25.0" layoutY="24.0" mnemonicParsing="false" onAction="#clicBtnSinRevisar" prefHeight="31.0" prefWidth="140.0" style="-fx-background-radius: 15; -fx-background-color: #C4DAEF;" text="Sin revisar">
+            <Button layoutX="177.0" layoutY="21.0" mnemonicParsing="false" onAction="#clicBtnSinRevisar" prefHeight="31.0" prefWidth="140.0" style="-fx-background-radius: 15; -fx-background-color: #C4DAEF;" text="Sin revisar">
                <font>
                   <Font size="18.0" />
                </font>
@@ -133,5 +128,10 @@
          </children>
       </Pane>
       <ImageView fitHeight="40.0" fitWidth="38.0" layoutX="1140.0" layoutY="87.0" pickOnBounds="true" preserveRatio="true" />
+      <Button layoutX="82.0" layoutY="153.0" mnemonicParsing="false" onAction="#clicBtnTodos" prefHeight="31.0" prefWidth="140.0" style="-fx-background-radius: 15; -fx-background-color: #C4DAEF;" text="Todos">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

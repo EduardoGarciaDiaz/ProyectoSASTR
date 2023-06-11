@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Comparator;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -66,6 +68,7 @@ public class FXMLAnteproyectosController implements Initializable, INotificacion
     private Pane contenedorBotonesAcademico;
     @FXML
     private Pane contenedorBotonesRCA;
+    private CuerpoAcademico cuerpoAcademico;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -84,7 +87,7 @@ public class FXMLAnteproyectosController implements Initializable, INotificacion
         this.academico = academico;
         this.ventanaOrigen = codigoVentana;
         if (this.esRCA) {
-            CuerpoAcademico cuerpoAcademico = recuperarCuerpoAcademicoDelRCA(academico.getIdAcademico());
+            cuerpoAcademico = recuperarCuerpoAcademicoDelRCA(academico.getIdAcademico());
             recuperarAnteproyectosDelCA(cuerpoAcademico.getIdCuerpoAcademico());
             pnBotonCrearAnteproyecto.setVisible(false);
             contenedorBotonesRCA.setVisible(true);
@@ -128,9 +131,10 @@ public class FXMLAnteproyectosController implements Initializable, INotificacion
     
     public void recuperarAnteproyectosPublicados() {
         try {
-             int idEstadoSeguimiento = new EstadoSeguimientoDAO().obtenerIdEstadoSeguimiento("Publicado");
+            int idEstadoSeguimiento = new EstadoSeguimientoDAO().obtenerIdEstadoSeguimiento("Publicado");
             anteproyectos = FXCollections.observableArrayList(
-                new AnteproyectoDAO().obtenerAnteproyectosPorEstadoSeguimiento(idEstadoSeguimiento));
+                new AnteproyectoDAO().obtenerAnteproyectosPorEstadoSeguimiento(idEstadoSeguimiento)
+            );
         } catch (DAOException ex) {
             manejarDAOException(ex);
         }
@@ -208,14 +212,11 @@ public class FXMLAnteproyectosController implements Initializable, INotificacion
         if (anteproyectos.size() > 0) {
             FilteredList<Anteproyecto> filtroAnteproyectosNoAsignados = new FilteredList<>(anteproyectos, p -> true);
             filtroAnteproyectosNoAsignados.setPredicate(anteproyecto -> {
-                try {
-                    if (new EstudianteDAO().verificarSiAnteproyectoEstaAsignado(anteproyecto.getIdAnteproyecto())) {   
-                        return false;
-                    }
-                } catch (DAOException ex) {
-                    manejarDAOException(ex);
+                if ("Validado".equals(anteproyecto.getEstadoSeguimiento())
+                        || "Publicado".equals(anteproyecto.getEstadoSeguimiento())) {   
+                    return true;
                 }
-                return true;
+                return false;
             });
             SortedList<Anteproyecto> sortedList = new SortedList<>(filtroAnteproyectosNoAsignados,
                     Comparator.comparing(Anteproyecto::getNombreTrabajoRecepcional));
@@ -243,7 +244,7 @@ public class FXMLAnteproyectosController implements Initializable, INotificacion
 
     @Override
     public void notificarClicBotonCorregirAnteproyectoe(Anteproyecto anteproyecto) {
-        
+        irAvistaFormularioAnteproyecto(anteproyecto, true);
     }
 
     @Override
@@ -253,6 +254,28 @@ public class FXMLAnteproyectosController implements Initializable, INotificacion
 
     @Override
     public void notificarClicPublicarAnteproyecto(Anteproyecto anteproyecto) {
+        try {
+            int idEstadoSeguimiento = new EstadoSeguimientoDAO().obtenerIdEstadoSeguimiento("Publicado");
+            anteproyecto.setIdEstadoSeguimiento(idEstadoSeguimiento);
+            new AnteproyectoDAO().actualizarAnteproyecto(anteproyecto);
+            recuperarAnteproyectosDelCA(cuerpoAcademico.getIdCuerpoAcademico());
+            clicBtnNoAsignados(new ActionEvent());
+        } catch (DAOException ex) {
+            manejarDAOException(ex);
+        }
+    }
+    
+    @Override
+    public void notificarClicDespublicarAnteproyecto(Anteproyecto anteproyecto) {
+        try {
+            int idEstadoSeguimiento = new EstadoSeguimientoDAO().obtenerIdEstadoSeguimiento("Validado");
+            anteproyecto.setIdEstadoSeguimiento(idEstadoSeguimiento);
+            new AnteproyectoDAO().actualizarAnteproyecto(anteproyecto);
+            recuperarAnteproyectosDelCA(cuerpoAcademico.getIdCuerpoAcademico());
+            clicBtnSinPublicar(new ActionEvent());
+        } catch (DAOException ex) {
+            manejarDAOException(ex);
+        }
     }
 
     @FXML
@@ -336,7 +359,7 @@ public class FXMLAnteproyectosController implements Initializable, INotificacion
 
     @FXML
     private void clicBtnSinPublicar(ActionEvent event) {
-        configurarFiltroBusqueda("Sin publicar");
+        configurarFiltroBusqueda("Validado");
     }
 
     @FXML
