@@ -25,7 +25,7 @@
          </effect>
       </ImageView>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0d64b555" height="940.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1411.0" />
-      <Label layoutX="117.0" layoutY="137.0" prefHeight="289.0" prefWidth="690.0" text="Sistema de Apoyo al Seguimiento de Experiencia Recepcional" textFill="WHITE" wrapText="true">
+      <Label layoutX="117.0" layoutY="137.0" prefHeight="289.0" prefWidth="690.0" text="Sistema de Apoyo al Seguimiento de Trabajo Recepcional" textFill="WHITE" wrapText="true">
          <font>
             <Font name="System Bold" size="46.0" />
          </font>

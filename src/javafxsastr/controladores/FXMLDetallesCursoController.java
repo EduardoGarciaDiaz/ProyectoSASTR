@@ -86,8 +86,8 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
     public void initialize(URL url, ResourceBundle rb) {        
     }
     
-    public void setUsuarioYCurso(Academico academico, Curso curso) {
-        this.academico = academico;
+    public void setUsuarioYCurso(Academico academicoN, Curso curso) {
+        this.academico = academicoN;
         this.cursoActual = curso;
         if (cursoActual != null) {
             obtenerPeriodoEscolar();
@@ -279,6 +279,7 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
                 Utilidades.mostrarDialogoSimple("Error de conexion", 
                         "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", 
                         Alert.AlertType.ERROR);
+                break;
             default:
                 throw new AssertionError();
         }

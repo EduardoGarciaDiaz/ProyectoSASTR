@@ -41,12 +41,7 @@
                   </ImageView>
                </children>
             </Pane>
-            <AnchorPane fx:id="menuContraido" layoutY="54.0" prefHeight="890.0" prefWidth="75.0" scaleZ="10.0" style="-fx-background-color: #15294f;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="50.0">
-               <rotationAxis>
-                  <Point3D />
-               </rotationAxis>
-            </AnchorPane>
-            <Pane layoutX="138.0" layoutY="127.0" prefHeight="799.0" prefWidth="953.0">
+            <Pane layoutX="38.0" layoutY="131.0" prefHeight="799.0" prefWidth="960.0">
                <children>
                   <Label layoutX="51.0" layoutY="76.0" prefHeight="50.0" prefWidth="246.0" text="Nombre del CA*">
                      <font>
@@ -155,7 +150,7 @@
                   <Label fx:id="lbDescripcion" layoutX="51.0" layoutY="461.0" prefHeight="21.0" prefWidth="472.0" textFill="RED" />
                </children>
             </Pane>
-            <Pane layoutX="75.0" layoutY="50.0" prefHeight="63.0" prefWidth="369.0">
+            <Pane layoutY="50.0" prefHeight="63.0" prefWidth="369.0">
                <children>
                   <ImageView fitHeight="38.0" fitWidth="96.0" layoutX="35.0" layoutY="13.0" onMouseClicked="#clicBtnRegresar" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -179,7 +174,7 @@
                   <Font size="25.0" />
                </font>
             </Button>
-            <Pane layoutX="1081.0" layoutY="131.0" prefHeight="728.0" prefWidth="647.0">
+            <Pane layoutX="1010.0" layoutY="131.0" prefHeight="728.0" prefWidth="707.0">
                <children>
                   <TextField fx:id="bsdLgac" layoutX="23.0" layoutY="133.0" prefHeight="31.0" prefWidth="398.0" style="-fx-background-radius: 13; -fx-background-color: F4F4F4;" />
                   <Label layoutY="24.0" prefHeight="45.0" prefWidth="847.0" text="Lineas de aplicacion y generacion del conocimiento (LGAC)">
@@ -202,11 +197,11 @@
                         <Image url="@../recursos/buacdr..jpg" />
                      </image>
                   </ImageView>
-                  <TableView fx:id="tblvLgacs" layoutX="23.0" layoutY="187.0" prefHeight="320.0" prefWidth="619.0">
+                  <TableView fx:id="tblvLgacs" layoutX="23.0" layoutY="187.0" prefHeight="320.0" prefWidth="674.0">
                     <columns>
                         <TableColumn fx:id="colNoLgac" prefWidth="51.0" text="No" />
-                      <TableColumn fx:id="colLgacNombre" prefWidth="242.0" text="LGAC" />
-                      <TableColumn fx:id="colDescipcionLgac" minWidth="0.0" prefWidth="325.0" text="Descripcion" />
+                      <TableColumn fx:id="colLgacNombre" prefWidth="197.0" text="LGAC" />
+                      <TableColumn fx:id="colDescipcionLgac" minWidth="0.0" prefWidth="370.0" text="Descripcion" />
                     </columns>
                   </TableView>
                   <Label layoutX="23.0" layoutY="87.0" prefHeight="36.0" prefWidth="219.0" text="Buscar una LGAC">
@@ -215,7 +210,7 @@
                      </font>
                   </Label>
                   <ListView fx:id="lvLgac" layoutX="23.0" layoutY="167.0" prefHeight="135.0" prefWidth="398.0" visible="false" />
-                  <Button fx:id="btnEliminar" layoutX="568.0" layoutY="516.0" mnemonicParsing="false" onAction="#clicEliminarLgac" style="-fx-background-color: FCCFCF; -fx-background-radius: 13;" text="Eliminar" />
+                  <Button fx:id="btnEliminar" layoutX="620.0" layoutY="515.0" mnemonicParsing="false" onAction="#clicEliminarLgac" style="-fx-background-color: FCCFCF; -fx-background-radius: 13;" text="Eliminar" />
                </children>
             </Pane>
          </children>
