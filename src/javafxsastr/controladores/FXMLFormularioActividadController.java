@@ -11,6 +11,7 @@ import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -57,13 +58,12 @@ import javafxsastr.modelos.pojo.Anteproyecto;
 import javafxsastr.modelos.pojo.Curso;
 import javafxsastr.modelos.pojo.Estudiante;
 import javafxsastr.modelos.pojo.HistorialCambios;
+import javafxsastr.utils.FiltrosTexto;
 import javafxsastr.utils.Utilidades;
 
 
 public class FXMLFormularioActividadController implements Initializable {
 
-    @FXML
-    private AnchorPane menuContraido;
     @FXML
     private TextField txfNombreActividad;
     @FXML
@@ -82,40 +82,10 @@ public class FXMLFormularioActividadController implements Initializable {
     private TextField txfHoraInicio;
     @FXML
     private TextField txfHoraFin;
-    @FXML
-    private Pane paneLateralIzquierdo;
-    @FXML
-    private Label lbCurso;
-    @FXML
-    private Label lbNrc;
-    @FXML
-    private Label lbDocente;
-    @FXML
-    private Label lbPeriodo;
-    @FXML
-    private Label lbAnteproyecto;
-    @FXML
-    private Label lbDirector;
-    @FXML
-    private Label lbCodirector;
-    @FXML
-    private Pane panelLateral;
-    @FXML
-    private Line lineaVeritcal;
-    @FXML
-    private Line lineaHorizontal;
-    @FXML
-    private ImageView imgBtnDesplegar;
-    @FXML
-    private Label lbActRevisadas;
-    @FXML
-    private Label lbActSinPendientes;
-    @FXML
     private Label lbActPorVencer;
     @FXML
     private Label lbTtituloVentana;
 
-    private INotificacionSeleccionItem interfazNotificaicon;
     private Estudiante estudiante;
     private Anteproyecto anteproyecto;
     private Curso curso;
@@ -127,18 +97,30 @@ public class FXMLFormularioActividadController implements Initializable {
     private int revisadas;
     private boolean isEdicion = false;
     private Actividad actividadEdicion;
-   
+    private final int ESTADO_PROXIMA = 1; 
+    private final int LIMIT_CARAC_NOMBRE = 200;
+    private final int LIMIT_CARAC_DETALLES = 1000;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+             
+    } 
+    
+    public void iniciarFormularioNUevo(Estudiante estudianteN, boolean edicion, Actividad act ) {        
+        isEdicion = edicion;
+        this.estudiante = estudianteN;
+        if(isEdicion) {
+            lbTtituloVentana.setText("Modificar actividad");
+            actividadEdicion = act;           
+            cargarInformacion();
+        }   
         btnGuardar.setDisable(true);
         menuDatos = false;
-        inicializarListeners();   
-        if(isEdicion) {
-            lbTtituloVentana.setText("Actualizar Actividad");
-        }        
+        inicializarListeners();  
+        iniciarFiltros(); 
     }
     
-    private void cargarInformacion() {     
+     private void cargarInformacion() {     
         Actividad actividad = actividadEdicion;
         txfNombreActividad.setText(actividad.getNombreActividad());
         txaDetallesActividad.setText(actividad.getDetallesActividad());
@@ -151,43 +133,39 @@ public class FXMLFormularioActividadController implements Initializable {
         btnGuardar.setDisable(false);
     }
     
-    public void iniciarFormularioNUevo(Estudiante estudianteN, boolean edicion, Actividad act ) {        
-        isEdicion = edicion;
-        this.estudiante = estudianteN;
-        obtenerDatosRelacionadoAlEstudiante();
-        if(isEdicion) {
-            lbTtituloVentana.setText("Modificar actividad");
-            actividadEdicion = act;           
-            cargarInformacion();
-        }        
-    }
-    
     private void inicializarListeners() {
         txfNombreActividad.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                
-                validarBtnGuardar();
-                
+                if(txfNombreActividad.getText().length() <= LIMIT_CARAC_NOMBRE) {
+                    validarBtnGuardar();
+                    lbNombreLgac.setText("");
+                }else { 
+                    mostraMensajelimiteSuperado(LIMIT_CARAC_NOMBRE,"Nombre Actividad",lbNombreLgac);
+                }            
             }
         });        
         txaDetallesActividad.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                
-                validarBtnGuardar();
+                if(txaDetallesActividad.getText().length() <= LIMIT_CARAC_DETALLES) {
+                    validarBtnGuardar();
+                    lbDescirpcionLgac.setText("");
+                }else { 
+                    mostraMensajelimiteSuperado(LIMIT_CARAC_DETALLES,"Detalles Actividad",lbDescirpcionLgac);
+                }  
             }
         });
         txfHoraInicio.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-               validarHora(txfHoraInicio);                
+               validarBtnGuardar();               
             }
         });
         txfHoraFin.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                validarHora(txfHoraFin);                
+               validarBtnGuardar();                
             }
         });
         dtpInicio.onMouseEnteredProperty().addListener(new ChangeListener<EventHandler<? super MouseEvent>>(){
@@ -206,6 +184,13 @@ public class FXMLFormularioActividadController implements Initializable {
         });        
     }
     
+    private void iniciarFiltros() {
+        FiltrosTexto.filtroLetrasNumerosPuntosComasSignosComunes(txfNombreActividad);
+        FiltrosTexto.filtroLetrasNumerosPuntosComasSignosComunes(txaDetallesActividad);
+        FiltrosTexto.filtroHoraMinutos(txfHoraInicio);
+        FiltrosTexto.filtroHoraMinutos(txfHoraFin);
+    }
+    
     private void validarBtnGuardar() {
         if( txfNombreActividad.getText().isEmpty() || txaDetallesActividad.getText().length()== 0
                 || dtpInicio.getValue() == null || dtpFin.getValue() == null ||
@@ -216,41 +201,45 @@ public class FXMLFormularioActividadController implements Initializable {
         }
     }
     
-    public void validarFechas() {   
-        try {
-            SimpleDateFormat fecha = new SimpleDateFormat("yyyy-MM-dd");
-            Date primeraFecha = fecha.parse(dtpInicio.getValue().toString());
-            Date segundaFecha = fecha.parse(dtpFin.getValue().toString());
-            Date periodoEscolar = fecha.parse(curso.getFechaFinCurso());
-            Date periodoEscolarInicio = fecha.parse(curso.getFechaInicioCurso());
-            long diferenciaMilisecond = segundaFecha.getTime()-primeraFecha.getTime();    
-            long diferenciaTiempoActual = primeraFecha.getTime()-periodoEscolarInicio.getTime(); 
-            long diferenciaFinCurso = periodoEscolar.getTime()-segundaFecha.getTime();            
-            LocalDate fechaInicio = dtpInicio.getValue();
-            LocalDate fechaFin = dtpFin.getValue();
-                if(diferenciaMilisecond <= 0 || diferenciaFinCurso <= 0 || diferenciaTiempoActual < 0) {
-                   Utilidades.mostrarDialogoSimple("Error","Fechas Invalidas", Alert.AlertType.ERROR);
-                }else{
-                    if(isEdicion) {
-                        actualizarActividad();
-                    }else {
-                        registrarActiivad(); 
-                    }                   
-                }
-        } catch (ParseException ex) {
-            Utilidades.mostrarDialogoSimple("Error","Intentelo mas tarde", Alert.AlertType.ERROR);
-        }
+   public void validarFechas() { 
+        LocalDate fechaInicioActividad = dtpInicio.getValue();
+        LocalDate fechaFinActividad = dtpFin.getValue();        
+        LocalDate periodoEscolarInicio = LocalDate.parse(curso.getInicioPeriodoEscolar());
+        LocalDate periodoEscolarFin = LocalDate.parse(curso.getFinPeriodoEscolar());    
+        if(fechaInicioActividad.isBefore(periodoEscolarInicio) ||
+                    fechaInicioActividad.isAfter(fechaFinActividad) || fechaFinActividad.isAfter(periodoEscolarFin)) {
+               Utilidades.mostrarDialogoSimple("Error","Fechas Invalidas", Alert.AlertType.ERROR);
+            }else{
+               validarHora(fechaInicioActividad, fechaFinActividad);
+            }        
     }
     
-    private void validarHora(TextField textHora) {
-        if(Pattern.matches("^([01]?\\d|2[0-3]):[0-5]\\d$", textHora.getText())){
-            validarBtnGuardar();
-            textHora.setStyle("-fx-border-width: 2;");
+    private void validarHora(LocalDate fechaInicioActividad, LocalDate fechaFinActividad ) {
+        LocalTime horaInico = LocalTime.of((Integer.parseInt(txfHoraInicio.getText().substring(0,1))),
+                                       Integer.parseInt(txfHoraInicio.getText().substring(3,4)));
+       LocalTime horaFin = LocalTime.of((Integer.parseInt(txfHoraFin.getText().substring(0,1))),
+                                       Integer.parseInt(txfHoraFin.getText().substring(3,4))); 
+        if(fechaInicioActividad.isEqual(fechaFinActividad)){
+            if(horaFin.isBefore(horaInico)) {
+                Utilidades.mostrarDialogoSimple("Error","Horas Invalidas", Alert.AlertType.ERROR);
+                txfHoraInicio.setStyle("-fx-border-color:RED; -fx-border-width: 2;");
+                txfHoraFin.setStyle("-fx-border-color:RED; -fx-border-width: 2;");
+            }else {
+                aceptarActividad();
+            }          
         }else {
-            btnGuardar.setDisable(true);
-            textHora.setStyle("-fx-border-color:RED; -fx-border-width: 2;");
+            aceptarActividad();
         }
-            
+    }
+        
+    private void aceptarActividad() {
+       txfHoraFin.setStyle("-fx-border-width: 2;");
+       txfHoraInicio.setStyle("-fx-border-width: 2;");
+        if(isEdicion) {
+            actualizarActividad();
+        }else {
+            registrarActiivad(); 
+        }
     }
     
     private void registrarActiivad() {
@@ -263,9 +252,9 @@ public class FXMLFormularioActividadController implements Initializable {
         actividadNueva.setHoraFinActividad(txfHoraFin.getText()+":00");
         actividadNueva.setFechaCreaciónActividad(LocalDate.now().toString());
         actividadNueva.setIdAnteproyecto(anteproyecto.getIdAnteproyecto());
-        actividadNueva.setIdEstadoActividad(1);
         actividadNueva.setIdEstudiante(estudiante.getIdEstudiante());
-        actividadNueva.setEstadoActividad("Creada");
+        actividadNueva.setEstadoActividad("Proxima");
+        actividadNueva.setIdEstadoActividad(ESTADO_PROXIMA);
         try {
             int exito = new ActividadDAO().guardarActividad(actividadNueva);
             Utilidades.mostrarDialogoSimple("Registro Exitoso","Actividad agregada con exito", 
@@ -325,8 +314,7 @@ public class FXMLFormularioActividadController implements Initializable {
             }
             Utilidades.mostrarDialogoSimple("Actualizacion Exitoso","Actividad actualizada con exito", 
                     Alert.AlertType.INFORMATION);
-            //interfazNotificaicon.notificarPerdidaDelFoco();
-            cerrarVentana();
+            irAVistaActividades(estudiante);
         }catch (ParseException ex) {
                         Utilidades.mostrarDialogoSimple("Error", "Hubo un error al castear la fechas", 
                     Alert.AlertType.ERROR);
@@ -346,90 +334,11 @@ public class FXMLFormularioActividadController implements Initializable {
         dtpFin.setValue(null);
     }
     
-    private void obtenerDatosRelacionadoAlEstudiante() {
-        AnteproyectoDAO anteproyectoDao = new AnteproyectoDAO();
-        CursoDAO cursoDao = new CursoDAO();        
-        AcademicoDAO academicoDao = new AcademicoDAO(); 
-        ActividadDAO acatividadesDao = new ActividadDAO();
-        try {
-           curso = cursoDao.ordenarCursosPorEstudiante(estudiante.getIdEstudiante());
-           anteproyecto = anteproyectoDao.obtenerAnteproyectosPorEstudiante(estudiante.getIdEstudiante());
-           academico = academicoDao.obtenerAcademicoPorId(curso.getIdAcademico());
-           //codirectores =  FXCollections.observableArrayList(new AcademicoDAO().obtenerCodirectoresProAnteproyecto(anteproyecto.getIdAnteproyecto()));
-           porVnecer = acatividadesDao.totalActividades(1,estudiante.getIdEstudiante());
-           realizadas = acatividadesDao.totalActividades(4,estudiante.getIdEstudiante());
-           revisadas = acatividadesDao.totalActividades(3,estudiante.getIdEstudiante());
-        } catch (DAOException ex) {
-            Logger.getLogger(FXMLFormularioActividadController.class.getName()).log(Level.SEVERE, null, ex);
-        } 
-        setInformacion();
-    }
-    
-     private void setInformacion() {
-         if(curso != null) {
-             lbCurso.setText(curso.getNombreCurso());
-             lbNrc.setText(curso.getNrcCurso());
-             lbPeriodo.setText(curso.getFechaInicioCurso()+"-"+curso.getFinPeriodoEscolar());
-         }
-         if(academico != null) {
-             lbDocente.setText(academico.getNombre()+" "+academico.getPrimerApellido());
-         }
-         if(anteproyecto != null) {
-             lbAnteproyecto.setText(anteproyecto.getNombreTrabajoRecepcional());
-         lbDirector.setText(anteproyecto.getNombreDirector());
-         }
-//         String codirectoresNombre= "";
-//         if(!codirectores.isEmpty()) {             
-//             for (int i = 0; i < codirectores.size(); i++) {
-//                 codirectoresNombre = codirectoresNombre+codirectores.get(i).getNombre()+" "+codirectores.get(i).getPrimerApellido()+"\n";
-//             }
-//         }        
-//         lbCodirector.setText(codirectoresNombre);
-         lbActSinPendientes.setText(porVnecer+" Actividades sin realizar");
-         lbActRevisadas.setText(realizadas+" Actividades realizadas");
-         lbActPorVencer.setText(revisadas+" Actiivdades revisadas");
-     }
+     private void mostraMensajelimiteSuperado(int limiteCaracteres, String campo,  Label etiquetaError) { 
+        etiquetaError.setText("Cuidado, Exediste el limite de caracteres("+limiteCaracteres+") de este campo " + campo);
+        btnGuardar.setDisable(true);
+    }    
      
-      private void actualizaEstadoMenu(int posicion, boolean abierto, String icono){
-        animacionMenu(posicion);
-        menuDatos= abierto;
-        imgBtnDesplegar.setImage(new Image(JavaFXSASTR.class.getResource(icono).toString()));
-    }
-      
-    private void animacionMenu(int posicion){
-        TranslateTransition translate = new TranslateTransition();
-        translate.setNode(panelLateral);
-        translate.setDuration(Duration.millis(300));
-        translate.setByX(posicion);        
-        translate.setAutoReverse(true);
-        translate.play();
-    }
-     
-     
-     private void cerrarVentana() {
-        Stage escenarioActual = (Stage) lbAnteproyecto.getScene().getWindow();
-        escenarioActual.close();
-    }   
-
-    @FXML
-    private void clicBtnCancelar(ActionEvent event) {
-        if(Utilidades.mostrarDialogoConfirmacion("Cancelar Captura de Actividad ", 
-                "¿Estás seguro de que deseas cancelar el registro de la actividad?")){
-         cerrarVentana();
-        }       
-    }
-
-    @FXML
-    private void clicBtnGuardar(ActionEvent event) {
-        validarFechas();
-    }
-
-    @FXML
-    private void clicBtnRegresar(MouseEvent event) {
-        irAVistaActividades(estudiante);
-        
-    }
-    
     private void irAVistaActividades(Estudiante estudiante) {
         try {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLActividades.fxml"));
@@ -444,20 +353,22 @@ public class FXMLFormularioActividadController implements Initializable {
         }
     }
 
+    @FXML
+    private void clicBtnCancelar(ActionEvent event) {
+        if(Utilidades.mostrarDialogoConfirmacion("Cancelar Captura de Actividad ", 
+                "¿Estás seguro de que deseas cancelar el registro de la actividad?")){
+            irAVistaActividades(estudiante);
+        }       
+    }
 
     @FXML
-    private void clicEscoderPanleIzquierdo(MouseEvent event) {
-        if(menuDatos) {
-            actualizaEstadoMenu(-433, false, "recursos/hide.jpg");
-            lineaHorizontal.setVisible(true);
-            lineaVeritcal.setVisible(true);
-        }
-        else{
-            actualizaEstadoMenu(433, true, "recursos/show.jpg");
-            lineaHorizontal.setVisible(false);
-            lineaVeritcal.setVisible(false);
-        }
-            
+    private void clicBtnGuardar(ActionEvent event) {
+        validarFechas();
     }
+
+    @FXML
+    private void clicBtnRegresar(MouseEvent event) {
+        irAVistaActividades(estudiante); 
+    } 
     
 }

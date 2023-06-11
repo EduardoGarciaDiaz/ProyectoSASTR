@@ -174,12 +174,11 @@ public class FXMLActividadesController implements Initializable {
         try {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLFormularioActividad.fxml"));
             Parent vista = accesoControlador.load();
-            FXMLFormularioActividadController controladorVistaInicio = accesoControlador.getController(); 
-            System.out.println(estudiante.getIdEstudiante());
+            FXMLFormularioActividadController controladorVistaInicio = accesoControlador.getController();           
             controladorVistaInicio.iniciarFormularioNUevo(estudiante, false, null);
             Stage escenario = (Stage) lbTituloVentana.getScene().getWindow();
             escenario.setScene(new Scene(vista));
-            escenario.setTitle("Inicio");
+            escenario.setTitle("Crear Actividad");
             escenario.show();
         } catch (IOException ex) {
             ex.printStackTrace();

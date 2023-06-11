@@ -26,11 +26,25 @@ public class FiltrosTexto {
     private static final Pattern PATRON_SOLO_LETRA_NUMEROS = Pattern.compile("^[\\p{L}0-9\\s]*$");
     private static final Pattern PATRON_SOLO_LETRA_NUMEROS_PUNTOS = Pattern.compile("^[\\p{L}0-9.\\s]*$");
     private static final Pattern PATRON_LET_NUM_SIG_ORT = Pattern.compile("^[a-zA-Z0-9\\s.,!?'-]+$");
+    private static final Pattern PATRON_HORA_MINUTOS = Pattern.compile("^([01]?\\d|2[0-3]):[0-5]\\d$");
     
     public static  void filtroLetrasNumeros(TextInputControl campoTexto) {              
             UnaryOperator<TextFormatter.Change> filtroTextoIngresado = change -> {
                 String textoIngresado = change.getControlNewText();
                 if (PATRON_SOLO_LETRA_NUMEROS.matcher(textoIngresado).matches()) {
+                    return change;
+                } else {
+                    return null;
+                }
+            };
+            TextFormatter<String> textFormatter = new TextFormatter<>(filtroTextoIngresado);
+            campoTexto.setTextFormatter(textFormatter);
+    };
+    
+    public static  void filtroHoraMinutos(TextInputControl campoTexto) {              
+            UnaryOperator<TextFormatter.Change> filtroTextoIngresado = change -> {
+                String textoIngresado = change.getControlNewText();
+                if (PATRON_HORA_MINUTOS.matcher(textoIngresado).matches()) {
                     return change;
                 } else {
                     return null;
