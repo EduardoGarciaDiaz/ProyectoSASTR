@@ -331,7 +331,8 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
             int exito = cuerpoAcademicoDao.agregarCuerpoAcademico(cuerpoNuevo);
             if(exito != -1) {
                 Utilidades.mostrarDialogoSimple("Registro exitoso", "Se registro el cuerpo academico exitosamente",
-                                                                                            Alert.AlertType.INFORMATION);               
+                                                                                            Alert.AlertType.INFORMATION);
+                cerrarVentana();
                 for (int i = 0; i < lgacsEntabla.size(); i++) {
                     cuerpoAcademicoDao.agregarRelacionCUconLgac(exito, lgacsEntabla.get(i).getIdLgac());
                 }

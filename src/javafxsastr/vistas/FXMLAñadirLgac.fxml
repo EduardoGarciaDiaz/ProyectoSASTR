@@ -40,11 +40,6 @@
             </ImageView>
          </children>
       </Pane>
-      <AnchorPane fx:id="menuContraido" layoutY="54.0" prefHeight="890.0" prefWidth="75.0" scaleZ="10.0" style="-fx-background-color: #15294f;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="50.0">
-         <rotationAxis>
-            <Point3D />
-         </rotationAxis>
-      </AnchorPane>
       <Pane layoutX="158.0" layoutY="161.0" prefHeight="762.0" prefWidth="1019.0">
          <children>
             <Label layoutX="59.0" layoutY="48.0" prefHeight="50.0" prefWidth="97.0" text="Nombre">
@@ -81,12 +76,12 @@
       </Pane>
       <Pane layoutX="75.0" layoutY="50.0" prefHeight="63.0" prefWidth="369.0">
          <children>
-            <ImageView fitHeight="38.0" fitWidth="96.0" layoutX="35.0" layoutY="13.0" onMouseClicked="#clicBtnRegresar" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="38.0" fitWidth="96.0" layoutX="-40.0" layoutY="13.0" onMouseClicked="#clicBtnRegresar" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../recursos/iconos/BACK.JPG" />
+                  <Image url="@../recursos/iconos/flecha.png" />
                </image>
             </ImageView>
-            <Label fx:id="lbTituloVentana" layoutX="110.0" layoutY="5.0" text="Registrar LGAC" textFill="#434343">
+            <Label fx:id="lbTituloVentana" layoutX="35.0" layoutY="5.0" text="Registrar LGAC" textFill="#434343">
                <font>
                   <Font name="System Bold" size="36.0" />
                </font>
