@@ -7,11 +7,8 @@
 package javafxsastr.controladores;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -35,11 +32,8 @@ import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafxsastr.JavaFXSASTR;
-import javafxsastr.modelos.dao.ActividadDAO;
 import javafxsastr.modelos.dao.ArchivoDAO;
 import javafxsastr.modelos.dao.DAOException;
-import javafxsastr.modelos.dao.EntregaDAO;
-import javafxsastr.modelos.dao.EstudianteDAO;
 import javafxsastr.modelos.pojo.Actividad;
 import javafxsastr.modelos.pojo.Archivo;
 import javafxsastr.modelos.pojo.Entrega;
@@ -68,6 +62,12 @@ public class FXMLDetallesEntregaController implements Initializable {
     private Label lbEvaluacionDirector;
     @FXML
     private HBox hbxContenedorArchivosDirector;
+    @FXML
+    private TextArea taComentariosDirector;
+    @FXML
+    private ScrollPane paneArchivoDirector;
+    @FXML
+    private ImageView btnEditarEntrega;
     
     private Estudiante estudiante;
     private Entrega entrega;
@@ -75,13 +75,6 @@ public class FXMLDetallesEntregaController implements Initializable {
     private int numeroEntrega;
     private final DateTimeFormatter FORMATO_FECHA_COMPLETA = DateTimeFormatter.ofPattern("EEEE ',' dd 'de' MMMM 'de' yyyy",
         new Locale("es"));
-    @FXML
-    private TextArea taComentariosDirector;
-    @FXML
-    private ScrollPane paneArchivoDirector;
-    @FXML
-    private ImageView btnEditarEntrega;
-
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -121,12 +114,11 @@ public class FXMLDetallesEntregaController implements Initializable {
         } catch (DAOException ex) {
             manejarDAOException(ex);
         }
-        if(archivos != null) {
+        if (archivos != null) {
             for (Archivo archivo : archivos) {
-                System.out.println("archivo: " + archivo.getNombreArchivo());
-                if (archivo.getEsEntrega()) {   //Obtiene los archivos enviados por el estudiante
+                if (archivo.getEsEntrega()) {   
                     mostrarArchivo(archivo, hbxContenedorArchivosEstudiante);
-                } else {    //Obtiene los archivos enviador por el director
+                } else {
                     mostrarArchivo(archivo, hbxContenedorArchivosDirector);
                 }
             }
@@ -140,7 +132,6 @@ public class FXMLDetallesEntregaController implements Initializable {
     }
     
     public void configurarBotonArchivo(Archivo archivo, HBox hboxArchivo) {
-        System.out.println("archivo: " + archivo.getNombreArchivo());
         Pane contenedorArchivo = new Pane();
         contenedorArchivo.setPrefSize(285, 20);
         contenedorArchivo.setStyle("-fx-background-color: #C4DAEF; -fx-background-radius: 15");
@@ -164,10 +155,11 @@ public class FXMLDetallesEntregaController implements Initializable {
         imgIconoEliminarArchivo.setFitWidth(35);
         imgIconoEliminarArchivo.setLayoutX(240);
         imgIconoEliminarArchivo.setLayoutY(12);
-        imgIconoEliminarArchivo.setOnMouseClicked((event) -> {
-            System.out.println("Clic en descargar...");
-            descargarArchivo(archivo);
-        });
+        imgIconoEliminarArchivo.setOnMouseClicked(
+            (event) -> {
+                descargarArchivo(archivo);
+            }
+        );
         hboxArchivo.getChildren().add(contenedorArchivo);
     }
      
@@ -207,20 +199,6 @@ public class FXMLDetallesEntregaController implements Initializable {
     private void clicEditarEntrega(MouseEvent event) {
         irAVistaModificarEntregaActividad();
     }
-
-    private void manejarDAOException(DAOException ex) {
-        switch (ex.getCodigo()) {
-            case ERROR_CONSULTA:
-                System.out.println("Ocurrió un error de consulta.");
-                break;
-            case ERROR_CONEXION_BD:
-                Utilidades.mostrarDialogoSimple("Error de conexion",
-                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                        Alert.AlertType.ERROR);
-            default:
-                throw new AssertionError();
-        }
-    }
     
     private void irAVistaModificarEntregaActividad() {
         try {
@@ -253,6 +231,21 @@ public class FXMLDetallesEntregaController implements Initializable {
             escenario.show();
         }catch (IOException ex) {
             ex.printStackTrace();
+        }
+    }
+    
+    private void manejarDAOException(DAOException ex) {
+        switch (ex.getCodigo()) {
+            case ERROR_CONSULTA:
+                System.out.println("Ocurrió un error de consulta.");
+                break;
+            case ERROR_CONEXION_BD:
+                Utilidades.mostrarDialogoSimple("Error de conexion",
+                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.",
+                        Alert.AlertType.ERROR);
+                break;
+            default:
+                throw new AssertionError();
         }
     }
     

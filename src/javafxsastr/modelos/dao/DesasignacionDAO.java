@@ -18,31 +18,32 @@ import javafxsastr.utils.Codigos;
 
 public class DesasignacionDAO {
     
-    private final String OBTENER_DESASIGNACIONES = "SELECT d.idDesasignacion, d.motivo, d.comentarios, d.idEstudiante, d.idAnteproyecto, "+
-            "CONCAT(u.nombreUsuario,' ',u.primerApellidoUsuario,' ',u.segundoApellidoUsuario) AS nombreCompletoEstudiante, " +
-            "a.nombreTrabajoRecepcional " +
-            "FROM desasignaciones d " +
-            "INNER JOIN estudiantes e ON d.idEstudiante = e.idEstudiante " +
-            "INNER JOIN usuarios u ON e.idUsuario = u.idUsuario " +
-            "INNER JOIN anteproyectos a ON d.idAnteproyecto = a.idAnteproyecto";
-    private final String OBTENER_DESASIGNACION = "SELECT d.idDesasignacion, d.motivo, d.comentarios, d.idEstudiante, d.idAnteproyecto, " +
-            "CONCAT(u.nombreUsuario,' ',u.primerApellidoUsuario,' ',u.segundoApellidoUsuario) AS nombreCompletoEstudiante, " +
-            "a.nombreTrabajoRecepcional " +
-            "FROM desasignaciones d " +
-            "INNER JOIN estudiantes e ON d.idEstudiante = e.idEstudiante " +
-            "INNER JOIN usuarios u ON e.idUsuario = u.idUsuario " +
-            "INNER JOIN anteproyectos a ON d.idAnteproyecto = a.idAnteproyecto" +
-            "WHERE idDesasignacion = ?";
-    private final String GUARDAR_DESASIGNACION = "INSERT INTO desasignaciones (motivo, comentarios, idEstudiante, idAnteproyecto) " +
-            "VALUES (?, ?, ?, ?)";
-    private final String OBTENER_DESASIGNACIONES_POR_ANTEPROYECTO = "SELECT d.idDesasignacion, d.motivo, d.comentarios, d.idEstudiante, d.idAnteproyecto, "+
-            "CONCAT(u.nombreUsuario,' ',u.primerApellidoUsuario,' ',u.segundoApellidoUsuario) AS nombreCompletoEstudiante, " +
-            "a.nombreTrabajoRecepcional " +
-            "FROM desasignaciones d " +
-            "INNER JOIN estudiantes e ON d.idEstudiante = e.idEstudiante " +
-            "INNER JOIN usuarios u ON e.idUsuario = u.idUsuario " +
-            "INNER JOIN anteproyectos a ON d.idAnteproyecto = a.idAnteproyecto " +
-            "WHERE d.idAnteproyecto = ?;";
+    private final String OBTENER_DESASIGNACIONES = "SELECT d.idDesasignacion, d.motivo, d.comentarios, d.idEstudiante, d.idAnteproyecto, "
+            + "CONCAT(u.nombreUsuario,' ',u.primerApellidoUsuario,' ',u.segundoApellidoUsuario) AS nombreCompletoEstudiante, "
+            + "a.nombreTrabajoRecepcional "
+            + "FROM desasignaciones d "
+            + "INNER JOIN estudiantes e ON d.idEstudiante = e.idEstudiante "
+            + "INNER JOIN usuarios u ON e.idUsuario = u.idUsuario "
+            + "INNER JOIN anteproyectos a ON d.idAnteproyecto = a.idAnteproyecto";
+    private final String OBTENER_DESASIGNACION = "SELECT d.idDesasignacion, d.motivo, d.comentarios, d.idEstudiante, d.idAnteproyecto, "
+            + "CONCAT(u.nombreUsuario,' ',u.primerApellidoUsuario,' ',u.segundoApellidoUsuario) AS nombreCompletoEstudiante, "
+            + "a.nombreTrabajoRecepcional " 
+            + "FROM desasignaciones d "
+            + "INNER JOIN estudiantes e ON d.idEstudiante = e.idEstudiante " 
+            + "INNER JOIN usuarios u ON e.idUsuario = u.idUsuario " 
+            + "INNER JOIN anteproyectos a ON d.idAnteproyecto = a.idAnteproyecto" 
+            + "WHERE idDesasignacion = ?";
+    private final String GUARDAR_DESASIGNACION = "INSERT INTO desasignaciones (motivo, comentarios, idEstudiante, idAnteproyecto) " 
+            + "VALUES (?, ?, ?, ?)";
+    private final String OBTENER_DESASIGNACIONES_POR_ANTEPROYECTO = "SELECT d.idDesasignacion, d.motivo, d.comentarios, d.idEstudiante, "
+            + "d.idAnteproyecto, "
+            + "CONCAT(u.nombreUsuario,' ',u.primerApellidoUsuario,' ',u.segundoApellidoUsuario) AS nombreCompletoEstudiante, " 
+            + "a.nombreTrabajoRecepcional " 
+            + "FROM desasignaciones d " 
+            + "INNER JOIN estudiantes e ON d.idEstudiante = e.idEstudiante " 
+            + "INNER JOIN usuarios u ON e.idUsuario = u.idUsuario " 
+            + "INNER JOIN anteproyectos a ON d.idAnteproyecto = a.idAnteproyecto " 
+            + "WHERE d.idAnteproyecto = ?;";
     
     public ArrayList<Desasignacion> obtenerDesasignaciones() throws DAOException {
         ArrayList<Desasignacion> desasignaciones = new ArrayList<>();
@@ -62,8 +63,7 @@ public class DesasignacionDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                    Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return desasignaciones;
     }
@@ -85,8 +85,7 @@ public class DesasignacionDAO {
             }
             ConexionBD.cerrarConexionBD();           
         } catch (SQLException ex) {
-           throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                   Codigos.ERROR_CONSULTA);
+           throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return desasignacion;
     }
@@ -94,7 +93,8 @@ public class DesasignacionDAO {
     public int guardarDesasignacion(Desasignacion desasignacion) throws DAOException {
         int respuesta = -1;
         try {
-            PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(GUARDAR_DESASIGNACION, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(GUARDAR_DESASIGNACION,
+                    Statement.RETURN_GENERATED_KEYS);
             sentencia.setString(1, desasignacion.getMotivo());
             sentencia.setString(2, desasignacion.getComentarios());
             sentencia.setInt(3, desasignacion.getIdEstudiante());
@@ -106,9 +106,7 @@ public class DesasignacionDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();                    
-           throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                   Codigos.ERROR_CONSULTA);
+           throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return respuesta;
     }
@@ -132,8 +130,7 @@ public class DesasignacionDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                    Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return desasignaciones;
     }

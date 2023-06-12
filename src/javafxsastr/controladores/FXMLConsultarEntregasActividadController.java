@@ -65,8 +65,8 @@ public class FXMLConsultarEntregasActividadController implements Initializable {
     @FXML
     private Button btnFecha;
     
-    private ConsultarAvanceEstudianteSingleton consultarAvanceEstudiante
-           = ConsultarAvanceEstudianteSingleton.obtenerConsultarAvanceEstudiante(null, null, null, null);
+    private ConsultarAvanceEstudianteSingleton consultarAvanceEstudiante = ConsultarAvanceEstudianteSingleton
+            .obtenerConsultarAvanceEstudiante(null, null, null, null);
     private Actividad actividad;
     private ObservableList<Entrega> entregas;
     private boolean esBtnFechaPresionado = true;
@@ -143,9 +143,11 @@ public class FXMLConsultarEntregasActividadController implements Initializable {
             int numeroEntregaSeleccionado = numeroEntrega;
             TarjetaEntregasActividad tarjetaEntregaActividad = new TarjetaEntregasActividad(numeroEntrega,fechaEntregaFormateada,
                     horaEntrega, fechaRevision);
-            tarjetaEntregaActividad.getBotonRevisar().setOnAction((event) -> {
-                irAVistaRevisarEntrega(entrega, numeroEntregaSeleccionado);
-            });
+            tarjetaEntregaActividad.getBotonRevisar().setOnAction(
+                (event) -> {
+                    irAVistaRevisarEntrega(entrega, numeroEntregaSeleccionado);
+                }
+            );
             vbxCardsEntregas.getChildren().add(tarjetaEntregaActividad);
         }
     }
@@ -153,7 +155,8 @@ public class FXMLConsultarEntregasActividadController implements Initializable {
     private void obtenerListaCambios() {
         try {
             if (actividad != null) {
-                ArrayList<HistorialCambios> cambios = new HistorialCambiosDAO().obtenerInformacionHistorialCambios(actividad.getIdActividad());
+                ArrayList<HistorialCambios> cambios = new HistorialCambiosDAO()
+                        .obtenerInformacionHistorialCambios(actividad.getIdActividad());
                 for (HistorialCambios cambio : cambios) {        
                     LocalDate fechaModificacion = LocalDate.parse(cambio.getFechaDeModificacion());
                     LocalDate fechaAnterior = LocalDate.parse(cambio.getFechaAnterior());
@@ -167,7 +170,6 @@ public class FXMLConsultarEntregasActividadController implements Initializable {
             } else {
                     System.err.println("La actividad que se recibió viene NULA");
             }
-
         } catch (DAOException ex) {
             manejarDAOException(ex);
         }
@@ -255,6 +257,7 @@ public class FXMLConsultarEntregasActividadController implements Initializable {
             case ERROR_CONEXION_BD:
                 Utilidades.mostrarDialogoSimple("Error de conexion", 
                         "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
+                break;
             default:
                 throw new AssertionError();
         }

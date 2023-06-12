@@ -17,9 +17,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafxsastr.utils.Utilidades;
 
 public class TarjetaAvanceEstudiante extends Pane {
     
@@ -58,9 +55,10 @@ public class TarjetaAvanceEstudiante extends Pane {
         this.lbNumeroActividadesNoCompletadas.setText(actividadesNoCompletadas);
         lbActividadRestante.setText("actividades restantes");
         this.lbNumeroActividadesRestantes.setText(actividadesRestantes);
-        getChildren().addAll(fondoImagen, lbNombreEstudiante, lbMatriculaEstudiante, lbNombreTrabajoRecepcional, lbAvancePorcentaje,
-                lbNumeroActividadesCompletadas, lbNumeroActividadesNoCompletadas, lbNumeroActividadesRestantes,
-                lbAvance, lbActividadCompletada, lbActividadNoCompletada, lbActividadRestante, btnVerAvance);
+        getChildren().addAll(fondoImagen, lbNombreEstudiante, lbMatriculaEstudiante, lbNombreTrabajoRecepcional,
+                lbAvancePorcentaje,lbNumeroActividadesCompletadas, lbNumeroActividadesNoCompletadas,
+                lbNumeroActividadesRestantes, lbAvance, lbActividadCompletada, lbActividadNoCompletada,
+                lbActividadRestante, btnVerAvance);
     }
     
     public Button getBotonVerAvance() {

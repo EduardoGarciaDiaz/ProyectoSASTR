@@ -21,120 +21,106 @@ import javafxsastr.modelos.pojo.Estudiante;
 import javafxsastr.utils.Codigos;
 
 public class EstudianteDAO {
-    private final String OBTENER_ESTUDIANTES = "SELECT e.idEstudiante, u.nombreUsuario AS nombreEstudiante, " +
-            "u.primerApellidoUsuario AS primerApellidoEstudiante, u.segundoApellidoUsuario AS segundoApellidoEstudiante, "
-            +
-            "e.matriculaEstudiante, u.correoInstitucionalUsuario AS correoInstitucionalEstudiante, " +
-            "u.correoAlternoUsuario as correoAlternoEstudiante, u.contraseñaUsuario, u.idUsuario, e.idAnteproyecto, " +
-            "a.nombreTrabajoRecepcional, c.idCurso, c.nombreCurso, u.idEstadoUsuario, eu.nombreEstadoUsuario, " +
-            "u.esAdministrador " +
-            "FROM usuarios u " +
-            "INNER JOIN estudiantes e ON u.idUsuario = e.idUsuario " +
-            "LEFT JOIN anteproyectos a ON e.idAnteproyecto = a.idAnteproyecto " +
-            "LEFT JOIN cursos_estudiantes ce ON e.idEstudiante = ce.idEstudiante " +
-            "LEFT JOIN cursos c ON ce.idCurso = c.idCurso " +
-            "INNER JOIN estados_usuario eu ON u.idEstadoUsuario = eu.idEstadoUsuario ";
-    private final String OBTENER_ESTUDIANTE = "SELECT e.idEstudiante, u.nombreUsuario AS nombreEstudiante, " +
-            "u.primerApellidoUsuario AS primerApellidoEstudiante, u.segundoApellidoUsuario AS segundoApellidoEstudiante, "
-            +
-            "e.matriculaEstudiante, u.correoInstitucionalUsuario AS correoInstitucionalEstudiante, " +
-            "u.correoAlternoUsuario as correoAlternoEstudiante, u.contraseñaUsuario, u.idUsuario, e.idAnteproyecto, " +
-            "a.nombreTrabajoRecepcional, c.idCurso, c.nombreCurso, u.idEstadoUsuario, eu.nombreEstadoUsuario, " +
-            "u.esAdministrador " +
-            "FROM usuarios u " +
-            "INNER JOIN estudiantes e ON u.idUsuario = e.idUsuario " +
-            "LEFT JOIN anteproyectos a ON e.idAnteproyecto = a.idAnteproyecto " +
-            "LEFT JOIN cursos_estudiantes ce ON e.idEstudiante = ce.idEstudiante " +
-            "LEFT JOIN cursos c ON ce.idCurso = c.idCurso " +
-            "INNER JOIN estados_usuario eu ON u.idEstadoUsuario = eu.idEstadoUsuario " +
-            "WHERE e.idEstudiante = ?";
+    private final String OBTENER_ESTUDIANTES = "SELECT e.idEstudiante, u.nombreUsuario AS nombreEstudiante, " 
+            + "u.primerApellidoUsuario AS primerApellidoEstudiante, u.segundoApellidoUsuario AS segundoApellidoEstudiante, "
+            + "e.matriculaEstudiante, u.correoInstitucionalUsuario AS correoInstitucionalEstudiante, " 
+            + "u.correoAlternoUsuario as correoAlternoEstudiante, u.contraseñaUsuario, u.idUsuario, e.idAnteproyecto, " 
+            + "a.nombreTrabajoRecepcional, c.idCurso, c.nombreCurso, u.idEstadoUsuario, eu.nombreEstadoUsuario, " 
+            + "u.esAdministrador " 
+            + "FROM usuarios u " 
+            + "INNER JOIN estudiantes e ON u.idUsuario = e.idUsuario " 
+            + "LEFT JOIN anteproyectos a ON e.idAnteproyecto = a.idAnteproyecto " 
+            + "LEFT JOIN cursos_estudiantes ce ON e.idEstudiante = ce.idEstudiante " 
+            + "LEFT JOIN cursos c ON ce.idCurso = c.idCurso " 
+            + "INNER JOIN estados_usuario eu ON u.idEstadoUsuario = eu.idEstadoUsuario ";
+    private final String OBTENER_ESTUDIANTE = "SELECT e.idEstudiante, u.nombreUsuario AS nombreEstudiante, " 
+            + "u.primerApellidoUsuario AS primerApellidoEstudiante, u.segundoApellidoUsuario AS segundoApellidoEstudiante, "
+            + "e.matriculaEstudiante, u.correoInstitucionalUsuario AS correoInstitucionalEstudiante, " 
+            + "u.correoAlternoUsuario as correoAlternoEstudiante, u.contraseñaUsuario, u.idUsuario, e.idAnteproyecto, " 
+            + "a.nombreTrabajoRecepcional, c.idCurso, c.nombreCurso, u.idEstadoUsuario, eu.nombreEstadoUsuario, " 
+            + "u.esAdministrador " 
+            + "FROM usuarios u " 
+            + "INNER JOIN estudiantes e ON u.idUsuario = e.idUsuario " 
+            + "LEFT JOIN anteproyectos a ON e.idAnteproyecto = a.idAnteproyecto "
+            + "LEFT JOIN cursos_estudiantes ce ON e.idEstudiante = ce.idEstudiante " 
+            + "LEFT JOIN cursos c ON ce.idCurso = c.idCurso " 
+            + "INNER JOIN estados_usuario eu ON u.idEstadoUsuario = eu.idEstadoUsuario " 
+            + "WHERE e.idEstudiante = ?";
     private final String OBTENER_ESTUDIANTE_POR_MATRICULA = "SELECT e.idEstudiante, u.nombreUsuario AS nombreEstudiante, "
-            +
-            "u.primerApellidoUsuario AS primerApellidoEstudiante, u.segundoApellidoUsuario AS segundoApellidoEstudiante, "
-            +
-            "e.matriculaEstudiante, u.correoInstitucionalUsuario AS correoInstitucionalEstudiante, " +
-            "u.correoAlternoUsuario as correoAlternoEstudiante, u.contraseñaUsuario, u.idUsuario, e.idAnteproyecto, " +
-            "a.nombreTrabajoRecepcional, c.idCurso, c.nombreCurso, u.idEstadoUsuario, eu.nombreEstadoUsuario, " +
-            "u.esAdministrador " +
-            "FROM usuarios u " +
-            "INNER JOIN estudiantes e ON u.idUsuario = e.idUsuario " +
-            "LEFT JOIN anteproyectos a ON e.idAnteproyecto = a.idAnteproyecto " +
-            "LEFT JOIN cursos_estudiantes ce ON e.idEstudiante = ce.idEstudiante " +
-            "LEFT JOIN cursos c ON ce.idCurso = c.idCurso " +
-            "INNER JOIN estados_usuario eu ON u.idEstadoUsuario = eu.idEstadoUsuario " +
-            "WHERE e.matriculaEstudiante = ?";
+            + "u.primerApellidoUsuario AS primerApellidoEstudiante, u.segundoApellidoUsuario AS segundoApellidoEstudiante, "
+            + "e.matriculaEstudiante, u.correoInstitucionalUsuario AS correoInstitucionalEstudiante, " 
+            + "u.correoAlternoUsuario as correoAlternoEstudiante, u.contraseñaUsuario, u.idUsuario, e.idAnteproyecto, " 
+            + "a.nombreTrabajoRecepcional, c.idCurso, c.nombreCurso, u.idEstadoUsuario, eu.nombreEstadoUsuario, " 
+            + "u.esAdministrador " 
+            + "FROM usuarios u " 
+            + "INNER JOIN estudiantes e ON u.idUsuario = e.idUsuario " 
+            + "LEFT JOIN anteproyectos a ON e.idAnteproyecto = a.idAnteproyecto "
+            + "LEFT JOIN cursos_estudiantes ce ON e.idEstudiante = ce.idEstudiante " 
+            + "LEFT JOIN cursos c ON ce.idCurso = c.idCurso " 
+            + "INNER JOIN estados_usuario eu ON u.idEstadoUsuario = eu.idEstadoUsuario " 
+            + "WHERE e.matriculaEstudiante = ?";
     private final String OBTENER_ESTUDIANTE_POR_CORREO = "SELECT e.idEstudiante, u.nombreUsuario AS nombreEstudiante, "
-            +
-            "u.primerApellidoUsuario AS primerApellidoEstudiante, u.segundoApellidoUsuario AS segundoApellidoEstudiante, "
-            +
-            "e.matriculaEstudiante, u.correoInstitucionalUsuario AS correoInstitucionalEstudiante, " +
-            "u.correoAlternoUsuario as correoAlternoEstudiante, u.contraseñaUsuario, u.idUsuario, e.idAnteproyecto, " +
-            "a.nombreTrabajoRecepcional, c.idCurso, c.nombreCurso, u.idEstadoUsuario, eu.nombreEstadoUsuario, " +
-            "u.esAdministrador " +
-            "FROM usuarios u " +
-            "INNER JOIN estudiantes e ON u.idUsuario = e.idUsuario " +
-            "LEFT JOIN anteproyectos a ON e.idAnteproyecto = a.idAnteproyecto " +
-            "LEFT JOIN cursos_estudiantes ce ON e.idEstudiante = ce.idEstudiante " +
-            "LEFT JOIN cursos c ON ce.idCurso = c.idCurso " +
-            "INNER JOIN estados_usuario eu ON u.idEstadoUsuario = eu.idEstadoUsuario " +
-            "WHERE u.correoInstitucionalUsuario = ? OR u.correoAlternoUsuario = ?";
+            + "u.primerApellidoUsuario AS primerApellidoEstudiante, u.segundoApellidoUsuario AS segundoApellidoEstudiante, "
+            + "e.matriculaEstudiante, u.correoInstitucionalUsuario AS correoInstitucionalEstudiante, " 
+            + "u.correoAlternoUsuario as correoAlternoEstudiante, u.contraseñaUsuario, u.idUsuario, e.idAnteproyecto, " 
+            + "a.nombreTrabajoRecepcional, c.idCurso, c.nombreCurso, u.idEstadoUsuario, eu.nombreEstadoUsuario, " 
+            + "u.esAdministrador " 
+            + "FROM usuarios u " 
+            + "INNER JOIN estudiantes e ON u.idUsuario = e.idUsuario " 
+            + "LEFT JOIN anteproyectos a ON e.idAnteproyecto = a.idAnteproyecto " 
+            + "LEFT JOIN cursos_estudiantes ce ON e.idEstudiante = ce.idEstudiante " 
+            + "LEFT JOIN cursos c ON ce.idCurso = c.idCurso " 
+            + "INNER JOIN estados_usuario eu ON u.idEstadoUsuario = eu.idEstadoUsuario " 
+            + "WHERE u.correoInstitucionalUsuario = ? OR u.correoAlternoUsuario = ?";
     private final String OBTENER_ESTUDIANTE_POR_ID_USUARIO = "SELECT e.idEstudiante, u.nombreUsuario AS nombreEstudiante, "
-            +
-            "u.primerApellidoUsuario AS primerApellidoEstudiante, u.segundoApellidoUsuario AS segundoApellidoEstudiante, "
-            +
-            "e.matriculaEstudiante, u.correoInstitucionalUsuario AS correoInstitucionalEstudiante, " +
-            "u.correoAlternoUsuario as correoAlternoEstudiante, u.contraseñaUsuario, u.idUsuario, e.idAnteproyecto, " +
-            "a.nombreTrabajoRecepcional, c.idCurso, c.nombreCurso, u.idEstadoUsuario, eu.nombreEstadoUsuario, " +
-            "u.esAdministrador " +
-            "FROM usuarios u " +
-            "INNER JOIN estudiantes e ON u.idUsuario = e.idUsuario " +
-            "LEFT JOIN anteproyectos a ON e.idAnteproyecto = a.idAnteproyecto " +
-            "LEFT JOIN cursos_estudiantes ce ON e.idEstudiante = ce.idEstudiante " +
-            "LEFT JOIN cursos c ON ce.idCurso = c.idCurso " +
-            "INNER JOIN estados_usuario eu ON u.idEstadoUsuario = eu.idEstadoUsuario " +
-            "WHERE u.idUsuario = ?";
+            + "u.primerApellidoUsuario AS primerApellidoEstudiante, u.segundoApellidoUsuario AS segundoApellidoEstudiante, "
+            + "e.matriculaEstudiante, u.correoInstitucionalUsuario AS correoInstitucionalEstudiante, "
+            + "u.correoAlternoUsuario as correoAlternoEstudiante, u.contraseñaUsuario, u.idUsuario, e.idAnteproyecto, " 
+            + "a.nombreTrabajoRecepcional, c.idCurso, c.nombreCurso, u.idEstadoUsuario, eu.nombreEstadoUsuario, " 
+            + "u.esAdministrador " 
+            + "FROM usuarios u " 
+            + "INNER JOIN estudiantes e ON u.idUsuario = e.idUsuario " 
+            + "LEFT JOIN anteproyectos a ON e.idAnteproyecto = a.idAnteproyecto " 
+            + "LEFT JOIN cursos_estudiantes ce ON e.idEstudiante = ce.idEstudiante " 
+            + "LEFT JOIN cursos c ON ce.idCurso = c.idCurso " 
+            + "INNER JOIN estados_usuario eu ON u.idEstadoUsuario = eu.idEstadoUsuario "
+            + "WHERE u.idUsuario = ?";
     private final String GUARDAR_ESTUDIANTE = "INSERT INTO estudiantes (matriculaEstudiante, idUsuario) VALUES (?, ?);";
     private final String ACTUALIZAR_ESTUDIANTE = "UPDATE estudiantes SET matriculaEstudiante = ?, idUsuario = ?, idAnteproyecto = ? "
-            +
-            "WHERE idEstudiante = ?";
+            + "WHERE idEstudiante = ?";
     private final String ELIMINAR_ESTUDIANTE = "DELETE FROM estudiantes WHERE idEstudiante = ?;";
     private final String DESASIGNAR_ESTUDIANTE = "Update estudiantes Set idAnteproyecto = ? where idEstudiante = ?";
     private final String OBTENER_ESTUDIANTES_POR_CURSO = "SELECT e.idEstudiante, u.nombreUsuario AS nombreEstudiante, "
-            +
-            "u.primerApellidoUsuario AS primerApellidoEstudiante, u.segundoApellidoUsuario AS segundoApellidoEstudiante, "
-            +
-            "e.matriculaEstudiante, u.correoInstitucionalUsuario AS correoInstitucionalEstudiante, " +
-            "u.correoAlternoUsuario as correoAlternoEstudiante, u.contraseñaUsuario, u.idUsuario, e.idAnteproyecto, " +
-            "a.nombreTrabajoRecepcional, c.idCurso, c.nombreCurso, u.idEstadoUsuario, eu.nombreEstadoUsuario, " +
-            "u.esAdministrador " +
-            "FROM usuarios u " +
-            "INNER JOIN estudiantes e ON u.idUsuario = e.idUsuario " +
-            "LEFT JOIN anteproyectos a ON e.idAnteproyecto = a.idAnteproyecto " +
-            "LEFT JOIN cursos_estudiantes ce ON e.idEstudiante = ce.idEstudiante " +
-            "LEFT JOIN cursos c ON ce.idCurso = c.idCurso " +
-            "INNER JOIN estados_usuario eu ON u.idEstadoUsuario = eu.idEstadoUsuario " +
-            "WHERE c.idCurso = ?";
+            + "u.primerApellidoUsuario AS primerApellidoEstudiante, u.segundoApellidoUsuario AS segundoApellidoEstudiante, "
+            + "e.matriculaEstudiante, u.correoInstitucionalUsuario AS correoInstitucionalEstudiante, " 
+            + "u.correoAlternoUsuario as correoAlternoEstudiante, u.contraseñaUsuario, u.idUsuario, e.idAnteproyecto, " 
+            + "a.nombreTrabajoRecepcional, c.idCurso, c.nombreCurso, u.idEstadoUsuario, eu.nombreEstadoUsuario, " 
+            + "u.esAdministrador " 
+            + "FROM usuarios u " 
+            + "INNER JOIN estudiantes e ON u.idUsuario = e.idUsuario " 
+            + "LEFT JOIN anteproyectos a ON e.idAnteproyecto = a.idAnteproyecto " 
+            + "LEFT JOIN cursos_estudiantes ce ON e.idEstudiante = ce.idEstudiante " 
+            + "LEFT JOIN cursos c ON ce.idCurso = c.idCurso " 
+            + "INNER JOIN estados_usuario eu ON u.idEstadoUsuario = eu.idEstadoUsuario " 
+            + "WHERE c.idCurso = ?";
     private final String OBTENER_ESTUDIANTES_POR_ID_ANTEPROYECTO = "SELECT e.idEstudiante, u.nombreUsuario AS nombreEstudiante, "
-            +
-            "u.primerApellidoUsuario AS primerApellidoEstudiante, u.segundoApellidoUsuario AS segundoApellidoEstudiante, "
-            +
-            "e.matriculaEstudiante, u.correoInstitucionalUsuario AS correoInstitucionalEstudiante, " +
-            "u.correoAlternoUsuario as correoAlternoEstudiante, u.contraseñaUsuario, u.idUsuario, e.idAnteproyecto, " +
-            "a.nombreTrabajoRecepcional, c.idCurso, c.nombreCurso, u.idEstadoUsuario, eu.nombreEstadoUsuario, " +
-            "u.esAdministrador " +
-            "FROM usuarios u " +
-            "INNER JOIN estudiantes e ON u.idUsuario = e.idUsuario " +
-            "LEFT JOIN anteproyectos a ON e.idAnteproyecto = a.idAnteproyecto " +
-            "LEFT JOIN cursos_estudiantes ce ON e.idEstudiante = ce.idEstudiante " +
-            "LEFT JOIN cursos c ON ce.idCurso = c.idCurso " +
-            "INNER JOIN estados_usuario eu ON u.idEstadoUsuario = eu.idEstadoUsuario " +
-            "WHERE e.idAnteproyecto = ?";
+            + "u.primerApellidoUsuario AS primerApellidoEstudiante, u.segundoApellidoUsuario AS segundoApellidoEstudiante, "
+            + "e.matriculaEstudiante, u.correoInstitucionalUsuario AS correoInstitucionalEstudiante, " 
+            + "u.correoAlternoUsuario as correoAlternoEstudiante, u.contraseñaUsuario, u.idUsuario, e.idAnteproyecto, " 
+            + "a.nombreTrabajoRecepcional, c.idCurso, c.nombreCurso, u.idEstadoUsuario, eu.nombreEstadoUsuario, " 
+            + "u.esAdministrador " 
+            + "FROM usuarios u " 
+            + "INNER JOIN estudiantes e ON u.idUsuario = e.idUsuario " 
+            + "LEFT JOIN anteproyectos a ON e.idAnteproyecto = a.idAnteproyecto " 
+            + "LEFT JOIN cursos_estudiantes ce ON e.idEstudiante = ce.idEstudiante " 
+            + "LEFT JOIN cursos c ON ce.idCurso = c.idCurso " 
+            + "INNER JOIN estados_usuario eu ON u.idEstadoUsuario = eu.idEstadoUsuario " 
+            + "WHERE e.idAnteproyecto = ?";
     private final String VERIFICAR_SI_ANTEPROYECTO_ESTA_ASIGNADO = "SELECT EXISTS"
             + "(SELECT idAnteproyecto FROM estudiantes WHERE idAnteproyecto = ?) as estaAsignado;";
     private final String OBTENER_ESTUDIANTES_SIN_ANTEPROYECTO = OBTENER_ESTUDIANTES + " Where e.idAnteproyecto is null";
-
-    private final String OBTENER_ESTUDIANTES_ASIGNADOS_POR_ACADEMICO = OBTENER_ESTUDIANTES +
-            "INNER JOIN academicos acad "
+    private final String OBTENER_ESTUDIANTES_ASIGNADOS_POR_ACADEMICO = OBTENER_ESTUDIANTES
+            + "INNER JOIN academicos acad "
             + "ON a.idAcademico = acad.idAcademico "
             + "WHERE acad.idAcademico = ? and a.idEstadoSeguimiento = 5";
 
@@ -164,8 +150,7 @@ public class EstudianteDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
+            throw new DAOException("Hubo un error al realizar la consulta",
                     Codigos.ERROR_CONSULTA);
         }
         return estudiantes;
@@ -196,9 +181,7 @@ public class EstudianteDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                    Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return estudiante;
     }
@@ -229,8 +212,7 @@ public class EstudianteDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                    Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return estudiante;
     }
@@ -262,8 +244,7 @@ public class EstudianteDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                    Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return estudiante;
     }
@@ -294,9 +275,7 @@ public class EstudianteDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                    Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return estudiante;
     }
@@ -329,8 +308,7 @@ public class EstudianteDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                    Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return estudiantes;
     }
@@ -349,9 +327,7 @@ public class EstudianteDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                    Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return respuesta;
     }
@@ -372,9 +348,7 @@ public class EstudianteDAO {
             respuesta = (filasAfectadas == 1) ? estudiante.getIdEstudiante() : -1;
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
-            throw new DAOException("Ocurrió un error al actualizar los datos del estudiante",
-                    Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return respuesta;
     }
@@ -391,9 +365,7 @@ public class EstudianteDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                    Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return respuestaExito;
     }
@@ -426,9 +398,7 @@ public class EstudianteDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                    Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return estudiantes;
     }
@@ -442,8 +412,7 @@ public class EstudianteDAO {
             respuesta = (filasAfectadas == 1) ? idEstudiante : -1;
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                    Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return respuesta;
     }
@@ -460,7 +429,7 @@ public class EstudianteDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            throw new DAOException("Error de consulta", Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return estaAsignado;
     }
@@ -492,9 +461,7 @@ public class EstudianteDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                    Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return estudiantes;
     }
@@ -527,9 +494,7 @@ public class EstudianteDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                    Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return estudiantes;
     }

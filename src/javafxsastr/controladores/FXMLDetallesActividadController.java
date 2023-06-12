@@ -20,7 +20,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
@@ -103,7 +102,7 @@ public class FXMLDetallesActividadController implements Initializable {
                 lbHoraActividad.setText(horaActividad);
             }
             lbEstadoActividad.setText(estadoActividad);
-            if(estadoActividad.equals("No completada") || estadoActividad.equals("Completada")) {
+            if (estadoActividad.equals("No completada") || estadoActividad.equals("Completada")) {
                 paneEnviarEntrega.setDisable(true);
                 paneEnviarEntrega.setStyle("-fx-background-color: #e0e0e0; "
                         + "-fx-background-radius: 15px;");
@@ -134,9 +133,11 @@ public class FXMLDetallesActividadController implements Initializable {
             Entrega entrega = entregas.get(i);
             TarjetaEntregas tarjetaEntrega = new TarjetaEntregas(entrega, numeroEntrega);
             vbxEntregas.getChildren().add(tarjetaEntrega);
-            tarjetaEntrega.getBotonVerDetalles().setOnAction((event) -> {
-                irAVistaDetallesEntrega(entrega, numeroEntrega);
-            });
+            tarjetaEntrega.getBotonVerDetalles().setOnAction(
+                (event) -> {
+                    irAVistaDetallesEntrega(entrega, numeroEntrega);
+                }
+            );
         }
     }
 
@@ -207,6 +208,7 @@ public class FXMLDetallesActividadController implements Initializable {
             case ERROR_CONEXION_BD:
                 Utilidades.mostrarDialogoSimple("Error de conexion", 
                         "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
+                break;
             default:
                 throw new AssertionError();
         }

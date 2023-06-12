@@ -8,7 +8,6 @@ package javafxsastr.controladores;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -40,7 +39,6 @@ import javafxsastr.modelos.pojo.Estudiante;
 import javafxsastr.modelos.pojo.Usuario;
 import javafxsastr.utils.FiltrosTexto;
 import javafxsastr.utils.Utilidades;
-
 
 public class FXMLFormularioUsuarioController implements Initializable {
 
@@ -93,7 +91,6 @@ public class FXMLFormularioUsuarioController implements Initializable {
     private Estudiante estudianteEdicion;
     private INotificacionRecargarDatos interfaz;
     
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cargarTiposUsuarios();
@@ -300,7 +297,7 @@ public class FXMLFormularioUsuarioController implements Initializable {
                 datosValidos = false;
                 lbIdentificadorTipoUsuarioVacio.setText("Matricula no válida. Ejemplo S21013811");
             }
-            if(!esEdicion) {
+            if (!esEdicion) {
                 if(validarUsuarioInexistente(correo, identificadorTipoUsuario, tipoUsuarioSeleccionado)) {
                     datosValidos = false;
                     Utilidades.mostrarDialogoSimple("Usuario existente", 
@@ -315,7 +312,7 @@ public class FXMLFormularioUsuarioController implements Initializable {
                 lbIdentificadorTipoUsuarioVacio.setText("Solo debe contener números");
             }
             if (!esEdicion) {
-                if(validarUsuarioInexistente(correo, identificadorTipoUsuario, tipoUsuarioSeleccionado)) {
+                if (validarUsuarioInexistente(correo, identificadorTipoUsuario, tipoUsuarioSeleccionado)) {
                     datosValidos = false;
                     Utilidades.mostrarDialogoSimple("Usuario existente", 
                             "El correo institucional y/o el número de personal ya está registrado en el sistema",
@@ -357,7 +354,7 @@ public class FXMLFormularioUsuarioController implements Initializable {
                     usuarioNuevo.setIdEstudiante(estudianteEdicion.getIdEstudiante());
                 }
                 guardarEstudiante(usuarioNuevo);
-            } else if("Académico".equals(tipoUsuarioSeleccionado)) {
+            } else if ("Académico".equals(tipoUsuarioSeleccionado)) {
                 Academico usuarioNuevo = new Academico();
                 usuarioNuevo.setNombre(nombre);
                 usuarioNuevo.setPrimerApellido(primerApellido);
@@ -458,7 +455,6 @@ public class FXMLFormularioUsuarioController implements Initializable {
                 respuestaEstudiante = new EstudianteDAO().actualizarEstudiante(estudianteNuevo);
             } else {
                 respuestaEstudiante = new EstudianteDAO().guardarEstudiante(estudianteNuevo);
-
             }
         } catch (DAOException ex) {
             manejarDAOException(ex);
@@ -467,9 +463,9 @@ public class FXMLFormularioUsuarioController implements Initializable {
             if (esEdicion) {
                 Utilidades.mostrarDialogoSimple("Modificación exitosa", "Usuario modificado con éxto",
                     Alert.AlertType.INFORMATION);
-                if(vieneDeDetallesCurso) {
+                if (vieneDeDetallesCurso) {
                     cerrarVentana();
-                }else {
+                } else {
                     irAVistaVerUsuario(estudianteNuevo, usuario);
                 }                
             } else {
@@ -477,7 +473,6 @@ public class FXMLFormularioUsuarioController implements Initializable {
                     Alert.AlertType.INFORMATION);                
                 cerrarVentana();
             }
-
         }
     }
     
@@ -506,7 +501,6 @@ public class FXMLFormularioUsuarioController implements Initializable {
         }
     }
     
-    
     @FXML
     private void clicCancelar(ActionEvent event) {
         boolean cancelarRegistro;
@@ -531,15 +525,15 @@ public class FXMLFormularioUsuarioController implements Initializable {
     }
     
     private void cerrarVentana() {
-        if(vieneDeDetallesCurso){
+        if (vieneDeDetallesCurso){
             irAVistaVerDetallesCursos();
         }else {
              if(vieneDeCuerpoAcademico) {
             irAVistaCuerpoAcademico();
-            }else {
+            } else {
                 if (esEdicion) {
                 irAVistaVerUsuario(usuarioEdicion, usuario);
-                }else {
+                } else {
                 irAVistaUsuarios(usuario);
                 }   
             }

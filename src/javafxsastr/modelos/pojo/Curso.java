@@ -3,6 +3,7 @@
  * Fecha de creación: 19/05/2023
  * Descripción: POJO de Curso para modelar su información
  */
+
 package javafxsastr.modelos.pojo;
 
 public class Curso {
@@ -207,7 +208,4 @@ public class Curso {
         this.academicoCurso = academicoCurso;
     }
 
-    
-   
-    
 }

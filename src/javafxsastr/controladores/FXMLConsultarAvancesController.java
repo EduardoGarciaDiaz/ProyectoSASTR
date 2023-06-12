@@ -1,7 +1,7 @@
 /*
  * Autor: Eduardo García Díaz
  * Fecha de creación: 03/06/2023
- * Descripción: Controlador de la vista de avances de los estudiantes
+ * Descripción: Controla la vista de avances de los estudiantes
  */
 
 package javafxsastr.controladores;
@@ -106,12 +106,14 @@ public class FXMLConsultarAvancesController implements Initializable {
                 String actividadesCompletadas = String.valueOf(numeroActividadesCompletadas)+" / "+String.valueOf(totalActividades);
                 String actividadesNoCompletadas = String.valueOf(numeroActividadesNoCompletadas)+" / "+String.valueOf(totalActividades);
                 String actividadesRestantes = String.valueOf(numeroActividadesRestantes)+" / "+String.valueOf(totalActividades);
-                TarjetaAvanceEstudiante tarjeta 
-                        = new TarjetaAvanceEstudiante(e.getIdEstudiante(), nombreCompleto,e.getMatriculaEstudiante(),
-                e.getAnteproyectoEstudiante(), porcentaje, actividadesCompletadas, actividadesNoCompletadas, actividadesRestantes);
-                tarjeta.getBotonVerAvance().setOnAction((event) -> {
-                    irAVistaAvance(e);
-                });
+                TarjetaAvanceEstudiante tarjeta = new TarjetaAvanceEstudiante(e.getIdEstudiante(), nombreCompleto,
+                        e.getMatriculaEstudiante(), e.getAnteproyectoEstudiante(), porcentaje,
+                        actividadesCompletadas, actividadesNoCompletadas, actividadesRestantes);
+                tarjeta.getBotonVerAvance().setOnAction(
+                    (event) -> {
+                        irAVistaAvance(e);
+                    }
+                );
                 vbxCards.getChildren().add(tarjeta);
             }
         } catch (DAOException ex) {
@@ -151,7 +153,7 @@ public class FXMLConsultarAvancesController implements Initializable {
         } catch (DAOException ex) {
             manejarDAOException(ex);
         }
-            return actividades;
+        return actividades;
     }
     
     @FXML
@@ -176,12 +178,10 @@ public class FXMLConsultarAvancesController implements Initializable {
     
     private void irAVistaAvance(Estudiante estudiante) {
         try {
-            FXMLLoader accesoControlador 
-                    = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLConsultarAvanceEstudiante.fxml"));
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLConsultarAvanceEstudiante.fxml"));
             Parent vista = accesoControlador.load();
             FXMLConsultarAvanceEstudianteController controladorVistaCursos = accesoControlador.getController();
-            controladorVistaCursos.setEstudianteAcademico(
-                    estudiante, academico, CodigosVentanas.CONSULTAR_AVANCES_ESTUDIANTES, curso);
+            controladorVistaCursos.setEstudianteAcademico(estudiante, academico, CodigosVentanas.CONSULTAR_AVANCES_ESTUDIANTES, curso);
             Stage escenario = (Stage) lbBloque.getScene().getWindow();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Avance del estudiante");
@@ -199,6 +199,7 @@ public class FXMLConsultarAvancesController implements Initializable {
             case ERROR_CONEXION_BD:
                 Utilidades.mostrarDialogoSimple("Error de conexion", 
                         "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
+                break;
             default:
                 throw new AssertionError();
         }

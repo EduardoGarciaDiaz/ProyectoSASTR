@@ -19,7 +19,7 @@ public class ConexionBD {
     private static final String DRIVER = "com.mysql.jdbc.Driver";
     private static final String NOMBRE_BASE = "sastr";
     private static final String HOSTNAME = "localhost";
-    private static final String PUERTO = "3306";                     //TODO: Crear usuario y contraseña
+    private static final String PUERTO = "3306";
     private static final String USUARIO = "userEdu";
     private static final String PASSWORD = "ProyectosEduLIS";
     
