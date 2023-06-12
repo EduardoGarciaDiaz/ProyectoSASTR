@@ -8,18 +8,12 @@
 
 package javafxsastr.utils.cards;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
-import javafxsastr.modelos.dao.AcademicoDAO;
-import javafxsastr.modelos.dao.CursoDAO;
-import javafxsastr.modelos.dao.DAOException;
-import javafxsastr.modelos.pojo.Academico;
 import javafxsastr.modelos.pojo.ConsultarAvanceEstudianteSingleton;
 import javafxsastr.utils.CodigosVentanas;
 
@@ -74,7 +68,6 @@ public class TarjetaEntregasActividad extends Pane{
                 btnRevisar = new Button("Revisar");
             }
         }
-
     }
 
     private void establecerEstilos() {

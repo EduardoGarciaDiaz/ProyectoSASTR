@@ -90,7 +90,7 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
     }    
     
     public void setEstudiante(Estudiante estudiante) {   
-       this.estudiante = estudiante;       //Establece al usuario para mantener la navegabilidad entre pantallas
+       this.estudiante = estudiante;
     }
 
     public void setActividad(Actividad actividad) {
@@ -240,7 +240,7 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
         try { 
             int idAcademico = new AnteproyectoDAO().obtenerAnteproyectosPorEstudiante(estudiante.getIdEstudiante()).getIdAcademico();
             academico = new AcademicoDAO().obtenerAcademicoPorId(idAcademico);
-        } catch(DAOException ex) {
+        } catch (DAOException ex) {
             manejarDAOException(ex);
         }
     }
@@ -308,7 +308,7 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
         if (seEnviaronTodos) {
             Utilidades.mostrarDialogoSimple("Entrega enviada", "Entrega enviada exitosamente",
                     Alert.AlertType.INFORMATION);
-            if(esEdicion) {
+            if (esEdicion) {
                 irAVistaDetallesEntrega();
             } else {
                 irAVistaDetallesActividad();
@@ -333,7 +333,7 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
     
     @FXML
     private void clicRegresar(MouseEvent event) {
-        if(esEdicion) {
+        if (esEdicion) {
             irAVistaDetallesEntrega();
         } else {
             irAVistaDetallesActividad();
@@ -359,7 +359,6 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
                 visualizarArchivo(archivoEntregaSeleccion);
             } catch (IOException ex) {
                 ex.printStackTrace();
-                System.out.println("Error");
             }
         }
   
@@ -377,25 +376,11 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
         boolean cancelarRegistro = Utilidades.mostrarDialogoConfirmacion("Cancelar entrega de actividad",
                 "¿Estás seguro de que deseas cancelar la entrega?");
         if (cancelarRegistro) {
-            if(esEdicion) {
+            if (esEdicion) {
                 irAVistaDetallesEntrega();
             } else {
                 irAVistaDetallesActividad();
             }
-        }
-    }
-    
-    private void manejarDAOException(DAOException ex) {
-        switch (ex.getCodigo()) {
-            case ERROR_CONSULTA:
-                System.out.println("Ocurrió un error de consulta.");
-                break;
-            case ERROR_CONEXION_BD:
-                Utilidades.mostrarDialogoSimple("Error de conexion",
-                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                        Alert.AlertType.ERROR);
-            default:
-                throw new AssertionError();
         }
     }
     
@@ -429,6 +414,21 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
             escenario.show();
         } catch (IOException ex) {
             ex.printStackTrace();
+        }
+    }
+    
+    private void manejarDAOException(DAOException ex) {
+        switch (ex.getCodigo()) {
+            case ERROR_CONSULTA:
+                System.out.println("Ocurrió un error de consulta.");
+                break;
+            case ERROR_CONEXION_BD:
+                Utilidades.mostrarDialogoSimple("Error de conexion",
+                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.",
+                        Alert.AlertType.ERROR);
+                break;
+            default:
+                throw new AssertionError();
         }
     }
 

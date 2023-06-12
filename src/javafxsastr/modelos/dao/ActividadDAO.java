@@ -17,56 +17,56 @@ import javafxsastr.utils.Codigos;
 
 public class ActividadDAO {
 
-    private final String OBTENER_ACTIVIDADES = "SELECT * FROM actividades a " 
+    private final String OBTENER_ACTIVIDADES = "SELECT * FROM actividades a "
             + "INNER JOIN estados_actividad ea ON a.idEstadoActividad = ea.idEstadoActividad";
-    private final String OBTENER_ACTIVIDADES_POR_ESTUDIANTE = "SELECT * FROM actividades a " 
+    private final String OBTENER_ACTIVIDADES_POR_ESTUDIANTE = "SELECT * FROM actividades a "
             + "INNER JOIN estados_actividad ea ON a.idEstadoActividad = ea.idEstadoActividad "
             + "WHERE a.idEstudiante = ?";
-    private final String OBTENER_ACTIVIDADES_POR_ESTADO = "SELECT * FROM actividades a " 
-            + "INNER JOIN estados_actividad ea ON a.idEstadoActividad = ea.idEstadoActividad " 
+    private final String OBTENER_ACTIVIDADES_POR_ESTADO = "SELECT * FROM actividades a "
+            + "INNER JOIN estados_actividad ea ON a.idEstadoActividad = ea.idEstadoActividad "
             + "WHERE a.idEstadoActividad = ?";
-    private final String OBTENER_ACTIVIDAD = "SELECT * FROM actividades a " 
-            + "INNER JOIN estados_actividad ea ON a.idEstadoActividad = ea.idEstadoActividad " 
+    private final String OBTENER_ACTIVIDAD = "SELECT * FROM actividades a "
+            + "INNER JOIN estados_actividad ea ON a.idEstadoActividad = ea.idEstadoActividad "
             + "WHERE idActividad = ?";
-    private final String GUARDAR_ACTIVIDAD = "INSERT INTO actividades (nombreActividad, detallesActividad, fechaInicioActividad, "
-            + "fechaFinActividad, horaInicioActividad, horaFinActividad, fechaCreacionActividad, idAnteproyecto, idEstadoActividad,"
+    private final String GUARDAR_ACTIVIDAD = "INSERT INTO actividades (nombreActividad, detallesActividad, fechaInicioActividad, " 
+            + " fechaFinActividad, horaInicioActividad, horaFinActividad, fechaCreacionActividad, idAnteproyecto, idEstadoActividad,"
             + " idEstudiante) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-    private final String ACTUALIZAR_ACTIVIDAD = "UPDATE actividades SET nombreActividad = ?, detallesActividad = ?," 
-            + " fechaInicioActividad = ?, fechaFinActividad = ?, horaInicioActividad = ?, horaFinActividad = ? , " 
+    private final String ACTUALIZAR_ACTIVIDAD = "UPDATE actividades SET nombreActividad = ?, detallesActividad = ?, "
+            + "fechaInicioActividad = ?, fechaFinActividad = ?, horaInicioActividad = ?, horaFinActividad = ? , "
             + "idEstadoActividad = ? WHERE idActividad = ?";
     private final String ELIMINAR_ACTIVIDAD = "DELETE FROM actividades WHERE idActividad = ?";
-    private final String CONTAR_ACTIVIDADES_POR_ESTADO = "select count(*) from sastr.actividades\n" 
-            + "inner join estudiantes on actividades.idEstudiante = estudiantes.idEstudiante\n" 
-            + "inner join estados_actividad on actividades.idEstadoActividad = estados_actividad.idEstadoActividad\n" 
+    private final String CONTAR_ACTIVIDADES_POR_ESTADO = "select count(*) from sastr.actividades " 
+            + "inner join estudiantes on actividades.idEstudiante = estudiantes.idEstudiante " 
+            + "inner join estados_actividad on actividades.idEstadoActividad = estados_actividad.idEstadoActividad " 
             + "where estados_actividad.idEstadoActividad = ? and estudiantes.idEstudiante = ?";
     private final String OBTENER_NUMERO_ACTIVIDADES_POR_ESTUDIANTE = "SELECT COUNT(a.idActividad) AS numeroActividades "
             + "FROM actividades a " 
             + "INNER JOIN estudiantes e ON a.idEstudiante = e.idEstudiante " 
             + "WHERE e.idEstudiante = ? ;";
     private final String OBTENER_NUMERO_ACTIVIDADES_COMPLETADAS = "SELECT COUNT(a.idActividad) AS numeroActividades " 
-            + "FROM actividades a " 
+            + "FROM actividades a "
             + "INNER JOIN estudiantes e ON a.idEstudiante = e.idEstudiante " 
             + "INNER JOIN estados_actividad ea ON a.idEstadoActividad = ea.idEstadoActividad " 
             + "WHERE e.idEstudiante = ? AND a.idEstadoActividad = 2;";
     private final String OBTENER_NUMERO_ACTIVIDADES_NO_COMPLETADAS = "SELECT COUNT(a.idActividad) AS numeroActividades "
-            + "FROM actividades a " 
+            + "FROM actividades a "
             + "INNER JOIN estudiantes e ON a.idEstudiante = e.idEstudiante " 
             + "INNER JOIN estados_actividad ea ON a.idEstadoActividad = ea.idEstadoActividad " 
             + "WHERE e.idEstudiante = ? AND a.idEstadoActividad = 3;";
     private final String OBTENER_NUMERO_ACTIVIDADES_POR_ANTEPROYECTO = "SELECT COUNT(a.idActividad) AS numeroActividades "
-            + "FROM actividades a " 
+            + "FROM actividades a "
             + "INNER JOIN anteproyectos ante ON a.idAnteproyecto= ante.idAnteproyecto " 
             + "WHERE a.idAnteproyecto = ?;";
     private final String OBTENER_NUMERO_ACTIVIDADES_COMPLETADAS_ANTEPROYECTO = "SELECT COUNT(a.idActividad) AS numeroActividades "
             + "FROM actividades a " 
             + "INNER JOIN anteproyectos ante ON a.idAnteproyecto= ante.idAnteproyecto " 
             + "INNER JOIN estados_actividad ea ON a.idEstadoActividad = ea.idEstadoActividad " 
-            + "WHERE ante.idAnteproyecto = ? AND a.idEstadoActividad = 2;";
+            + "WHERE ante.idAnteproyecto = ? AND a.idEstadoActividad = 2;	";
     private final String OBTENER_NUMERO_ACTIVIDADES_NO_COMPLETADAS_ANTEPROYECTO = "SELECT COUNT(a.idActividad) AS numeroActividades "
             + "FROM actividades a " 
             + "INNER JOIN anteproyectos ante ON a.idAnteproyecto= ante.idAnteproyecto " 
             + "INNER JOIN estados_actividad ea ON a.idEstadoActividad = ea.idEstadoActividad " 
-            + "WHERE ante.idAnteproyecto = ? AND a.idEstadoActividad = 3;";
+            + "WHERE ante.idAnteproyecto = ? AND a.idEstadoActividad = 3;	";
 
     public ArrayList<Actividad> obtenerActividades() throws DAOException {
         ArrayList<Actividad> actividades = new ArrayList<>();
@@ -90,8 +90,7 @@ public class ActividadDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                    Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return actividades;
     }
@@ -119,8 +118,7 @@ public class ActividadDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                    Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return actividades;
     }
@@ -137,8 +135,7 @@ public class ActividadDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                    Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return numeroActividades;
     }
@@ -155,8 +152,7 @@ public class ActividadDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                    Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return numeroActividades;
     }
@@ -173,8 +169,7 @@ public class ActividadDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                    Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return numeroActividades;
     }
@@ -191,8 +186,7 @@ public class ActividadDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                    Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return numeroActividades;
     }
@@ -208,9 +202,8 @@ public class ActividadDAO {
                 numeroActividades = resultado.getInt("numeroActividades");
             }
             ConexionBD.cerrarConexionBD();
-        } catch (SQLException ex) {           
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                    Codigos.ERROR_CONSULTA);
+        } catch (SQLException ex) {
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return numeroActividades;
     }
@@ -235,9 +228,8 @@ public class ActividadDAO {
                 actividad.setEstadoActividad(resultado.getString("nombreEstadoActividad"));
             }
             ConexionBD.cerrarConexionBD();
-        } catch (SQLException ex) {           
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                    Codigos.ERROR_CONSULTA);
+        } catch (SQLException ex) {
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return actividad;
     }
@@ -264,8 +256,7 @@ public class ActividadDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                    Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return respuesta;
     }
@@ -286,8 +277,7 @@ public class ActividadDAO {
             respuesta = (filasAfectadas == 1) ? actividad.getIdActividad() : -1;
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                    Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return respuesta;
     }
@@ -301,8 +291,7 @@ public class ActividadDAO {
             respuesta = (filasAfectadas == 1) ? idActividad : -1;
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                    Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return respuesta;
     }
@@ -320,8 +309,7 @@ public class ActividadDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                    Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return totalActividades;
     }
@@ -338,8 +326,7 @@ public class ActividadDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                    Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return numeroActividades;
     }
@@ -367,8 +354,7 @@ public class ActividadDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                    Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return actividades;
     }

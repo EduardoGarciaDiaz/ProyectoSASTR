@@ -38,7 +38,8 @@ public class TarjetaEntregas extends Pane{
         inicializarElementos();
         establecerEstilos();
         lbNumeroEntrega.setText("Entrega #" + String.valueOf(numeroEntrega));
-        getChildren().addAll(btnVerDetalles, lbNumeroEntrega, lbFechaEnvio, lbHoraEnvio, lbEstadoEntrega, imgEntrega);
+        getChildren().addAll(btnVerDetalles, lbNumeroEntrega, lbFechaEnvio, lbHoraEnvio, 
+                lbEstadoEntrega, imgEntrega);
    }
    
    public Button getBotonVerDetalles() {
@@ -132,9 +133,6 @@ public class TarjetaEntregas extends Pane{
         btnVerDetalles.setStyle("-fx-border-color: transparent;"
                 + "-fx-background-radius: 13;"
                 + "-fx-background-color: #c9c9c9");
-        btnVerDetalles.setOnAction((event) -> {
-            System.out.println("Clic en Ver detalles, cambiar el listener al controlador");
-        });
     }
     
 }

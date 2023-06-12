@@ -41,7 +41,7 @@ public class TarjetaEstudianteCurso extends Pane{
         establecerEstiloNombreEstudiante();
         establecerColorEstadoEstudinate(estudiante);
         establecerEstiloCorreo();
-        lbNombreEstudiante.setText(estudiante.getNombre()+" "+estudiante.getPrimerApellido()+" "+estudiante.getSegundoApellido());
+        lbNombreEstudiante.setText(obtenerNombreEstudiante());
         lbNombreEstudiante.setWrapText(true);
         lbcorreoEstudinate.setText(estudiante.getCorreoInstitucional());
         lbcorreoEstudinate.setWrapText(true);
@@ -59,6 +59,22 @@ public class TarjetaEstudianteCurso extends Pane{
     
      public Pane getBotonEditar() {
         return fondoEitar;
+    }
+     
+    private String obtenerNombreEstudiante() {
+        String nombre = "";
+        String primerApellido = "";
+        String segundoApellido = "";
+        if (estudiante.getNombre() != null) {
+            nombre = estudiante.getNombre();
+        }
+        if (estudiante.getPrimerApellido() != null) {
+            primerApellido = estudiante.getPrimerApellido();
+        } 
+        if (estudiante.getSegundoApellido() != null) {
+            segundoApellido = estudiante.getSegundoApellido();
+        }
+        return nombre + " " + primerApellido + " " + segundoApellido;
     }
     
     private void inicializarElementos() {

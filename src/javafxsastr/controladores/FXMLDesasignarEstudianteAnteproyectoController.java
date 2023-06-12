@@ -53,7 +53,6 @@ public class FXMLDesasignarEstudianteAnteproyectoController implements Initializ
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {      
-        
     } 
     
     public void iniciarDesasignacion(Estudiante estudiante,Anteproyecto anteproyecto,INotificacionRecargarDatos interfazNotificacion) {

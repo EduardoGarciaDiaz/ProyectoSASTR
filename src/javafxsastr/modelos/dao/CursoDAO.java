@@ -20,42 +20,38 @@ import javafxsastr.utils.Codigos;
 
 public class CursoDAO {
 
-    private final String OBTENER_CURSOS = "SELECT c.idCurso, c.nombreCurso, c.fechaInicioCurso, c.fechaFinCurso, " +
-            "c.idExperienciaEducativa, e.nombreExperienciaEducativa, c.idNrc, n.nombreNrc, c.idPeriodoEscolar, " +
-            "pe.fechaInicioPeriodoEscolar, pe.fechaFinPeriodoEscolar, c.idSeccion, s.nombreSeccion, c.idBloque, " +
-            "b.nombreBloque, c.idAcademico, " +
-            "CONCAT(u.nombreUsuario,' ', u.primerApellidoUsuario,' ', u.segundoApellidoUsuario) AS nombreCompletoAcademico, " +
-            "c.idEstadoCurso, ec.nombreEstadoCurso " +
-            "FROM cursos c " +
-            "INNER JOIN experiencias_educativas e ON c.idExperienciaEducativa = e.idExperienciaEducativa " +
-            "INNER JOIN nrcs n ON c.idNrc = n.idNrc " +
-            "INNER JOIN periodos_escolares pe ON c.idPeriodoEscolar = pe.idPeriodoEscolar " +
-            "INNER JOIN secciones s ON c.idSeccion = s.idSeccion " +
-            "INNER JOIN bloques b ON c.idBloque = b.idBloque " +
-            "INNER JOIN academicos a ON c.idAcademico = a.idAcademico " +
-            "INNER JOIN usuarios u ON u.idUsuario = a.idUsuario " +
-            "INNER JOIN estados_curso ec ON c.idEstadoCurso = ec.idEstadoCurso ";
+    private final String OBTENER_CURSOS = "SELECT c.idCurso, c.nombreCurso, c.fechaInicioCurso, c.fechaFinCurso, "
+            + "c.idExperienciaEducativa, e.nombreExperienciaEducativa, c.idNrc, n.nombreNrc, c.idPeriodoEscolar, "
+            + "pe.fechaInicioPeriodoEscolar, pe.fechaFinPeriodoEscolar, c.idSeccion, s.nombreSeccion, c.idBloque, "
+            + "b.nombreBloque, c.idAcademico, "
+            + "CONCAT(u.nombreUsuario,' ', u.primerApellidoUsuario,' ', u.segundoApellidoUsuario) AS nombreCompletoAcademico, "
+            + "c.idEstadoCurso, ec.nombreEstadoCurso " 
+            + "FROM cursos c "
+            + "INNER JOIN experiencias_educativas e ON c.idExperienciaEducativa = e.idExperienciaEducativa "
+            + "INNER JOIN nrcs n ON c.idNrc = n.idNrc "
+            + "INNER JOIN periodos_escolares pe ON c.idPeriodoEscolar = pe.idPeriodoEscolar "
+            + "INNER JOIN secciones s ON c.idSeccion = s.idSeccion "
+            + "INNER JOIN bloques b ON c.idBloque = b.idBloque "
+            + "INNER JOIN academicos a ON c.idAcademico = a.idAcademico "
+            + "INNER JOIN usuarios u ON u.idUsuario = a.idUsuario "
+            + "INNER JOIN estados_curso ec ON c.idEstadoCurso = ec.idEstadoCurso ";
     private final String OBTENER_CURSOS_POR_EXPERIENCIA_EDUCATIVA = OBTENER_CURSOS
             + "WHERE nombreExperienciaEducativa = ?";
     private final String OBTENER_CURSOS_POR_NOMBRE = OBTENER_CURSOS + "WHERE nombreCurso = ?";
-    private final String ORDENAR_CURSOS_POR_PERIODO_ESCOLAR = OBTENER_CURSOS
-            + "ORDER BY fechaInicioPeriodoEscolar DESC;";
+    private final String ORDENAR_CURSOS_POR_PERIODO_ESCOLAR = OBTENER_CURSOS + "ORDER BY fechaInicioPeriodoEscolar DESC;";
     private final String OBTENER_CURSO = OBTENER_CURSOS + " WHERE idCurso = ?";
     private final String GUARDAR_CURSO = "INSERT INTO cursos (nombreCurso, fechaInicioCurso, fechaFinCurso, idSeccion, idBloque, "
-            +
-            "idExperienciaEducativa, idNrc, idPeriodoEscolar, idEstadoCurso, idAcademico) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-    private final String ACTUALIZAR_CURSO = "UPDATE cursos SET nombreCurso = ?, fechaInicioCurso = ?, fechaFinCurso = ?, idSeccion = ?,"
-            +
-            " idBloque = ?, idExperienciaEducativa = ?, idNrc = ?, idPeriodoEscolar = ?, idEstadoCurso = ?, idAcademico = ? "
-            +
-            "WHERE idCurso = ?";
+            + "idExperienciaEducativa, idNrc, idPeriodoEscolar, idEstadoCurso, idAcademico) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+    private final String ACTUALIZAR_CURSO = "UPDATE cursos SET nombreCurso = ?, fechaInicioCurso = ?, fechaFinCurso = ?, idSeccion = ?, "
+            + "idBloque = ?, idExperienciaEducativa = ?, idNrc = ?, idPeriodoEscolar = ?, idEstadoCurso = ?, idAcademico = ? "
+            + "WHERE idCurso = ?";
     private final String ELIMINAR_CURSO = "DELETE FROM cursos WHERE idCurso = ?";
     private final String VERIFICAR_SI_ACADEMICO_IMPARTE_CURSO = "SELECT EXISTS"
             + "(SELECT idAcademico FROM cursos WHERE idAcademico = ?) as esProfesor;";
-    private final String OBTENER_CURSOS_POR_ESTUDIANTE = OBTENER_CURSOS +
-            "INNER JOIN cursos_estudiantes cu on c.idCurso = cu.idCurso " +
-            "INNER JOIN estudiantes est ON cu.idEstudiante = est.idEstudiante " +
-            "WHERE est.idEstudiante = ? and ec.idEstadoCurso = ?";
+    private final String OBTENER_CURSOS_POR_ESTUDIANTE = OBTENER_CURSOS 
+            + "INNER JOIN cursos_estudiantes cu on c.idCurso = cu.idCurso " 
+            + "INNER JOIN estudiantes est ON cu.idEstudiante = est.idEstudiante " 
+            + "WHERE est.idEstudiante = ? and ec.idEstadoCurso = ?";
     private final String GUARDAR_RELACIONESTUDIANTE_CURSO = "INSERT INTO sastr.cursos_estudiantes "
             + "( idCurso, idEstudiante) VALUES (?,?);";
     private final String OBTENER_CURSOS_ACTUALES_DEL_PROFESOR = OBTENER_CURSOS
@@ -95,8 +91,7 @@ public class CursoDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                    Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return cursos;
     }
@@ -133,8 +128,7 @@ public class CursoDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                    Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return cursos;
     }
@@ -168,8 +162,7 @@ public class CursoDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                    Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return curso;
     }
@@ -205,8 +198,7 @@ public class CursoDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                    Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return cursos;
     }
@@ -240,9 +232,7 @@ public class CursoDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                    Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return curso;
     }
@@ -269,9 +259,7 @@ public class CursoDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
-            throw new DAOException("Error consulta.",
-                    Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return respuesta;
     }
@@ -295,9 +283,7 @@ public class CursoDAO {
             respuesta = (filasAfectadas == 1) ? curso.getIdCurso() : -1;
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                    Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return respuesta;
     }
@@ -311,8 +297,7 @@ public class CursoDAO {
             respuesta = (filasAfectadas == 1) ? idCurso : -1;
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                    Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return respuesta;
     }
@@ -329,8 +314,7 @@ public class CursoDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
-            throw new DAOException("Error de consulta", Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return esProfesor;
     }
@@ -367,8 +351,7 @@ public class CursoDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                    Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return curso;
     }
@@ -388,9 +371,7 @@ public class CursoDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
-            throw new DAOException("No se pudo conectar con la base de datos. Inténtelo de nuevo o hágalo más tarde.",
-                    Codigos.ERROR_CONSULTA);
+            throw new DAOException("Hubo un error al realizar la consulta", Codigos.ERROR_CONSULTA);
         }
         return respuesta;
     }
@@ -427,7 +408,6 @@ public class CursoDAO {
             System.out.println(cursos);
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
             throw new DAOException("Error de consulta al obtener los cursos actuales del profesor", Codigos.ERROR_CONSULTA);
         }
         return cursos;

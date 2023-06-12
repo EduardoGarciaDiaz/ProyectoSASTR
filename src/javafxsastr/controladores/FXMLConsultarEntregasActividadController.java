@@ -1,14 +1,14 @@
 /*
  * Autor: Eduardo García Díaz
  * Fecha de creación: 03/06/2023
- * Descripción: Controlador de la vista de entregas de una actividad
+ * Descripción: Controla la vista de entregas de una actividad,
+ * la que visualiza el Director y Profesor de un curso
  */
 
 package javafxsastr.controladores;
 
 import java.io.IOException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -65,8 +65,8 @@ public class FXMLConsultarEntregasActividadController implements Initializable {
     @FXML
     private Button btnFecha;
     
-    private ConsultarAvanceEstudianteSingleton consultarAvanceEstudiante
-           = ConsultarAvanceEstudianteSingleton.obtenerConsultarAvanceEstudiante(null, null, null, null);
+    private ConsultarAvanceEstudianteSingleton consultarAvanceEstudiante = ConsultarAvanceEstudianteSingleton
+            .obtenerConsultarAvanceEstudiante(null, null, null, null);
     private Actividad actividad;
     private ObservableList<Entrega> entregas;
     private boolean esBtnFechaPresionado = true;
@@ -117,7 +117,7 @@ public class FXMLConsultarEntregasActividadController implements Initializable {
             } else {
                  System.err.println("La actividad que se recibió viene NULA");
             }
-        } catch(DAOException ex) {
+        } catch (DAOException ex) {
             manejarDAOException(ex);
         }
     }
@@ -143,9 +143,11 @@ public class FXMLConsultarEntregasActividadController implements Initializable {
             int numeroEntregaSeleccionado = numeroEntrega;
             TarjetaEntregasActividad tarjetaEntregaActividad = new TarjetaEntregasActividad(numeroEntrega,fechaEntregaFormateada,
                     horaEntrega, fechaRevision);
-            tarjetaEntregaActividad.getBotonRevisar().setOnAction((event) -> {
-                irAVistaRevisarEntrega(entrega, numeroEntregaSeleccionado);
-            });
+            tarjetaEntregaActividad.getBotonRevisar().setOnAction(
+                (event) -> {
+                    irAVistaRevisarEntrega(entrega, numeroEntregaSeleccionado);
+                }
+            );
             vbxCardsEntregas.getChildren().add(tarjetaEntregaActividad);
         }
     }
@@ -153,7 +155,8 @@ public class FXMLConsultarEntregasActividadController implements Initializable {
     private void obtenerListaCambios() {
         try {
             if (actividad != null) {
-                ArrayList<HistorialCambios> cambios = new HistorialCambiosDAO().obtenerInformacionHistorialCambios(actividad.getIdActividad());
+                ArrayList<HistorialCambios> cambios = new HistorialCambiosDAO()
+                        .obtenerInformacionHistorialCambios(actividad.getIdActividad());
                 for (HistorialCambios cambio : cambios) {        
                     LocalDate fechaModificacion = LocalDate.parse(cambio.getFechaDeModificacion());
                     LocalDate fechaAnterior = LocalDate.parse(cambio.getFechaAnterior());
@@ -167,7 +170,6 @@ public class FXMLConsultarEntregasActividadController implements Initializable {
             } else {
                     System.err.println("La actividad que se recibió viene NULA");
             }
-
         } catch (DAOException ex) {
             manejarDAOException(ex);
         }
@@ -200,13 +202,15 @@ public class FXMLConsultarEntregasActividadController implements Initializable {
                 }
                 return false;
             });
-        Comparator<Entrega> fechaComparator = Comparator.comparing(Entrega::getFechaEntrega);
-        List<Entrega> listaOrdenada = new ArrayList<>(filtroEntregas);
-        listaOrdenada.sort(fechaComparator.reversed());
-        mostrarEntregas(new SortedList<>(FXCollections.observableList(listaOrdenada), fechaComparator.reversed()), true);
+            Comparator<Entrega> fechaHoraComparator = Comparator.comparing(Entrega::getFechaEntrega).thenComparing(Entrega::getHoraEntrega);
+            List<Entrega> listaOrdenada = new ArrayList<>(filtroEntregas);
+            listaOrdenada.sort(fechaHoraComparator.reversed());
+            mostrarEntregas(new SortedList<>(FXCollections.observableList(listaOrdenada), fechaHoraComparator.reversed()),
+                    true);
         }
-    }    
-    
+    }
+
+
     private void irAVistaAvanceEstudiante() {
         try {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLConsultarAvanceEstudiante.fxml"));
@@ -253,6 +257,7 @@ public class FXMLConsultarEntregasActividadController implements Initializable {
             case ERROR_CONEXION_BD:
                 Utilidades.mostrarDialogoSimple("Error de conexion", 
                         "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
+                break;
             default:
                 throw new AssertionError();
         }

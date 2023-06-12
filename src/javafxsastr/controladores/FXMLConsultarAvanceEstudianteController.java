@@ -130,10 +130,19 @@ public class FXMLConsultarAvanceEstudianteController implements Initializable {
     }
     
     private void setDatosEstudiante() {
-        lbNombreEstudiante.setText(estudiante.toString());
+        lbNombreEstudiante.setText(obtenerNombreEstudiante());
         lbMatriculaEstudiante.setText(estudiante.getMatriculaEstudiante());
         lbCorreoInstitucionalEstudiante.setText(estudiante.getCorreoInstitucional());
         lbCursandoActualmente.setText(estudiante.getCursoEstudiante());
+    }
+    
+    private String obtenerNombreEstudiante() {
+        String nombreCompletoEstudiante = estudiante.getNombre() + " " + estudiante.getPrimerApellido() 
+                + " " + estudiante.getSegundoApellido();
+        if(nombreCompletoEstudiante.contains("null")) {
+            nombreCompletoEstudiante = nombreCompletoEstudiante.replaceAll("null", " ");
+        }
+        return nombreCompletoEstudiante;
     }
     
     private void setDatosAnteproyecto() {

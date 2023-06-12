@@ -63,7 +63,6 @@ public class FXMLCursosController implements Initializable {
     private final String ESTILO_NORMAL = "-fx-background-color: C9C9C9;"
                                                 + "-fx-background-radius: 15;";
 
-    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     }
@@ -86,10 +85,12 @@ public class FXMLCursosController implements Initializable {
     private void mostrarCursos(ObservableList<Curso> cursos) {
         for (Curso curso : cursos) {
             TarjetaCurso tarjeta = new TarjetaCurso(curso);
-            tarjeta.getBotonVerDetalles().setOnAction((event) -> {
-                cursoConsutla = curso;
-                irAVistaDetallesCurso();
-            });
+            tarjeta.getBotonVerDetalles().setOnAction(
+                (event) -> {
+                    cursoConsutla = curso;
+                    irAVistaDetallesCurso();
+                }
+            );
             vbxCursos.getChildren().add(tarjeta);
         }
     }
@@ -233,6 +234,7 @@ public class FXMLCursosController implements Initializable {
             case ERROR_CONEXION_BD:
                 Utilidades.mostrarDialogoSimple("Error de conexion", 
                         "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
+                break;
             default:
                 throw new AssertionError();
         }

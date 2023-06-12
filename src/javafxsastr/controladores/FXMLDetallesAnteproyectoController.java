@@ -1,7 +1,7 @@
 /*
  * Autor: Eduardo García Díaz
  * Fecha de creación: 04/06/2023
- * Descripción: Controlador de la vista de detalles de anteproyecto
+ * Descripción: Controla la vista de detalles de anteproyecto
  */
 
 package javafxsastr.controladores;
@@ -15,8 +15,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -213,7 +211,10 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
     private void mostrarDatosAnteproyecto() {
         if (anteproyecto != null && !anteproyecto.getFechaCreacion().isEmpty()) {
             mostrarDatosResponsableTrabajoRecepcional();
-            validarEsDirector();
+            if (validarEsDirector()) {
+                validarAsignarPrimerEstudiante();
+                validarAsignarOtroEstudiante();
+            }
             mostrarDatosLugarFecha();
             mostrarDatosProyectoTitulacion();
             mostrarDatosDescripciones();
@@ -233,8 +234,7 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
                     && (anteproyecto.getIdEstadoSeguimiento() == ANTEPROYECTO_APROBADO || 
                     anteproyecto.getIdEstadoSeguimiento() == ANTEPROYECTO_EN_DESARROLLO ||
                     anteproyecto.getIdEstadoSeguimiento() == ANTEPROYECTO_PUBLICADO)) {
-                validarAsignarPrimerEstudiante();
-                validarAsignarOtroEstudiante();
+                
             } else {
                 esDirector = false;
             }
@@ -257,20 +257,21 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
         if (estudiantesParticipantes.size() < numeroMaximoEstudiantes
                 && estudiantesParticipantes.size() >= 1) {
             btnAsignarOtroEstudiante.setVisible(true);
+        } else {
+            btnAsignarOtroEstudiante.setVisible(false);
         }
     }
     
     private void cambiarEstadoAnteproyecto(String estSeguimiento) {
         try {
             int idEstadoSeguimiento = new EstadoSeguimientoDAO().obtenerIdEstadoSeguimiento(estSeguimiento);            
-            new AnteproyectoDAO().actualizarEstadoSeguimiento(anteproyecto.getIdAnteproyecto(), idEstadoSeguimiento);
+            new AnteproyectoDAO().actualizarEstadoSeguimiento(anteproyecto.getIdAnteproyecto(),
+                    idEstadoSeguimiento);
         } catch (DAOException ex) {
             manejarDAOException(ex);
         }
     }
-    
-   
- 
+
     private void mostrarDatosLugarFecha() {
         LocalDate fechaCreacion = obtenerFecha();        
         String anio = String.valueOf(fechaCreacion.getYear());
@@ -381,7 +382,7 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
         lbActividadesRestantes.setText(actividadesRestantes);
         lbPorcentaje.setText(String.valueOf(porcentaje) + " %");
         } else {
-            System.err.println("El anteproyector recibido viene NULO");
+            System.err.println("El anteproyecto recibido viene NULO");
         }
     }
     
@@ -416,15 +417,17 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
                 vbxEstudiantesDesasignados.getChildren().clear();
                 vbxEstudiantesDesasignados.setSpacing(50);
                 lbNingunDesasignado.setText("");
-                for(Desasignacion desasignacion : desasignaciones) {
+                for (Desasignacion desasignacion : desasignaciones) {
                     TarjetaDesasignacion tarjeta = new TarjetaDesasignacion(desasignacion);                   
-                    tarjeta.getBtnVerJustficacion().setOnAction((event) -> {
-                        verDesasignacion(desasignacion);
-                    });
+                    tarjeta.getBtnVerJustficacion().setOnAction(
+                        (event) -> {
+                            verDesasignacion(desasignacion);
+                        }
+                    );
                     vbxEstudiantesDesasignados.getChildren().add(tarjeta);                }
             }
         } else {
-            System.err.println("El anteproyector recibido viene NULO");
+            System.err.println("El anteproyecto recibido viene NULO");
         }
     }
     
@@ -437,7 +440,7 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
                 }
                 @Override
                 public void notificarSeleccionItem(Estudiante itemSeleccionado) {
-                    lbActividadesCompletadas.requestFocus();
+                    tfEstudiante.requestFocus();
                     Estudiante estudianteSeleccionado = itemSeleccionado;
                     if (estudianteSeleccionado != null && !estudiantesParticipantes.contains(estudianteSeleccionado)) {
                         if (estudiantesParticipantes.size() < numeroMaximoEstudiantes) {                            
@@ -489,10 +492,12 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
                 + "-fx-background-radius: 15;"
                 + "-fx-background-color: #c9c9c9");
         btnAsignarEstudiante.setPrefSize(173, 0);
-        btnAsignarEstudiante.setOnMouseClicked((event) -> {            
-            mostrarBusquedaEstudiantes();
-            vbxSeccionesAnteproyecto.getChildren().remove(contenedorSinEstudiante);
-        });
+        btnAsignarEstudiante.setOnMouseClicked(
+            (event) -> {            
+                mostrarBusquedaEstudiantes();
+                vbxSeccionesAnteproyecto.getChildren().remove(contenedorSinEstudiante);
+            }   
+        );
         vbxSeccionesAnteproyecto.getChildren().add(1, contenedorSinEstudiante);
     }
     
@@ -533,16 +538,18 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
                 }
             }
         }
-        
-        btnDesasignarEstudiante.setOnMouseClicked((event) -> {
-            desasignarEstudiante(estudiante);           
-        });
+        btnDesasignarEstudiante.setOnMouseClicked(
+            (event) -> {
+                desasignarEstudiante(estudiante);           
+            }
+        );
         vbxAlumnosParticipantes.getChildren().add(contenedorEstudiante);
     }
     
     public void desasignarEstudiante(Estudiante estudiante) {
         try {
-            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLDesasignarEstudianteAnteproyecto.fxml"));
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class
+                    .getResource("vistas/FXMLDesaginarEstudianteAnteproyecto.fxml"));
             Parent vista = accesoControlador.load();
             FXMLDesasignarEstudianteAnteproyectoController controladorVista = accesoControlador.getController();
             controladorVista.iniciarDesasignacion(estudiante, anteproyecto, this);
@@ -655,6 +662,7 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
 
     @FXML
     private void clicAsignarOtroEstudiante(ActionEvent event) {
+        validarAsignarPrimerEstudiante();
         validarAsignarOtroEstudiante();
         mostrarBusquedaEstudiantes();    
     }
@@ -672,7 +680,7 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
     
     private void guardarAsignacionDeEstudiantes() {
         try {
-            for(Estudiante e : estudiantesParticipantes) {
+            for (Estudiante e : estudiantesParticipantes) {
                 e.setIdAnteproyecto(anteproyecto.getIdAnteproyecto());
                 int respuesta = new EstudianteDAO().actualizarEstudiante(e);
             }
@@ -693,20 +701,6 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
             mostrarDatosResponsableTrabajoRecepcional();
             validarAsignarPrimerEstudiante();
             validarAsignarOtroEstudiante();
-        }
-    }
-    
-    private void manejarDAOException(DAOException ex) {
-        switch (ex.getCodigo()) {
-            case ERROR_CONSULTA:
-                System.out.println("Ocurrió un error de consulta.");
-                break;
-            case ERROR_CONEXION_BD:
-                Utilidades.mostrarDialogoSimple("Error de conexion", 
-                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
-                break;
-            default:
-                throw new AssertionError();
         }
     }
     
@@ -734,11 +728,27 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
     @Override
     public void notificacionRecargarDatosPorEdicion(boolean fueEditado) {       
         mostrarDesasignaciones();
+        vbxAlumnosParticipantes.getChildren().remove(paneBusqueda);
+        estudiantesParticipantes.clear();
         vbxAlumnosParticipantes.getChildren().clear();
         vbxCodirectores.getChildren().clear();
-        mostrarDatosResponsableTrabajoRecepcional();
         validarAsignarPrimerEstudiante();
         validarAsignarOtroEstudiante();
+        mostrarDatosResponsableTrabajoRecepcional();
+    }
+    
+    private void manejarDAOException(DAOException ex) {
+        switch (ex.getCodigo()) {
+            case ERROR_CONSULTA:
+                System.out.println("Ocurrió un error de consulta.");
+                break;
+            case ERROR_CONEXION_BD:
+                Utilidades.mostrarDialogoSimple("Error de conexion", 
+                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
+                break;
+            default:
+                throw new AssertionError();
+        }
     }
     
 }
