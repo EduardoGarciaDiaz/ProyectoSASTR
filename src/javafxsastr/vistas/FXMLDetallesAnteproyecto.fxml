@@ -25,7 +25,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <ScrollPane hbarPolicy="NEVER" layoutX="3.0" layoutY="76.0" maxHeight="295.0" prefWidth="533.0" style="-fx-background-color: white; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-color: transparent;">
+            <ScrollPane hbarPolicy="NEVER" layoutX="3.0" layoutY="76.0" maxHeight="295.0" prefWidth="533.0" style="-fx-background-radius: 15; -fx-border-radius: 15; -fx-border-color: transparent;" styleClass="edge-to-edge">
                <content>
                   <VBox fx:id="vbxEstudiantesDesasignados" maxHeight="295.0" prefWidth="523.0" spacing="2.0" style="-fx-background-color: white;" />
                </content>
@@ -43,21 +43,11 @@
       </Pane>
       <Pane layoutX="1516.0" layoutY="7.0" prefHeight="50.0" prefWidth="500.0" style="-fx-background-color: #28ad56;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label layoutX="57.0" layoutY="6.0" text="Universidad Veracruzana" textFill="WHITE">
+            <Label layoutX="100.0" layoutY="6.0" text="Universidad Veracruzana" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
             </Label>
-            <ImageView fitHeight="38.0" fitWidth="40.0" layoutX="399.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../recursos/iconos/perfil-de-usuario.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="30.0" fitWidth="32.0" layoutX="445.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../recursos/iconos/flecha-para-desplegar.png" />
-               </image>
-            </ImageView>
          </children>
       </Pane>
       <Label layoutX="92.0" layoutY="64.0" text="Detalles de anteproyecto" textFill="#434343">

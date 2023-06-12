@@ -22,24 +22,14 @@
       </Pane>
       <Pane layoutX="1141.0" layoutY="5.0" prefHeight="50.0" prefWidth="500.0" style="-fx-background-color: #28ad56;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label layoutX="57.0" layoutY="6.0" text="Universidad Veracruzana" textFill="WHITE">
+            <Label layoutX="100.0" layoutY="6.0" text="Universidad Veracruzana" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
             </Label>
-            <ImageView fitHeight="38.0" fitWidth="40.0" layoutX="399.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../recursos/iconos/perfil-de-usuario.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="30.0" fitWidth="32.0" layoutX="445.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../recursos/iconos/flecha-para-desplegar.png" />
-               </image>
-            </ImageView>
          </children>
       </Pane>
-      <Label fx:id="lbTituloVentana" layoutX="79.0" layoutY="70.0" prefHeight="40.0" prefWidth="172.0" text="Usuarios">
+      <Label fx:id="lbTituloVentana" layoutX="79.0" layoutY="70.0" prefHeight="40.0" prefWidth="172.0" text="Ver usuario">
          <font>
             <Font size="30.0" />
          </font>
@@ -68,37 +58,37 @@
             <Font name="System Bold" size="30.0" />
          </font>
       </Label>
-      <Label fx:id="lbCorreoInstitucional" layoutX="88.0" layoutY="384.0" prefHeight="40.0" prefWidth="534.0">
+      <Label fx:id="lbCorreoInstitucional" layoutX="87.0" layoutY="353.0" prefHeight="40.0" prefWidth="534.0">
          <font>
             <Font size="28.0" />
          </font>
       </Label>
-      <Label fx:id="lbPrimerApellido" layoutX="368.0" layoutY="207.0" prefHeight="40.0" prefWidth="249.0">
+      <Label fx:id="lbPrimerApellido" layoutX="368.0" layoutY="193.0" prefHeight="40.0" prefWidth="249.0">
          <font>
             <Font size="28.0" />
          </font>
       </Label>
-      <Label fx:id="lbSegundoApellido" layoutX="671.0" layoutY="207.0" prefHeight="40.0" prefWidth="249.0">
+      <Label fx:id="lbSegundoApellido" layoutX="671.0" layoutY="193.0" prefHeight="40.0" prefWidth="249.0">
          <font>
             <Font size="28.0" />
          </font>
       </Label>
-      <Label layoutX="86.0" layoutY="325.0" text="Correo institucional">
+      <Label layoutX="86.0" layoutY="307.0" text="Correo institucional">
          <font>
             <Font name="System Bold" size="30.0" />
          </font>
       </Label>
-      <Label fx:id="lbNombre" layoutX="87.0" layoutY="207.0" prefHeight="40.0" prefWidth="249.0">
+      <Label fx:id="lbNombre" layoutX="86.0" layoutY="193.0" prefHeight="40.0" prefWidth="249.0">
          <font>
             <Font size="28.0" />
          </font>
       </Label>
-      <Label layoutX="90.0" layoutY="476.0" text="Tipo de usuario">
+      <Label layoutX="90.0" layoutY="448.0" text="Tipo de usuario">
          <font>
             <Font name="System Bold" size="30.0" />
          </font>
       </Label>
-      <Label fx:id="lbTipoUsuario" layoutX="93.0" layoutY="547.0" prefHeight="40.0" prefWidth="375.0">
+      <Label fx:id="lbTipoUsuario" layoutX="88.0" layoutY="495.0" prefHeight="40.0" prefWidth="375.0">
          <font>
             <Font size="28.0" />
          </font>

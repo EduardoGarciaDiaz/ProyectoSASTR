@@ -36,7 +36,7 @@
                </children></Pane>
             <Pane layoutX="311.0" prefHeight="34.0" prefWidth="369.0" style="-fx-background-color: #28AD56;">
                <children>
-                  <Label layoutX="59.0" layoutY="1.0" prefHeight="34.0" prefWidth="251.0" text="Universidad Veracruzana" textFill="WHITE">
+                  <Label layoutX="64.0" layoutY="-2.0" prefHeight="34.0" prefWidth="251.0" text="Universidad Veracruzana" textFill="WHITE">
                      <font>
                         <Font size="21.0" />
                      </font>
@@ -55,7 +55,7 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txfEstudianteBusqueda" layoutX="16.0" layoutY="35.0" prefHeight="31.0" prefWidth="626.0" style="-fx-background-color: ECECEC; -fx-background-radius: 15;" />
+                  <TextField fx:id="txfEstudianteBusqueda" layoutX="31.0" layoutY="35.0" prefHeight="31.0" prefWidth="596.0" style="-fx-background-color: ECECEC; -fx-background-radius: 15;" />
                   <Button fx:id="BtnOtro" layoutX="578.0" layoutY="76.0" mnemonicParsing="false" onAction="#clicBtnOtro" style="-fx-background-radius: 15;" text="otro" />
                   <ListView fx:id="lsvEstudiantesBusqueda" layoutX="16.0" layoutY="66.0" maxHeight="83.0" maxWidth="550.0" prefWidth="548.0" style="-fx-background-color: ECECEC; -fx-background-radius: 13;" visible="false" />
                </children>

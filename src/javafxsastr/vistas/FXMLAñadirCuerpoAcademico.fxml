@@ -24,21 +24,11 @@
             </Pane>
             <Pane layoutX="1228.0" prefHeight="50.0" prefWidth="500.0" style="-fx-background-color: #28ad56;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Label layoutX="57.0" layoutY="6.0" text="Universidad Veracruzana" textFill="WHITE">
+                  <Label layoutX="100.0" layoutY="6.0" text="Universidad Veracruzana" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>
                   </Label>
-                  <ImageView fitHeight="38.0" fitWidth="40.0" layoutX="399.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../recursos/iconos/perfil-de-usuario.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="30.0" fitWidth="32.0" layoutX="445.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../recursos/iconos/flecha-para-desplegar.png" />
-                     </image>
-                  </ImageView>
                </children>
             </Pane>
             <Pane layoutX="36.0" layoutY="131.0" prefHeight="799.0" prefWidth="953.0">
@@ -213,11 +203,6 @@
                   <Button fx:id="btnEliminar" layoutX="620.0" layoutY="515.0" mnemonicParsing="false" onAction="#clicEliminarLgac" style="-fx-background-color: FCCFCF; -fx-background-radius: 13;" text="Eliminar" />
                </children>
             </Pane>
-            <Label fx:id="lbTituloventana" layoutX="110.0" layoutY="55.0" prefHeight="53.0" prefWidth="548.0" text="Añadir Cuerpo Academico" textFill="#434343">
-               <font>
-                  <Font name="System Bold" size="36.0" />
-               </font>
-            </Label>
          </children>
       </AnchorPane>
    </children>

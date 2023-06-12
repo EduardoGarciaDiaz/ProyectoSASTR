@@ -71,10 +71,7 @@ public class FXMLActividadesController implements Initializable {
     private ImageView imgBtnHide;
     @FXML
     private ImageView imgBtnShow;
-    
-    private Estudiante estudiante;
-    private ObservableList<Actividad> actividades 
-            = FXCollections.observableArrayList();
+   
     TranslateTransition panelDesplegado;
     TranslateTransition panelCerrado;
     private Curso curso;

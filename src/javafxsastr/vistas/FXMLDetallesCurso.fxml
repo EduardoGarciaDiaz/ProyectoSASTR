@@ -25,33 +25,23 @@
             </Pane>
             <Pane layoutX="1228.0" prefHeight="50.0" prefWidth="500.0" style="-fx-background-color: #28ad56;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Label layoutX="57.0" layoutY="6.0" text="Universidad Veracruzana" textFill="WHITE">
+                  <Label layoutX="100.0" layoutY="6.0" text="Universidad Veracruzana" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>
                   </Label>
-                  <ImageView fitHeight="38.0" fitWidth="40.0" layoutX="399.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../recursos/iconos/perfil-de-usuario.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="30.0" fitWidth="32.0" layoutX="445.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../recursos/iconos/flecha-para-desplegar.png" />
-                     </image>
-                  </ImageView>
                </children>
             </Pane>
             <Pane layoutX="75.0" layoutY="50.0" prefHeight="63.0" prefWidth="369.0">
                <children>
-                  <Label fx:id="lbTituloventana" layoutX="110.0" layoutY="5.0" text="Detalles Curso" textFill="#434343">
+                  <Label fx:id="lbTituloventana" layoutX="27.0" layoutY="5.0" text="Detalles Curso" textFill="#434343">
                      <font>
                         <Font name="System Bold" size="36.0" />
                      </font>
                   </Label>
                </children>
             </Pane>
-            <Pane layoutX="100.0" layoutY="119.0" prefHeight="200.0" prefWidth="1574.0" style="-fx-background-color: F4F4F4;">
+            <Pane layoutX="100.0" layoutY="119.0" prefHeight="200.0" prefWidth="1574.0" style="-fx-background-color: F4F4F4; -fx-background-radius: 15;">
                <children>
                   <ImageView fitHeight="185.0" fitWidth="170.0" layoutX="46.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -140,14 +130,14 @@
                   </Label>
                </children>
             </Pane>
-            <ScrollPane fx:id="slpAlamcenEstudinates" hbarPolicy="NEVER" layoutX="100.0" layoutY="335.0" maxHeight="586.0" prefWidth="1574.0" style="-fx-background-color: white;">
+            <ScrollPane fx:id="slpAlamcenEstudinates" hbarPolicy="NEVER" layoutX="100.0" layoutY="335.0" maxHeight="586.0" prefWidth="1574.0" style="-fx-background-color: white; -fx-background-radius: 15;">
                <content>
                   <VBox fx:id="hbxAlmacenEstdantes" prefWidth="1575.0" style="-fx-background-color: white;" />
                </content>
             </ScrollPane>
             <ImageView fitHeight="38.0" fitWidth="96.0" layoutX="39.0" layoutY="67.0" onMouseClicked="#clicBtnRegresar" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../recursos/iconos/BACK.JPG" />
+                  <Image url="@../recursos/iconos/flecha.png" />
                </image>
             </ImageView>
          </children>
