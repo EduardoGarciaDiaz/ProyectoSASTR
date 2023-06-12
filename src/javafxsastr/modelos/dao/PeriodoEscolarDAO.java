@@ -35,7 +35,7 @@ public class PeriodoEscolarDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            throw new DAOException("Lo sentimos, hubo un error al obtener los periodos.", Codigos.ERROR_CONSULTA);
+            throw new DAOException("Error de consulta.", Codigos.ERROR_CONSULTA);
         }
         return periodos;
     }
@@ -53,7 +53,7 @@ public class PeriodoEscolarDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            throw new DAOException("Error de consulta al recuperar el periodo actual", Codigos.ERROR_CONSULTA);
+            throw new DAOException("Error de consulta.", Codigos.ERROR_CONSULTA);
         }
         return periodoEscolar;
     }
@@ -74,7 +74,7 @@ public class PeriodoEscolarDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            throw new DAOException("Error de consulta al recuperar el periodo actual", Codigos.ERROR_CONSULTA);
+            throw new DAOException("Error de consulta.", Codigos.ERROR_CONSULTA);
         }
         return periodoEscolar;
     }

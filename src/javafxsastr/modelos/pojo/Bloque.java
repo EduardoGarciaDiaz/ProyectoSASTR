@@ -7,11 +7,8 @@
 
 package javafxsastr.modelos.pojo;
 
-/**
- *
- * @author Daniel García Arcos
- */
 public class Bloque {
+    
     private int idBloque;
     private String nombreBloque;
 

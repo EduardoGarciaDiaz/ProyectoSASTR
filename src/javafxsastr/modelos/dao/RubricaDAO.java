@@ -26,9 +26,8 @@ public class RubricaDAO {
             + "`nombreTrabajoRecepcional` = ?, `descripcionTrabajoRecepcional` = ?, `requisitosAnteproyecto` = ?, "
             + "`resultadosEsperados` = ?, `bibliografiasRecomendadas` = ?, `redaccion` = ? WHERE (`idRubrica` = ?);";
     private final String ELIMINAR_RUBRICA = "DELETE FROM `sastr`.`rubricas` WHERE (`idRubrica` = '?');";
-    private final String GUARDAR_RELACION_ANTEPROYECTO_RUBRICA = "INSERT INTO `sastr`.`revisiones_anteproyectos` "
-            + "  (`comentarios`, `idRubrica`, `idAnteproyecto`) VALUES (?, ?, ?);";
-    private final String VALIDAR_EXISTENCIA_RUBRICA = "Select idRubrica from revisiones_anteproyectos where idAnteproyecto =  ?";
+    private final String VALIDAR_EXISTENCIA_RUBRICA = "Select "
+            + "idRubrica from revisiones_anteproyectos where idAnteproyecto =  ?";
     
     public Rubrica obtenerRubricaPorId(int idRubrica) throws DAOException {
         Rubrica rubrica = new Rubrica();
@@ -57,7 +56,8 @@ public class RubricaDAO {
     public int guardarRubrica(Rubrica rubrica) throws DAOException {
         int respuesta = -1;
         try {
-            PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(GUARDAR_RUBRICA, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement sentencia = ConexionBD.obtenerConexionBD()
+                    .prepareStatement(GUARDAR_RUBRICA, Statement.RETURN_GENERATED_KEYS);
             sentencia.setInt(1, rubrica.getValorLineasGeneracionAplicacionConocimiento());
             sentencia.setInt(2, rubrica.getValorNombreTrabajoRecepcional());
             sentencia.setInt(3, rubrica.getValorDescripcionTrabajoRecepcional());
@@ -72,8 +72,7 @@ public class RubricaDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
-            throw new DAOException( "Lo sentimos, hubo un problema.", Codigos.ERROR_CONSULTA);
+            throw new DAOException( "Error de consulta.", Codigos.ERROR_CONSULTA);
         }
         return respuesta;
     }
@@ -108,28 +107,7 @@ public class RubricaDAO {
             respuesta = (filasAfectadas == 1) ? idRubrica : -1;
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            throw new DAOException("Lo sentimos, hubo un problema al eliminar el usuario.", Codigos.ERROR_CONSULTA);
-        }
-        return respuesta;
-    }
-    
-    public int guardarRelacionRubricaAnteproyecto(String comentarios, int idAnteproyecto, int idRubrica) throws DAOException {
-        int respuesta = -1;
-        try {
-            PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(GUARDAR_RELACION_ANTEPROYECTO_RUBRICA, 
-                    Statement.RETURN_GENERATED_KEYS);
-            sentencia.setString(1,comentarios);
-            sentencia.setInt(2,idRubrica);
-            sentencia.setInt(3, idAnteproyecto);
-            sentencia.executeUpdate();
-            ResultSet resultado = sentencia.getGeneratedKeys();
-            if(resultado.next()) {
-                respuesta = resultado.getInt(1);
-            }
-            ConexionBD.cerrarConexionBD();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-             throw new DAOException("Lo sentimos, hubo un problema al eliminar el usuario.", Codigos.ERROR_CONSULTA);
+            throw new DAOException("Error de consulta.", Codigos.ERROR_CONSULTA);
         }
         return respuesta;
     }
@@ -145,8 +123,7 @@ public class RubricaDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
-             throw new DAOException("Lo sentimos, hubo un problema", Codigos.ERROR_CONSULTA);
+             throw new DAOException("Error de consulta.", Codigos.ERROR_CONSULTA);
         }
         return respuesta;
     }

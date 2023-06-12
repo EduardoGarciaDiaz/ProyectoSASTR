@@ -11,67 +11,61 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafxsastr.modelos.ConexionBD;
 import javafxsastr.modelos.pojo.Area;
 import javafxsastr.modelos.pojo.CuerpoAcademico;
 import javafxsastr.modelos.pojo.CuerpoAcademicoLgac;
 import javafxsastr.utils.Codigos;
 
-/**
- *
- * @author Daniel García Arcos
- */
 public class CuerpoAcademicoDAO {
 
     private final String VERIFICAR_SI_ACADEMICO_ES_RCA = "SELECT EXISTS"
             + "(SELECT idAcademico FROM cuerpos_academicos WHERE idAcademico = ?) as esResponsableDeCA;";
-    private final String OBTENER_CUERPOS_ACADEMICOS = "SELECT idCuerpoAcademico, nombreCuerpoAcademico, disciplinaCuerpoAcademico, "
+    private final String OBTENER_CUERPOS_ACADEMICOS = "SELECT "
+            + "idCuerpoAcademico, nombreCuerpoAcademico, disciplinaCuerpoAcademico, "
             + "nombreArea, concat(nombreUsuario,' ', primerApellidoUsuario,' ',segundoApellidoUsuario) as nombreResponsable, "
             + "ca.idAcademico, ca.idArea, ca.descripcion "
             + "FROM sastr.cuerpos_academicos ca "
-            + "INNER JOIN areas a "
-            + "ON ca.idArea = a.idArea "
-            + "inner join academicos acad "
-            + "on acad.idAcademico = ca.idAcademico "
-            + "inner join usuarios u "
-            + "on u.idUsuario = acad.idUsuario; ";
-    private final String OBTENER_CUERPO_ACADEMICO_POR_RCA = "SELECT idCuerpoAcademico, nombreCuerpoAcademico, disciplinaCuerpoAcademico, "
+            + "INNER JOIN areas a ON ca.idArea = a.idArea "
+            + "inner join academicos acad on acad.idAcademico = ca.idAcademico "
+            + "inner join usuarios u on u.idUsuario = acad.idUsuario; ";
+    private final String OBTENER_CUERPO_ACADEMICO_POR_RCA = "SELECT "
+            + "idCuerpoAcademico, nombreCuerpoAcademico, disciplinaCuerpoAcademico, "
             + "nombreArea, CONCAT(nombreUsuario,' ', primerApellidoUsuario,' ',segundoApellidoUsuario) as nombreResponsable, "
             + "ca.idAcademico, ca.idArea, ca.descripcion "
             + "FROM sastr.cuerpos_academicos ca "
-            + "INNER JOIN areas a "
-            + "ON ca.idArea = a.idArea "
-            + "inner join academicos acad "
-            + "on acad.idAcademico = ca.idAcademico "
-            + "inner join usuarios u "
-            + "on u.idUsuario = acad.idUsuario "
-            + " where ca.idAcademico = ?; ";
-    private final String AÑADIR_CUERPO_ACADEMICO = "Insert into cuerpos_academicos(nombreCuerpoAcademico, disciplinaCuerpoAcademico, "
+            + "INNER JOIN areas a ON ca.idArea = a.idArea "
+            + "inner join academicos acad on acad.idAcademico = ca.idAcademico "
+            + "inner join usuarios u on u.idUsuario = acad.idUsuario "
+            + "where ca.idAcademico = ?; ";
+    private final String AÑADIR_CUERPO_ACADEMICO = "Insert into cuerpos_academicos"
+            + "(nombreCuerpoAcademico, disciplinaCuerpoAcademico, "
             + "idArea, idAcademico, descripcion) values (?, ?, ?, ?, ?)";
-    private final String AÑADIR_RELACION_LGACS_CA = "insert into cuerpos_academicos_lgac (idCuerpoAcademico, idLgac) values (?,?)";
-    private final String VERIFICAR_SI_EL_AREA_EXISTE = "SELECT EXISTS (SELECT idArea FROM areas WHERE nombreArea = ?) as existeArea";
-    private final String AÑADIR_AREA = "Insert into areas(nombreArea) values (?)";
+    private final String AÑADIR_RELACION_LGACS_CA = "insert into cuerpos_academicos_lgac "
+            + "(idCuerpoAcademico, idLgac) values (?,?)";
+    private final String VERIFICAR_SI_EL_AREA_EXISTE = "SELECT EXISTS "
+            + "(SELECT idArea FROM areas WHERE nombreArea = ?) as existeArea";
+    private final String AÑADIR_AREA = "INSERT INTO areas(nombreArea) values (?)";
     private final String VERIFICAR_SI_CA_EXISTE = "SELECT EXISTS"
             + "(SELECT idCuerpoAcademico FROM cuerpos_academicos WHERE nombreCuerpoAcademico = ?) as existeCA";
     private final String OBTENER_AREAS_CUERPOS_ACADEMICOS = "Select idArea, nombreArea from areas";
-    private final String ACTUALIZA_CUERPO_ACADEMICO = "Update cuerpos_academicos set cuerpos_academicos.nombreCuerpoAcademico = ?, \n"+
-            "cuerpos_academicos.disciplinaCuerpoAcademico = ?, cuerpos_academicos.idArea = ?,\n" +
-            "cuerpos_academicos.idAcademico = ?, cuerpos_academicos.descripcion = ?\n" +
-            "where cuerpos_academicos.idCuerpoAcademico = ?;";
-    private final String VERIFICAR_RELACION_CA_LGAC = "Select exists(Select idCuerpoAcademicoLgac from cuerpos_academicos_lgac\n"+
-            " where cuerpos_academicos_lgac.idLgac = ? and cuerpos_academicos_lgac.idCuerpoAcademico = ?)  as existeRelacion";
-    private final String OBTENER_RELACIONES_LGAC_CA = "Select idCuerpoAcademicoLgac, idLgac, idCuerpoAcademico from cuerpos_academicos_lgac\n"
-            +
-            " where cuerpos_academicos_lgac.idCuerpoAcademico = ?";
-    private final String Eliminar_Relacion_LGAC_CA = "delete from cuerpos_academicos_lgac where idCuerpoAcademicoLgac = ?";
+    private final String ACTUALIZA_CUERPO_ACADEMICO = "Update cuerpos_academicos "
+            + "set cuerpos_academicos.nombreCuerpoAcademico = ?, "
+            + "cuerpos_academicos.disciplinaCuerpoAcademico = ?, cuerpos_academicos.idArea = ?," 
+            + "cuerpos_academicos.idAcademico = ?, cuerpos_academicos.descripcion = ? " 
+            + "where cuerpos_academicos.idCuerpoAcademico = ?;";
+    private final String VERIFICAR_RELACION_CA_LGAC = "SELECT EXISTS "
+            + "(Select idCuerpoAcademicoLgac from cuerpos_academicos_lgac "
+            + "where cuerpos_academicos_lgac.idLgac = ? and cuerpos_academicos_lgac.idCuerpoAcademico = ?)  as existeRelacion";
+    private final String OBTENER_RELACIONES_LGAC_CA = "Select "
+            + "idCuerpoAcademicoLgac, idLgac, idCuerpoAcademico from cuerpos_academicos_lgac "
+            + "where cuerpos_academicos_lgac.idCuerpoAcademico = ?";
+    private final String ELIMINAR_RELACION_LGAC_CA = "delete from cuerpos_academicos_lgac where idCuerpoAcademicoLgac = ?";
 
     public boolean verificarSiAcademicoEsResponsableDeCA(int idAcademico) throws DAOException {
         boolean esResponsableDeCA = false;
         try {
-            PreparedStatement sentencia = ConexionBD.obtenerConexionBD()
-                    .prepareStatement(VERIFICAR_SI_ACADEMICO_ES_RCA);
+            PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(VERIFICAR_SI_ACADEMICO_ES_RCA);
             sentencia.setInt(1, idAcademico);
             ResultSet resultado = sentencia.executeQuery();
             if (resultado.next()) {
@@ -91,18 +85,19 @@ public class CuerpoAcademicoDAO {
             ResultSet resultado = sentencia.executeQuery();
             while (resultado.next()) {
                 cuerposAcademicos.add(new CuerpoAcademico(
-                        resultado.getInt("idCuerpoAcademico"),
-                        resultado.getString("nombreCuerpoAcademico"),
-                        resultado.getString("disciplinaCuerpoAcademico"),
-                        resultado.getString("descripcion"),
-                        resultado.getString("nombreArea"),
-                        resultado.getInt("idArea"),
-                        resultado.getInt("idAcademico"),
-                        resultado.getString("nombreResponsable")));
+                    resultado.getInt("idCuerpoAcademico"),
+                    resultado.getString("nombreCuerpoAcademico"),
+                    resultado.getString("disciplinaCuerpoAcademico"),
+                    resultado.getString("descripcion"),
+                    resultado.getString("nombreArea"),
+                    resultado.getInt("idArea"),
+                    resultado.getInt("idAcademico"),
+                    resultado.getString("nombreResponsable"))
+                );
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            throw new DAOException("Error de consulta", Codigos.ERROR_CONSULTA);
         }
         return cuerposAcademicos;
     }
@@ -116,18 +111,18 @@ public class CuerpoAcademicoDAO {
             ResultSet resultado = sentencia.executeQuery();
             if (resultado.next()) {
                cuerpoAcademico = new CuerpoAcademico(
-                        resultado.getInt("idCuerpoAcademico"),
-                        resultado.getString("nombreCuerpoAcademico"),
-                        resultado.getString("disciplinaCuerpoAcademico"),
-                       resultado.getString("descripcion"),
-                        resultado.getString("nombreArea"),
-                        resultado.getInt("idArea"),
-                        resultado.getInt("idAcademico"),
-                        resultado.getString("nombreResponsable")             
+                    resultado.getInt("idCuerpoAcademico"),
+                    resultado.getString("nombreCuerpoAcademico"),
+                    resultado.getString("disciplinaCuerpoAcademico"),
+                    resultado.getString("descripcion"),
+                    resultado.getString("nombreArea"),
+                    resultado.getInt("idArea"),
+                    resultado.getInt("idAcademico"),
+                    resultado.getString("nombreResponsable")             
                 );
             }
+            ConexionBD.cerrarConexionBD();
         }catch (SQLException ex) {
-            ex.printStackTrace();
             throw new DAOException("Error de consulta", Codigos.ERROR_CONSULTA);
         }
         return cuerpoAcademico;
@@ -182,7 +177,6 @@ public class CuerpoAcademicoDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
             throw new DAOException("Error de consulta", Codigos.ERROR_CONSULTA);
 
         }
@@ -217,7 +211,7 @@ public class CuerpoAcademicoDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            throw new DAOException("Error de consulta", Codigos.ERROR_CONSULTA);
         }
         return areas;
     }
@@ -225,8 +219,8 @@ public class CuerpoAcademicoDAO {
     public int agregarRelacionCUconLgac(int idCA, int idLgac) throws DAOException {
         int respuestaExito = -1;
         try {
-            PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(AÑADIR_RELACION_LGACS_CA,
-                    Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement sentencia = ConexionBD.obtenerConexionBD()
+                    .prepareStatement(AÑADIR_RELACION_LGACS_CA, Statement.RETURN_GENERATED_KEYS);
             sentencia.setInt(1, idCA);
             sentencia.setInt(2, idLgac);
             sentencia.executeUpdate();
@@ -236,7 +230,6 @@ public class CuerpoAcademicoDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
             throw new DAOException("Error de consulta", Codigos.ERROR_CONSULTA);
         }
         return respuestaExito;
@@ -258,8 +251,7 @@ public class CuerpoAcademicoDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
-            throw new DAOException("Error de Actualizaicion", Codigos.ERROR_CONSULTA);
+            throw new DAOException("Error de consulta", Codigos.ERROR_CONSULTA);
         }
         return respuestaExito;
     }
@@ -276,7 +268,6 @@ public class CuerpoAcademicoDAO {
             }            
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();;
             throw new DAOException("Error de consulta", Codigos.ERROR_CONSULTA);
         }
         return respuesta;
@@ -297,7 +288,6 @@ public class CuerpoAcademicoDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
             throw new DAOException("Error de consulta", Codigos.ERROR_CONSULTA);
         }
         return relaciones;
@@ -305,12 +295,12 @@ public class CuerpoAcademicoDAO {
 
     public void eliminarRelacionCuerpoLgac(int idRelacion) throws DAOException {
         try {
-            PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(Eliminar_Relacion_LGAC_CA);
+            PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(ELIMINAR_RELACION_LGAC_CA);
             sentencia.setInt(1, idRelacion);
             sentencia.executeUpdate();
         } catch (SQLException ex) {
-            throw new DAOException("Error de eliminacion", Codigos.ERROR_CONSULTA);
+            throw new DAOException("Error de consulta", Codigos.ERROR_CONSULTA);
         }
-
     }
+    
 }

@@ -8,6 +8,7 @@
 package javafxsastr.utils;
 
 public enum CodigosVentanas {
+    
     ANTEPROYECTOS_INVITADO("9"),
     GEsTION_DE_USUARIOS("10"),
     GESTION_DE_CA_LGAC("11"),
@@ -32,4 +33,5 @@ public enum CodigosVentanas {
     public String getCodigo() {
         return codigo;
     }
+    
 }

@@ -1,7 +1,8 @@
 /*
  * Autor: Daniel Garcia Arcos
  * Fecha de creación: 12/05/2023
- * Descripción: DAO de Academico para modelar su información
+ * Descripción: DAO de Academico para comunicarse con la fuente de datos 
+ * y recuperar los relacionados al Academico.
  */
 
 package javafxsastr.modelos.dao;
@@ -92,7 +93,7 @@ public class AcademicoDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            throw new DAOException("Error en la consulta", Codigos.ERROR_CONSULTA);
+            throw new DAOException("Error de consulta", Codigos.ERROR_CONSULTA);
         }
         return academico;
     }
@@ -120,7 +121,7 @@ public class AcademicoDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            throw new DAOException("Error en la consulta", Codigos.ERROR_CONSULTA);
+            throw new DAOException("Error de consulta", Codigos.ERROR_CONSULTA);
         }
         return academico;
     }
@@ -132,22 +133,21 @@ public class AcademicoDAO {
             ResultSet resultado = sentencia.executeQuery();
             while (resultado.next()) {
                 academicos.add(new Academico(
-                        resultado.getInt("idAcademico"), 
-                        resultado.getInt("numeroPersonalAcademico"), 
-                        resultado.getInt("idUsuario"), 
-                        resultado.getString("nombreAcademico"), 
-                        resultado.getString("primerApellidoAcademico"), 
-                        resultado.getString("segundoApellidoAcademico"), 
-                        resultado.getString("correoInstitucionalAcademico"), 
-                        resultado.getString("correoAlternoAcademico"), 
-                        resultado.getString("contraseñaAcademico"), 
-                        resultado.getBoolean("esAdministrador"), 
-                        resultado.getInt("idEstadoUsuario"), 
-                        resultado.getString("nombreEstadoUsuario")));
+                    resultado.getInt("idAcademico"), 
+                    resultado.getInt("numeroPersonalAcademico"), 
+                    resultado.getInt("idUsuario"), 
+                    resultado.getString("nombreAcademico"), 
+                    resultado.getString("primerApellidoAcademico"), 
+                    resultado.getString("segundoApellidoAcademico"), 
+                    resultado.getString("correoInstitucionalAcademico"), 
+                    resultado.getString("correoAlternoAcademico"), 
+                    resultado.getString("contraseñaAcademico"), 
+                    resultado.getBoolean("esAdministrador"), 
+                    resultado.getInt("idEstadoUsuario"), 
+                    resultado.getString("nombreEstadoUsuario")));
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
             throw new DAOException("Error de consulta", Codigos.ERROR_CONSULTA);
         }
         return academicos;
@@ -161,22 +161,21 @@ public class AcademicoDAO {
             ResultSet resultado = sentencia.executeQuery();
             while (resultado.next()) {
                 academicos.add(new Academico(
-                        resultado.getInt("idAcademico"), 
-                        resultado.getInt("numeroPersonalAcademico"), 
-                        resultado.getInt("idUsuario"), 
-                        resultado.getString("nombreAcademico"), 
-                        resultado.getString("primerApellidoAcademico"), 
-                        resultado.getString("segundoApellidoAcademico"), 
-                        resultado.getString("correoInstitucionalAcademico"), 
-                        resultado.getString("correoAlternoAcademico"), 
-                        resultado.getString("contraseñaAcademico"), 
-                        resultado.getBoolean("esAdministrador"), 
-                        resultado.getInt("idEstadoUsuario"), 
-                        resultado.getString("nombreEstadoUsuario")));
+                    resultado.getInt("idAcademico"), 
+                    resultado.getInt("numeroPersonalAcademico"), 
+                    resultado.getInt("idUsuario"), 
+                    resultado.getString("nombreAcademico"), 
+                    resultado.getString("primerApellidoAcademico"), 
+                    resultado.getString("segundoApellidoAcademico"), 
+                    resultado.getString("correoInstitucionalAcademico"), 
+                    resultado.getString("correoAlternoAcademico"), 
+                    resultado.getString("contraseñaAcademico"), 
+                    resultado.getBoolean("esAdministrador"), 
+                    resultado.getInt("idEstadoUsuario"), 
+                    resultado.getString("nombreEstadoUsuario")));
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
             throw new DAOException("Error de consulta", Codigos.ERROR_CONSULTA);
         }
         return academicos;
@@ -196,7 +195,6 @@ public class AcademicoDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
             throw new DAOException("Error en la consulta", Codigos.ERROR_CONSULTA);
         } 
         return respuesta;
@@ -214,7 +212,6 @@ public class AcademicoDAO {
             respuesta = (filasAfectadas == 1) ? academico.getIdAcademico(): -1;
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
             throw new DAOException("Error en la consulta", Codigos.ERROR_CONSULTA);
         }
         return respuesta;
@@ -229,7 +226,7 @@ public class AcademicoDAO {
             respuesta = (filasAfectadas == 1) ? idAcademico : -1;
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            throw new DAOException("Lo siento, para la otra", Codigos. ERROR_CONSULTA);
+            throw new DAOException("Error en la consulta", Codigos. ERROR_CONSULTA);
         }
         return respuesta;
     }
@@ -257,7 +254,6 @@ public class AcademicoDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
             throw new DAOException("Error de consulta", Codigos.ERROR_CONSULTA);
         }
         return academicos;

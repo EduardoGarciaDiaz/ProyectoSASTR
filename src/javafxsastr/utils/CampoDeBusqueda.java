@@ -34,8 +34,12 @@ public class CampoDeBusqueda <E> {
     private E elementoSeleccionado;
     private INotificacionSeleccionItem<E> interfazNotificacion;
 
-    public CampoDeBusqueda(TextField campoBusqueda, ListView<E> listaElementos, ObservableList<E> coleccionElementos,
-            E seleccion, INotificacionSeleccionItem<E> interfaz) {
+    public CampoDeBusqueda(TextField campoBusqueda, 
+            ListView<E> listaElementos, 
+            ObservableList<E> coleccionElementos,
+            E seleccion, 
+            INotificacionSeleccionItem<E> interfaz) {
+        
         this.campoBusqueda = campoBusqueda;
         this.listaElementos = listaElementos;
         this.coleccionElementos = coleccionElementos;
@@ -50,62 +54,74 @@ public class CampoDeBusqueda <E> {
     private void configurarBusquedaCuerpoAcademico() {
         if (coleccionElementos.size() > 0) {
             FilteredList<E> elementosFiltrados = new FilteredList(coleccionElementos, p -> true );
-            campoBusqueda.textProperty().addListener(new ChangeListener<String>() {
-                @Override
-                public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                    if (newValue != null) {                             
-                        listaElementos.setVisible(true);   
-                    }
-                    elementosFiltrados.setPredicate(new Predicate<E>() {
-                        @Override
-                        public boolean test(E elem) {
-                            if (newValue == null || newValue.isEmpty()) {
-                                return true;
+            campoBusqueda.textProperty().addListener(
+                new ChangeListener<String>() {
+                    @Override
+                    public void changed(
+                        ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                            if (newValue != null) {                             
+                                listaElementos.setVisible(true);   
                             }
-                            String lowerNewValue = newValue.toLowerCase();
-                            return elem.toString().toLowerCase().contains(lowerNewValue);
+                            elementosFiltrados.setPredicate(
+                                new Predicate<E>() {
+                                    @Override
+                                    public boolean test(E elem) {
+                                        if (newValue == null || newValue.isEmpty()) {
+                                            return true;
+                                        }
+                                        String lowerNewValue = newValue.toLowerCase();
+                                        return elem.toString().toLowerCase().contains(lowerNewValue);
+                                    }
+                                }
+                            );
+                        if (elementosFiltrados.isEmpty() || newValue.isEmpty()) {
+                            listaElementos.setVisible(false);               
+                        } else {
+                            SortedList<E> sortedListAlumnos = new SortedList<>(elementosFiltrados, 
+                                Comparator.comparing(E::toString));
+                            listaElementos.setItems(sortedListAlumnos);
                         }
-                    });
-                    if (elementosFiltrados.isEmpty() || newValue.isEmpty()) {
-                        listaElementos.setVisible(false);               
-                    } else {
-                        SortedList<E> sortedListAlumnos = new SortedList<>(elementosFiltrados, 
-                            Comparator.comparing(E::toString));
-                        listaElementos.setItems(sortedListAlumnos);
                     }
                 }
-            });
+            );
         }
     }
     
     private void iniciarListenerListView() {
-        listaElementos.setOnKeyPressed((event) -> {
-            if (event.getCode() == KeyCode.ENTER) {
+        listaElementos.setOnKeyPressed(
+            (event) -> {
+                if (event.getCode() == KeyCode.ENTER) {
+                    setElementoSeleccionado();
+                }
+            }
+        );
+        listaElementos.setOnMouseClicked(
+            (event) -> {
                 setElementoSeleccionado();
             }
-        });
-        listaElementos.setOnMouseClicked((event) -> {
-            setElementoSeleccionado();
-        });
+        );
     }
     
     private void iniciarListenersCampoTexto() {
-        campoBusqueda.setOnKeyPressed((event) -> {
-            if(event.getCode() == KeyCode.DOWN) {
-                listaElementos.requestFocus();
-                listaElementos.getSelectionModel().selectFirst();
-            } else if (event.getCode() == KeyCode.ENTER) {
-                listaElementos.getSelectionModel().selectFirst();
-                E elementoSeleccionado = listaElementos.getSelectionModel().getSelectedItem();
-                if (campoBusqueda.getText().toLowerCase().contains(
-                        elementoSeleccionado.toString().toLowerCase())) {
-                    campoBusqueda.setText(elementoSeleccionado.toString());
+        campoBusqueda.setOnKeyPressed(
+            (event) -> {
+                if(event.getCode() == KeyCode.DOWN) {
+                    listaElementos.requestFocus();
+                    listaElementos.getSelectionModel().selectFirst();
+                } else if (event.getCode() == KeyCode.ENTER) {
+                    listaElementos.getSelectionModel().selectFirst();
+                    E elementoSeleccionado = listaElementos.getSelectionModel().getSelectedItem();
+                    if (campoBusqueda.getText()
+                            .toLowerCase()
+                            .contains(elementoSeleccionado.toString().toLowerCase())) {
+                        campoBusqueda.setText(elementoSeleccionado.toString());
                     setElementoSeleccionado();
                 } else {
                     listaElementos.requestFocus();
                 }
             }
-        });
+            }
+        );
     }
     
     private void setElementoSeleccionado() {
@@ -119,25 +135,29 @@ public class CampoDeBusqueda <E> {
     }
     
     private void agregarListenerFocuseProperty() {
-        campoBusqueda.focusedProperty().addListener((
-                ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            if (oldValue && !(campoBusqueda.getScene().getFocusOwner() instanceof ListView)) {
-                listaElementos.setVisible(false);
-                interfazNotificacion.notificarPerdidaDelFoco();
-            } else {
-                campoBusqueda.setStyle("-fx-border-color: gray");
-            }
-        });
-        listaElementos.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if (oldValue && !campoBusqueda.isFocused()) {
+        campoBusqueda.focusedProperty().addListener(
+            (ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+                if (oldValue && !(campoBusqueda.getScene().getFocusOwner() instanceof ListView)) {
                     listaElementos.setVisible(false);
                     interfazNotificacion.notificarPerdidaDelFoco();
                 } else {
                     campoBusqueda.setStyle("-fx-border-color: gray");
                 }
             }
-        });
+        );
+        listaElementos.focusedProperty().addListener(
+            new ChangeListener<Boolean>() {
+                @Override
+                public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                    if (oldValue && !campoBusqueda.isFocused()) {
+                        listaElementos.setVisible(false);
+                        interfazNotificacion.notificarPerdidaDelFoco();
+                    } else {
+                        campoBusqueda.setStyle("-fx-border-color: gray");
+                    }
+                }
+            }
+        );
     }
+    
 }

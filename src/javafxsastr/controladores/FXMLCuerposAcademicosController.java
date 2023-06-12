@@ -15,7 +15,6 @@ import java.util.Comparator;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,7 +24,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafxsastr.JavaFXSASTR;
@@ -46,8 +44,6 @@ public class FXMLCuerposAcademicosController implements Initializable {
     @FXML
     private VBox contenedorTarjetasCuerpoAcademico;
     @FXML
-    private Pane pnCrearCuerpoAcademico;
-    @FXML
     private Label lbCaLgac;
     
     private Usuario usuario;
@@ -55,7 +51,6 @@ public class FXMLCuerposAcademicosController implements Initializable {
     private ObservableList<Lgac> lgacs;
     private boolean consultandoCA = true;
     
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         verCuerposAcademicos();
@@ -72,13 +67,14 @@ public class FXMLCuerposAcademicosController implements Initializable {
     private void obtenerCuerposAcademicos() {
         try {
             cuerposAcademicos = FXCollections.observableArrayList(
-                new CuerpoAcademicoDAO().obtenerCuerposAcademicos());
+                new CuerpoAcademicoDAO().obtenerCuerposAcademicos()
+            );
         } catch (DAOException ex) {
             manejarDAOException(ex);
         }
     }
     
-     private void obtenerLgacs() {
+    private void obtenerLgacs() {
        try {
             lgacs = FXCollections.observableArrayList(new LgacDAO().obtenerInformacionLGCAS());
         } catch (DAOException ex) {
@@ -90,85 +86,41 @@ public class FXMLCuerposAcademicosController implements Initializable {
     private void cargarTarjetasCuerpoAcademico() {
         for (CuerpoAcademico cuerposAcademico : cuerposAcademicos) {
             TarjetaCuerpoAcademico tarjeta = new TarjetaCuerpoAcademico(cuerposAcademico);
-            tarjeta.getBotonModificarCuerpoAcademico().setOnAction((event) -> {
-                clicVerDetallesCuerpoAcademico(cuerposAcademico);                
-            });
+            tarjeta.getBotonModificarCuerpoAcademico().setOnAction(
+                (event) -> {
+                    irAvistaFormularioCuerpoAcademico(cuerposAcademico);                
+                }
+            );
             contenedorTarjetasCuerpoAcademico.getChildren().add(tarjeta);
         }
     }
     
-     private void cargarTarjetasLgacs() {
+    private void cargarTarjetasLgacs() {
         for (Lgac lgac : lgacs) {
             TarjetaLgac tarjeta = new TarjetaLgac(lgac);
-            tarjeta.getBotonModificarLgac().setOnAction((event) -> {
-                clicModificarLgac(lgac);                
-            });
+            tarjeta.getBotonModificarLgac().setOnAction(
+                (event) -> {
+                    irVistaFormularioLgac(lgac);                
+                }
+            );
             contenedorTarjetasCuerpoAcademico.getChildren().add(tarjeta);
         }
     } 
     
     private void verCuerposAcademicos() {
-         obtenerCuerposAcademicos();
-        SortedList<CuerpoAcademico> sortedList = new SortedList<>(cuerposAcademicos,
-                    Comparator.comparing(CuerpoAcademico::toString));
+        obtenerCuerposAcademicos();
+        FXCollections.sort(cuerposAcademicos, Comparator.comparing(CuerpoAcademico::getNombreCuerpoAcademico));
         cargarTarjetasCuerpoAcademico();
      }
    
     private void cargarLgacs() {
         contenedorTarjetasCuerpoAcademico.getChildren().clear();
         obtenerLgacs();
-        SortedList<Lgac> sortedList = new SortedList<>(lgacs,
-                    Comparator.comparing(Lgac::toString));
+        FXCollections.sort(lgacs, Comparator.comparing(Lgac::getNombreLgac));
         cargarTarjetasLgacs();
         lbCaLgac.setText("Añadir LGAC");
         lbTituloVentana.setText("LGAC");
         consultandoCA = false;
-    }
-    
-
-    public void manejarDAOException(DAOException ex) {
-        switch (ex.getCodigo()) {
-            case ERROR_CONSULTA:
-                ex.printStackTrace();
-                System.out.println("Ocurrió un error de consulta.");
-                break;
-            case ERROR_CONEXION_BD:
-                ex.printStackTrace();
-                Utilidades.mostrarDialogoSimple("Error de conexion", 
-                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
-            default:
-                throw new AssertionError();
-        }
-    }
-    
-    private void irPantallaAñadirCA() {
-        try {
-            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLAñadirCuerpoAcademico.fxml"));
-            Parent vista = accesoControlador.load();
-            FXMLAñadirCuerpoAcademicoController controladorVistaInicio = accesoControlador.getController();
-            controladorVistaInicio.cargarDatos(null, false, usuario,false);
-            Stage escenario = (Stage) lbTituloVentana.getScene().getWindow();
-            escenario.setScene(new Scene(vista));
-            escenario.setTitle("Registro Cuerpos Academicos");
-            escenario.show();
-        } catch (IOException ex) {
-           ex.printStackTrace();
-        }
-    }
-    
-    private void irPantallaAñadirLgac() {
-        try {
-            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLAñadirLgac.fxml"));
-            Parent vista = accesoControlador.load();
-            FXMLAñadirLgacController controladorVistaInicio = accesoControlador.getController();
-            controladorVistaInicio.setUsuario(usuario);
-            Stage escenario = (Stage) lbTituloVentana.getScene().getWindow();
-            escenario.setScene(new Scene(vista));
-            escenario.setTitle("Registro Lgacs");
-            escenario.show();
-        } catch (IOException ex) {
-           ex.printStackTrace();
-        }
     }
     
     @FXML
@@ -179,40 +131,70 @@ public class FXMLCuerposAcademicosController implements Initializable {
     @FXML
     private void clicCrearCuerpoAcademico(MouseEvent event) {        
         if(consultandoCA) {
-            irPantallaAñadirCA();
+            irAvistaFormularioCuerpoAcademico(null);
         }else {
-            irPantallaAñadirLgac();
+            irVistaFormularioLgac(null);
         }   
     }
     
-    private void clicVerDetallesCuerpoAcademico(CuerpoAcademico cuerpoAcademicoEdicion ) {
-        try {
-             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLAñadirCuerpoAcademico.fxml"));
-             Parent vista = accesoControlador.load();
-            FXMLAñadirCuerpoAcademicoController controladorVistaInicio = accesoControlador.getController();
-            controladorVistaInicio.cargarDatos(cuerpoAcademicoEdicion, true, usuario, false);
-            Stage escenario = (Stage) lbTituloVentana.getScene().getWindow();
-            escenario.setScene(new Scene(vista));
-            escenario.setTitle("Modificar CA");
-            escenario.show();
-            } catch (IOException ex) {                   
-               ex.printStackTrace();
-            }               
+    @FXML
+    private void clicVerCuerposAcademicos(ActionEvent event) {
+        contenedorTarjetasCuerpoAcademico.getChildren().clear();
+        verCuerposAcademicos();
+        lbCaLgac.setText("Añadir CA");
+        lbTituloVentana.setText("Cuerpos Academicos");
+        consultandoCA = true;
+    }
+
+    @FXML
+    private void clicVerLgacs(ActionEvent event) {
+        cargarLgacs();
     }
     
-      private void clicModificarLgac(Lgac lgacEdicion) {
+    private void irAvistaFormularioCuerpoAcademico(CuerpoAcademico cuerpoAcademicoEdicion ) {
+        try {
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLAñadirCuerpoAcademico.fxml"));
+            Parent vista = accesoControlador.load();
+            FXMLAñadirCuerpoAcademicoController controladorVistaInicio = accesoControlador.getController();
+            if (cuerpoAcademicoEdicion != null) {
+                controladorVistaInicio.cargarDatos(cuerpoAcademicoEdicion, true, usuario, false);
+            } else {
+                controladorVistaInicio.cargarDatos(null, false, usuario,false);
+            }
+            Stage escenario = (Stage) lbTituloVentana.getScene().getWindow();
+            escenario.setScene(new Scene(vista));
+            if (cuerpoAcademicoEdicion == null) {
+                escenario.setTitle("Añadir Cuerpo Académico");
+            } else {
+                escenario.setTitle("Modificar Cuerpo Académico");
+            }
+            escenario.show();
+        } catch (IOException ex) {                   
+            ex.printStackTrace();
+        }               
+    }
+    
+    private void irVistaFormularioLgac(Lgac lgacEdicion) {
         try {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLAñadirLgac.fxml"));
             Parent vista = accesoControlador.load();
-            FXMLAñadirLgacController controladorVistaInicio = accesoControlador.getController();
-            controladorVistaInicio.cargarCampos(lgacEdicion, true, usuario);
+            FXMLAñadirLgacController controladorFormularioLgac = accesoControlador.getController();
+            if (lgacEdicion == null) {
+                controladorFormularioLgac.setUsuario(usuario);
+            } else {
+                controladorFormularioLgac.cargarCampos(lgacEdicion, true, usuario);
+            }
             Stage escenario = (Stage) lbTituloVentana.getScene().getWindow();
             escenario.setScene(new Scene(vista));
-            escenario.setTitle("Modificar Lgac");
+            if (lgacEdicion == null) {
+                escenario.setTitle("Añadir LGAC");
+            } else {
+                escenario.setTitle("Modificar LGAC");
+            }
             escenario.show();
-            } catch (IOException ex) {                   
-               ex.printStackTrace();
-            }               
+        } catch (IOException ex) {
+           ex.printStackTrace();
+        }
     }
     
     private void irAVentanaInicio(Usuario usuario) {
@@ -229,19 +211,18 @@ public class FXMLCuerposAcademicosController implements Initializable {
             ex.printStackTrace();
         }
     }
-
-    @FXML
-    private void clicVerCuerposAcademicos(ActionEvent event) {
-        contenedorTarjetasCuerpoAcademico.getChildren().clear();
-        verCuerposAcademicos();
-        lbCaLgac.setText("Añadir CA");
-        lbTituloVentana.setText("Cuerpos Academicos");
-        consultandoCA = true;
-    }
-
-    @FXML
-    private void clicVerLgacs(ActionEvent event) {
-        cargarLgacs();
+    
+    private void manejarDAOException(DAOException ex) {
+        switch (ex.getCodigo()) {
+            case ERROR_CONSULTA:
+                System.out.println("Ocurrió un error de consulta.");
+                break;
+            case ERROR_CONEXION_BD:
+                Utilidades.mostrarDialogoSimple("Error de conexion", 
+                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
+            default:
+                throw new AssertionError();
+        }
     }
     
 }

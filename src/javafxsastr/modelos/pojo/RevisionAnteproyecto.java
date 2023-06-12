@@ -55,6 +55,5 @@ public class RevisionAnteproyecto {
     public void setIdAnteproyecto(int idAnteproyecto) {
         this.idAnteproyecto = idAnteproyecto;
     }
-    
-    
+   
 }

@@ -1,7 +1,7 @@
 /*
  * Autor: Daniel Garcia Arcos
- * Fecha de creación: 01/06/2023
- * Descripción: 
+ * Fecha de creación: 20/05/2023
+ * Descripción: DAO para realizar consultas de las modalidades de anteproyectos.
  */
 
 package javafxsastr.modelos.dao;
@@ -14,10 +14,6 @@ import javafxsastr.modelos.ConexionBD;
 import javafxsastr.modelos.pojo.Modalidad;
 import javafxsastr.utils.Codigos;
 
-/**
- *
- * @author Daniel García Arcos
- */
 public class ModalidadDAO {
     
     private final String OBTENER_MODALIDADES = "SELECT * FROM sastr.modalidades;";
@@ -32,7 +28,7 @@ public class ModalidadDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            throw new DAOException("Lo sentimos, hubo un error al obtener las modalidades.", Codigos.ERROR_CONSULTA);
+            throw new DAOException("Error de consulta.", Codigos.ERROR_CONSULTA);
         }
         return modalidades;
     }

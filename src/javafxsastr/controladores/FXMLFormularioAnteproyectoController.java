@@ -26,41 +26,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputControl;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafxsastr.JavaFXSASTR;
 import javafxsastr.interfaces.INotificacionSeleccionItem;
-import javafxsastr.modelos.dao.AcademicoDAO;
-import javafxsastr.modelos.dao.AnteproyectoDAO;
-import javafxsastr.modelos.dao.CuerpoAcademicoDAO;
-import javafxsastr.modelos.dao.DAOException;
-import javafxsastr.modelos.dao.EstadoSeguimientoDAO;
-import javafxsastr.modelos.dao.LgacDAO;
-import javafxsastr.modelos.dao.ModalidadDAO;
-import javafxsastr.modelos.dao.RevisionAnteproyectoDAO;
-import javafxsastr.modelos.dao.RubricaDAO;
-import javafxsastr.modelos.pojo.Academico;
-import javafxsastr.modelos.pojo.Anteproyecto;
-import javafxsastr.modelos.pojo.CuerpoAcademico;
-import javafxsastr.modelos.pojo.Lgac;
-import javafxsastr.modelos.pojo.Modalidad;
-import javafxsastr.modelos.pojo.RevisionAnteproyecto;
-import javafxsastr.modelos.pojo.Rubrica;
-import javafxsastr.utils.CampoDeBusqueda;
-import javafxsastr.utils.CodigosVentanas;
-import javafxsastr.utils.FiltrosTexto;
-import javafxsastr.utils.Utilidades;
+import javafxsastr.modelos.dao.*;
+import javafxsastr.modelos.pojo.*;
+import javafxsastr.utils.*;
 
 public class FXMLFormularioAnteproyectoController implements Initializable {
 
@@ -219,11 +194,7 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
             btnEliminar.setVisible(true);
         }
     }
-    
-    /* 
-    Asigna al academico su valor para obtener el id del 
-    academico y saber de quien será el anteproyecto creado 
-    */
+   
     public void setAcademico(Academico academico) {
         this.academico = academico;
         obtenerCodirectores();
@@ -233,7 +204,7 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
     private void obtenerCuerposAcademicos() {
         try {
             cuerposAcademicos = FXCollections.observableArrayList(
-                    new CuerpoAcademicoDAO().obtenerCuerposAcademicos()
+                new CuerpoAcademicoDAO().obtenerCuerposAcademicos()
             );
         } catch (DAOException ex) {
             manejarDAOException(ex);
@@ -243,7 +214,7 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
     private void obtenerLgacs(int idCuerpoAcademico) {
         try {
             lgacs = FXCollections.observableArrayList(
-                    new LgacDAO().obtenerInformacionLGACsPorCuerpoAcademico(idCuerpoAcademico)
+                new LgacDAO().obtenerInformacionLGACsPorCuerpoAcademico(idCuerpoAcademico)
             );
         } catch (DAOException ex) {
             manejarDAOException(ex);
@@ -263,7 +234,7 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
     private void obtenerModalidades() {
         try {
             modalidades = FXCollections.observableArrayList(
-                    new ModalidadDAO().obtenerModalidades()
+                new ModalidadDAO().obtenerModalidades()
             );
         } catch (DAOException ex) {
             manejarDAOException(ex);
@@ -272,16 +243,27 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
     
     private void setDatosRevision() {
         try {
-            RevisionAnteproyecto revisionAnteproyecto =
-                    new RevisionAnteproyectoDAO().obtenerRevisionAnteproyecto(anteproyectoCorrecion.getIdAnteproyecto());
+            RevisionAnteproyecto revisionAnteproyecto 
+                    = new RevisionAnteproyectoDAO().obtenerRevisionAnteproyecto(anteproyectoCorrecion.getIdAnteproyecto());
             Rubrica rubricaRevision = new RubricaDAO().obtenerRubricaPorId(revisionAnteproyecto.getIdRubrica());
-            LGACS.selectToggle(LGACS.getToggles().get(rubricaRevision.getValorLineasGeneracionAplicacionConocimiento()));
-            NombreTR.selectToggle(NombreTR.getToggles().get(rubricaRevision.getValorNombreTrabajoRecepcional()));
-            DescripcionTR.selectToggle(DescripcionTR.getToggles().get(rubricaRevision.getValorDescripcionTrabajoRecepcional()));
-            RequisitosAnteproyecto.selectToggle(RequisitosAnteproyecto.getToggles().get(rubricaRevision.getValorRequisitosAnteproyecto()));
-            ResultadosEsperados.selectToggle(ResultadosEsperados.getToggles().get(rubricaRevision.getValorResultadosEsperados()));
+            LGACS.selectToggle(
+                    LGACS.getToggles().get(rubricaRevision.getValorLineasGeneracionAplicacionConocimiento())
+            );
+            NombreTR.selectToggle(
+                    NombreTR.getToggles().get(rubricaRevision.getValorNombreTrabajoRecepcional())
+            );
+            DescripcionTR.selectToggle(
+                    DescripcionTR.getToggles().get(rubricaRevision.getValorDescripcionTrabajoRecepcional())
+            );
+            RequisitosAnteproyecto.selectToggle(
+                    RequisitosAnteproyecto.getToggles().get(rubricaRevision.getValorRequisitosAnteproyecto())
+            );
+            ResultadosEsperados.selectToggle(
+                    ResultadosEsperados.getToggles().get(rubricaRevision.getValorResultadosEsperados())
+            );
             BibliografiasRecomendadas.selectToggle(
-                    BibliografiasRecomendadas.getToggles().get(rubricaRevision.getValorBibliografiasRecomendadas()));
+                    BibliografiasRecomendadas.getToggles().get(rubricaRevision.getValorBibliografiasRecomendadas())
+            );
             Redaccion.selectToggle(Redaccion.getToggles().get(rubricaRevision.getValorRedaccion()));
             txaComentariosProfesor.setText(revisionAnteproyecto.getComentarios());
         } catch (DAOException ex) {
@@ -291,19 +273,20 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
     
     private void setDatosAnteproyecto() {
         LocalDate fechaCreacion = LocalDate.parse(anteproyectoCorrecion.getFechaCreacion());
-        lbMesCreacion.setText(MESES[fechaCreacion.getMonthValue()-1]);
+        lbMesCreacion.setText(MESES[fechaCreacion.getMonthValue() - 1]);
         lbAñoCreacion.setText(String.valueOf(fechaCreacion.getYear()));
-        lbFechaCreacion.setText(fechaCreacion.getDayOfMonth() + " de " +
-                MESES[fechaCreacion.getMonthValue()-1] + " de " + fechaCreacion.getYear());
+        lbFechaCreacion.setText(fechaCreacion.getDayOfMonth() 
+                + " de " + MESES[fechaCreacion.getMonthValue() - 1] 
+                + " de " + fechaCreacion.getYear());
         if (anteproyectoCorrecion.getCiudadCreacion() != null) {
             tfCiudad.setText(anteproyectoCorrecion.getCiudadCreacion());
         }
         if (anteproyectoCorrecion.getIdCuerpoAcademico() > 0) {
-            cargarCuerpoAcademicoBorradorDeAnteproyecto(anteproyectoCorrecion.getIdCuerpoAcademico());
+            cargarCuerpoAcademicoBorradorDeAnteproyecto();
         }
         cargarLgacsBorradorDeAnteproyecto();
         cargarCodirectoresBorradorDeAnteproyecto();
-        if (anteproyectoCorrecion.getNombreProyectoInvestigacion()!= null) {
+        if (anteproyectoCorrecion.getNombreProyectoInvestigacion() != null) {
             txaNombreProyectoInvestigacion.setText(anteproyectoCorrecion.getNombreProyectoInvestigacion());
         }
         if (anteproyectoCorrecion.getNombreTrabajoRecepcional() != null) {
@@ -318,12 +301,13 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
         if (anteproyectoCorrecion.getDuracionAproximada() != null) {
             tfDuracionAproximada.setText(anteproyectoCorrecion.getDuracionAproximada());
         }
-        if (anteproyectoCorrecion.getIdModalidad()>0) {
-            cargarModalidadBorradorDeAnteproyecto(anteproyectoCorrecion.getIdModalidad());
+        if (anteproyectoCorrecion.getIdModalidad() > 0) {
+            cargarModalidadBorradorDeAnteproyecto();
         }
-        if (anteproyectoCorrecion.getNumeroMaximoAlumnosParticipantes()> 0) {
+        if (anteproyectoCorrecion.getNumeroMaximoAlumnosParticipantes() > 0) {
             cmbxNumeroAlumnos.getSelectionModel().select
-                (Integer.valueOf(anteproyectoCorrecion.getNumeroMaximoAlumnosParticipantes()));
+                (Integer.valueOf(anteproyectoCorrecion.getNumeroMaximoAlumnosParticipantes())
+            );
         }
         if (anteproyectoCorrecion.getNombreDirector() != null) {
             lbNombreDirector.setText(anteproyectoCorrecion.getNombreDirector());
@@ -350,7 +334,9 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
             obtenerLgacs(cuerpoSeleccionado.getIdCuerpoAcademico());
             llenarLgacsSeleccionadas();
             for (Lgac lgacsSeleccionada : lgacsSeleccionadas) {
-                configurarComponenteLgacSeleccionada(lgacsSeleccionada);
+                clicEliminarLgacSeleccionado(
+                    UtilidadesFormularioAnteproyecto.configurarComponenteLgacSeleccionada(lgacsSeleccionada, vbxContenedorLgac)
+                );
             }   
             configurarFiltroLgac();
         }
@@ -358,12 +344,14 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
     
     private void cargarCodirectoresBorradorDeAnteproyecto() {
         llenarCodirectoresSeleccionados();
-        for (Academico academico : codirectoresSeleccionado) {
-            configurarComponenteCodirectorSeleccionado(academico);
+        for (Academico academicoRecorrido : codirectoresSeleccionado) {
+            clicEliminarCodirectorSeleccionado(
+                UtilidadesFormularioAnteproyecto.configurarComponenteCodirectorSeleccionado(academicoRecorrido, vbxContenedorDirectores)
+            );
         }
     }
     
-    private void cargarCuerpoAcademicoBorradorDeAnteproyecto(int idCuerpoAcademico) {
+    private void cargarCuerpoAcademicoBorradorDeAnteproyecto() {
         for (CuerpoAcademico cuerpoAcademico : cuerposAcademicos) {
             if (cuerpoAcademico.getIdCuerpoAcademico() == anteproyectoCorrecion.getIdCuerpoAcademico()) {
                 cuerpoSeleccionado = cuerpoAcademico;
@@ -375,7 +363,7 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
         }
     }
     
-    private void cargarModalidadBorradorDeAnteproyecto(int idModalidad) {
+    private void cargarModalidadBorradorDeAnteproyecto() {
         for (Modalidad modalidad : modalidades) {
             if (modalidad.getIdModalidad() == anteproyectoCorrecion.getIdModalidad()) {
                 cmbxModalidadTrabajoRecepcional.getSelectionModel().select(modalidad);
@@ -401,8 +389,8 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
 
     private void llenarLgacsSeleccionadas() {
         try {
-            ArrayList<Lgac> lgacsRecuperadas =
-                    new LgacDAO().obtenerInformacionLGACsPorAnteproyecto(anteproyectoCorrecion.getIdAnteproyecto());
+            ArrayList<Lgac> lgacsRecuperadas = new LgacDAO()
+                    .obtenerInformacionLGACsPorAnteproyecto(anteproyectoCorrecion.getIdAnteproyecto());
             for (Lgac lgac : lgacs) {
                 for (Lgac lgacRecuperada : lgacsRecuperadas) {
                     if (lgac.getIdLgac() == lgacRecuperada.getIdLgac()) {
@@ -417,8 +405,8 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
     
     private void llenarCodirectoresSeleccionados() {
         try {
-            ArrayList<Academico> codirectoresRecuperados = 
-                    new AcademicoDAO().obtenerCodirectores(anteproyectoCorrecion.getIdAnteproyecto());
+            ArrayList<Academico> codirectoresRecuperados = new AcademicoDAO()
+                    .obtenerCodirectores(anteproyectoCorrecion.getIdAnteproyecto());
             for (Academico codirector : codirectores) {
                 for (Academico codirectoresRecuperado : codirectoresRecuperados) {
                     if (codirector.getIdAcademico() == codirectoresRecuperado.getIdAcademico()) {
@@ -551,11 +539,12 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
     
     private void mostrarFechaActual(){
         LocalDate fecha = LocalDate.now();
-        String fechaActual 
-                = fecha.getDayOfMonth() + " de " + MESES[fecha.getMonthValue()-1] + " de " + fecha.getYear();
+        String fechaActual = fecha.getDayOfMonth() 
+                + " de " + MESES[fecha.getMonthValue() - 1] 
+                + " de " + fecha.getYear();
         lbFechaCreacion.setText(fechaActual);
-        lbMesCreacion.setText(MESES[fecha.getMonthValue()-1]);
-        lbAñoCreacion.setText(fecha.getYear() + "");
+        lbMesCreacion.setText(MESES[fecha.getMonthValue() - 1]);
+        lbAñoCreacion.setText(String.valueOf(fecha.getYear()));
     }
     
     private void agregarListenersACampos() {
@@ -578,87 +567,93 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
         FiltrosTexto.filtroLetrasNumerosPuntos(tfCuerpoAcademico);
     }
     
-    /*
-    Define un listener que escucha cada vez que se entra o sale del campo especificado
-    para mostrar un mensaje de error si se deja vacio.
-    */
     private void agregarListenerValidadorCampoVacio(TextInputControl campoTexto, Label lbMensajeError){
-        campoTexto.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, 
-                Boolean oldValue, Boolean newValue) -> {
-            if (oldValue) {
-                if (campoTexto.getText().isEmpty()) {
-                    campoTexto.setStyle("-fx-border-color: red");
-                    lbMensajeError.setText("Campo requerido");
+        campoTexto.focusedProperty().addListener(
+            (ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+                if (oldValue) {
+                    if (campoTexto.getText().isEmpty()) {
+                        campoTexto.setStyle("-fx-border-color: red");
+                        lbMensajeError.setText("Campo requerido");
+                    }
+                } else {
+                    campoTexto.setStyle("-fx-border-color: gray");
+                    lbMensajeError.setText("");
                 }
-            } else {
-                campoTexto.setStyle("-fx-border-color: gray");
-                lbMensajeError.setText("");
             }
-        });
-        campoTexto.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.isEmpty()) {
-                validacionCamposLLenos();
-            } else {
+        );
+        campoTexto.textProperty().addListener(
+            (observable, oldValue, newValue) -> {
+                if (!newValue.isEmpty()) {
+                    validacionCamposLLenos();
+                } else {
                 btnEnviar.setDisable(true);
+                }
             }
-        });
+        );
     }
     
     private void agregarListenerACampoNoObligatorio(TextInputControl campoDeTexto, Label lbAdvertencia) {
-        campoDeTexto.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
-                lbAdvertencia.setText("");
+        campoDeTexto.focusedProperty().addListener(
+            (observable, oldValue, newValue) -> {
+                if (newValue) {
+                    lbAdvertencia.setText("");
+                }
             }
-        });
+        );
     }   
     
     public void configurarCampoDeBusquedaCodirectores() {
-        CampoDeBusqueda<Academico> campoDeBusqueda = new CampoDeBusqueda<Academico>(tfCodirector, lvCodirectores,
-            codirectores, academico, new INotificacionSeleccionItem<Academico>() {
-            @Override
-            public void notificarSeleccionItem(Academico itemSeleccionado) {
-                lbNombreDirector.requestFocus();
-                Academico codirectorSeleccionado = itemSeleccionado;
-                if ((codirectorSeleccionado != null) && (!codirectoresSeleccionado.contains(codirectorSeleccionado))
-                        && (codirectorSeleccionado.getIdAcademico() != academico.getIdAcademico())) {
-                    codirectoresSeleccionado.add(codirectorSeleccionado);
-                    tfCodirector.setText("");
-                    configurarComponenteCodirectorSeleccionado(codirectorSeleccionado);
+        CampoDeBusqueda<Academico> campoDeBusqueda = new CampoDeBusqueda<>(tfCodirector, lvCodirectores, codirectores, academico, 
+            new INotificacionSeleccionItem<Academico>() {
+                @Override
+                public void notificarSeleccionItem(Academico itemSeleccionado) {
+                    lbNombreDirector.requestFocus();
+                    Academico codirectorSeleccionado = itemSeleccionado;
+                    if ((codirectorSeleccionado != null) 
+                            && (!codirectoresSeleccionado.contains(codirectorSeleccionado))
+                            && (codirectorSeleccionado.getIdAcademico() != academico.getIdAcademico())) {
+                        codirectoresSeleccionado.add(codirectorSeleccionado);
+                        tfCodirector.setText("");
+                        clicEliminarCodirectorSeleccionado(
+                            UtilidadesFormularioAnteproyecto
+                                .configurarComponenteCodirectorSeleccionado(codirectorSeleccionado, vbxContenedorDirectores)
+                        );
+                        validacionCamposLLenos();
+                    } else {
+                        Utilidades.mostrarDialogoSimple("Acción no permitida",
+                            "El academico ya ha sido seleccionado o es usted.", Alert.AlertType.INFORMATION);
+                    }
+                }
+
+                @Override
+                public void notificarPerdidaDelFoco() {
                     validacionCamposLLenos();
-                } else {
-                    Utilidades.mostrarDialogoSimple("Acción no permitida",
-                        "El academico ya ha sido seleccionado o es usted.", Alert.AlertType.INFORMATION);
                 }
             }
-
-            @Override
-            public void notificarPerdidaDelFoco() {
-                validacionCamposLLenos();
-            }
-        });
+        );
     }
     
     public void configurarCampoDeBusquedaCuerposAcademicos(){
-        CampoDeBusqueda<CuerpoAcademico> campoBusquedaAcademico = new CampoDeBusqueda<CuerpoAcademico>(
-                tfCuerpoAcademico, 
-                lvCuerposAcademicosBusqueda, 
-                cuerposAcademicos, 
-                cuerpoSeleccionado,
-                new INotificacionSeleccionItem<CuerpoAcademico>() {
-                    @Override
-                    public void notificarSeleccionItem(CuerpoAcademico itemSeleccionado) {
-                        cmbxLgacs.requestFocus();
-                        lbAdvertenciaCuerpoAcademico.setText("");
-                        vbxContenedorLgac.getChildren().clear();
-                        cuerpoSeleccionado = itemSeleccionado;
-                        cargarLgacs(itemSeleccionado.getIdCuerpoAcademico());
-                    }
-
-                    @Override
-                    public void notificarPerdidaDelFoco() {
-                        validarCampoBusqueda(tfCuerpoAcademico, lvCuerposAcademicosBusqueda);
-                    }
+        CampoDeBusqueda<CuerpoAcademico> campoBusquedaAcademico = new CampoDeBusqueda<>(
+            tfCuerpoAcademico, 
+            lvCuerposAcademicosBusqueda, 
+            cuerposAcademicos, 
+            cuerpoSeleccionado,
+            new INotificacionSeleccionItem<CuerpoAcademico>() {
+                @Override
+                public void notificarSeleccionItem(CuerpoAcademico itemSeleccionado) {
+                    cmbxLgacs.requestFocus();
+                    lbAdvertenciaCuerpoAcademico.setText("");
+                    vbxContenedorLgac.getChildren().clear();
+                    cuerpoSeleccionado = itemSeleccionado;
+                    cargarLgacs(itemSeleccionado.getIdCuerpoAcademico());
                 }
+
+                @Override
+                public void notificarPerdidaDelFoco() {
+                    validarCampoBusqueda(tfCuerpoAcademico, lvCuerposAcademicosBusqueda);
+                }
+            }
         );       
     }
     
@@ -729,7 +724,7 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
     private void validarCampoBusqueda(TextField tfCampo, ListView listView) {
         if (tfCampo.getText().trim().isEmpty()) {
             tfCampo.setStyle("-fx-border-color: red");
-            if (tfCampo == tfCuerpoAcademico && cmbxLgacs.getItems().size() > 0) {
+            if ((tfCampo == tfCuerpoAcademico) && (!cmbxLgacs.getItems().isEmpty())) {
                 cmbxLgacs.setItems(FXCollections.observableArrayList());
                 cmbxLgacs.setPromptText("Selecciona un cuerpo academico.");
                 lbAdvertenciaCuerpoAcademico.setText("Selecciona un cuerpo academico.");
@@ -787,7 +782,9 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
         Lgac lgacSeleccionada = cmbxLgacs.getSelectionModel().getSelectedItem();
         if (lgacSeleccionada != null) {
             lgacsSeleccionadas.add(lgacSeleccionada);
-            configurarComponenteLgacSeleccionada(lgacSeleccionada);
+            clicEliminarLgacSeleccionado(
+                UtilidadesFormularioAnteproyecto.configurarComponenteLgacSeleccionada(lgacSeleccionada, vbxContenedorLgac)
+            );
             configurarFiltroLgac();   
             validacionCamposLLenos();
         }
@@ -808,93 +805,62 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
         }
     }
     
-    /*
-    Configura un filtro que muestra o no las lgacs
-    segun hayan sido seleccionadas.
-    */
     private FilteredList<Lgac> configurarFiltroLgac(){
         FilteredList<Lgac> filtradoLgacs = new FilteredList(lgacs, p -> true );
         if (!lgacs.isEmpty()) {
-            filtradoLgacs.setPredicate(lgac -> {
-                return !lgacsSeleccionadas.contains(lgac);
-            });
-            SortedList<Lgac> sortedListLgacs = new SortedList<>(filtradoLgacs,
-                Comparator.comparing(Lgac::getNombreLgac));
-            Platform.runLater(() -> {
-                cmbxLgacs.setItems(sortedListLgacs);
-            });
+            filtradoLgacs.setPredicate(
+                lgac -> {
+                    return !lgacsSeleccionadas.contains(lgac);
+                }
+            );
+            SortedList<Lgac> sortedListLgacs = new SortedList<>(filtradoLgacs, Comparator.comparing(Lgac::getNombreLgac));
+            Platform.runLater(
+                () -> {
+                    cmbxLgacs.setItems(sortedListLgacs);
+                }
+            );
         }
         return filtradoLgacs;
     }
     
-    private void configurarComponenteLgacSeleccionada(Lgac lgacSeleccionada) {
-        Label labelLgac = new Label(lgacSeleccionada.getNombreLgac());
-        Button btnEliminar = new Button("X");
-        clicEliminarLgacSeleccionado(btnEliminar);
-        btnEliminar.setStyle("-fx-background-color: white; -fx-border-radius: 15;");
-        btnEliminar.setLayoutX(300);
-        btnEliminar.setLayoutY(10);
-        labelLgac.setLayoutX(20);
-        labelLgac.setLayoutY(15);
-        Pane seleccion = new Pane();
-        seleccion.getChildren().addAll(labelLgac, btnEliminar);
-        seleccion.setPrefSize(370, 50);
-        seleccion.setStyle("-fx-background-color: #C4DAEF; -fx-background-radius: 15;");
-        seleccion.setId(String.valueOf(lgacSeleccionada.getIdLgac()));
-        vbxContenedorLgac.getChildren().add(seleccion);
-    }
-    
     public void clicEliminarLgacSeleccionado(Button boton) {
-        boton.setOnAction((event) -> {
-            Pane padreBoton = (Pane) boton.getParent();
-            Lgac seleccionada = null;
-            for (Lgac lgac : lgacsSeleccionadas) {
-                if (lgac.getIdLgac() == Integer.valueOf(padreBoton.getId())) {
-                    seleccionada = lgac;
+        boton.setOnAction(
+            (event) -> {
+                Pane padreBoton = (Pane) boton.getParent();
+                Lgac seleccionada = null;
+                for (Lgac lgac : lgacsSeleccionadas) {
+                    if (lgac.getIdLgac() == Integer.valueOf(padreBoton.getId())) {
+                        seleccionada = lgac;
+                    }
+                }
+                if (seleccionada != null) {
+                    lgacsSeleccionadas.remove(seleccionada);
+                    vbxContenedorLgac.getChildren().remove(padreBoton);
+                    configurarFiltroLgac();
+                    validacionCamposLLenos();
                 }
             }
-            if (seleccionada != null) {
-                lgacsSeleccionadas.remove(seleccionada);
-                vbxContenedorLgac.getChildren().remove(padreBoton);
-                configurarFiltroLgac();
-                validacionCamposLLenos();
-            }
-        });
-    }
-
-    private void configurarComponenteCodirectorSeleccionado(Academico codirectorSeleccionado) {
-        Label labelLgac = new Label(codirectorSeleccionado.toString());
-        Button btnEliminar = new Button("X");
-        clicEliminarCodirectorSeleccionado(btnEliminar);
-        btnEliminar.setStyle("-fx-background-color: white; -fx-border-radius: 15;");
-        btnEliminar.setLayoutX(440);
-        btnEliminar.setLayoutY(10);
-        labelLgac.setLayoutX(20);
-        labelLgac.setLayoutY(15);
-        Pane seleccion = new Pane();
-        seleccion.getChildren().addAll(labelLgac, btnEliminar);
-        seleccion.setId(String.valueOf(codirectorSeleccionado.getIdAcademico()));
-        seleccion.setStyle("-fx-background-color: #C4DAEF; -fx-background-radius: 15;");
-        seleccion.setPrefHeight(50);
-        vbxContenedorDirectores.getChildren().add(seleccion);
+        );
     }
        
     public void clicEliminarCodirectorSeleccionado(Button boton) {
-        boton.setOnAction((event) -> {
-            Pane padreBoton = (Pane) boton.getParent();
-            Academico seleccionado = null;
-            for (Academico academico : codirectoresSeleccionado) {
-                if (academico.getIdAcademico() == Integer.valueOf(padreBoton.getId())) {
-                    seleccionado = academico;
+        boton.setOnAction(
+            (event) -> {
+                Pane padreBoton = (Pane) boton.getParent();
+                Academico seleccionado = null;
+                for (Academico academico : codirectoresSeleccionado) {
+                    if (academico.getIdAcademico() == Integer.valueOf(padreBoton.getId())) {
+                        seleccionado = academico;
+                    }
+                }
+                if (seleccionado != null) {
+                    codirectoresSeleccionado.remove(seleccionado);
+                    vbxContenedorDirectores.getChildren().remove(padreBoton);
+                    lbNombreDirector.requestFocus();
+                    validacionCamposLLenos();
                 }
             }
-            if (seleccionado != null) {
-                codirectoresSeleccionado.remove(seleccionado);
-                vbxContenedorDirectores.getChildren().remove(padreBoton);
-                lbNombreDirector.requestFocus();
-                validacionCamposLLenos();
-            }
-        });
+        );
     }
     
     private void irAVistaAnteproyectos(Academico academico) {
@@ -911,21 +877,6 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
             ex.printStackTrace();
         }
     }
-  
-    private void manejarDAOException(DAOException ex) {
-        switch (ex.getCodigo()) {
-            case ERROR_CONSULTA:
-                ex.printStackTrace();
-                System.out.println("Ocurrió un error de consulta.");
-                break;
-            case ERROR_CONEXION_BD:
-                ex.printStackTrace();
-                Utilidades.mostrarDialogoSimple("Error de conexion", 
-                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
-            default:
-                throw new AssertionError();
-        }
-    }
 
     @FXML
     private void seleccionComboNumeroEstudiantes(ActionEvent event) {
@@ -937,6 +888,19 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
             btnEnviar.setDisable(false);
         } else {
             btnEnviar.setDisable(true);
+        }
+    }
+    
+    private void manejarDAOException(DAOException ex) {
+        switch (ex.getCodigo()) {
+            case ERROR_CONSULTA:
+                System.out.println("Ocurrió un error de consulta.");
+                break;
+            case ERROR_CONEXION_BD:
+                Utilidades.mostrarDialogoSimple("Error de conexion", 
+                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
+            default:
+                throw new AssertionError();
         }
     }
     

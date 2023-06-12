@@ -1,14 +1,16 @@
-//TODO
+/*
+ * Autor: Daniel Garcia Arcos
+ * Fecha de creación: 04/06/2023
+ * Descripción: Controlador de la vista que muestra los estudiantes
+ * que estan desarrollando un anteproyecto propuesto por un director.
+ */
 
 package javafxsastr.controladores;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.Observable;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -36,17 +38,18 @@ public class FXMLEstudiantesAsignadosController implements Initializable {
 
     @FXML
     private VBox contenedorTarjetasEstudiantes;
-    private Academico academico;
-    private ObservableList<Estudiante> estudiantes;
     @FXML
     private Label lbAdvertencia;
+    
+    private Academico academico;
+    private ObservableList<Estudiante> estudiantes;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        
     }    
     
     public void setDirector(Academico academico) {
@@ -61,11 +64,10 @@ public class FXMLEstudiantesAsignadosController implements Initializable {
     
     private void obtenerEstudiantesAsignadosDelDirector() {
         try {
-            estudiantes 
-                = FXCollections.observableArrayList(
-                        new EstudianteDAO().obtenerEstudiantesPorAcademico(academico.getIdAcademico())
+            estudiantes = FXCollections.observableArrayList(
+                new EstudianteDAO().obtenerEstudiantesPorAcademico(academico.getIdAcademico())
             );
-            Collections.sort(estudiantes, Comparator.comparing(Estudiante::getNombre));
+            FXCollections.sort(estudiantes, Comparator.comparing(Estudiante::getNombre));
         } catch (DAOException ex) {
             manejarDAOException(ex);
         }
@@ -81,9 +83,11 @@ public class FXMLEstudiantesAsignadosController implements Initializable {
                     if (cursoIterator.hasNext()) {
                         Estudiante estudiante = cursoIterator.next();
                         TarjetaEstudiante tarjeta = new TarjetaEstudiante(estudiante);
-                        tarjeta.getBotonVerAvance().setOnAction((event) -> {
-                            irAVistaAvance(estudiante);
-                        });
+                        tarjeta.getBotonVerAvance().setOnAction(
+                            (event) -> {
+                                irAVistaAvance(estudiante);
+                            }
+                        );
                         contenedorTarjetas.getChildren().add(tarjeta);
                     } else {
                         break;
@@ -101,12 +105,10 @@ public class FXMLEstudiantesAsignadosController implements Initializable {
     
     private void irAVistaAvance(Estudiante estudiante) {
         try {
-            FXMLLoader accesoControlador 
-                    = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLConsultarAvanceEstudiante.fxml"));
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLConsultarAvanceEstudiante.fxml"));
             Parent vista = accesoControlador.load();
-            FXMLConsultarAvanceEstudianteController controladorVistaCursos = accesoControlador.getController();
-            controladorVistaCursos.setEstudianteAcademico(
-                    estudiante, academico, CodigosVentanas.ESTUDIANTES_ASIGNADOS, null);
+            FXMLConsultarAvanceEstudianteController controladorVistaAvanceEstudiante = accesoControlador.getController();
+            controladorVistaAvanceEstudiante.setEstudianteAcademico(estudiante, academico, CodigosVentanas.ESTUDIANTES_ASIGNADOS, null);
             Stage escenario = (Stage) lbAdvertencia.getScene().getWindow();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Avance del estudiante");
@@ -120,8 +122,8 @@ public class FXMLEstudiantesAsignadosController implements Initializable {
         try {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLInicio.fxml"));
             Parent vista = accesoControlador.load();
-            FXMLInicioController controladorVistaCrearAnteproyecto = accesoControlador.getController();
-            controladorVistaCrearAnteproyecto.setUsuario(academico);
+            FXMLInicioController controladorVistaInicio = accesoControlador.getController();
+            controladorVistaInicio.setUsuario(academico);
             Stage escenario = (Stage) lbAdvertencia.getScene().getWindow();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Inicio");
@@ -135,15 +137,14 @@ public class FXMLEstudiantesAsignadosController implements Initializable {
     private void manejarDAOException(DAOException ex) {
         switch (ex.getCodigo()) {
             case ERROR_CONSULTA:
-                ex.printStackTrace();
                 System.out.println("Ocurrió un error de consulta.");
                 break;
             case ERROR_CONEXION_BD:
-                ex.printStackTrace();
                 Utilidades.mostrarDialogoSimple("Error de conexion", 
                         "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
             default:
                 throw new AssertionError();
         }
     }
+    
 }

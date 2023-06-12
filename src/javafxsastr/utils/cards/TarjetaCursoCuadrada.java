@@ -23,8 +23,7 @@ import javafxsastr.utils.Utilidades;
 public class TarjetaCursoCuadrada extends Pane {
     
     private Pane pnfondoImagen;
-    private ImageView imvImagenCurso 
-                = new ImageView(new Image("file:src/javafxsastr/recursos/iconos/curso-2.png"));
+    private ImageView imvImagenCurso = new ImageView(new Image("file:src/javafxsastr/recursos/iconos/curso-2.png"));
     private Label lbNombreCurso;
     private Label lbNrc;
     private Label lbPeriodoEscolar;
@@ -54,8 +53,7 @@ public class TarjetaCursoCuadrada extends Pane {
         lbNombreCurso = new Label(curso.getNombreCurso());
         lbNrc = new Label(curso.getNrcCurso());
         String fechaInicio = Utilidades.formatearFechaPeriodo(curso.getInicioPeriodoEscolar());
-        String fechaFin 
-                = Utilidades.formatearFechaPeriodo(curso.getFinPeriodoEscolar());
+        String fechaFin = Utilidades.formatearFechaPeriodo(curso.getFinPeriodoEscolar());
         lbPeriodoEscolar = new Label(fechaInicio + " - " + fechaFin);
         btnVerDetallesCurso = new Button("Ver detalles");
     }
@@ -103,4 +101,5 @@ public class TarjetaCursoCuadrada extends Pane {
         btnVerDetallesCurso.setPrefWidth(150);
         btnVerDetallesCurso.setFont(new Font(20));
     }
+    
 }

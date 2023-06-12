@@ -20,7 +20,15 @@ public class CuerpoAcademico {
     public CuerpoAcademico() {
     }
 
-    public CuerpoAcademico(int idCuerpoAcademico, String nombreCuerpoAcademico, String disciplinaCuerpoAcademico, String descripcion, String area, int idArea, int idAcademico, String nombreResponsableCA) {
+    public CuerpoAcademico(int idCuerpoAcademico, 
+            String nombreCuerpoAcademico, 
+            String disciplinaCuerpoAcademico, 
+            String descripcion, 
+            String area, 
+            int idArea, 
+            int idAcademico, 
+            String nombreResponsableCA) {
+        
         this.idCuerpoAcademico = idCuerpoAcademico;
         this.nombreCuerpoAcademico = nombreCuerpoAcademico;
         this.disciplinaCuerpoAcademico = disciplinaCuerpoAcademico;

@@ -40,7 +40,7 @@
             </ImageView>
          </children>
       </Pane>
-      <ImageView fx:id="clicBtnRegresar" fitHeight="38.0" fitWidth="40.0" layoutX="17.0" layoutY="64.0" onMouseClicked="#cllicBtnRegresar" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="38.0" fitWidth="40.0" layoutX="17.0" layoutY="64.0" onMouseClicked="#cllicBtnRegresar" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../recursos/iconos/flecha.png" />
          </image>
@@ -177,11 +177,6 @@
                </font>
             </Label>
             <Label fx:id="lbActividadesRestantes" layoutX="116.0" layoutY="114.0" prefHeight="27.0" prefWidth="484.0">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label fx:id="lbAvancesEnviados" layoutX="114.0" layoutY="148.0" prefHeight="27.0" prefWidth="481.0">
                <font>
                   <Font size="18.0" />
                </font>

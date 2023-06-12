@@ -3,7 +3,7 @@
  * Fecha de creación: 25/05/2023
  * Descripción: La clase FXMLConsultarAvanceEstudiante actúa como controlador
  * de la vista ConsultarAvancesEstudiante. Contiene los métodos necesarios 
- * para la consulta del avance de un estudiante. 
+ * para la consulta del avance de un estudiante, tal como actividades completadas, anteproyecto, etc.
  */
 
 package javafxsastr.controladores;
@@ -22,7 +22,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -41,10 +40,7 @@ import javafxsastr.utils.Utilidades;
 import javafxsastr.utils.cards.TarjetaActividad;
 
 public class FXMLConsultarAvanceEstudianteController implements Initializable {
-
-    private ObservableList<Actividad> actividades;
-    private Estudiante estudiante;
-    private Anteproyecto anteproyecto;
+    
     @FXML
     private Label lbNombreEstudiante;
     @FXML
@@ -64,19 +60,19 @@ public class FXMLConsultarAvanceEstudianteController implements Initializable {
     @FXML
     private Label lbActividadesRestantes;
     @FXML
-    private Label lbAvancesEnviados;
-    @FXML
     private Label lbPorcentaje;
     @FXML
     private VBox vbxContenedorTarjetasActividades;
+    @FXML
+    private Button btnVerDetallesAnteproyecto;
+    
+    private ObservableList<Actividad> actividades;
+    private Estudiante estudiante;
+    private Anteproyecto anteproyecto;
+    private ConsultarAvanceEstudianteSingleton consultarAvanceEstudiante;
     private CodigosVentanas ventanaOrigen;
     private Curso cursoAuxiliar;
     private Academico academicoAuxiliar;
-    @FXML
-    private ImageView clicBtnRegresar;
-    @FXML
-    private Button btnVerDetallesAnteproyecto;
-    private ConsultarAvanceEstudianteSingleton consultarAvanceEstudiante;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -87,8 +83,8 @@ public class FXMLConsultarAvanceEstudianteController implements Initializable {
         this.estudiante = estudiante;
         this.ventanaOrigen = origen;
         ConsultarAvanceEstudianteSingleton.setConsultarAvanceEstudiante(null);
-        consultarAvanceEstudiante
-                = ConsultarAvanceEstudianteSingleton.obtenerConsultarAvanceEstudiante(academico, estudiante, ventanaOrigen, curso);
+        consultarAvanceEstudiante = ConsultarAvanceEstudianteSingleton
+                .obtenerConsultarAvanceEstudiante(academico, estudiante, ventanaOrigen, curso);
         obtenerActividades();
         cargarTarjetasActividades();
         obtenerAnteproyecto();
@@ -104,7 +100,8 @@ public class FXMLConsultarAvanceEstudianteController implements Initializable {
     private void obtenerActividades() {
         try {
             actividades = FXCollections.observableArrayList(
-                    new ActividadDAO().obtenerActividadesPorEstudiante(estudiante.getIdEstudiante()));
+                    new ActividadDAO().obtenerActividadesPorEstudiante(estudiante.getIdEstudiante())
+            );
         } catch (DAOException ex) {
             manejarDAOException(ex);
         }
@@ -120,11 +117,12 @@ public class FXMLConsultarAvanceEstudianteController implements Initializable {
     
     private void cargarTarjetasActividades() {
         for (Actividad actividad : actividades) {
-            System.out.println(actividad.getNombreActividad());
             TarjetaActividad tarjeta = new TarjetaActividad(actividad);
-            tarjeta.getBotonVerDetalles().setOnAction((event) -> {
-                irAVistaConsultarEntregasActividad(actividad);
-            });
+            tarjeta.getBotonVerDetalles().setOnAction(
+                (event) -> {
+                    irAVistaConsultarEntregasActividad(actividad);
+                }
+            );
             vbxContenedorTarjetasActividades.getChildren().add(tarjeta);
         }
     }
@@ -165,37 +163,31 @@ public class FXMLConsultarAvanceEstudianteController implements Initializable {
             if (totalActividades != 0) {
                 porcentajeAvance = actividadesCompletadas * 100 / totalActividades;
             }
-            lbActividadesCompletadas.setText(actividadesCompletadas+"/"+totalActividades+" actividades completadas.");
-            lbActividadesNoRealizadas.setText(actividadesNoRealizadas+"/"+totalActividades+" actividades no realizadas.");
-            lbActividadesRestantes.setText(actividadesRestantes+"/"+totalActividades+ " actividades restantes.");
-            lbPorcentaje.setText(porcentajeAvance+"%");
+            lbActividadesCompletadas.setText(actividadesCompletadas + "/" + totalActividades + " actividades completadas.");
+            lbActividadesNoRealizadas.setText(actividadesNoRealizadas + "/" + totalActividades + " actividades no realizadas.");
+            lbActividadesRestantes.setText(actividadesRestantes + "/" + totalActividades + " actividades restantes.");
+            lbPorcentaje.setText(porcentajeAvance + "%");
         } catch (DAOException ex) {
             manejarDAOException(ex);
         }
-    }
-    
-    private void manejarDAOException(DAOException ex) {
-        switch (ex.getCodigo()) {
-            case ERROR_CONSULTA:
-                ex.printStackTrace();
-                System.out.println("Ocurrió un error de consulta.");
-                break;
-            case ERROR_CONEXION_BD:
-                ex.printStackTrace();
-                Utilidades.mostrarDialogoSimple("Error de conexion", 
-                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
-            default:
-                throw new AssertionError();
-        }
-    }
-    
-    private void iraVentanaEntregasActividad(int idActividad) {
-        
     }
 
     @FXML
     private void clicVerDetallesAnteproyecto(ActionEvent event) {
         irAVistaDetallesAnteproyecto(anteproyecto);
+    }
+    
+    @FXML
+    private void cllicBtnRegresar(MouseEvent event) {
+        switch (consultarAvanceEstudiante.getVentanaOrigen()) {
+            case ESTUDIANTES_ASIGNADOS:
+                irAVistaEstudiantesAsignados(academicoAuxiliar);
+                break;
+            case CONSULTAR_AVANCES_ESTUDIANTES:
+                irAVistaConsultarAvancesCurso(cursoAuxiliar, academicoAuxiliar);
+            default:
+                System.out.println("Error. No se pudo encontrar la ventana de origen.");
+        }
     }
     
     private void irAVistaDetallesAnteproyecto(Anteproyecto anteproyecto) {
@@ -220,8 +212,8 @@ public class FXMLConsultarAvanceEstudianteController implements Initializable {
             FXMLLoader accesoControlador 
                     = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLEstudiantesAsignados.fxml"));
             Parent vista = accesoControlador.load();
-            FXMLEstudiantesAsignadosController controladorVistaCursos = accesoControlador.getController();
-            controladorVistaCursos.setDirector(academico);
+            FXMLEstudiantesAsignadosController controladorVistaEstudiantes = accesoControlador.getController();
+            controladorVistaEstudiantes.setDirector(academico);
             Stage escenario = (Stage) lbActividadesCompletadas.getScene().getWindow();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Estudiantes");
@@ -261,17 +253,17 @@ public class FXMLConsultarAvanceEstudianteController implements Initializable {
             ex.printStackTrace();
         }
     }
-
-    @FXML
-    private void cllicBtnRegresar(MouseEvent event) {
-        switch (consultarAvanceEstudiante.getVentanaOrigen()) {
-            case ESTUDIANTES_ASIGNADOS:
-                irAVistaEstudiantesAsignados(academicoAuxiliar);
+    
+    private void manejarDAOException(DAOException ex) {
+        switch (ex.getCodigo()) {
+            case ERROR_CONSULTA:
+                System.out.println("Ocurrió un error de consulta.");
                 break;
-            case CONSULTAR_AVANCES_ESTUDIANTES:
-                irAVistaConsultarAvancesCurso(cursoAuxiliar, academicoAuxiliar);
+            case ERROR_CONEXION_BD:
+                Utilidades.mostrarDialogoSimple("Error de conexion", 
+                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
             default:
-                
+                throw new AssertionError();
         }
     }
     

@@ -136,7 +136,6 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
         lgacsEntabla=  FXCollections.observableArrayList();        
         recuperarDatos();
         recuperarAreas();
-        inicializarLisneters();  
         inicializarFiltrosDeTexto();
         if(esVerDetalles) {            
             lbTituloventana.setText("Detalles Cuerpo Academico");
@@ -164,6 +163,7 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
             }  
             
         }
+        inicializarLisneters();  
     }
     
     private void CargarInformacionCuerpoAcademico() {

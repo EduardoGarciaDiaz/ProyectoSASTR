@@ -8,6 +8,7 @@
 package javafxsastr.modelos.pojo;
 
 public class ExperienciaEducativa {
+    
     private int idExperienciaEducativa;
     private String nombreExperienciaEducativa;
     private int numeroCreditosExperienciaEducativa;
@@ -16,7 +17,10 @@ public class ExperienciaEducativa {
         
     }
 
-    public ExperienciaEducativa(int idExperienciaEducativa, String nombreExperienciaEducativa, int numeroCreditosExperienciaEducativa) {
+    public ExperienciaEducativa(int idExperienciaEducativa, 
+            String nombreExperienciaEducativa, 
+            int numeroCreditosExperienciaEducativa) {
+        
         this.idExperienciaEducativa = idExperienciaEducativa;
         this.nombreExperienciaEducativa = nombreExperienciaEducativa;
         this.numeroCreditosExperienciaEducativa = numeroCreditosExperienciaEducativa;
@@ -49,7 +53,6 @@ public class ExperienciaEducativa {
     @Override
     public String toString() {
         return nombreExperienciaEducativa;
-    }
-    
+    } 
     
 }

@@ -59,7 +59,7 @@
             <Font size="30.0" />
          </font>
       </Label>
-      <Pane fx:id="pbnBotonCrearUsuario" layoutX="1389.0" layoutY="860.0" onMouseClicked="#clicCrearUsuario" opacity="0.7" prefHeight="68.0" prefWidth="244.0" style="-fx-background-color: black; -fx-background-radius: 13;">
+      <Pane layoutX="1389.0" layoutY="860.0" onMouseClicked="#clicCrearUsuario" opacity="0.7" prefHeight="68.0" prefWidth="244.0" style="-fx-background-color: black; -fx-background-radius: 13;">
          <children>
             <Label layoutX="35.0" layoutY="14.0" text="+ Crear usuario" textFill="WHITE">
                <font>

@@ -7,6 +7,7 @@
 package javafxsastr.modelos.pojo;
 
 public class Anteproyecto {
+    
     int idAnteproyecto;
     int idCuerpoAcademico;
     int idModalidad;

@@ -56,10 +56,8 @@ public class TarjetaActividad  extends Pane {
         idActividad = actividad.getIdActividad();
         iconoActividad = new ImageView(new Image("file:src/javafxsastr/recursos/iconos/actividad-entrega.png"));
         nombreActividad = new Label(actividad.getNombreActividad());
-        fechaInicio 
-                = new Label(Utilidades.formatearFechaNormal(actividad.getFechaInicioActividad()));
-        fechaFin 
-                = new Label(Utilidades.formatearFechaNormal(actividad.getFechaFinActividad()));
+        fechaInicio  = new Label(Utilidades.formatearFechaNormal(actividad.getFechaInicioActividad()));
+        fechaFin = new Label(Utilidades.formatearFechaNormal(actividad.getFechaFinActividad()));
         fondoEstado = new Pane();
         btnVerDetalles = new Button("Ver detalles");
     }

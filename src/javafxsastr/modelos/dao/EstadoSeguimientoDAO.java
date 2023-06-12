@@ -1,4 +1,9 @@
-//TODO@Daniel
+/*
+ * Autor: Daniel Garcia Arcos
+ * Fecha de creación: 03/06/2023
+ * Descripción: DAO para obtener los ID de los estados 
+ * de seguimiento de un Anteproyecto.
+ */
 
 package javafxsastr.modelos.dao;
 
@@ -9,7 +14,8 @@ import javafxsastr.modelos.ConexionBD;
 
 public class EstadoSeguimientoDAO {
  
-    private final String OBTENER_ID_ESTADO_SEGUIMIENTO = "SELECT * FROM sastr.estados_seguimiento where nombreEstadoSeguimiento = ?";
+    private final String OBTENER_ID_ESTADO_SEGUIMIENTO = "SELECT * FROM sastr.estados_seguimiento "
+            + "where nombreEstadoSeguimiento = ?";
     
     public int obtenerIdEstadoSeguimiento(String nombreEstadoSeguimiento) throws DAOException {
         int idEstadoSeguimiento = -1;

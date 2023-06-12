@@ -10,6 +10,7 @@ package javafxsastr.modelos.dao;
 import javafxsastr.utils.Codigos;
 
 public class DAOException extends Exception {
+    
     private final Codigos codigo;
     
     public DAOException(String mensaje, Codigos codigo) {
@@ -20,4 +21,5 @@ public class DAOException extends Exception {
     public Codigos getCodigo() {
         return codigo;
     }
+    
 }

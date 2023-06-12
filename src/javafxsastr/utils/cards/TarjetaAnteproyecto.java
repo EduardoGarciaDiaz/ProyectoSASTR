@@ -16,7 +16,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafxsastr.controladores.FXMLAnteproyectosController;
 import javafxsastr.interfaces.INotificacionClicBotonAnteproyectos;
 import javafxsastr.modelos.dao.DAOException;
 import javafxsastr.modelos.dao.EstudianteDAO;
@@ -29,7 +28,8 @@ public class TarjetaAnteproyecto extends Pane {
     private Label lbNombreDirector;
     private Label lbEstudiantes;
     private Button btnAccion;
-    private ImageView imvAnteproyecto = new ImageView(new Image("file:src/javafxsastr/recursos/iconos/anteproyecto-negro.png"));
+    private ImageView imvAnteproyecto = 
+            new ImageView(new Image("file:src/javafxsastr/recursos/iconos/anteproyecto-negro.png"));
     private Anteproyecto anteproyecto;
     private Pane fondoImagen;
     private Font fuenteTexto = new Font(20);
@@ -111,7 +111,8 @@ public class TarjetaAnteproyecto extends Pane {
         lbEstudiantes.setLayoutX(151);
         lbEstudiantes.setLayoutY(195);
         try {
-            ArrayList<Estudiante> estudiantes = new EstudianteDAO().obtenerEstudiantesPorIdAnteproyecto(anteproyecto.getIdAnteproyecto());
+            ArrayList<Estudiante> estudiantes = 
+                    new EstudianteDAO().obtenerEstudiantesPorIdAnteproyecto(anteproyecto.getIdAnteproyecto());
             if (estudiantes.size() > 0) {
                 String cadenaEstudiantes = "";
                 for (Estudiante estudiante : estudiantes) {
@@ -136,40 +137,52 @@ public class TarjetaAnteproyecto extends Pane {
         btnAccion.setPrefHeight(40);
         if ("Borrador".equals(anteproyecto.getEstadoSeguimiento())) {
             btnAccion.setText("Editar anteproyecto");
-            btnAccion.setOnAction((event) -> {
-                interfaz.notificarClicBotonModificarBorradorAnteproyecto(anteproyecto);
-            });
+            btnAccion.setOnAction(
+                (event) -> {
+                    interfaz.notificarClicBotonModificarBorradorAnteproyecto(anteproyecto);
+                }
+            );
        } else if ("Sin revisar".equals(anteproyecto.getEstadoSeguimiento())) {
-           btnAccion.setText("Revisar anteproyecto");
-           btnAccion.setOnAction((event) -> {
-               interfaz.notificarClicValidarAnteproyecto(anteproyecto);
-           });
+            btnAccion.setText("Revisar anteproyecto");
+            btnAccion.setOnAction(
+                (event) -> {
+                    interfaz.notificarClicValidarAnteproyecto(anteproyecto);
+                }
+            );
        } else if ("Rechazado".equals(anteproyecto.getEstadoSeguimiento())) {
-           btnAccion.setText("Corregir anteproyecto");
-           btnAccion.setOnAction( (event) -> {
-               interfaz.notificarClicBotonCorregirAnteproyectoe(anteproyecto);
-           });
+            btnAccion.setText("Corregir anteproyecto");
+            btnAccion.setOnAction( 
+                (event) -> {
+                    interfaz.notificarClicBotonCorregirAnteproyectoe(anteproyecto);
+                }
+            );
        } else if ("Validado".equals(anteproyecto.getEstadoSeguimiento())) {
-           btnAccion.setText("Ver detalles de anteproyecto");
+            btnAccion.setText("Ver detalles de anteproyecto");
             if(esRCA) {
                 agregarBotonPublicar();
             }
-            btnAccion.setOnAction((event) -> { 
-                interfaz.notificarClicBotonVerDetallesAnteproyecto(anteproyecto);
-            });        
+            btnAccion.setOnAction(
+                (event) -> { 
+                    interfaz.notificarClicBotonVerDetallesAnteproyecto(anteproyecto);
+                }
+            );        
         } else if ("Publicado".equals(anteproyecto.getEstadoSeguimiento())) {
-           btnAccion.setText("Ver detalles de anteproyecto");          
-           if(esRCA) {
+            btnAccion.setText("Ver detalles de anteproyecto");          
+            if(esRCA) {
                 agregarBotonDespublicar();
-           }
-           btnAccion.setOnAction((event) -> {
-               interfaz.notificarClicBotonVerDetallesAnteproyecto(anteproyecto);
-           });
+            }
+            btnAccion.setOnAction(
+                (event) -> {
+                    interfaz.notificarClicBotonVerDetallesAnteproyecto(anteproyecto);
+                }
+            );
        } else {
             btnAccion.setText("Ver detalles de anteproyecto");
-            btnAccion.setOnAction((event) -> {
-            interfaz.notificarClicBotonVerDetallesAnteproyecto(anteproyecto);
-           });
+            btnAccion.setOnAction(
+                (event) -> {
+                    interfaz.notificarClicBotonVerDetallesAnteproyecto(anteproyecto);
+                }
+            );
         }
     }
     
@@ -179,9 +192,11 @@ public class TarjetaAnteproyecto extends Pane {
         btnPublicar.setLayoutX(1250);
         btnPublicar.setLayoutY(100);
         btnPublicar.setPrefWidth(180);
-        btnPublicar.setOnAction((event) -> {
-            interfaz.notificarClicPublicarAnteproyecto(anteproyecto);
-        });
+        btnPublicar.setOnAction(
+            (event) -> {
+                interfaz.notificarClicPublicarAnteproyecto(anteproyecto);
+            }
+        );
         this.getChildren().add(btnPublicar);
     }
     
@@ -191,9 +206,11 @@ public class TarjetaAnteproyecto extends Pane {
         btnPublicar.setLayoutX(1250);
         btnPublicar.setLayoutY(100);
         btnPublicar.setPrefWidth(180);
-        btnPublicar.setOnAction((event) -> {
-            interfaz.notificarClicDespublicarAnteproyecto(anteproyecto);
-        });
+        btnPublicar.setOnAction(
+            (event) -> {
+                interfaz.notificarClicDespublicarAnteproyecto(anteproyecto);
+            }
+        );
         this.getChildren().add(btnPublicar);
     }
 }

@@ -64,7 +64,7 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <Pane fx:id="pnBotonCrearActividad" layoutX="1029.0" layoutY="862.0" onMouseClicked="#clicCrearActividad" prefHeight="68.0" prefWidth="244.0" style="-fx-background-color: black; -fx-background-radius: 13;">
+      <Pane layoutX="1029.0" layoutY="862.0" onMouseClicked="#clicCrearActividad" prefHeight="68.0" prefWidth="244.0" style="-fx-background-color: black; -fx-background-radius: 13;">
          <children>
             <Label layoutX="33.0" layoutY="14.0" text="Crear actividad" textFill="WHITE">
                <font>
@@ -118,7 +118,7 @@
                   </Label>
                </children>
             </Pane>
-            <Pane fx:id="paneLateralIzquierdo" layoutY="-9.0" prefHeight="583.0" prefWidth="433.0" style="-fx-background-color: F4F4F4;">
+            <Pane layoutY="-9.0" prefHeight="583.0" prefWidth="433.0" style="-fx-background-color: F4F4F4;">
                <children>
                   <Label layoutX="91.0" layoutY="16.0" prefHeight="50.0" prefWidth="164.0" text="Curso Actual">
                      <font>

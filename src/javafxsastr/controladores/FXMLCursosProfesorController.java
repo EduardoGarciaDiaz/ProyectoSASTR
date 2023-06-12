@@ -1,15 +1,18 @@
-//toDO
+/*
+ * Autor: Daniel Garcia Arcos
+ * Fecha de creación: 04/06/2023
+ * Descripción: Actúa como controlador para recuperar los cursos
+ * de un academico en el periodo escolar actual.
+ */
+
 package javafxsastr.controladores;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -27,7 +30,6 @@ import javafxsastr.modelos.dao.CursoDAO;
 import javafxsastr.modelos.dao.DAOException;
 import javafxsastr.modelos.pojo.Academico;
 import javafxsastr.modelos.pojo.Curso;
-import javafxsastr.modelos.pojo.Estudiante;
 import javafxsastr.utils.Utilidades;
 import javafxsastr.utils.cards.TarjetaCursoCuadrada;
 
@@ -35,6 +37,7 @@ public class FXMLCursosProfesorController implements Initializable {
 
     @FXML
     private VBox vbxContenedorHbxTarjetas;
+    
     private Academico profesor;
     private ObservableList<Curso> cursosActuales;
 
@@ -55,7 +58,7 @@ public class FXMLCursosProfesorController implements Initializable {
     private void obtenerCursosActualesDelProfesor() {
         try {
             cursosActuales = FXCollections.observableArrayList(
-                   new CursoDAO().obtenerCursosDelProfesor(profesor.getIdAcademico())
+                new CursoDAO().obtenerCursosDelProfesor(profesor.getIdAcademico())
             );
             Collections.sort(cursosActuales, Comparator.comparing(Curso::getNombreCurso));
         } catch (DAOException ex) {
@@ -73,9 +76,11 @@ public class FXMLCursosProfesorController implements Initializable {
                     if (cursoIterator.hasNext()) {
                         Curso curso = cursoIterator.next();
                         TarjetaCursoCuadrada tarjeta = new TarjetaCursoCuadrada(curso);
-                        tarjeta.getBotonVerDetalles().setOnAction((event) -> {
-                            irAVistaConsultarAvancesCurso(curso);
-                        });
+                        tarjeta.getBotonVerDetalles().setOnAction(
+                            (event) -> {
+                                irAVistaConsultarAvancesCurso(curso);
+                            }
+                        );
                         contenedorTarjetas.getChildren().add(tarjeta);
                     } else {
                         break;
@@ -111,8 +116,8 @@ public class FXMLCursosProfesorController implements Initializable {
         try {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLInicio.fxml"));
             Parent vista = accesoControlador.load();
-            FXMLInicioController controladorVistaCrearAnteproyecto = accesoControlador.getController();
-            controladorVistaCrearAnteproyecto.setUsuario(academico);
+            FXMLInicioController controladorVistaInicio = accesoControlador.getController();
+            controladorVistaInicio.setUsuario(academico);
             Stage escenario = (Stage) vbxContenedorHbxTarjetas.getScene().getWindow();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Inicio");
@@ -125,11 +130,9 @@ public class FXMLCursosProfesorController implements Initializable {
     private void manejarDAOException(DAOException ex) {
         switch (ex.getCodigo()) {
             case ERROR_CONSULTA:
-                ex.printStackTrace();
                 System.out.println("Ocurrió un error de consulta.");
                 break;
             case ERROR_CONEXION_BD:
-                ex.printStackTrace();
                 Utilidades.mostrarDialogoSimple("Error de conexion", 
                         "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
             default:

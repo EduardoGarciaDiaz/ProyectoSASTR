@@ -25,8 +25,10 @@ public class TarjetaActividadGestion extends Pane {
     private Label lbNombreActividad;
     private Label fechas;
     private Actividad actividad;
-    private ImageView imvActividad = new ImageView(new Image("file:src/javafxsastr/recursos/iconos/actividad-entrega.png"));
-    private ImageView imvModificar = new ImageView(new Image("file:src/javafxsastr/recursos/iconos/edicion.png"));
+    private ImageView imvActividad = 
+            new ImageView(new Image("file:src/javafxsastr/recursos/iconos/actividad-entrega.png"));
+    private ImageView imvModificar = 
+            new ImageView(new Image("file:src/javafxsastr/recursos/iconos/edicion.png"));
     private Pane fondoImagen;
     private Pane fondoEstado;
     private Pane fondoModificar;

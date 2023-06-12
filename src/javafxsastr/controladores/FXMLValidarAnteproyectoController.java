@@ -42,6 +42,7 @@ import javafxsastr.modelos.dao.DAOException;
 import javafxsastr.modelos.dao.EstadoSeguimientoDAO;
 import javafxsastr.modelos.dao.EstudianteDAO;
 import javafxsastr.modelos.dao.LgacDAO;
+import javafxsastr.modelos.dao.RevisionAnteproyectoDAO;
 import javafxsastr.modelos.dao.RubricaDAO;
 import javafxsastr.modelos.pojo.Academico;
 import javafxsastr.modelos.pojo.Anteproyecto;
@@ -421,7 +422,7 @@ public class FXMLValidarAnteproyectoController implements Initializable {
                 exitoRubrica = new RubricaDAO().actualizarRubrica(rubrica);
             }else{
                  exitoRubrica = new RubricaDAO().guardarRubrica(rubrica);
-                 int exitoRelacion = new RubricaDAO().guardarRelacionRubricaAnteproyecto(txaComentarios.getText(),
+                 int exitoRelacion = new RevisionAnteproyectoDAO().guardarRelacionRubricaAnteproyecto(txaComentarios.getText(),
                         anteproyecto.getIdAnteproyecto(),exitoRubrica);
             }           
             if(exitoRubrica != -1) {                

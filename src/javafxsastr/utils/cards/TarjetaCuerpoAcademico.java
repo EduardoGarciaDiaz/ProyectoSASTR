@@ -87,5 +87,6 @@ public class TarjetaCuerpoAcademico extends Pane {
         btnModificarCuerpoAcademico.setPrefWidth(230);
         btnModificarCuerpoAcademico.setPrefHeight(40);
     }
+    
 }
 

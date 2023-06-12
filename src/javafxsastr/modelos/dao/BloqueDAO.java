@@ -1,3 +1,9 @@
+/*
+ * Autor: Daniel Garcia Arcos
+ * Fecha de creación: 03/06/2023
+ * Descripción: DAO para realizar las consultas a la base de datos
+ * correspondientes a un bloque.
+ */
 
 package javafxsastr.modelos.dao;
 
@@ -5,8 +11,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafxsastr.modelos.ConexionBD;
 import javafxsastr.modelos.pojo.Bloque;
 import javafxsastr.utils.Codigos;
@@ -16,7 +20,7 @@ public class BloqueDAO {
     private final String OBTENER_BLOQUES = "SELECT * FROM sastr.bloques;";
     
     public ArrayList<Bloque> obtenerBloques() throws DAOException {
-        ArrayList<Bloque> bloques = new ArrayList<Bloque>();
+        ArrayList<Bloque> bloques = new ArrayList<>();
         try {
             PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(OBTENER_BLOQUES);
             ResultSet resultado = sentencia.executeQuery();

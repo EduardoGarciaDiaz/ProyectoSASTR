@@ -8,6 +8,7 @@
 package javafxsastr.modelos.pojo;
 
 public class Academico extends Usuario {
+    
     private int idAcademico;
     int numeroPersonal;
     
@@ -15,9 +16,18 @@ public class Academico extends Usuario {
         
     }
 
-    public Academico(int idAcademico, int numeroPersonal, int idUsuario, String nombre, String primerApellido, 
-            String segundoApellido, String correoInstitucional, String correoAlterno, String password, 
-            boolean esAdministrador, int idEstadoUsuario, String estadoUsuario) {
+    public Academico(int idAcademico, 
+            int numeroPersonal, 
+            int idUsuario, 
+            String nombre, 
+            String primerApellido, 
+            String segundoApellido, 
+            String correoInstitucional, 
+            String correoAlterno, 
+            String password, 
+            boolean esAdministrador, 
+            int idEstadoUsuario, 
+            String estadoUsuario) {
         
         super(idUsuario, nombre, primerApellido, segundoApellido, correoInstitucional, 
                 correoAlterno, password, esAdministrador, idEstadoUsuario, estadoUsuario);
@@ -57,6 +67,5 @@ public class Academico extends Usuario {
         }
         return nombre + " " + primerApellido + " " + segundoApellido;
     }
-    
-   
+ 
 }

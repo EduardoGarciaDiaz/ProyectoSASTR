@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -30,29 +29,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafxsastr.JavaFXSASTR;
 import javafxsastr.interfaces.INotificacionRecargarDatos;
 import javafxsastr.interfaces.INotificacionSeleccionItem;
-import javafxsastr.modelos.dao.AcademicoDAO;
-import javafxsastr.modelos.dao.BloqueDAO;
-import javafxsastr.modelos.dao.CursoDAO;
-import javafxsastr.modelos.dao.DAOException;
-import javafxsastr.modelos.dao.ExperienciaEducativaDAO;
-import javafxsastr.modelos.dao.NrcDAO;
-import javafxsastr.modelos.dao.PeriodoEscolarDAO;
-import javafxsastr.modelos.dao.SeccionDAO;
-import javafxsastr.modelos.pojo.Academico;
-import javafxsastr.modelos.pojo.Bloque;
-import javafxsastr.modelos.pojo.Curso;
-import javafxsastr.modelos.pojo.ExperienciaEducativa;
-import javafxsastr.modelos.pojo.Nrc;
-import javafxsastr.modelos.pojo.PeriodoEscolar;
-import javafxsastr.modelos.pojo.Seccion;
+import javafxsastr.modelos.dao.*;
+import javafxsastr.modelos.pojo.*;
 import javafxsastr.utils.CampoDeBusqueda;
-import javafxsastr.utils.FiltrosTexto;
 import javafxsastr.utils.Utilidades;
 
 public class FXMLFormularioCursoController implements Initializable {
@@ -67,41 +51,38 @@ public class FXMLFormularioCursoController implements Initializable {
     private ComboBox<Seccion> cmbSecciones;
     @FXML
     private ComboBox<Bloque> cmbBloques;
-    private TextField cmbProfesor;
     @FXML
     private DatePicker dpFechaInicioClases;
     @FXML
     private DatePicker dpFechaFinClases;
-    private ObservableList<ExperienciaEducativa> experienciasEducativas;
-    private ObservableList<Nrc> nrcs;
-    private Academico profesorSeleccionado;
     @FXML
     private TextField tfProfesor;
     @FXML
     private ListView<Academico> lvprofesores;
+    @FXML
+    private Label lbTituloFormulario;
+    @FXML
+    private Button btnAceptar;
+    @FXML
+    private Label lbMensajeDeError;
+    private PeriodoEscolar periodoActual;
+    @FXML
+    private Label lbPeriodoActual;    
+    
+    private Academico academico;
+    private ExperienciaEducativa experienciaEdicion;
+    private Nrc nrcEdicion;
+    private Seccion secccionEdicion;
+    private Bloque bloqueEdicion;
+    private ObservableList<ExperienciaEducativa> experienciasEducativas;
+    private ObservableList<Nrc> nrcs;
+    private Academico profesorSeleccionado;
     private ObservableList<Academico> profesores;
-    private ObservableList<PeriodoEscolar> periodos;
     private ObservableList<Seccion> secciones;
     private ObservableList<Bloque> bloques;
     private boolean esEdicion;
     private Curso cursoEdicion;
     private INotificacionRecargarDatos interfaz;
-    @FXML
-    private Label lbTituloFormulario;
-    @FXML
-    private Button btnAceptar;
-    private Label lbMensajeError;
-    private Label lbFechaError;
-    @FXML
-    private Label lbMensajeDeError;
-    private Academico academico;
-    private PeriodoEscolar periodoActual;
-    @FXML
-    private Label lbPeriodoActual;    
-    private ExperienciaEducativa experienciaEdicion;
-    private Nrc nrcEdicion;
-    private Seccion secccionEdicion;
-    private Bloque bloqueEdicion;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -136,10 +117,6 @@ public class FXMLFormularioCursoController implements Initializable {
         }
     }
     
-    private void inicializarFiltros() {
-        FiltrosTexto.filtroLetrasNumeros(tfNombreCurso);
-    }
-    
     private void recuperarDatosCurso() {
         cargarExperienciasEducativas();
         obtenerProfesores();
@@ -170,10 +147,10 @@ public class FXMLFormularioCursoController implements Initializable {
         } catch (DAOException ex) {
             manejarDAOException(ex);
         }
-        for (Seccion seccione : secciones) {
-            if (seccione.getIdSeccion() == cursoEdicion.getIdSeccion()) {
-                cmbSecciones.getSelectionModel().select(seccione);
-                secccionEdicion = seccione;
+        for (Seccion seccion : secciones) {
+            if (seccion.getIdSeccion() == cursoEdicion.getIdSeccion()) {
+                cmbSecciones.getSelectionModel().select(seccion);
+                secccionEdicion = seccion;
             }
         }
         for (Bloque bloque : bloques) {
@@ -194,55 +171,11 @@ public class FXMLFormularioCursoController implements Initializable {
         dpFechaFinClases.setValue(LocalDate.parse(cursoEdicion.getFechaFinCurso()));
     }
     
-    private int obtenerPosicionComboExperienciaEducativa(int idExperienciaEducativa) {
-        for (int i = 0; i < experienciasEducativas.size(); i++) {
-            if (experienciasEducativas.get(i).getIdExperienciaEducativa() == idExperienciaEducativa) {
-                return i;
-            }
-        }
-        return 0;
-    }
-    
-    private int obtenerPosicionComboNrc(int idNrc) {
-        for (int i = 0; i < nrcs.size(); i++) {
-            if (nrcs.get(i).getIdNrc() == idNrc) {
-                return i;
-            }
-        }
-        return 0;
-    }
-    
-    private int obtenerPosicionComboSecciones(int idSeccion) {
-        for (int i = 0; i < secciones.size(); i++) {
-            if (secciones.get(i).getIdSeccion()== idSeccion) {
-                return i;
-            }
-        }
-        return 0;
-    }
-    
-    private int obtenerPosicionComboBloques(int idBloque) {
-        for (int i = 0; i < bloques.size(); i++) {
-            if (bloques.get(i).getIdBloque()== idBloque) {
-                return i;
-            }
-        }
-        return 0;
-    }
-    
-    private int obtenerPosicionProfesor(int idProfesor) {
-        for (int i = 0; i < profesores.size(); i++) {
-            if (profesores.get(i).getIdAcademico() == idProfesor) {
-                return i;
-            }
-        }
-        return 0;
-    }
-    
     private void obtenerProfesores() {
         try {
             profesores = FXCollections.observableArrayList(
-                new AcademicoDAO().obtenerAcademicos());
+                new AcademicoDAO().obtenerAcademicos()
+            );
         } catch (DAOException ex) {
             manejarDAOException(ex);
         }
@@ -251,7 +184,8 @@ public class FXMLFormularioCursoController implements Initializable {
     private void cargarExperienciasEducativas() {
         try {
             experienciasEducativas = FXCollections.observableArrayList(
-                    new ExperienciaEducativaDAO().obtenerExperienciasEducativas());
+                    new ExperienciaEducativaDAO().obtenerExperienciasEducativas()
+            );
             cmbExperienciasEducativas.setItems(experienciasEducativas);
         } catch (DAOException ex) {
             manejarDAOException(ex);
@@ -261,7 +195,8 @@ public class FXMLFormularioCursoController implements Initializable {
     private void cargarNrcs(int idExperienciaEducativa) {
         try {
             nrcs = FXCollections.observableArrayList(
-                new NrcDAO().obtenerNRCSPorExperienciaEducativa(idExperienciaEducativa));
+                new NrcDAO().obtenerNRCSPorExperienciaEducativa(idExperienciaEducativa)
+            );
             cmbNrcs.setItems(nrcs);
         } catch (DAOException ex) {
             manejarDAOException(ex);
@@ -278,8 +213,7 @@ public class FXMLFormularioCursoController implements Initializable {
     
     private void cargarSecciones() {
         try {
-            secciones = FXCollections.observableArrayList(
-                new SeccionDAO().obtenerSecciones());
+            secciones = FXCollections.observableArrayList(new SeccionDAO().obtenerSecciones());
             cmbSecciones.setItems(secciones);
         } catch (DAOException ex) {
             manejarDAOException(ex);
@@ -288,32 +222,17 @@ public class FXMLFormularioCursoController implements Initializable {
     
     private void cargarbloques() {
         try {
-            bloques = FXCollections.observableArrayList(
-                new BloqueDAO().obtenerBloques());
+            bloques = FXCollections.observableArrayList(new BloqueDAO().obtenerBloques());
             cmbBloques.setItems(bloques);
         } catch (DAOException ex) {
             manejarDAOException(ex);
         }
     }
-    
-    private void manejarDAOException(DAOException ex) {
-        switch (ex.getCodigo()) {
-            case ERROR_CONSULTA:
-                ex.printStackTrace();
-                System.out.println("Ocurrió un error de consulta.");
-                break;
-            case ERROR_CONEXION_BD:
-                ex.printStackTrace();
-                Utilidades.mostrarDialogoSimple("Error de conexion", 
-                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
-            default:
-                throw new AssertionError();
-        }
-    }
 
     @FXML
     private void clicBtnCancelar(ActionEvent event) {
-        boolean respuesta = Utilidades.mostrarDialogoConfirmacion("Confirmacion", "¿Estás seguro de que deseas cancelar la creación del curso");
+        boolean respuesta = Utilidades.mostrarDialogoConfirmacion("Confirmacion", 
+                "¿Estás seguro de que deseas cancelar la creación del curso");
         if (respuesta) {
             irAVistaCursos();
         }
@@ -367,7 +286,9 @@ public class FXMLFormularioCursoController implements Initializable {
         Curso curso = new Curso();
         curso.setNombreCurso(tfNombreCurso.getText().trim().replaceAll(" +", " "));
         curso.setIdPeriodoEscolar(periodoActual.getIdPeriodoEscolar());
-        curso.setIdExperienciaEducativa(cmbExperienciasEducativas.getSelectionModel().getSelectedItem().getIdExperienciaEducativa());
+        curso.setIdExperienciaEducativa(cmbExperienciasEducativas.getSelectionModel()
+                .getSelectedItem()
+                .getIdExperienciaEducativa());
         curso.setIdNRC(cmbNrcs.getSelectionModel().getSelectedItem().getIdNrc());
         curso.setIdSeccion(cmbSecciones.getSelectionModel().getSelectedItem().getIdSeccion());
         curso.setIdBloque(cmbBloques.getSelectionModel().getSelectedItem().getIdBloque());
@@ -399,27 +320,29 @@ public class FXMLFormularioCursoController implements Initializable {
     }
     
     private void inicializarCamposDeBusqueda() {
-        cmbExperienciasEducativas.valueProperty().addListener(new ChangeListener<ExperienciaEducativa>(){
-            @Override
-            public void changed(ObservableValue<? extends ExperienciaEducativa> observable, 
-                    ExperienciaEducativa oldValue, ExperienciaEducativa newValue) {
+        cmbExperienciasEducativas.valueProperty().addListener(
+            (ObservableValue<? extends ExperienciaEducativa> observable, 
+                    ExperienciaEducativa oldValue, 
+                    ExperienciaEducativa newValue) -> {
                 if (newValue != null) {
-                    cargarNrcs(newValue.getIdExperienciaEducativa());
+                cargarNrcs(newValue.getIdExperienciaEducativa());
                 }
             }
-        });
-        CampoDeBusqueda<Academico> campoBusquedaProfesor = new CampoDeBusqueda<Academico> (tfProfesor, lvprofesores,
-                profesores, profesorSeleccionado, new INotificacionSeleccionItem<Academico>() {
-            @Override
-            public void notificarSeleccionItem(Academico itemSeleccionado) {
-                profesorSeleccionado = itemSeleccionado;
-            }
+        );
+        CampoDeBusqueda<Academico> campoBusquedaProfesor = new CampoDeBusqueda<> (tfProfesor, lvprofesores,
+            profesores, profesorSeleccionado, 
+            new INotificacionSeleccionItem<Academico>() {
+               @Override
+                public void notificarSeleccionItem(Academico itemSeleccionado) {
+                    profesorSeleccionado = itemSeleccionado;
+                }
 
-            @Override
-            public void notificarPerdidaDelFoco() {
+                @Override
+                public void notificarPerdidaDelFoco() {
 
+                }
             }
-        });
+        );
     }
     
     private void agregarListenerCampos(){
@@ -435,84 +358,91 @@ public class FXMLFormularioCursoController implements Initializable {
     }
     
     private void agregarListenerComboBox(ComboBox comboBox) {
-        comboBox.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
-                comboBox.setStyle("-fx-border-color: gray");
-                lbMensajeDeError.setText("");
+        comboBox.focusedProperty().addListener(
+            (observable, oldValue, newValue) -> {
+                if (newValue) {
+                    comboBox.setStyle("-fx-border-color: gray");
+                    lbMensajeDeError.setText("");
+                }
+                if (oldValue) {
+                    if (comboBox.getSelectionModel().getSelectedItem() == null) {
+                        comboBox.setStyle("-fx-border-color: red");
+                        lbMensajeDeError.setText("Campos obligatorios vacios.");
+                    }
+                    if (validarCamposObligatoriosLlenos()) {
+                        btnAceptar.setDisable(false);
+                    } else {
+                        btnAceptar.setDisable(true);
+                    }
+                } 
             }
-            if (oldValue) {
-                if (comboBox.getSelectionModel().getSelectedItem() == null) {
-                    comboBox.setStyle("-fx-border-color: red");
-                    lbMensajeDeError.setText("Campos obligatorios vacios.");
-                }
-                if (validarCamposObligatoriosLlenos()) {
-                    btnAceptar.setDisable(false);
-                } else {
-                    btnAceptar.setDisable(true);
-                }
-            } 
-        });
+        );
     }
     
     private void agregarListenerDatePicker(DatePicker dp) {
-        dp.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
-                dp.setStyle("-fx-border-color: gray");
-                lbMensajeDeError.setText("");
-            }
-            if (oldValue) {
-                if (dp.getValue() == null) {
-                    dp.setStyle("-fx-border-color: red");
-                    lbMensajeDeError.setText("Campos obligatorios vacios.");
+        dp.focusedProperty().addListener(
+            (observable, oldValue, newValue) -> {
+                if (newValue) {
+                    dp.setStyle("-fx-border-color: gray");
+                    lbMensajeDeError.setText("");
                 }
-                if (validarCamposObligatoriosLlenos()) {
-                    btnAceptar.setDisable(false);
-                } else {
-                    btnAceptar.setDisable(true);
+                if (oldValue) {
+                    if (dp.getValue() == null) {
+                        dp.setStyle("-fx-border-color: red");
+                        lbMensajeDeError.setText("Campos obligatorios vacios.");
+                    }
+                    if (validarCamposObligatoriosLlenos()) {
+                        btnAceptar.setDisable(false);
+                    } else {
+                        btnAceptar.setDisable(true);
+                    }
                 }
             }
-        });
+        );
     }
     
     private void agregarListenerCampoVacio(TextInputControl campoTexto){
-        campoTexto.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, 
-                Boolean oldValue, Boolean newValue) -> {
-            if (oldValue) {
-                if (campoTexto.getText().isEmpty()) {
-                    campoTexto.setStyle("-fx-border-color: red");
+        campoTexto.focusedProperty().addListener(
+            (ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+                if (oldValue) {
+                    if (campoTexto.getText().isEmpty()) {
+                        campoTexto.setStyle("-fx-border-color: red");
+                    }
+                } else {
+                    campoTexto.setStyle("-fx-border-color: gray");
+                    lbMensajeDeError.setText("");
                 }
-            } else {
-                campoTexto.setStyle("-fx-border-color: gray");
-                lbMensajeDeError.setText("");
             }
-        });
-        campoTexto.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.isEmpty()) {
-                if (validarCamposObligatoriosLlenos()) {
-                    btnAceptar.setDisable(false);
+        );
+        campoTexto.textProperty().addListener(
+            (observable, oldValue, newValue) -> {
+                if (!newValue.isEmpty()) {
+                    if (validarCamposObligatoriosLlenos()) {
+                     btnAceptar.setDisable(false);
+                    } else {
+                        btnAceptar.setDisable(true);
+                    }
                 } else {
                     btnAceptar.setDisable(true);
                 }
-            } else {
-                btnAceptar.setDisable(true);
             }
-        });
+        );
     }
     
     private boolean validarCamposObligatoriosLlenos() {
         boolean camposLlenos = false;
         if ((!tfNombreCurso.getText().trim().isEmpty())
-                && cmbExperienciasEducativas.getSelectionModel().getSelectedItem()!= null
-                || experienciaEdicion != null
-                && cmbNrcs.getSelectionModel().getSelectedItem() != null
-                || nrcEdicion != null
-                && cmbSecciones.getSelectionModel().getSelectedItem() != null
-                || secccionEdicion != null
-                && cmbBloques.getSelectionModel().getSelectedItem() != null
-                || bloqueEdicion != null
-                && profesorSeleccionado != null
-                && dpFechaFinClases.getValue() != null
-                && dpFechaInicioClases.getValue() != null) {
+                && (cmbExperienciasEducativas.getSelectionModel().getSelectedItem()!= null)
+                || (experienciaEdicion != null)
+                && (cmbNrcs.getSelectionModel().getSelectedItem() != null)
+                || (nrcEdicion != null)
+                && (cmbSecciones.getSelectionModel().getSelectedItem() != null)
+                || (secccionEdicion != null)
+                && (cmbBloques.getSelectionModel().getSelectedItem() != null)
+                || (bloqueEdicion != null)
+                && (profesorSeleccionado != null)
+                && (dpFechaFinClases.getValue() != null)
+                && (dpFechaInicioClases.getValue() != null)) {
             camposLlenos = true;
         }
         return camposLlenos;
@@ -531,10 +461,6 @@ public class FXMLFormularioCursoController implements Initializable {
         if (validarCamposObligatoriosLlenos()) {
             btnAceptar.setDisable(false);
         }
-    }
-
-    @FXML
-    private void activarBotonAceptar(KeyEvent event) {
     }
 
     @FXML
@@ -561,6 +487,19 @@ public class FXMLFormularioCursoController implements Initializable {
        interfaz.notitficacionRecargarDatosPorEdicion(true);
        Stage escenario = (Stage) lbTituloFormulario.getScene().getWindow();
        escenario.close();
+    }
+     
+    private void manejarDAOException(DAOException ex) {
+        switch (ex.getCodigo()) {
+            case ERROR_CONSULTA:
+                System.out.println("Ocurrió un error de consulta.");
+                break;
+            case ERROR_CONEXION_BD:
+                Utilidades.mostrarDialogoSimple("Error de conexion", 
+                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
+            default:
+                throw new AssertionError();
+        }
     }
     
 }

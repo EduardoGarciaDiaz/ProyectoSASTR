@@ -21,6 +21,7 @@ public class ConstructorInicio {
 
     private static ConstructorInicio constructor;
     private static INotificacionClicBotonInicio interfazNotificacion;
+    
     public static ConstructorInicio crearPantallaInicio(INotificacionClicBotonInicio interfazNotificacion) {
         constructor = new ConstructorInicio();
         constructor.setInterfazNotificacion(interfazNotificacion);
@@ -38,23 +39,12 @@ public class ConstructorInicio {
         imvCronograma.setFitWidth(38);
         imvCronograma.setLayoutX(30);
         vbxMenuContraido.getChildren().add(imvCronograma);
-        imvCronograma.setOnMouseClicked((event) -> {
-            interfazNotificacion.notificarClicBotonActividades();
-        });
+        imvCronograma.setOnMouseClicked(
+            (event) -> {
+                interfazNotificacion.notificarClicBotonActividades();
+            }
+        );
         return constructor;     
-    }
-    
-    public ConstructorInicio cargarBotonIconoAvance(VBox vbxMenuContraido) {
-        Image img = new Image("file:src/javafxsastr/recursos/iconos/avance.png");
-        ImageView imvAvance = new ImageView(img);
-        imvAvance.setFitHeight(38);
-        imvAvance.setFitWidth(38);
-        imvAvance.setLayoutX(30);
-        vbxMenuContraido.getChildren().add(imvAvance);
-        imvAvance.setOnMouseClicked((event) -> {
-            //TODO
-        });
-        return constructor;
     }
     
     public ConstructorInicio cargarBotonIconoCurso(VBox vbxMenuContraido) {
@@ -64,9 +54,11 @@ public class ConstructorInicio {
         imvCurso.setFitWidth(38);
         imvCurso.setLayoutX(30);
         vbxMenuContraido.getChildren().add(imvCurso);
-        imvCurso.setOnMouseClicked((event) -> {
-            interfazNotificacion.notificarClicBotonCursos();
-        });
+        imvCurso.setOnMouseClicked(
+            (event) -> {
+                interfazNotificacion.notificarClicBotonCursos();
+            }
+        );
         return constructor;
     }
     
@@ -77,9 +69,11 @@ public class ConstructorInicio {
         imvCurso.setFitWidth(38);
         imvCurso.setLayoutX(30);
         vbxMenuContraido.getChildren().add(imvCurso);
-        imvCurso.setOnMouseClicked((event) -> {
-            interfazNotificacion.notificarClicBotonGestionCursos();
-        });
+        imvCurso.setOnMouseClicked(
+            (event) -> {
+                interfazNotificacion.notificarClicBotonGestionCursos();
+            }
+        );
         return constructor;
     }
     
@@ -90,9 +84,11 @@ public class ConstructorInicio {
         imvAnteproyecto.setFitWidth(38);
         imvAnteproyecto.setLayoutX(30);
         vbxMenuContraido.getChildren().add(imvAnteproyecto);
-        imvAnteproyecto.setOnMouseClicked((event) -> {
-            interfazNotificacion.notificarClicBotonAnteproyectos();
-        });
+        imvAnteproyecto.setOnMouseClicked(
+            (event) -> {
+                interfazNotificacion.notificarClicBotonAnteproyectos();
+            }
+        );
         return constructor;
     }
     
@@ -103,9 +99,11 @@ public class ConstructorInicio {
         imvGestionUsuarios.setFitWidth(38);
         imvGestionUsuarios.setLayoutX(30);
         vbxMenuContraido.getChildren().add(imvGestionUsuarios);
-        imvGestionUsuarios.setOnMouseClicked((event) -> {
-            interfazNotificacion.notificarClicBotonUsuarios();
-        });
+        imvGestionUsuarios.setOnMouseClicked(
+            (event) -> {
+                interfazNotificacion.notificarClicBotonUsuarios();
+            }
+        );
         return constructor;
     }
     
@@ -116,9 +114,11 @@ public class ConstructorInicio {
         imvGestionCA.setFitWidth(38);
         imvGestionCA.setLayoutX(30);
         vbxMenuContraido.getChildren().add(imvGestionCA);
-        imvGestionCA.setOnMouseClicked((event) -> {
-           interfazNotificacion.notificarClicBotonGestionCA();
-        });
+        imvGestionCA.setOnMouseClicked(
+            (event) -> {
+                interfazNotificacion.notificarClicBotonGestionCA();
+            }
+        );
         return constructor;
     }
     
@@ -129,9 +129,11 @@ public class ConstructorInicio {
         imvAprobarAnteproyecto.setFitWidth(38);
         imvAprobarAnteproyecto.setLayoutX(30);
         vbxMenuContraido.getChildren().add(imvAprobarAnteproyecto);
-        imvAprobarAnteproyecto.setOnMouseClicked((event) -> {
-            interfazNotificacion.notificarClicBotonAprobarAnteproyectos();
-        });
+        imvAprobarAnteproyecto.setOnMouseClicked(
+            (event) -> {
+                interfazNotificacion.notificarClicBotonAprobarAnteproyectos();
+            }
+        );
         return constructor;
     }
     
@@ -142,9 +144,11 @@ public class ConstructorInicio {
         imvEstudiantes.setFitWidth(38);
         imvEstudiantes.setLayoutX(30);
         vbxMenuContraido.getChildren().add(imvEstudiantes);
-        imvEstudiantes.setOnMouseClicked((event) -> {
-            interfazNotificacion.notificarClicBotonEstudiantes();
-        });
+        imvEstudiantes.setOnMouseClicked(
+            (event) -> {
+                interfazNotificacion.notificarClicBotonEstudiantes();
+            }
+        );
         return constructor;
     }
     
@@ -155,9 +159,11 @@ public class ConstructorInicio {
         imvMiAnteproyecto.setFitWidth(38);
         imvMiAnteproyecto.setLayoutX(30);
         vbxMenuContraido.getChildren().add(imvMiAnteproyecto);
-        imvMiAnteproyecto.setOnMouseClicked((event) -> {
-            interfazNotificacion.notificarClicBotonMiAnteproyecto();
-        });
+        imvMiAnteproyecto.setOnMouseClicked(
+            (event) -> {
+                interfazNotificacion.notificarClicBotonMiAnteproyecto();
+            }
+        );
         return constructor;
     }
     
@@ -170,9 +176,11 @@ public class ConstructorInicio {
         lbAnteproyectos.setLayoutY(7);
         btnAnteproyectos.getChildren().add(lbAnteproyectos);
         vbxMenuDesplegado.getChildren().add(btnAnteproyectos);
-        btnAnteproyectos.setOnMouseClicked((event) -> {
-            interfazNotificacion.notificarClicBotonMiAnteproyecto();
-        });
+        btnAnteproyectos.setOnMouseClicked(
+            (event) -> {
+                interfazNotificacion.notificarClicBotonMiAnteproyecto();
+            }
+        );
         return constructor;
     }
     
@@ -185,9 +193,11 @@ public class ConstructorInicio {
         textoValidarAnteproyecto.setLayoutY(7);
         botonValidarAnteproyectos.getChildren().add(textoValidarAnteproyecto);
         vbxMenuDesplegado.getChildren().add(botonValidarAnteproyectos);
-        botonValidarAnteproyectos.setOnMouseClicked((event) -> {
-            interfazNotificacion.notificarClicBotonAprobarAnteproyectos();
-        });
+        botonValidarAnteproyectos.setOnMouseClicked(
+            (event) -> {
+                interfazNotificacion.notificarClicBotonAprobarAnteproyectos();
+            }
+        );
         return constructor;
     }
     
@@ -200,24 +210,11 @@ public class ConstructorInicio {
         textoCronograma.setLayoutY(7);
         botonCronograma.getChildren().add(textoCronograma);
         vbxMenuDesplegado.getChildren().add(botonCronograma);
-        botonCronograma.setOnMouseClicked((event) -> {
-            interfazNotificacion.notificarClicBotonActividades();
-        });
-        return constructor;
-    }
-    
-    public ConstructorInicio cargarBotonTextoAvance(VBox vbxMenuDesplegado) {
-        Pane btnAvance = new Pane();
-        btnAvance.setPrefSize(300, 38);
-        Label lbAvance = new Label("Avance");
-        lbAvance.setStyle("-fx-text-fill: white; -fx-font-size: 24");
-        lbAvance.setLayoutX(75);
-        lbAvance.setLayoutY(7);
-        btnAvance.getChildren().add(lbAvance);
-        vbxMenuDesplegado.getChildren().add(btnAvance);
-        btnAvance.setOnMouseClicked((event) -> {
-            //TODO
-        });
+        botonCronograma.setOnMouseClicked(
+            (event) -> {
+                interfazNotificacion.notificarClicBotonActividades();
+            }
+        );
         return constructor;
     }
     
@@ -230,9 +227,11 @@ public class ConstructorInicio {
         lbCursos.setLayoutY(7);
         btnCursos.getChildren().add(lbCursos);
         vbxMenuDesplegado.getChildren().add(btnCursos);
-        btnCursos.setOnMouseClicked((event) -> {
-            interfazNotificacion.notificarClicBotonCursos();
-        });
+        btnCursos.setOnMouseClicked(
+            (event) -> {
+                interfazNotificacion.notificarClicBotonCursos();
+            }
+        );
         return constructor;
     }
     
@@ -245,9 +244,11 @@ public class ConstructorInicio {
         lbCursos.setLayoutY(7);
         btnCursos.getChildren().add(lbCursos);
         vbxMenuDesplegado.getChildren().add(btnCursos);
-        btnCursos.setOnMouseClicked((event) -> {
-            interfazNotificacion.notificarClicBotonGestionCursos();
-        });
+        btnCursos.setOnMouseClicked(
+            (event) -> {
+                interfazNotificacion.notificarClicBotonGestionCursos();
+            }
+        );
         return constructor;
     }
     
@@ -260,9 +261,11 @@ public class ConstructorInicio {
         lbAnteproyectos.setLayoutY(7);
         btnAnteproyectos.getChildren().add(lbAnteproyectos);
         vbxMenuDesplegado.getChildren().add(btnAnteproyectos);
-        btnAnteproyectos.setOnMouseClicked((event) -> {
-            interfazNotificacion.notificarClicBotonAnteproyectos();
-        });
+        btnAnteproyectos.setOnMouseClicked(
+            (event) -> {
+                interfazNotificacion.notificarClicBotonAnteproyectos();
+            }
+        );
         return constructor;
     }
     
@@ -275,9 +278,11 @@ public class ConstructorInicio {
         lbGestionUsuarios.setLayoutY(7);
         btnGestionUsuarios.getChildren().add(lbGestionUsuarios);
         vbxMenuDesplegado.getChildren().add(btnGestionUsuarios);
-        btnGestionUsuarios.setOnMouseClicked((event) -> {
-            interfazNotificacion.notificarClicBotonUsuarios();
-        });
+        btnGestionUsuarios.setOnMouseClicked(
+            (event) -> {
+                interfazNotificacion.notificarClicBotonUsuarios();
+            }
+        );
         return constructor;
     }
     
@@ -290,9 +295,11 @@ public class ConstructorInicio {
         lbGestionCA.setLayoutY(7);
         btnGestionCA.getChildren().add(lbGestionCA);
         vbxMenuDesplegado.getChildren().add(btnGestionCA);
-        btnGestionCA.setOnMouseClicked((event) -> {
-            interfazNotificacion.notificarClicBotonGestionCA();
-        });
+        btnGestionCA.setOnMouseClicked(
+            (event) -> {
+                interfazNotificacion.notificarClicBotonGestionCA();
+            }
+    );
         return constructor;
     }
     
@@ -305,9 +312,11 @@ public class ConstructorInicio {
         lbEstudiantes.setLayoutY(7);
         btnEstudiantes.getChildren().add(lbEstudiantes);
         vbxMenuDesplegado.getChildren().add(btnEstudiantes);
-        btnEstudiantes.setOnMouseClicked((event) -> {
-            interfazNotificacion.notificarClicBotonEstudiantes();
-        });
+        btnEstudiantes.setOnMouseClicked(
+            (event) -> {
+                interfazNotificacion.notificarClicBotonEstudiantes();
+            }
+        );
         return constructor;
     }
     

@@ -1,7 +1,8 @@
 /*
  * Autor: Daniel Garcia Arcos
  * Fecha de creación: 13/05/2023
- * Descripción: Controlador de FXMLInicioController.
+ * Descripción: Controlador de la vista de Inicio. 
+ * Se apoya de un constructor de la clase utilidades.
  */
 
 package javafxsastr.controladores;
@@ -9,8 +10,6 @@ package javafxsastr.controladores;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,16 +27,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafxsastr.JavaFXSASTR;
 import javafxsastr.interfaces.INotificacionClicBotonInicio;
-import javafxsastr.modelos.dao.AcademicoDAO;
-import javafxsastr.modelos.dao.AnteproyectoDAO;
-import javafxsastr.modelos.dao.CuerpoAcademicoDAO;
-import javafxsastr.modelos.dao.CursoDAO;
-import javafxsastr.modelos.dao.DAOException;
-import javafxsastr.modelos.dao.EstudianteDAO;
-import javafxsastr.modelos.pojo.Academico;
-import javafxsastr.modelos.pojo.Anteproyecto;
-import javafxsastr.modelos.pojo.Estudiante;
-import javafxsastr.modelos.pojo.Usuario;
+import javafxsastr.modelos.dao.*;
+import javafxsastr.modelos.pojo.*;
 import javafxsastr.utils.CodigosVentanas;
 import javafxsastr.utils.ConstructorInicio;
 import javafxsastr.utils.Utilidades;
@@ -55,11 +46,6 @@ public class FXMLInicioController implements Initializable, INotificacionClicBot
     @FXML
     private VBox vbxMenuDesplegado;
     @FXML
-    private VBox vbxCards;
-    private Usuario usuario;
-    private Academico academico = null;
-    private Estudiante estudiante = null;
-    @FXML
     private Pane pbnBotonCrearAnteproyecto;
     @FXML
     private Label lbTituloVentana;
@@ -67,6 +53,10 @@ public class FXMLInicioController implements Initializable, INotificacionClicBot
     private Pane paneCerrarSesion;
     @FXML
     private ImageView imvDesplegarCerrarSesion;
+    
+    private Usuario usuario;
+    private Academico academico = null;
+    private Estudiante estudiante = null;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -77,14 +67,14 @@ public class FXMLInicioController implements Initializable, INotificacionClicBot
     public void setUsuario(Usuario usuario) {
         try {
             this.usuario = usuario;
-            Academico academico = new AcademicoDAO().obtenerAcademicoPorIdUsuario(this.usuario.getIdUsuario());
-            if (academico.getIdAcademico() > 0) {
-                this.academico = academico;
+            Academico academicoConsulta = new AcademicoDAO().obtenerAcademicoPorIdUsuario(this.usuario.getIdUsuario());
+            if (academicoConsulta.getIdAcademico() > 0) {
+                this.academico = academicoConsulta;
                 prepararVistaParaAcademico(this.academico);
             }
-            Estudiante estudiante = new EstudianteDAO().obtenerEstudiantePorIdUsuario(this.usuario.getIdUsuario());
-            if (estudiante.getIdEstudiante() > 0) {
-                this.estudiante = estudiante;
+            Estudiante estudianteConsulta = new EstudianteDAO().obtenerEstudiantePorIdUsuario(this.usuario.getIdUsuario());
+            if (estudianteConsulta.getIdEstudiante() > 0) {
+                this.estudiante = estudianteConsulta;
                 if (estudiante.getIdAnteproyecto() > 0) {
                     crearVistaEstudiante();
                 }
@@ -105,7 +95,7 @@ public class FXMLInicioController implements Initializable, INotificacionClicBot
                         .cargarBotonTextoGestionCursos(vbxMenuDesplegado);
             }
         } catch (DAOException ex) {
-            ex.printStackTrace();
+            manejarDAOException(ex);
         }
     }
     
@@ -119,15 +109,14 @@ public class FXMLInicioController implements Initializable, INotificacionClicBot
       
     public void prepararVistaParaAcademico(Academico academico) {
         try {
-            ConstructorInicio constructorInicio = new ConstructorInicio().crearPantallaInicio(this);
+            ConstructorInicio constructorInicio = ConstructorInicio.crearPantallaInicio(this);
             boolean esProfesor = new CursoDAO().verificarSiAcademicoImparteCurso(academico.getIdAcademico());
-            System.out.println(esProfesor);
             if (esProfesor) {
                 constructorInicio.cargarBotonIconoCurso(vbxMenuContraido)
                         .cargarBotonTextoCursos(vbxMenuDesplegado);
             }
-            
-            boolean esResponsableDeCA = new CuerpoAcademicoDAO().verificarSiAcademicoEsResponsableDeCA(academico.getIdAcademico());
+            boolean esResponsableDeCA = new CuerpoAcademicoDAO()
+                    .verificarSiAcademicoEsResponsableDeCA(academico.getIdAcademico());
             if (esResponsableDeCA) {
                 constructorInicio.cargarBotonIconoAnteproyectosRCA(vbxMenuContraido)
                         .cargarBotonTextoAnteproyectosRCA(vbxMenuDesplegado);
@@ -135,15 +124,14 @@ public class FXMLInicioController implements Initializable, INotificacionClicBot
             
             boolean esDirector = new AnteproyectoDAO().verificarSiAcademicoEsDirector(academico.getIdAcademico());
             if (esDirector) {
-                constructorInicio
-                        .cargarBotonIconoEstudiantes(vbxMenuContraido)
+                constructorInicio.cargarBotonIconoEstudiantes(vbxMenuContraido)
                         .cargarBotonTextoEstudiantes(vbxMenuDesplegado)
                         .cargarBotonIconoAnteproyecto(vbxMenuContraido)
                         .cargarBotonTextoAnteproyectos(vbxMenuDesplegado);
             }
             pbnBotonCrearAnteproyecto.setVisible(true);
         } catch (DAOException ex) {
-            Logger.getLogger(FXMLInicioController.class.getName()).log(Level.SEVERE, null, ex);
+            manejarDAOException(ex);
         }
         
     }
@@ -153,14 +141,16 @@ public class FXMLInicioController implements Initializable, INotificacionClicBot
         TranslateTransition menuDesplegado = new TranslateTransition(new Duration(350.0), menuLateral);
         menuDesplegado.setToX(0);
         TranslateTransition menuCerrado = new TranslateTransition(new Duration(350.0), menuLateral);
-        btnMenu.setOnMouseClicked((MouseEvent evt)->{
-            if (menuLateral.getTranslateX() != 0) {
-                menuDesplegado.play();
-            }else{
-                menuCerrado.setToX(- (menuLateral.getWidth()));
-                menuCerrado.play();
+        btnMenu.setOnMouseClicked(
+            (MouseEvent evt)->{
+                if (menuLateral.getTranslateX() != 0) {
+                    menuDesplegado.play();
+                }else{
+                    menuCerrado.setToX(- (menuLateral.getWidth()));
+                    menuCerrado.play();
+                }
             }
-        });
+        );
     }
     
     @FXML
@@ -348,26 +338,10 @@ public class FXMLInicioController implements Initializable, INotificacionClicBot
     @Override
     public void notificarClicBotonMiAnteproyecto() {
         try {
-            Anteproyecto anteproyecto
-                    = new AnteproyectoDAO().obtenerAnteproyectosPorEstudiante(estudiante.getIdEstudiante());
+            Anteproyecto anteproyecto = new AnteproyectoDAO().obtenerAnteproyectosPorEstudiante(estudiante.getIdEstudiante());
             irAVistaDetallesAnteproyecto(anteproyecto);
         } catch (DAOException ex) {
             manejarDAOException(ex);
-        }
-    }
-    
-    private void manejarDAOException(DAOException ex) {
-        switch (ex.getCodigo()) {
-            case ERROR_CONSULTA:
-                ex.printStackTrace();
-                System.out.println("Ocurrió un error de consulta.");
-                break;
-            case ERROR_CONEXION_BD:
-                ex.printStackTrace();
-                Utilidades.mostrarDialogoSimple("Error de conexion", 
-                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
-            default:
-                throw new AssertionError();
         }
     }
     
@@ -375,14 +349,16 @@ public class FXMLInicioController implements Initializable, INotificacionClicBot
         TranslateTransition menuDesplegado = new TranslateTransition(new Duration(350.0), paneCerrarSesion);
         menuDesplegado.setToX(0);
         TranslateTransition menuCerrado = new TranslateTransition(new Duration(350.0), paneCerrarSesion);
-        imvDesplegarCerrarSesion.setOnMouseClicked((MouseEvent evt)->{
-            if (paneCerrarSesion.getTranslateX() != 0) {
-                menuDesplegado.play();
-            }else{
-                menuCerrado.setToX(345);
-                menuCerrado.play();
+        imvDesplegarCerrarSesion.setOnMouseClicked(
+            (MouseEvent evt)->{
+                if (paneCerrarSesion.getTranslateX() != 0) {
+                    menuDesplegado.play();
+                }else{
+                    menuCerrado.setToX(345);
+                    menuCerrado.play();
+                }
             }
-        });
+        );
     }
 
     @FXML
@@ -390,7 +366,6 @@ public class FXMLInicioController implements Initializable, INotificacionClicBot
         try {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLInicioSesion.fxml"));
             Parent vista = accesoControlador.load();
-            FXMLInicioSesionController controladorVistaInicioSesion = accesoControlador.getController();
             Stage escenario = (Stage) menuContraido.getScene().getWindow();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Iniciar sesion");
@@ -400,8 +375,17 @@ public class FXMLInicioController implements Initializable, INotificacionClicBot
         }
     }
 
-    @FXML
-    private void clicDesplegarCerrarSesion(MouseEvent event) {
+    private void manejarDAOException(DAOException ex) {
+        switch (ex.getCodigo()) {
+            case ERROR_CONSULTA:
+                System.out.println("Ocurrió un error de consulta.");
+                break;
+            case ERROR_CONEXION_BD:
+                Utilidades.mostrarDialogoSimple("Error de conexion", 
+                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
+            default:
+                throw new AssertionError();
+        }
     }
-        
+    
 }

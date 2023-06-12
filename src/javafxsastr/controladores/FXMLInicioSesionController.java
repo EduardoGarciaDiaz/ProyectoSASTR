@@ -101,43 +101,31 @@ public class FXMLInicioSesionController implements Initializable {
         }
     }
     
-    private void manejarDAOException(DAOException ex) {
-        switch (ex.getCodigo()) {
-            case ERROR_CONSULTA:
-                ex.printStackTrace();
-                System.out.println("Ocurrió un error de consulta.");
-                break;
-            case ERROR_CONEXION_BD:
-                ex.printStackTrace();
-                Utilidades.mostrarDialogoSimple("Error de conexion", 
-                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
-            default:
-                System.out.println("Error desconocido");
-                
-        }
-    }
-    
     private void agregarListenersACampos() {
-        tfCorreoUsuario.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
-                lbCampoCorreoRequerido.setText("");
-                lbErrorCredenciales.setText("");
-            } else {
-                if (tfCorreoUsuario.getText().isEmpty()) {
-                    lbCampoCorreoRequerido.setText("Campo requerido");
+        tfCorreoUsuario.focusedProperty().addListener(
+            (observable, oldValue, newValue) -> {
+                if (newValue) {
+                    lbCampoCorreoRequerido.setText("");
+                    lbErrorCredenciales.setText("");
+                } else {
+                    if (tfCorreoUsuario.getText().isEmpty()) {
+                        lbCampoCorreoRequerido.setText("Campo requerido");
+                    }
                 }
             }
-        });
-        tfContraseñaUsuario.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
-                lbCampoContraseñaRequerido.setText("");
-                lbErrorCredenciales.setText("");
-            } else {
-                if (tfContraseñaUsuario.getText().isEmpty()) {
-                    lbCampoContraseñaRequerido.setText("Campo requerido");
+        );
+        tfContraseñaUsuario.focusedProperty().addListener(
+            (observable, oldValue, newValue) -> {
+                if (newValue) {
+                    lbCampoContraseñaRequerido.setText("");
+                    lbErrorCredenciales.setText("");
+                } else {
+                    if (tfContraseñaUsuario.getText().isEmpty()) {
+                        lbCampoContraseñaRequerido.setText("Campo requerido");
+                    }
                 }
             }
-        });
+        );
     }
 
     @FXML
@@ -145,14 +133,28 @@ public class FXMLInicioSesionController implements Initializable {
         try {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLAnteproyectos.fxml"));
             Parent vista = accesoControlador.load();
-            FXMLAnteproyectosController controladorVistaInicio = accesoControlador.getController();
-            controladorVistaInicio.setInvitado(CodigosVentanas.INICIO_SESION);
+            FXMLAnteproyectosController controladorVistaInvitado = accesoControlador.getController();
+            controladorVistaInvitado.setInvitado(CodigosVentanas.INICIO_SESION);
             Stage escenario = (Stage) tfContraseñaUsuario.getScene().getWindow();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Inicio");
             escenario.show();
         } catch (IOException ex) {
             ex.printStackTrace();
+        }
+    }
+    
+    private void manejarDAOException(DAOException ex) {
+        switch (ex.getCodigo()) {
+            case ERROR_CONSULTA:
+                System.out.println("Ocurrió un error de consulta.");
+                break;
+            case ERROR_CONEXION_BD:
+                Utilidades.mostrarDialogoSimple("Error de conexion", 
+                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
+            default:
+                System.out.println("Error desconocido");
+                
         }
     }
     

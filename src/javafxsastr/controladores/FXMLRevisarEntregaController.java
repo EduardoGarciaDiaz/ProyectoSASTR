@@ -52,8 +52,6 @@ import javafxsastr.utils.Utilidades;
 public class FXMLRevisarEntregaController implements Initializable {
 
     @FXML
-    private Label lbNumeroAvance;
-    @FXML
     private Label lbNombreActividad;
     @FXML
     private Label lbFechaRecibido;
@@ -69,14 +67,14 @@ public class FXMLRevisarEntregaController implements Initializable {
     private TextArea txaComentariosDirector;
     @FXML
     private HBox hbxContenedorArchivosRevision;
-    private ObservableList<Archivo> archivosRevision = FXCollections.observableArrayList();
     @FXML
     private Button btnEnviarRevision;
     @FXML
     private Button btnAdjuntarArchivo;
     
-    private ConsultarAvanceEstudianteSingleton consultarAvanceEstudiante
-           = ConsultarAvanceEstudianteSingleton.obtenerConsultarAvanceEstudiante(null, null, null, null);
+    private ObservableList<Archivo> archivosRevision = FXCollections.observableArrayList();
+    private ConsultarAvanceEstudianteSingleton consultarAvanceEstudiante = ConsultarAvanceEstudianteSingleton
+            .obtenerConsultarAvanceEstudiante(null, null, null, null);
     private Entrega entrega;
     private ObservableList<Archivo> archivosEntrega;
     private Academico academico;
@@ -124,7 +122,7 @@ public class FXMLRevisarEntregaController implements Initializable {
             archivosEntrega = FXCollections.observableArrayList(
                 new ArchivoDAO().consultarArchivosPorEntrega(entrega.getIdEntrega()));
         } catch (DAOException ex) {
-            
+            manejarDAOException(ex);
         }
     }
     
@@ -153,8 +151,7 @@ public class FXMLRevisarEntregaController implements Initializable {
         contenedorArchivo.getChildren().add(lbNombreArchivo);
         lbNombreArchivo.setLayoutX(50);
         lbNombreArchivo.setLayoutY(16);
-        if (archivo.getEsEntrega() 
-                || (!validarSiEsDirector())) {
+        if ((archivo.getEsEntrega()) || (!validarSiEsDirector())) {
             ImageView imgIconoDescarga = new ImageView(new Image("file:src/javafxsastr/recursos/iconos/descargas.png"));
             contenedorArchivo.getChildren().add(imgIconoDescarga);
             imgIconoDescarga.setFitHeight(38);
@@ -162,29 +159,37 @@ public class FXMLRevisarEntregaController implements Initializable {
             imgIconoDescarga.setLayoutX(150);
             imgIconoDescarga.setLayoutY(5);
             contenedorArchivo.setId(String.valueOf(archivo.getIdArchivo()));
-            contenedorArchivo.setOnMouseClicked((event) -> {
-                descargarArchivo(archivo);
-            });
+            contenedorArchivo.setOnMouseClicked(
+                (event) -> {
+                    descargarArchivo(archivo);
+                }
+            );
             if (!archivo.getEsEntrega()) {
                 hbxContenedorArchivosRevision.getChildren().add(contenedorArchivo);
             } else {
                 hbxContenedorArchivosAlumno.getChildren().add(contenedorArchivo);
             }
         } else {
-            ImageView imgIconoEliminar = new ImageView(new Image("file:src/javafxsastr/recursos/iconos/eliminar-archivo-adjunto.png"));
+            ImageView imgIconoEliminar = new ImageView(
+                    new Image("file:src/javafxsastr/recursos/iconos/eliminar-archivo-adjunto.png")
+            );
             contenedorArchivo.getChildren().add(imgIconoEliminar);
             imgIconoEliminar.setFitHeight(30);
             imgIconoEliminar.setFitWidth(30);
             imgIconoEliminar.setLayoutX(150);
             imgIconoEliminar.setLayoutY(5);
             contenedorArchivo.setId(String.valueOf(archivo.getIdArchivo()));
-            imgIconoEliminar.setOnMouseClicked((event) -> {
-                contenedorArchivo.setVisible(false);
-                eliminarArchivo(contenedorArchivo, archivo);
-            });
-            imgIconoArchivo.setOnMouseClicked((event) -> {
-                descargarArchivo(archivo);
-            });            
+            imgIconoEliminar.setOnMouseClicked(
+                (event) -> {
+                    contenedorArchivo.setVisible(false);
+                    eliminarArchivo(contenedorArchivo, archivo);
+                }
+            );
+            imgIconoArchivo.setOnMouseClicked(
+                (event) -> {
+                    descargarArchivo(archivo);
+                }
+            );            
             hbxContenedorArchivosRevision.getChildren().add(contenedorArchivo);
         }
 
@@ -211,18 +216,20 @@ public class FXMLRevisarEntregaController implements Initializable {
     }
     
     private void agregarListenerCampoComentarios() {
-        txaComentariosDirector.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
-                if (validarSiEsDirector()) {
-                    btnEnviarRevision.setDisable(false);
+        txaComentariosDirector.focusedProperty().addListener(
+            (observable, oldValue, newValue) -> {
+                if (newValue) {
+                    if (validarSiEsDirector()) {
+                        btnEnviarRevision.setDisable(false);
+                    }
+                }
+                if (oldValue) {
+                    if (txaComentariosDirector.getText().isEmpty()) {
+                        btnEnviarRevision.setDisable(true);
+                    }
                 }
             }
-            if (oldValue) {
-                if (txaComentariosDirector.getText().isEmpty()) {
-                    btnEnviarRevision.setDisable(true);
-                }
-            }
-        });
+        );
     }
     
     @FXML
@@ -235,8 +242,9 @@ public class FXMLRevisarEntregaController implements Initializable {
         File archivo;
         FileChooser dialogoSeleccionImg = new FileChooser();
         dialogoSeleccionImg.setTitle("Selecciona un archivo:");
-        FileChooser.ExtensionFilter filtroDialogo = 
-                new FileChooser.ExtensionFilter("Archivos", "*.*");
+        FileChooser.ExtensionFilter filtroDialogo = new FileChooser.ExtensionFilter(
+                "Cualquier .PDF, .ZIP, .TXT, .XLSX, .DOCX, .PPTX", 
+                "*.PDF", "*.ZIP", "*.TXT", "*.XLSX", "*.DOCX", "*.PPTX", "*.PNG", "*.JPG");
         dialogoSeleccionImg.getExtensionFilters().add(filtroDialogo);
         Stage escenarioPrincipal = (Stage) lbFechaRecibido.getScene().getWindow();
         archivo = dialogoSeleccionImg.showOpenDialog(escenarioPrincipal);
@@ -280,7 +288,8 @@ public class FXMLRevisarEntregaController implements Initializable {
                 LocalDate.now().toString(), 
                 LocalTime.now().toString(), 
                 this.entrega.getIdActividad(), 
-                this.academico.getIdAcademico());
+                this.academico.getIdAcademico()
+        );
         return entrega;
     }
     
@@ -325,11 +334,9 @@ public class FXMLRevisarEntregaController implements Initializable {
     private void manejarDAOException(DAOException ex) {
         switch (ex.getCodigo()) {
             case ERROR_CONSULTA:
-                ex.printStackTrace();
                 System.out.println("Ocurrió un error de consulta.");
                 break;
             case ERROR_CONEXION_BD:
-                ex.printStackTrace();
                 Utilidades.mostrarDialogoSimple("Error de conexion", 
                         "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
             default:

@@ -98,7 +98,5 @@ public class Rubrica {
     public void setValorRedaccion(int valorRedaccion) {
         this.valorRedaccion = valorRedaccion;
     }
-    
-      
-    
+
 }

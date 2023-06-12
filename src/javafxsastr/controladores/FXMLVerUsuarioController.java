@@ -8,7 +8,6 @@ package javafxsastr.controladores;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -42,11 +41,12 @@ public class FXMLVerUsuarioController implements Initializable {
     private Label lbNombre;
     @FXML
     private Label lbTipoUsuario;
-    private Usuario usuarioVisualizacion;
-    private Usuario usuario;
     @FXML
     private Button clicBtnDesativar;
 
+    private Usuario usuarioVisualizacion;
+    private Usuario usuario;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     }    
@@ -79,10 +79,10 @@ public class FXMLVerUsuarioController implements Initializable {
             if (new EstudianteDAO().obtenerEstudiantePorIdUsuario(usuarioVisualizacion.getIdUsuario()).getIdEstudiante()>0) {
                 lbTipoUsuario.setText("Estudiante");
             } else {
-                lbTipoUsuario.setText("academico");
+                lbTipoUsuario.setText("Academico");
             }
         } catch (DAOException ex) {
-            
+            manejarDAOException(ex);
         }
     }
 
@@ -97,7 +97,7 @@ public class FXMLVerUsuarioController implements Initializable {
             boolean respuesta = Utilidades.mostrarDialogoConfirmacion
                 ("Desactivar usuario", "¿Estás seguro de que deseas desactivar al usuario?");
             if (respuesta) {
-                if (usuarioVisualizacion.getEsAdministrador() && !validarExistenciaOtroAdministrador()) {
+                if ((usuarioVisualizacion.getEsAdministrador()) && (!validarExistenciaOtroAdministrador())) {
                     Utilidades.mostrarDialogoSimple("Operación no posible", 
                                     "No puedes dejar al sistema sin un administrador. "
                                     + "Asegúrate de que exista otro administrador en el sistema.", Alert.AlertType.WARNING);
@@ -107,7 +107,6 @@ public class FXMLVerUsuarioController implements Initializable {
                     Utilidades.mostrarDialogoSimple("Usuario desactivado", 
                             "El usuario se ha desactivado correctamente", Alert.AlertType.INFORMATION);
                     clicBtnDesativar.setText("Activar");
-                    
                 }
             }
         } else {
@@ -124,17 +123,13 @@ public class FXMLVerUsuarioController implements Initializable {
     }
     
     private boolean validarExistenciaOtroAdministrador() {
-        boolean existeOtroAdministrador = false;
         try {
             int numeroAdministradores = new UsuarioDAO().consultarNumeroAdministradores();
-            if (numeroAdministradores > 1) {
-                existeOtroAdministrador = true;
-                return existeOtroAdministrador;
-            }
+            return numeroAdministradores > 1;
         } catch (DAOException ex) {
             manejarDAOException(ex);
         }
-        return existeOtroAdministrador;
+        return false;
     }
     
     private void actualizarUsuario(Usuario usuario) {
@@ -184,11 +179,9 @@ public class FXMLVerUsuarioController implements Initializable {
     private void manejarDAOException(DAOException ex) {
         switch (ex.getCodigo()) {
             case ERROR_CONSULTA:
-                ex.printStackTrace();
                 System.out.println("Ocurrió un error de consulta.");
                 break;
             case ERROR_CONEXION_BD:
-                ex.printStackTrace();
                 Utilidades.mostrarDialogoSimple("Error de conexion", 
                         "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
             default:

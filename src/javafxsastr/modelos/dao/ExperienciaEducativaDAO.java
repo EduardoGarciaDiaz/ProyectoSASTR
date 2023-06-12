@@ -26,7 +26,8 @@ public class ExperienciaEducativaDAO {
     private final String OBTENER_EXPERIENCIA_EDUCATIVA_POR_ID = "SELECT * FROM sastr.experiencias_educativas "
             + "WHERE (`idExperienciaEducativa` = ?);";
     private final String OBTENER_EXPERIENCIAS_EDUCATIVAS = "SELECT * FROM sastr.experiencias_educativas;";
-    private final String ELIMINAR_EXPERIENCIA_EDUCATIVA = "DELETE FROM `sastr`.`experiencias_educativas` WHERE (`idExperienciaEducativa` = ?);";
+    private final String ELIMINAR_EXPERIENCIA_EDUCATIVA = "DELETE FROM `sastr`.`experiencias_educativas` "
+            + "WHERE (`idExperienciaEducativa` = ?);";
     
     public int guardarExperienciaEducatiba(ExperienciaEducativa experienciaEducativa) throws DAOException{
         int respuesta = -1;
@@ -41,7 +42,7 @@ public class ExperienciaEducativaDAO {
                 respuesta = resultado.getInt(1);
             }
         } catch (SQLException ex) {
-            throw new DAOException("Lo sentimos, hubo un problema al guardar la experiencia educativa", Codigos.ERROR_CONSULTA);
+            throw new DAOException("Error de consulta", Codigos.ERROR_CONSULTA);
         }
         return respuesta;
     }
@@ -76,7 +77,7 @@ public class ExperienciaEducativaDAO {
             } 
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            throw new DAOException("Lo sentimos, hubo un problema al obtener la experiencia educativa.", Codigos.ERROR_CONSULTA);
+            throw new DAOException("Error de consulta", Codigos.ERROR_CONSULTA);
         }
         return experienciaEducativa;
     }
@@ -88,13 +89,13 @@ public class ExperienciaEducativaDAO {
             ResultSet resultado = sentencia.executeQuery();
             while (resultado.next()) {
                 experienciasEducativas.add(new ExperienciaEducativa(
-                        resultado.getInt("idExperienciaEducativa"), 
-                        resultado.getString("nombreExperienciaEducativa"),
-                        resultado.getInt("creditosExperienciaEducativa")));
+                    resultado.getInt("idExperienciaEducativa"), 
+                    resultado.getString("nombreExperienciaEducativa"),
+                    resultado.getInt("creditosExperienciaEducativa")));
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            throw new DAOException("Lo sentimos, hubo un error al obtener las EE.", Codigos.ERROR_CONSULTA);
+            throw new DAOException("Error de consulta.", Codigos.ERROR_CONSULTA);
         }
         return experienciasEducativas;
     }
@@ -108,7 +109,7 @@ public class ExperienciaEducativaDAO {
             respuesta = (filasAfectadas == 1) ? idExperienciaEducativa : -1;
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            throw new DAOException("Lo sentimos, hubo un problema al eliminar la experiencia educativa.", Codigos.ERROR_CONSULTA);
+            throw new DAOException("Error de consulta.", Codigos.ERROR_CONSULTA);
         }
         return respuesta;
     }

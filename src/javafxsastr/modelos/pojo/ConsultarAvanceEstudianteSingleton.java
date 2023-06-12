@@ -25,8 +25,8 @@ public class ConsultarAvanceEstudianteSingleton {
             CodigosVentanas ventanaOrigen,
             Curso curso) {
         if (consultarAvanceEstudiante == null) {
-            consultarAvanceEstudiante 
-                    = new ConsultarAvanceEstudianteSingleton(academico, estudiante, ventanaOrigen, curso);
+            consultarAvanceEstudiante = 
+                    new ConsultarAvanceEstudianteSingleton(academico, estudiante, ventanaOrigen, curso);
         }
         return consultarAvanceEstudiante;
     }
@@ -36,6 +36,7 @@ public class ConsultarAvanceEstudianteSingleton {
             Estudiante estudiante,
             CodigosVentanas ventanaOrigen,
             Curso curso) {
+        
         this.academico = academico;
         this.estudiante = estudiante;
         this.ventanaOrigen = ventanaOrigen;
@@ -61,7 +62,5 @@ public class ConsultarAvanceEstudianteSingleton {
     public static void setConsultarAvanceEstudiante(ConsultarAvanceEstudianteSingleton consultarAvanceEstudiante) {
         ConsultarAvanceEstudianteSingleton.consultarAvanceEstudiante = consultarAvanceEstudiante;
     }
-    
-    
-    
+
 }

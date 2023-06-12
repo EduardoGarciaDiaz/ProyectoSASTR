@@ -24,9 +24,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafxsastr.JavaFXSASTR;
@@ -44,36 +42,27 @@ public class FXMLUsuariosController implements Initializable {
     @FXML
     private VBox contenedorTarjetasUsuarios;
     @FXML
-    private TextField tfCampoBusqueda;
-    @FXML
     private Label lbTituloVentana;
-    @FXML
-    private Pane pbnBotonCrearUsuario;
+    
     private Usuario usuario;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        obtenerUsuarios();
-        SortedList<Usuario> sortedList = new SortedList<>(usuarios,
-                    Comparator.comparing(Usuario::toString));
-        cargarTarjetasUsuarios(sortedList);
+        
     }   
     
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
         obtenerUsuarios();
-        SortedList<Usuario> sortedList = new SortedList<>(usuarios,
-                    Comparator.comparing(Usuario::toString));
+        SortedList<Usuario> sortedList = new SortedList<>(usuarios, Comparator.comparing(Usuario::toString));
         cargarTarjetasUsuarios(sortedList);
     }
     
     private void obtenerUsuarios() {
         try {
-            usuarios = FXCollections.observableArrayList(
-                new UsuarioDAO().obtenerUsuarios()
-            );
+            usuarios = FXCollections.observableArrayList(new UsuarioDAO().obtenerUsuarios());
         } catch (DAOException ex) {
-            
+            manejarDAOException(ex);
         }
     }
     
@@ -81,25 +70,12 @@ public class FXMLUsuariosController implements Initializable {
         contenedorTarjetasUsuarios.getChildren().clear();
         for (Usuario usuario : usuarios) {
             TarjetaUsuario tarjeta = new TarjetaUsuario(usuario);
-            tarjeta.getBotonVerDetalles().setOnAction((event) -> {
-                irAVentanaVerUsuario(usuario);
-            });
+            tarjeta.getBotonVerDetalles().setOnAction(
+                (event) -> {
+                    irAVentanaVerUsuario(usuario);
+                }
+            );
             contenedorTarjetasUsuarios.getChildren().add(tarjeta);
-        }
-    }
-    
-    public void manejarDAOException(DAOException ex) {
-        switch (ex.getCodigo()) {
-            case ERROR_CONSULTA:
-                ex.printStackTrace();
-                System.out.println("Ocurrió un error de consulta.");
-                break;
-            case ERROR_CONEXION_BD:
-                ex.printStackTrace();
-                Utilidades.mostrarDialogoSimple("Error de conexion", 
-                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
-            default:
-                throw new AssertionError();
         }
     }
 
@@ -112,8 +88,7 @@ public class FXMLUsuariosController implements Initializable {
     @FXML
     private void clicBtnTodos(ActionEvent event) {
         contenedorTarjetasUsuarios.getChildren().clear();
-        SortedList<Usuario> sortedList = new SortedList<>(usuarios,
-                    Comparator.comparing(Usuario::toString));
+        SortedList<Usuario> sortedList = new SortedList<>(usuarios, Comparator.comparing(Usuario::toString));
         cargarTarjetasUsuarios(sortedList);
     }
 
@@ -122,19 +97,20 @@ public class FXMLUsuariosController implements Initializable {
         contenedorTarjetasUsuarios.getChildren().clear();
         if (usuarios.size() > 0) {
             FilteredList<Usuario> filtroUsuarios = new FilteredList<>(usuarios, p -> true);
-            filtroUsuarios.setPredicate(usuario -> {
-                try {
-                    if (new EstudianteDAO()
-                            .obtenerEstudiantePorIdUsuario(usuario.getIdUsuario()).getIdEstudiante() > 0) {   
-                        return true;
+            filtroUsuarios.setPredicate(
+                usuario -> {
+                    try {
+                        if (new EstudianteDAO()
+                                .obtenerEstudiantePorIdUsuario(usuario.getIdUsuario()).getIdEstudiante() > 0) {   
+                            return true;
+                        }
+                    } catch (DAOException ex) {
+                        manejarDAOException(ex);
                     }
-                } catch (DAOException ex) {
-                    manejarDAOException(ex);
+                    return false;
                 }
-                return false;
-            });
-            SortedList<Usuario> sortedList = new SortedList<>(filtroUsuarios,
-                    Comparator.comparing(Usuario::toString));
+            );
+            SortedList<Usuario> sortedList = new SortedList<>(filtroUsuarios, Comparator.comparing(Usuario::toString));
             cargarTarjetasUsuarios(sortedList);
         }
     }
@@ -161,18 +137,19 @@ public class FXMLUsuariosController implements Initializable {
         contenedorTarjetasUsuarios.getChildren().clear();
         if (usuarios.size() > 0) {
             FilteredList<Usuario> filtroUsuarios = new FilteredList<>(usuarios, p -> true);
-            filtroUsuarios.setPredicate(usuario -> {
-                try {
-                    if (new AcademicoDAO().obtenerAcademicoPorIdUsuario(usuario.getIdUsuario()).getIdAcademico() > 0) {   
-                        return true;
+            filtroUsuarios.setPredicate(
+                usuario -> {
+                    try {
+                        if (new AcademicoDAO().obtenerAcademicoPorIdUsuario(usuario.getIdUsuario()).getIdAcademico() > 0) {   
+                            return true;
+                        }
+                    } catch (DAOException ex) {
+                        manejarDAOException(ex);
                     }
-                } catch (DAOException ex) {
-                    manejarDAOException(ex);
+                    return false;
                 }
-                return false;
-            });
-            SortedList<Usuario> sortedList = new SortedList<>(filtroUsuarios,
-                    Comparator.comparing(Usuario::toString));
+            );
+            SortedList<Usuario> sortedList = new SortedList<>(filtroUsuarios, Comparator.comparing(Usuario::toString));
             cargarTarjetasUsuarios(sortedList);
         }
     }
@@ -204,6 +181,19 @@ public class FXMLUsuariosController implements Initializable {
             escenario.show();
         } catch (IOException ex) {
             ex.printStackTrace();
+        }
+    }
+ 
+    private void manejarDAOException(DAOException ex) {
+        switch (ex.getCodigo()) {
+            case ERROR_CONSULTA:
+                System.out.println("Ocurrió un error de consulta.");
+                break;
+            case ERROR_CONEXION_BD:
+                Utilidades.mostrarDialogoSimple("Error de conexion", 
+                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
+            default:
+                throw new AssertionError();
         }
     }
     
