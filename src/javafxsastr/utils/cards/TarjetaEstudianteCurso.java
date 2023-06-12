@@ -1,7 +1,7 @@
 /*
  * Autor: Tristan Eduardo Suarez Santiago
  * Fecha de creación: 04/06/2023
- * Descripción: Clase para la tarjetas de DetalleCursor.
+ * Descripción: Clase para la tarjetas de Estudinates activos en un curso en la ventana DetalleCursor.
  */
 
 package javafxsastr.utils.cards;

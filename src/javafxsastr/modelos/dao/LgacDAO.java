@@ -3,6 +3,7 @@
  * Fecha de creación: 15/05/2023
  * Descripción: Clase DAO de la Lgac
  */
+
 package javafxsastr.modelos.dao;
 
 import java.sql.PreparedStatement;
@@ -16,15 +17,15 @@ import javafxsastr.utils.Codigos;
 
 public class LgacDAO {
 
-    private static String CONSULTAR_LGAC = "Select idLgac, nombreLgac, descripcionLgac from lgacs";
-    private static String CONSULTAR_LGAC_UNICA = "Select idLgac, nombreLgac, descripcionLgac from lgacs where idLgac = ?";
-    private static String CONSULTAR_LGAC_POR_CUERPO_ACADEMICO = "Select lgacs.idLgac, nombreLgac, descripcionLgac from lgacs \n"
-            +"Inner join cuerpos_academicos_lgac On lgacs.idlgac = cuerpos_academicos_lgac.idLgac\n" +
-            "Where cuerpos_academicos_lgac.idCuerpoAcademico = ?";
-    private static String REGISTRAR_LGAC = "Insert into lgacs(nombreLgac, descripcionLgac) Values (?,?)";
-    private static String ACTUALIZAR_LGAC = "Update lgacs set nombreLgac = ?, descripcionLgac = ? where idLgac = ?";
-    private static String BORRAR_LGAC = "Delete from lgacs where idLgac = ?";
-    private static String CONSULTA_LGACS_POR_CUERPO_ACADEMICO = "select lgacs.idLgac, nombreLgac, descripcionLgac "
+    private final static String CONSULTAR_LGAC = "Select idLgac, nombreLgac, descripcionLgac from lgacs";
+    private final static String CONSULTAR_LGAC_UNICA = "Select idLgac, nombreLgac, descripcionLgac from lgacs where idLgac = ?";
+    private final static String CONSULTAR_LGAC_POR_CUERPO_ACADEMICO = "Select lgacs.idLgac, nombreLgac, descripcionLgac from lgacs \n"
+            +"Inner join cuerpos_academicos_lgac On lgacs.idlgac = cuerpos_academicos_lgac.idLgac\n" 
+            + "Where cuerpos_academicos_lgac.idCuerpoAcademico = ?";
+    private final static String REGISTRAR_LGAC = "Insert into lgacs(nombreLgac, descripcionLgac) Values (?,?)";
+    private final static String ACTUALIZAR_LGAC = "Update lgacs set nombreLgac = ?, descripcionLgac = ? where idLgac = ?";
+    private final static String BORRAR_LGAC = "Delete from lgacs where idLgac = ?";
+    private final static String CONSULTA_LGACS_POR_CUERPO_ACADEMICO = "select lgacs.idLgac, nombreLgac, descripcionLgac "
             + "from lgacs "
             + "inner join cuerpos_academicos_lgac "
             + "on lgacs.idLgac = cuerpos_academicos_lgac.idLgac "
@@ -38,10 +39,10 @@ public class LgacDAO {
             + "inner join anteproyectos "
             + "on anteproyectos.idAnteproyecto = lgacs_anteproyectos.idAnteproyecto "
             + "where anteproyectos.idAnteproyecto = ?; ";
-    private final String CONSULTAR_LGAC_POR_ANTEPORYECTO = "select lgacs.idLgac, nombreLgac, descripcionLgac \n" +
-            "from lgacs \n" +
-            "inner join lgacs_anteproyectos on lgacs.idLgac = lgacs_anteproyectos.idLgac \n" +
-            "where lgacs_anteproyectos.idAnteproyecto = ?";
+    private final String CONSULTAR_LGAC_POR_ANTEPORYECTO = "select lgacs.idLgac, nombreLgac, descripcionLgac \n" 
+            + "from lgacs \n" 
+            + "inner join lgacs_anteproyectos on lgacs.idLgac = lgacs_anteproyectos.idLgac \n" 
+            + "where lgacs_anteproyectos.idAnteproyecto = ?";
 
     public ArrayList<Lgac> obtenerInformacionLGCAS() throws DAOException {
         ArrayList<Lgac> lgacConsultados = new ArrayList();
@@ -49,7 +50,6 @@ public class LgacDAO {
             PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(CONSULTAR_LGAC);
             ResultSet resultadoConsulta = sentencia.executeQuery();
             while (resultadoConsulta.next()) {
-                // lgacConsultados = ;
                 Lgac lgac = new Lgac();
                 lgac.setIdLgac(resultadoConsulta.getInt("idLgac"));
                 lgac.setNombreLgac(resultadoConsulta.getString("nombreLgac"));
@@ -58,7 +58,6 @@ public class LgacDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
             throw new DAOException("Lo sentimos, hubo un problema al consultar las LGAC's.", Codigos.ERROR_CONSULTA);
         }
         return lgacConsultados;
@@ -80,7 +79,6 @@ public class LgacDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
             throw new DAOException("Lo sentimos, hubo un problema al consultar las LGAC's.", Codigos.ERROR_CONSULTA);
         }
         return lgacConsultados;
@@ -102,7 +100,6 @@ public class LgacDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
             throw new DAOException("Lo sentimos, hubo un problema al consultar las LGAC's.", Codigos.ERROR_CONSULTA);
         }
         return lgacConsultados;
@@ -213,7 +210,6 @@ public class LgacDAO {
             }
             return lgacConsultados;
         } catch (SQLException ex) {
-            ex.printStackTrace();
             throw new DAOException("Lo sentimos, hubo un problema al consultar las LGAC's.", Codigos.ERROR_CONSULTA);
         }
     }

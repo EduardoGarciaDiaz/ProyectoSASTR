@@ -61,9 +61,7 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
         interfaz = interfazN;
         if(estudiantes != null) {
             estudiantesActuales = FXCollections.observableArrayList((estudiantes));                    
-        } else {
-            System.out.println("El Observable de estudiantes viene nulo");
-        }
+        } 
         recuperarEstudinates();
         cursoActual = curso;    
         BtnOtro.setDisable(true);
@@ -104,14 +102,19 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
     }
     
     private boolean validarEstudianteEnCurso() {
-        if(estudianteSeleccionado != null) {
+        CursoDAO  cursoDao= new CursoDAO();
+        if(estudianteSeleccionado != null) {            
             for (Estudiante estudiantes : estudiantesActuales) {
                 if (estudiantes.getIdEstudiante() == estudianteSeleccionado.getIdEstudiante()) {
                     return false;
                 }
             }
-            if(estudianteSeleccionado.getIdCurso() != 0){
-                return false;
+            try {
+                if(cursoDao.verificarSiEstudiantePerteneceACursoActivo(estudianteSeleccionado.getIdEstudiante())){
+                    return false;
+                }
+            } catch (DAOException ex) {
+                manejarDAOException(ex);
             }
             if(estudiantesTabla != null) {
                 for (Estudiante estudiante1 : estudiantesTabla) {
@@ -172,8 +175,7 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
     
     private void guardarEstudiantes() {
         for (Estudiante estudinateNuevo : estudiantesTabla) {
-            try {
-                System.err.println(cursoActual);
+            try {                
                 int exito = new CursoDAO().guardarRelacionCursoEstudiante(cursoActual.getIdCurso(),
                         estudinateNuevo.getIdEstudiante());
             } catch (DAOException ex) {
@@ -187,24 +189,9 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
     
     private void cerrarVentana() {
         Stage escenarioActual = (Stage) txfEstudianteBusqueda.getScene().getWindow();  
-        interfaz.notitficacionRecargarDatos();
+        interfaz.notificacionRecargarDatos();
         escenarioActual.close();
     }    
-    
-    private void manejarDAOException(DAOException ex) {
-        switch (ex.getCodigo()) {
-            case ERROR_CONSULTA:
-                System.out.println("Ocurrió un error de consulta.");
-                ex.printStackTrace();
-                break;
-            case ERROR_CONEXION_BD:
-                Utilidades.mostrarDialogoSimple("Error de conexion", 
-                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", 
-                        Alert.AlertType.ERROR);
-            default:
-                throw new AssertionError();
-        }
-    }
     
     @FXML
     private void clicBtnCancelar(ActionEvent event) {
@@ -223,6 +210,22 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
        txfEstudianteBusqueda.setDisable(false);
        BtnOtro.setDisable(true);
        btnGuardar.setDisable(true);
+    }    
+     
+    private void manejarDAOException(DAOException ex) {
+        switch (ex.getCodigo()) {
+            case ERROR_CONSULTA:
+                Utilidades.mostrarDialogoSimple("Error de Consulta", 
+                        "Hubo un error al realizar la consulta. Intentelo de nuevo o hagalo mas tarde", 
+                        Alert.AlertType.ERROR);
+                break;
+            case ERROR_CONEXION_BD:
+                Utilidades.mostrarDialogoSimple("Error de conexion", 
+                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", 
+                        Alert.AlertType.ERROR);
+            default:
+                throw new AssertionError();
+        }
     }
     
 }

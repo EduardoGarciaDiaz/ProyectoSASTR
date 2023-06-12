@@ -1,7 +1,7 @@
 /*
  * Autor: Tristan Eduardo Suarez Santiago
  * Fecha de creación: 03/06/2023
- * Descripción: Controller de la ventana validar Anteproyecto
+ * Descripción: Controller de la ventana para validar un Anteproyecto
  */
 package javafxsastr.controladores;
 
@@ -159,6 +159,14 @@ public class FXMLValidarAnteproyectoController implements Initializable {
         inicializarListeners();
     }
     
+     public void setAnteproyecto(Anteproyecto anteproyecto) {
+        this.anteproyecto = anteproyecto;
+    }
+    
+    public void setAcademico(Academico academico) {
+        this.academico = academico;
+    }
+    
     private void inicializarListeners() {  
         NombreTR.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {            
             @Override
@@ -216,19 +224,12 @@ public class FXMLValidarAnteproyectoController implements Initializable {
         }); 
     }
     
-     private void obtenerEstudiantes() {
+    private void obtenerEstudiantes() {
         try {
             estudiantesRegistrados = FXCollections.observableArrayList(new EstudianteDAO().obtenerEstudiantes());
         } catch (DAOException ex) {
             manejarDAOException(ex);
         }
-    }
-    
-    public void setAnteproyecto(Anteproyecto anteproyecto) {
-        this.anteproyecto = anteproyecto;
-    }
-    public void setAcademico(Academico academico) {
-        this.academico = academico;
     }
     
     private void mostrarDatosAnteproyecto() {
@@ -239,9 +240,7 @@ public class FXMLValidarAnteproyectoController implements Initializable {
             mostrarDatosDescripciones();
             mostrarDatosFinales();  
             mostrarDatosLGACs();
-        } else {
-            System.err.println("El anteproyector recibido viene NULO");
-        }
+        } 
     }
     
     private void mostrarDatosLugarFecha() {
@@ -430,11 +429,11 @@ public class FXMLValidarAnteproyectoController implements Initializable {
                             idEstadoSeguimiento);
                 if(exitoActualizaicon == 1) {
                         if( estadoSeguimiento.equals("Rechazado")) {
-                     Utilidades.mostrarDialogoSimple("Rechazado", 
-                        "Se ha rechazado el anteproyecto correctamente", Alert.AlertType.INFORMATION);
+                            Utilidades.mostrarDialogoSimple("Rechazado", "Se ha rechazado el anteproyecto correctamente",
+                                                                                                Alert.AlertType.INFORMATION);
                         }else {
-                            Utilidades.mostrarDialogoSimple("Aprobado", 
-                            "Se ha aprobado el anteproyecto", Alert.AlertType.INFORMATION);
+                            Utilidades.mostrarDialogoSimple("Aprobado","Se ha aprobado el anteproyecto",
+                                                                                    Alert.AlertType.INFORMATION);
                     }               
                 }else {
                 Utilidades.mostrarDialogoSimple("Error","Fallo actualizar el estado de seguimiento", 
@@ -454,21 +453,6 @@ public class FXMLValidarAnteproyectoController implements Initializable {
         etiquetaError.setText("Cuidado, Excediste el limite de caracteres("+limiteCaracteres+") de este campo " + campo);
         btnAprobar.setDisable(true);
     }    
-    
-     private void manejarDAOException(DAOException ex) {
-        switch (ex.getCodigo()) {
-            case ERROR_CONSULTA:
-                System.out.println("Ocurrió un error de consulta.");
-                ex.printStackTrace();
-                break;
-            case ERROR_CONEXION_BD:
-                Utilidades.mostrarDialogoSimple("Error de conexion", 
-                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", 
-                        Alert.AlertType.ERROR);
-            default:
-                throw new AssertionError();
-        }
-    }
      
      private void cerrarVentana() {
           try {
@@ -481,7 +465,8 @@ public class FXMLValidarAnteproyectoController implements Initializable {
             escenario.setTitle("Anteproyectos");
             escenario.show();
         } catch (IOException ex) {
-            ex.printStackTrace();
+            Utilidades.mostrarDialogoSimple("Error","Hubo un error al mostrar la vista",
+                                                                   Alert.AlertType.INFORMATION);
         }
     }  
 
@@ -498,6 +483,22 @@ public class FXMLValidarAnteproyectoController implements Initializable {
     @FXML
     private void clicAprobar(ActionEvent event) {
         guardarRevision("Validado");
+    }
+    
+    private void manejarDAOException(DAOException ex) {
+        switch (ex.getCodigo()) {
+            case ERROR_CONSULTA:
+                Utilidades.mostrarDialogoSimple("Error de Consulta", 
+                        "Hubo un error al realizar la consulta. Intentelo de nuevo o hagalo mas tarde", 
+                        Alert.AlertType.ERROR);
+                break;
+            case ERROR_CONEXION_BD:
+                Utilidades.mostrarDialogoSimple("Error de conexion", 
+                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", 
+                        Alert.AlertType.ERROR);
+            default:
+                throw new AssertionError();
+        }
     }
     
 }

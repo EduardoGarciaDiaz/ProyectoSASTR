@@ -74,8 +74,8 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
     @FXML
     private ImageView btnEditarCurso;
      
-    private final int DESACTIVAR = 2;
-    private final int ACTIVAR = 1;
+    private final int INACTIVO = 2;
+    private final int ACTIVO = 1;
     private Academico academico;
     private ObservableList<Estudiante> estudiantes;
     private Curso cursoActual;
@@ -91,20 +91,17 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
         setLogoActivo();
         if (cursoActual != null) {
             obtenerPeriodoEscolar();
-        } else {
-            System.err.println("El curso viene NULO");
-        }
+        } 
         cargarDetallesCurso();
         obtenerEstudiantesCurso();
         llenarEstudiantes();
-
     }
     
-    public void editarUsuario(Estudiante estudiante) {         
+    private void editarUsuario(Estudiante estudiante) {         
         irVistaEditarEstudiante(estudiante);
     }
     
-    public void agregarAlumno() {
+    private void agregarAlumno() {
        irVistaAgregarAlumno();
     }
     
@@ -116,8 +113,6 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
                     btnEditarCurso.setDisable(true);
                     btnEditarCurso.setVisible(false);
                 }
-            } else {
-                System.out.println("El periodo viene NULO");
             }
         } catch (DAOException ex) {
             manejarDAOException(ex);
@@ -148,8 +143,7 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
             manejarDAOException(ex);
         }
         cargarDetallesCurso();
-    }
-    
+    }    
     
     private void obtenerEstudiantesCurso() {        
         estudiantes = FXCollections.observableArrayList(); 
@@ -215,7 +209,7 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
                 "¿Estas seguro que deseas desactivar al estudiante del curso?")) {
             try {
                 Usuario usuario = new UsuarioDAO().obtenerUsuarioPorId(estudiante.getIdUsuario());
-                usuario.setIdEstadoUsuario(DESACTIVAR);
+                usuario.setIdEstadoUsuario(INACTIVO);
                 new UsuarioDAO().actualizarUsuario(usuario);
             } catch (DAOException ex) {
                 manejarDAOException(ex);
@@ -229,7 +223,7 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
                 "¿Estas seguro que deseas activar al estudiante del curso?")) {
             try {
                 Usuario usuario = new UsuarioDAO().obtenerUsuarioPorId(estudiante.getIdUsuario());
-                usuario.setIdEstadoUsuario(ACTIVAR);
+                usuario.setIdEstadoUsuario(ACTIVO);
                 new UsuarioDAO().actualizarUsuario(usuario);
             } catch (DAOException ex) {
                 manejarDAOException(ex);
@@ -240,7 +234,7 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
     
     private void desactivarCurso(Curso curso) {        
         try {
-            curso.setIdEstadoCurso(DESACTIVAR);
+            curso.setIdEstadoCurso(INACTIVO);
             int cursoEdicion = new CursoDAO().actualizarCurso(curso);
         } catch (DAOException ex) {
             manejarDAOException(ex);
@@ -250,7 +244,7 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
     
     private void activarCurso(Curso curso) {        
         try {
-            curso.setIdEstadoCurso(ACTIVAR);
+            curso.setIdEstadoCurso(ACTIVO);
             int cursoEdicion = new CursoDAO().actualizarCurso(curso);
         } catch (DAOException ex) {
             manejarDAOException(ex);
@@ -284,8 +278,7 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
             escenarioFormulario.setTitle("Añadir estudiantes");
             escenarioFormulario.initModality(Modality.APPLICATION_MODAL);
             escenarioFormulario.showAndWait();
-        } catch (IOException ex) {
-            ex.printStackTrace();
+        } catch (IOException ex) {            
             Utilidades.mostrarDialogoSimple("Error","No se pudo cargar la Escena", Alert.AlertType.ERROR);
         }        
     }
@@ -304,7 +297,7 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
             escenario.initModality(Modality.APPLICATION_MODAL);
             escenario.showAndWait();
         } catch (IOException ex) {
-            ex.printStackTrace();
+            Utilidades.mostrarDialogoSimple("Error","No se pudo cargar la Escena", Alert.AlertType.ERROR);
         } catch (DAOException ex) {
             manejarDAOException(ex);
         }
@@ -324,12 +317,12 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
     @FXML
     private void clicDesactivarCurso(MouseEvent event) {
         if(cursoActual.getIdEstadoCurso() == 1) {
-            if(Utilidades.mostrarDialogoConfirmacion("Desactivar Estudiante de curso",
+            if(Utilidades.mostrarDialogoConfirmacion("Desactivar curso",
                 "¿Estas seguro que deseas desactivar el curso?")) {
                       desactivarCurso(cursoActual);
             }          
         }else {
-            if(Utilidades.mostrarDialogoConfirmacion("Activar Estudiante de curso",
+            if(Utilidades.mostrarDialogoConfirmacion("Activar curso",
                 "¿Estas seguro que deseas activar el curso?")) {
                       activarCurso(cursoActual);
             }         
@@ -349,7 +342,7 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
             escenario.initModality(Modality.APPLICATION_MODAL);
             escenario.showAndWait();
         } catch (IOException ex) {
-            ex.printStackTrace();
+            Utilidades.mostrarDialogoSimple("Error","No se pudo cargar la Escena", Alert.AlertType.ERROR);
         }
         iniciarVentana();
     }
@@ -362,20 +355,20 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
             controladorVistaCursos.setUsuario(academico);
             Stage escenario = (Stage) lbBloque.getScene().getWindow();
             escenario.setScene(new Scene(vista));
-            escenario.setTitle("Usuarios");
+            escenario.setTitle("Cursos");
             escenario.show();
         } catch (IOException ex) {
-            ex.printStackTrace();
+            Utilidades.mostrarDialogoSimple("Error","No se pudo cargar la Escena", Alert.AlertType.ERROR);
         }
     }
 
     @Override
-    public void notitficacionRecargarDatos() {
+    public void notificacionRecargarDatos() {
        iniciarVentana();
     }
 
     @Override
-    public void notitficacionRecargarDatosPorEdicion(boolean fueEditado) {
+    public void notificacionRecargarDatosPorEdicion(boolean fueEditado) {
        if(fueEditado) {
            recargarCurso();
        }
@@ -384,8 +377,9 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
     private void manejarDAOException(DAOException ex) {
         switch (ex.getCodigo()) {
             case ERROR_CONSULTA:
-                System.out.println("Ocurrió un error de consulta.");
-                ex.printStackTrace();
+                Utilidades.mostrarDialogoSimple("Error de Consulta", 
+                        "Hubo un error al realizar la consulta. Intentelo de nuevo o hagalo mas tarde", 
+                        Alert.AlertType.ERROR);
                 break;
             case ERROR_CONEXION_BD:
                 Utilidades.mostrarDialogoSimple("Error de conexion", 

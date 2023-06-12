@@ -1,12 +1,9 @@
 /*
- * Autor: Eduardo García Díaz
- * Fecha de creación: 12/05/2023
- * Descripción: Clase que agrupa funciones comunes que pueden ser usadas
- * desde distintos puntos del programa
+ * Autor: Tristan Eduardo Suarez Santiago
+ * Fecha de creación: 8/06/2023
+ * Descripción: Clase que agurpa disitntos patrones pára validar entradas de texto
  */
 package javafxsastr.utils;
-
- 
 
 import java.util.function.UnaryOperator;
 import java.util.regex.Matcher;
@@ -114,8 +111,7 @@ public class FiltrosTexto {
         }else{
             return false;
         }
-    }
-     
+    }  
     
 }
 

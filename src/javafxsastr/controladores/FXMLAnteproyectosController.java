@@ -13,8 +13,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Comparator;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -53,10 +51,6 @@ public class FXMLAnteproyectosController implements Initializable, INotificacion
 
     @FXML
     private VBox contenedorTarjetasAnteproyectos;
-    private Academico academico;
-    private ObservableList<Anteproyecto> anteproyectos;
-    private boolean esInvitado = false;
-    private CodigosVentanas ventanaOrigen;
     @FXML
     private TextField tfCampoBusqueda;
     @FXML
@@ -69,6 +63,11 @@ public class FXMLAnteproyectosController implements Initializable, INotificacion
     @FXML
     private Pane contenedorBotonesRCA;
     private CuerpoAcademico cuerpoAcademico;
+    
+    private Academico academico;
+    private ObservableList<Anteproyecto> anteproyectos;
+    private boolean esInvitado = false;
+    private CodigosVentanas ventanaOrigen;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -282,21 +281,6 @@ public class FXMLAnteproyectosController implements Initializable, INotificacion
     private void filtrarAnteproyectos(KeyEvent event) {
     }
     
-    public void manejarDAOException(DAOException ex) {
-        switch (ex.getCodigo()) {
-            case ERROR_CONSULTA:
-                ex.printStackTrace();
-                System.out.println("Ocurrió un error de consulta.");
-                break;
-            case ERROR_CONEXION_BD:
-                ex.printStackTrace();
-                Utilidades.mostrarDialogoSimple("Error de conexion", 
-                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
-            default:
-                throw new AssertionError();
-        }
-    }
-
     @FXML
     private void clicRegresar(MouseEvent event) {
         if(esInvitado) {
@@ -431,6 +415,21 @@ public class FXMLAnteproyectosController implements Initializable, INotificacion
             escenario.show();
         } catch (IOException ex) {
             ex.printStackTrace();
+        }
+    }
+     
+    private void manejarDAOException(DAOException ex) {
+        switch (ex.getCodigo()) {
+            case ERROR_CONSULTA:
+                ex.printStackTrace();
+                System.out.println("Ocurrió un error de consulta.");
+                break;
+            case ERROR_CONEXION_BD:
+                ex.printStackTrace();
+                Utilidades.mostrarDialogoSimple("Error de conexion", 
+                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
+            default:
+                throw new AssertionError();
         }
     }
     

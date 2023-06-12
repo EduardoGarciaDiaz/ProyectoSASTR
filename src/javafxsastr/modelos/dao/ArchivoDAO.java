@@ -11,26 +11,23 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafxsastr.modelos.ConexionBD;
-import javafxsastr.modelos.dao.DAOException;
 import javafxsastr.modelos.pojo.Archivo;
 import javafxsastr.utils.Codigos;
 
 public class ArchivoDAO {
     
-    private static final String CONSULTA_ARCHIVOS = "Select idArchivo, nombreArchivo, archivo, esEntrega From archivos";
-    private static final String CONSULTA_ARCHIVO_UNICO = "Select idArchivo, nombreArchivo, archivo, esEntrega, From archivos " +
-                                            "where idArchivo =? ";
-    private static final String REGISTRAR_ARCHIVO = "Insert into archivos(nombreArchivo, archivo, esEntrega, idEntrega) Values (?,?,?,?)";
-    private static final String ACTUALIZAR_ARCHIVO = "Update archivos set nombreArchivo = ?, archivo = ?, esEntrega = ?, idEntrega = ? " +
-                                            " where idArchivo = ?";
-    private static final String ELIMINAR_ARCHIVO = "Delete from archivos where idEntrega = ? AND esEntrega = 0";
-    private static final String CONSULTAR_ARCHIVOS_POR_ENTREGA = "Select idArchivo, nombreArchivo, archivo, esEntrega, archivos.idEntrega " +
-                                            "From archivos "+
-                                            "Inner Join entregas On archivos.idEntrega = entregas.idEntrega "+
-                                            "Where archivos.idEntrega = ?; ";
+    private final String CONSULTA_ARCHIVOS = "Select idArchivo, nombreArchivo, archivo, esEntrega From archivos";
+    private final String CONSULTA_ARCHIVO_UNICO = "Select idArchivo, nombreArchivo, archivo, esEntrega, From archivos " 
+                            + "where idArchivo =? ";
+    private final String REGISTRAR_ARCHIVO = "Insert into archivos(nombreArchivo, archivo, esEntrega, idEntrega) Values (?,?,?,?)";
+    private final String ACTUALIZAR_ARCHIVO = "Update archivos set nombreArchivo = ?, archivo = ?, esEntrega = ?, idEntrega = ? " 
+                            + " where idArchivo = ?";
+    private final String ELIMINAR_ARCHIVO = "Delete from archivos where idEntrega = ? AND esEntrega = 0";
+    private final String CONSULTAR_ARCHIVOS_POR_ENTREGA = "Select idArchivo, nombreArchivo, archivo, esEntrega, archivos.idEntrega " 
+                            + "From archivos "
+                            + "Inner Join entregas On archivos.idEntrega = entregas.idEntrega "
+                            + "Where archivos.idEntrega = ?; ";
     
     public ArrayList<Archivo> consultarArchivos() throws DAOException {
         ArrayList<Archivo> archivosConsultados = new ArrayList();
@@ -69,7 +66,6 @@ public class ArchivoDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
             throw new DAOException("Lo sentimos, hubo un problema al consultar la informacion del archivo.",
                                      Codigos.ERROR_CONSULTA);
         }
@@ -92,7 +88,6 @@ public class ArchivoDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
             throw new DAOException("Lo sentimos, hubo un problema al registrar este archivo", Codigos.ERROR_CONSULTA);
         }
         return respuestaExito;
@@ -147,7 +142,6 @@ public class ArchivoDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
             throw new DAOException("Lo sentimos, hubo un problema al consultar la informacion de los archivos.",
                                      Codigos.ERROR_CONSULTA);
         }               

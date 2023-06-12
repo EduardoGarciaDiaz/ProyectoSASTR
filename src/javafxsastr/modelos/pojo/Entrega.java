@@ -1,10 +1,11 @@
-//TODO@Tristan
+/*
+ * Autor: Tritan Eduardo Suarez Santiago
+ * Fecha de creación: 15/05/2023
+ * Descripción: Clase pojo de las Entregas
+ */
+
 package javafxsastr.modelos.pojo;
 
-/**
- *
- * @author tristan
- */
 public class Entrega {
     
     private int idEntrega;

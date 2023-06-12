@@ -46,9 +46,6 @@ public class FXMLActividadesController implements Initializable {
     private VBox contenedorTarjetasActividades;
     @FXML
     private Label lbTituloVentana;
-    private Estudiante estudiante;
-    private ObservableList<Actividad> actividades 
-            = FXCollections.observableArrayList();
     @FXML
     private Pane pnBotonCrearActividad;
     @FXML
@@ -79,6 +76,9 @@ public class FXMLActividadesController implements Initializable {
     @FXML
     private ImageView imgBtnShow;
     
+    private Estudiante estudiante;
+    private ObservableList<Actividad> actividades 
+            = FXCollections.observableArrayList();
     TranslateTransition panelDesplegado;
     TranslateTransition panelCerrado;
     private Curso curso;
@@ -273,7 +273,6 @@ public class FXMLActividadesController implements Initializable {
             Utilidades.mostrarDialogoSimple("ERROR","No se pudo cargar la ventana", Alert.AlertType.ERROR);
         }
     }
-
     
     private void prepararAnimacionBtnCerrarSesion() {
         panelDesplegado = new TranslateTransition(new Duration(350.0), panelLateral);
@@ -295,7 +294,7 @@ public class FXMLActividadesController implements Initializable {
         }
     }
     
-    public void manejarDAOException(DAOException ex) {
+    private void manejarDAOException(DAOException ex) {
         switch (ex.getCodigo()) {
             case ERROR_CONSULTA:
                 ex.printStackTrace();
@@ -304,7 +303,8 @@ public class FXMLActividadesController implements Initializable {
             case ERROR_CONEXION_BD:
                 ex.printStackTrace();
                 Utilidades.mostrarDialogoSimple("Error de conexion", 
-                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
+                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", 
+                                                                                    Alert.AlertType.ERROR);
                 break;
             default:
                 throw new AssertionError();

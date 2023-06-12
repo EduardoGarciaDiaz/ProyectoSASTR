@@ -3,6 +3,7 @@
  * Fecha de creación: 15/05/2023
  * Descripción: Clase DAO de las Entregas
  */
+
 package javafxsastr.modelos.dao;
 
 import java.sql.PreparedStatement;
@@ -17,23 +18,24 @@ import javafxsastr.utils.Codigos;
 
 public class EntregaDAO {
     
-    private static final String OBTENER_ENTREGAS = "Select idEntrega, comentarioAlumno, fechaEntrega, horaEntrega, comentariosDirector, " +
-                                              "fechaRevision, horaRevision, idActividad, idAcademico form entregas";
-    private static final String OBTENER_ENTREGAS_UNICAS = "Select comentarioAlumno, fechaEntrega, horaEntrega, comentariosDirector, " +
-                                              "fechaRevision, horaRevision, idActividad, idAcademico from entregas where idEntrega = ?";
-    private static final String GUARDAR_ENTREGA = "Insert into entregas(comentarioAlumno, fechaEntrega, horaEntrega, comentariosDirector, "+
-                                              "fechaRevision, horaRevision, idActividad, idAcademico) Values (?,?,?,?,?,?,?,?)";
-    private static final String ACTUALIZAR_ENTREGA = "Update entregas set comentarioAlumno = ?, fechaEntrega = ?, horaEntrega = ?, "+
-                                               "comentariosDirector = ?, fechaRevision = ?, horaRevision = ?, idActividad = ?, "+
-                                               "idAcademico = ? where idEntrega = ?";
-    private static final String ELIMINAR_ENTREGA = "Delete from entregas where idEntrega = ?";
-    private static final String OBTENER_ENTREGAS_POR_ACTIVIDAD = "SELECT e.idEntrega, e.comentarioAlumno, e.fechaEntrega, e.horaEntrega, " +
-                                                " e.comentariosDirector, " +
-                                                "e.fechaRevision, e.horaRevision, e.idActividad, e.idAcademico FROM entregas e " +
-                                                "INNER JOIN actividades a ON e.idActividad = a.idActividad " +
-                                                "WHERE a.idActividad = ?;";
-     private static final String OBTENER_ENTREGAS_UNICAS_EDICION = "Select comentarioAlumno, fechaEntrega, horaEntrega, idAcademico, "+
-                                              "idActividad from entregas where idEntrega = ?";
+    private final String OBTENER_ENTREGAS = "Select idEntrega, comentarioAlumno, fechaEntrega, horaEntrega, comentariosDirector, " 
+            + "fechaRevision, horaRevision, idActividad, idAcademico form entregas";
+    private final String OBTENER_ENTREGAS_UNICAS = "Select comentarioAlumno, fechaEntrega, horaEntrega, comentariosDirector, " 
+            + "fechaRevision, horaRevision, idActividad, idAcademico from entregas where idEntrega = ?";
+    private final String GUARDAR_ENTREGA = "Insert into entregas(comentarioAlumno, fechaEntrega, horaEntrega, comentariosDirector, "
+            + "fechaRevision, horaRevision, idActividad, idAcademico) Values (?,?,?,?,?,?,?,?)";
+    private final String ACTUALIZAR_ENTREGA = "Update entregas set comentarioAlumno = ?, fechaEntrega = ?, horaEntrega = ?, "
+            + "comentariosDirector = ?, fechaRevision = ?, horaRevision = ?, idActividad = ?, "
+            + "idAcademico = ? where idEntrega = ?";
+    private final String ELIMINAR_ENTREGA = "Delete from entregas where idEntrega = ?";
+    private final String OBTENER_ENTREGAS_POR_ACTIVIDAD = "SELECT e.idEntrega, e.comentarioAlumno, e.fechaEntrega, e.horaEntrega, " 
+            + " e.comentariosDirector, " 
+            + "e.fechaRevision, e.horaRevision, e.idActividad, e.idAcademico FROM entregas e " 
+            + "INNER JOIN actividades a ON e.idActividad = a.idActividad " 
+            + "WHERE a.idActividad = ?;";
+    private final String OBTENER_ENTREGAS_UNICAS_EDICION = "Select comentarioAlumno, fechaEntrega, horaEntrega, idAcademico, "
+            + "idActividad from entregas where idEntrega = ?";
+    
     public ArrayList<Entrega> consultarEntregas() throws DAOException {
         ArrayList<Entrega> entregasConsultadas = new ArrayList();
         try {            
@@ -79,7 +81,6 @@ public class EntregaDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
             throw new DAOException("Lo sentimos, hubo un problema al consultar la informacion de esta entrega.",
                                      Codigos.ERROR_CONSULTA);
         }
@@ -107,7 +108,6 @@ public class EntregaDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
             throw new DAOException("Lo sentimos, hubo un problema al consultar la informacion de esta entrega.",
                                      Codigos.ERROR_CONSULTA);
         }
@@ -134,7 +134,6 @@ public class EntregaDAO {
             }                
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
            throw new DAOException("Lo sentimos, hubo un problema al registrar la entrega.",
                                      Codigos.ERROR_CONSULTA);
         }
@@ -199,7 +198,6 @@ public class EntregaDAO {
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            ex.printStackTrace();
             throw new DAOException("Lo sentimos, hubo un problema al consultar la informacion de esta entrega.",
                                      Codigos.ERROR_CONSULTA);
         }

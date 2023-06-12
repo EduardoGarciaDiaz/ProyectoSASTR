@@ -1,3 +1,8 @@
+/*
+ * Autor: Tritan Eduardo Suarez Santiago
+ * Fecha de creación: 15/05/2023
+ * Descripción: Clase pojo de la relacion CuerposAcademicos_Lgac
+ */
 
 package javafxsastr.modelos.pojo;
 
@@ -38,7 +43,6 @@ public class CuerpoAcademicoLgac {
 
     public void setLgac(int Lgac) {
         this.idLgac = Lgac;
-    }
-    
+    }    
     
 }

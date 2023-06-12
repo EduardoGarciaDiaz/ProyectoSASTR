@@ -1,3 +1,8 @@
+/*
+ * Autor: Tritan Eduardo Suarez Santiago
+ * Fecha de creación: 15/05/2023
+ * Descripción: Clase DAO de los archivos
+ */
 
 package javafxsastr.modelos.dao;
 
@@ -5,8 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafxsastr.modelos.ConexionBD;
 import javafxsastr.modelos.pojo.Bloque;
 import javafxsastr.utils.Codigos;
@@ -29,4 +32,5 @@ public class BloqueDAO {
         }
         return bloques;
     }
+    
 }

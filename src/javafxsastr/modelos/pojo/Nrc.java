@@ -1,9 +1,11 @@
+/*
+ * Autor: Tritan Eduardo Suarez Santiago
+ * Fecha de creación: 15/05/2023
+ * Descripción: Clase pojo de los Nrc
+ */
+
 package javafxsastr.modelos.pojo;
 
-/**
- *
- * @author tristan
- */
 public class Nrc {
     private int idNrc;
     private String nombreNrc;

@@ -5,6 +5,7 @@
  */
 
 package javafxsastr.modelos.dao;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,11 +17,11 @@ import javafxsastr.utils.Codigos;
 
 public class NrcDAO {
     
-    private static String Consulta_Nrc = "Select idEntrega,comentarioAlumno, fehchaEntrega from entregas";
-    private static String Consulta_Nrc_Unico = "Select idNrc, nombreNrc, idExperienciaEducativa from nrcs where idNrc = ?";
-    private static String Registrar_Nrc = "Insert into nrc(nombreNrc, idExperienciaEducativa) Values (?,?)";
-    private static String Actualizar_Nrc = "Update nrcs set nombreNrc = ?, idExperienciaEducativa = ? where idNrc = ?";
-    private static String Borrar_Nrc = "Delete from nrcs where idNrc = ?";
+    private final String Consulta_Nrc = "Select idEntrega,comentarioAlumno, fehchaEntrega from entregas";
+    private final String Consulta_Nrc_Unico = "Select idNrc, nombreNrc, idExperienciaEducativa from nrcs where idNrc = ?";
+    private final String Registrar_Nrc = "Insert into nrc(nombreNrc, idExperienciaEducativa) Values (?,?)";
+    private final String Actualizar_Nrc = "Update nrcs set nombreNrc = ?, idExperienciaEducativa = ? where idNrc = ?";
+    private final String Borrar_Nrc = "Delete from nrcs where idNrc = ?";
     private final String OBTENER_NRCS_POR_EXPERIENCIA_EDUCATIVA = "SELECT * FROM sastr.nrcs where idExperienciaEducativa = ?;";
      
     public ArrayList<Nrc> obtenerInformacionNRCS() throws DAOException{
@@ -122,7 +123,7 @@ public class NrcDAO {
             respuestaExito = sentencia.executeUpdate();                     
             ConexionBD.cerrarConexionBD();   
         }catch(SQLException ex){
-            throw new DAOException("Lo sentimos, hubo un problema al borrarr este NRC.", Codigos.ERROR_CONSULTA);
+            throw new DAOException("Lo sentimos, hubo un problema al borrar este NRC.", Codigos.ERROR_CONSULTA);
          }
         return respuestaExito;
     }

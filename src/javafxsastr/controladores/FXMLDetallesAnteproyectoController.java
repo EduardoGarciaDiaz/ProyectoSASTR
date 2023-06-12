@@ -542,9 +542,9 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
     
     public void desasignarEstudiante(Estudiante estudiante) {
         try {
-            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLDesaginarEstudianteAnteproyecto.fxml"));
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLDesasignarEstudianteAnteproyecto.fxml"));
             Parent vista = accesoControlador.load();
-            FXMLDesaginarEstudianteAnteproyectoController controladorVista = accesoControlador.getController();
+            FXMLDesasignarEstudianteAnteproyectoController controladorVista = accesoControlador.getController();
             controladorVista.iniciarDesasignacion(estudiante, anteproyecto, this);
             Stage escenario = new Stage();
             escenario.setScene(new Scene(vista));
@@ -712,10 +712,10 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
     
     public void verDesasignacion(Desasignacion desasignacionVer) {
         try {
-            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLDesaginarEstudianteAnteproyecto.fxml"));
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLDesasignarEstudianteAnteproyecto.fxml"));
             Parent vista = accesoControlador.load();
-            FXMLDesaginarEstudianteAnteproyectoController controladorVista = accesoControlador.getController();
-            controladorVista.verDesasignaicones(true, desasignacionVer);
+            FXMLDesasignarEstudianteAnteproyectoController controladorVista = accesoControlador.getController();
+            controladorVista.verDesasignaciones(true, desasignacionVer);
             Stage escenario = new Stage();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Desasignar Estudiante");
@@ -727,12 +727,12 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
     }
 
     @Override
-    public void notitficacionRecargarDatos() {
+    public void notificacionRecargarDatos() {
        //metodo de la intefaz sin uso en esta clase
     }
 
     @Override
-    public void notitficacionRecargarDatosPorEdicion(boolean fueEditado) {       
+    public void notificacionRecargarDatosPorEdicion(boolean fueEditado) {       
         mostrarDesasignaciones();
         vbxAlumnosParticipantes.getChildren().clear();
         vbxCodirectores.getChildren().clear();

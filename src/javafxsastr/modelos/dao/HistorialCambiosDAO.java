@@ -17,11 +17,11 @@ import javafxsastr.utils.Codigos;
 
 public class HistorialCambiosDAO {
     
-    private static String Consulta_Historial_Cambios = "Select idHistorialCambio, fechaDeModificacion, DATE(fechaAnterior) "+
-                                                       "AS fechaAnterior, TIME(fechaAnterior) AS horaAnterior, DATE(fechaNueva) "+
-                                    "AS fechaNueva, TIME(fechaNueva) AS horaNueva FROM historial_cambios WHERE idActividad = ?";
-    private static String Guardar_Historial_Cambios_Nuevo ="INSERT INTO historial_cambios SET fechaDeModificacion = ?, " +
-                                    "fechaAnterior = CONCAT (? ,' ',?), fechaNueva = CONCAT (?,' ', ?), idActividad = ?";
+    private final String Consulta_Historial_Cambios = "Select idHistorialCambio, fechaDeModificacion, DATE(fechaAnterior) "
+            + "AS fechaAnterior, TIME(fechaAnterior) AS horaAnterior, DATE(fechaNueva) "
+            + "AS fechaNueva, TIME(fechaNueva) AS horaNueva FROM historial_cambios WHERE idActividad = ?";
+    private final String Guardar_Historial_Cambios_Nuevo ="INSERT INTO historial_cambios SET fechaDeModificacion = ?, " 
+            + "fechaAnterior = CONCAT (? ,' ',?), fechaNueva = CONCAT (?,' ', ?), idActividad = ?";
     
     public ArrayList<HistorialCambios> obtenerInformacionHistorialCambios(int idActividad) throws DAOException {
         ArrayList<HistorialCambios> historialCambiosConsultados= new ArrayList();
@@ -64,7 +64,6 @@ public class HistorialCambiosDAO {
             }
             ConexionBD.cerrarConexionBD();            
         }catch (SQLException ex) {
-            ex.printStackTrace();
             throw new DAOException("Lo sentimos, hubo un problema al registrar esta modificacion", Codigos.ERROR_CONSULTA);
          }
         return respuestaExito;

@@ -144,9 +144,6 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
             btnGuardar.setDisable(true);
         }
     }  
-    public void recargarDatos() {
-       
-    }
     
     public void cargarDatos(CuerpoAcademico cu, boolean verDetalles, Usuario usuarioActual, boolean esEdicion) {
         this.esVerDetalles = verDetalles; 
@@ -183,8 +180,7 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
             tblvLgacs.setItems(lgacsEdicion);
             lgacsEntabla.addAll(lgacsEdicion);            
         } catch (DAOException ex) {
-            ex.printStackTrace();
-             manejarDAOException(ex);
+            manejarDAOException(ex);
         }        
      } 
    
@@ -315,7 +311,7 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
            lvAcademicos.setItems(academicosBusqueda);
            inicializarLisneters();
         } catch (DAOException ex) {
-            ex.printStackTrace();
+            manejarDAOException(ex);
         }        
     }          
     
@@ -403,8 +399,8 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
             diciplina = txfDiciplinaCA.getText();
             descripcion = txaDescripcionCA.getText();
             nombreRca = lbNombreResponsable.getText(); 
-            if(nombreCa.trim().length() > 5 && diciplina.trim().length() > 0 && descripcion.trim().length() > 10 && nombreCa.length() < 100 &&
-                diciplina.length() < 200 && descripcion.length() < 600 &&
+            if(nombreCa.trim().length() > 5 && diciplina.trim().length() > 0 && descripcion.trim().length() > 10 
+                && nombreCa.length() < 100 && diciplina.length() < 200 && descripcion.length() < 600 &&
                 nombreRca.length() > 5  && tblvLgacs.getItems().size() > 0) {
                  habilitarBtnGuardar();
             }else {
@@ -480,10 +476,10 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
                 return true ;                
             }else {
                  if(cuerpoAcademicoDao.verificarSiAcademicoEsResponsableDeCA(idAcademicoSeleccionado)) {
-                Utilidades.mostrarDialogoSimple("Error",
-                        "Este Academico ya es Responsable de un Cuerpo Academico actualemen, seleccione otro.",
+                    Utilidades.mostrarDialogoSimple("Error",
+                        "Este Academico ya es Responsable de un Cuerpo Academico actualmente, seleccione otro.",
                         Alert.AlertType.WARNING);
-                        return false;
+                    return false;
                  }                 
             }            
         } catch (DAOException ex) {
@@ -526,21 +522,6 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
             Utilidades.mostrarDialogoSimple("Fallo al cargar la venta","No se pudo cargar la ventana de Cuerpos Academicos", Alert.AlertType.ERROR);
         }
     } 
-    
-    private void manejarDAOException(DAOException ex) {
-        switch (ex.getCodigo()) {
-            case ERROR_CONSULTA:
-                System.out.println("Ocurrió un error de consulta.");
-                ex.printStackTrace();
-                break;
-            case ERROR_CONEXION_BD:
-                Utilidades.mostrarDialogoSimple("Error de conexion", 
-                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", 
-                        Alert.AlertType.ERROR);
-            default:
-                throw new AssertionError();
-        }
-    }
      
     private void mostraMensajelimiteSuperado(int limiteCaracteres, String campo,  Label etiquetaError) { 
         etiquetaError.setText("Cuidado, Exediste el limite de caracteres("+limiteCaracteres+") de este campo " + campo);
@@ -595,7 +576,8 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
             escenario.initModality(Modality.APPLICATION_MODAL);
             escenario.showAndWait();
         } catch (IOException ex) {
-            Utilidades.mostrarDialogoSimple("Fallo al cargar la venta","No se pudo cargar la ventana Añadir Lgac", Alert.AlertType.ERROR);
+            Utilidades.mostrarDialogoSimple("Fallo al cargar la venta","No se pudo cargar la ventana Añadir Lgac", 
+                                                                                                    Alert.AlertType.ERROR);
         }
     }    
 
@@ -625,22 +607,40 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
             controladorVistaVerUsuario.vieneDeVentanaCuerposAcademicos(true, this);
             Stage escenario = new Stage();
             escenario.setScene(new Scene(vista));
-            escenario.setTitle("Modificar Usuarios");
+            escenario.setTitle("Añadir Usuarios");
             escenario.initModality(Modality.APPLICATION_MODAL);
             escenario.showAndWait();
         } catch (IOException ex) {
-            ex.printStackTrace();
+           Utilidades.mostrarDialogoSimple("Fallo al cargar la venta","No se pudo cargar la ventana Añadir Usuario", 
+                                                                                                    Alert.AlertType.ERROR);
         }
     }
 
     @Override
-    public void notitficacionRecargarDatos() {
+    public void notificacionRecargarDatos() {
         recuperarDatos(); 
     }
 
     @Override
-    public void notitficacionRecargarDatosPorEdicion(boolean fueEditado) {
+    public void notificacionRecargarDatosPorEdicion(boolean fueEditado) {
+        if(fueEditado)
         recuperarDatos();
+    }
+    
+    private void manejarDAOException(DAOException ex) {
+        switch (ex.getCodigo()) {
+            case ERROR_CONSULTA:
+                Utilidades.mostrarDialogoSimple("Error de Consulta", 
+                        "Hubo un error al realizar la consulta. Intentelo de nuevo o hagalo mas tarde", 
+                        Alert.AlertType.ERROR);
+                break;
+            case ERROR_CONEXION_BD:
+                Utilidades.mostrarDialogoSimple("Error de conexion", 
+                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", 
+                        Alert.AlertType.ERROR);
+            default:
+                throw new AssertionError();
+        }
     }
     
 }

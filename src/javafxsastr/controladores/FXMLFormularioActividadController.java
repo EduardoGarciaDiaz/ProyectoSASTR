@@ -1,7 +1,7 @@
 /*
  * Autor: Tristan Eduardo Suarez Santiago
  * Fecha de creación: 02/06/2023
- * Descripción: Controller de la ventana FormularioActividad
+ * Descripción: Controller de la ventana para agregar y modificar actividades
  */
 
 package javafxsastr.controladores;
@@ -184,10 +184,10 @@ public class FXMLFormularioActividadController implements Initializable {
         LocalDate fechaInicioActividad = dtpInicio.getValue();
         LocalDate fechaFinActividad = dtpFin.getValue();           
         if (fechaInicioActividad.isAfter(fechaFinActividad)) {
-               Utilidades.mostrarDialogoSimple("Error","Fechas Invalidas", Alert.AlertType.ERROR);
-            } else {
-               validarHora(fechaInicioActividad, fechaFinActividad);
-            }        
+           Utilidades.mostrarDialogoSimple("Error","Fechas Invalidas", Alert.AlertType.ERROR);
+        } else {
+           validarHora(fechaInicioActividad, fechaFinActividad);
+        }        
     }
    
     private void validarHora(TextField textHora) {
@@ -197,8 +197,7 @@ public class FXMLFormularioActividadController implements Initializable {
         } else {
             btnGuardar.setDisable(true);
             textHora.setStyle("-fx-border-color:RED; -fx-border-width: 2;");
-        }
-            
+        }            
     }
     
     private void validarHora(LocalDate fechaInicioActividad, LocalDate fechaFinActividad ) {
@@ -247,10 +246,10 @@ public class FXMLFormularioActividadController implements Initializable {
             Utilidades.mostrarDialogoSimple("Registro Exitoso","Actividad agregada con exito", 
                     Alert.AlertType.INFORMATION);
             limpiarCampos();
-        } catch (DAOException ex) {
-            ex.printStackTrace();
+        } catch (DAOException ex) {            
             Utilidades.mostrarDialogoSimple("Error", "Hubo un error al registrar la actividad", 
                     Alert.AlertType.ERROR);
+            manejarDAOException(ex);
         }
     }
     
@@ -303,9 +302,9 @@ public class FXMLFormularioActividadController implements Initializable {
                     Alert.AlertType.INFORMATION);
             irAVistaActividades(estudiante);        
         } catch (DAOException ex) {
-            ex.printStackTrace();
             Utilidades.mostrarDialogoSimple("Error", "Hubo un error al modificar la actividad", 
                     Alert.AlertType.ERROR);
+            manejarDAOException(ex);
         }      
     }
     
@@ -333,7 +332,8 @@ public class FXMLFormularioActividadController implements Initializable {
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Actividades");
         } catch (IOException ex) {
-            ex.printStackTrace();
+            Utilidades.mostrarDialogoSimple("Error", "Hubo un error al cargar la ventana", 
+                    Alert.AlertType.ERROR);
         }
     } 
     
@@ -358,13 +358,14 @@ public class FXMLFormularioActividadController implements Initializable {
     private void manejarDAOException(DAOException ex) {
         switch (ex.getCodigo()) {
             case ERROR_CONSULTA:
-                ex.printStackTrace();
-                System.out.println("Ocurrió un error de consulta.");
+                Utilidades.mostrarDialogoSimple("Error de Consulta", 
+                        "Hubo un error al realizar la consulta. Intentelo de nuevo o hagalo mas tarde", 
+                        Alert.AlertType.ERROR);
                 break;
             case ERROR_CONEXION_BD:
-                ex.printStackTrace();
                 Utilidades.mostrarDialogoSimple("Error de conexion", 
-                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
+                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", 
+                                                                                    Alert.AlertType.ERROR);
                 break;
             default:
                 throw new AssertionError();
