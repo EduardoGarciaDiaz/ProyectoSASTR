@@ -271,7 +271,12 @@ public class FXMLFormularioUsuarioController implements Initializable {
         boolean datosValidos = true;
         String nombre = tfNombre.getText().trim();
         String primerApellido = tfPrimerApellido.getText().trim();
-        String segundoApellido = tfSegundoApellido.getText().trim();
+        String segundoApellido;// = tfSegundoApellido.getText().trim();
+        if (tfSegundoApellido.getText() == null) {
+            segundoApellido = "";
+        } else {
+            segundoApellido = tfSegundoApellido.getText().trim();
+        }
         String correo = tfCorreoInstitucional.getText().trim().toLowerCase();
         String contrasena = tfContrasena.getText().trim();
         boolean esAdministrador = chbxEsAdministrador.isSelected();

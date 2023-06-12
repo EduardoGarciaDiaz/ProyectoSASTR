@@ -288,12 +288,13 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
             Usuario usuario = new UsuarioDAO().obtenerUsuarioPorId(estudiante.getIdUsuario());   
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLFormularioUsuario.fxml"));
             Parent vista = accesoControlador.load();
-            FXMLFormularioUsuarioController controladorVistaVerUsuario = accesoControlador.getController();     
-            controladorVistaVerUsuario.inicializarInformacionFormulario(true, usuario);
-            controladorVistaVerUsuario.vieneDeVentanaDetallesCurso(true, this);
+            FXMLFormularioUsuarioController controladorVistaFormularioUsuario = accesoControlador.getController();   
+            controladorVistaFormularioUsuario.vieneDeVentanaDetallesCurso(true, this);
+            controladorVistaFormularioUsuario.inicializarInformacionFormulario(true, usuario);
+            controladorVistaFormularioUsuario.setUsuario(academico);
             Stage escenario = new Stage();
             escenario.setScene(new Scene(vista));
-            escenario.setTitle("Modificar Usuarios");
+            escenario.setTitle("Modificar Usuario");
             escenario.initModality(Modality.APPLICATION_MODAL);
             escenario.showAndWait();
         } catch (IOException ex) {
