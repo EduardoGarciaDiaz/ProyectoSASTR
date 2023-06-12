@@ -1,7 +1,7 @@
 /*
  * Autor: Tristan Eduardo Suarez Santiago
  * Fecha de creación: 8/06/2023
- * Descripción: Clase que agurpa disitntos patrones pára validar entradas de texto
+ * Descripción: Clase que agurpa distintos patrones pára validar entradas de texto
  */
 package javafxsastr.utils;
 
@@ -24,55 +24,60 @@ public class FiltrosTexto {
     private static final Pattern PATRON_SOLO_LETRA_NUMEROS_PUNTOS = Pattern.compile("^[\\p{L}0-9.\\s]*$");
     private static final Pattern PATRON_LET_NUM_SIG_ORT = Pattern.compile("^[\\p{L}\\p{M}0-9\\s.,!?'-]+$");
     private static final Pattern PATRON_HORA_MINUTOS = Pattern.compile("^([01]?\\d|2[0-3]):[0-5]\\d$");
+    private static final Pattern PATRON_CONTIENE_LETRAS = Pattern.compile("[a-zA-Z]+");
     
     public static  void filtroLetrasNumeros(TextInputControl campoTexto) {              
-            UnaryOperator<TextFormatter.Change> filtroTextoIngresado = change -> {
-                String textoIngresado = change.getControlNewText();
-                if (PATRON_SOLO_LETRA_NUMEROS.matcher(textoIngresado).matches() || textoIngresado.equals("")) {
-                    return change;
-                } else {
-                    return null;
-                }
-            };
+            UnaryOperator<TextFormatter.Change> filtroTextoIngresado = 
+                change -> {
+                    String textoIngresado = change.getControlNewText();
+                    if (PATRON_SOLO_LETRA_NUMEROS.matcher(textoIngresado).matches() || textoIngresado.equals("")) {
+                        return change;
+                    } else {
+                        return null;
+                    }
+                };
             TextFormatter<String> textFormatter = new TextFormatter<>(filtroTextoIngresado);
             campoTexto.setTextFormatter(textFormatter);
     };
     
     public static  void filtroHoraMinutos(TextInputControl campoTexto) {              
-            UnaryOperator<TextFormatter.Change> filtroTextoIngresado = change -> {
-                String textoIngresado = change.getControlNewText();
-                if (PATRON_HORA_MINUTOS.matcher(textoIngresado).matches() || textoIngresado.equals("")) {
-                    return change;
-                } else {
-                    return null;
-                }
-            };
+            UnaryOperator<TextFormatter.Change> filtroTextoIngresado =
+                change -> {
+                    String textoIngresado = change.getControlNewText();
+                    if (PATRON_HORA_MINUTOS.matcher(textoIngresado).matches() || textoIngresado.equals("")) {
+                        return change;
+                    } else {
+                        return null;
+                    }
+                };
             TextFormatter<String> textFormatter = new TextFormatter<>(filtroTextoIngresado);
             campoTexto.setTextFormatter(textFormatter);
     };
     
      public static  void filtroLetrasNumerosPuntos(TextInputControl campoTexto) {              
-            UnaryOperator<TextFormatter.Change> filtroTextoIngresado = change -> {
-                String textoIngresado = change.getControlNewText();
-                if (PATRON_SOLO_LETRA_NUMEROS_PUNTOS.matcher(textoIngresado).matches() || textoIngresado.equals("")) {
-                    return change;
-                } else {
-                    return null;
-                }
+            UnaryOperator<TextFormatter.Change> filtroTextoIngresado =
+                change -> {
+                    String textoIngresado = change.getControlNewText();
+                    if (PATRON_SOLO_LETRA_NUMEROS_PUNTOS.matcher(textoIngresado).matches() || textoIngresado.equals("")) {
+                        return change;
+                    } else {
+                        return null;
+                    }
             };
             TextFormatter<String> textFormatter = new TextFormatter<>(filtroTextoIngresado);
             campoTexto.setTextFormatter(textFormatter);
     };
     
     public static  void filtroLetrasNumerosPuntosComasSignosComunes(TextInputControl campoTexto) {              
-            UnaryOperator<TextFormatter.Change> filtroTextoIngresado = change -> {
-                String textoIngresado = change.getControlNewText();
-                if (PATRON_LET_NUM_SIG_ORT.matcher(textoIngresado).matches() || textoIngresado.equals("")) {
-                    return change;
-                } else {
-                    return null;
-                }
-            };
+            UnaryOperator<TextFormatter.Change> filtroTextoIngresado = 
+                change -> {
+                    String textoIngresado = change.getControlNewText();
+                    if (PATRON_LET_NUM_SIG_ORT.matcher(textoIngresado).matches() || textoIngresado.equals("")) {
+                        return change;
+                    } else {
+                        return null;
+                    }
+                };
             TextFormatter<String> textFormatter = new TextFormatter<>(filtroTextoIngresado);
             campoTexto.setTextFormatter(textFormatter);
     }; 
@@ -111,7 +116,16 @@ public class FiltrosTexto {
         }else{
             return false;
         }
-    }  
+    }
+    
+    public static boolean contieneAlMenosUnaLetra(String cadena) {
+        if ((cadena != null) && (!cadena.isEmpty())) {
+            Matcher matchPatron = PATRON_CONTIENE_LETRAS.matcher(cadena);
+            return matchPatron.find();
+        } else {
+            return false;
+        }
+    }
     
 }
 

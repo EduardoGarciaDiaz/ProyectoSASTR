@@ -676,43 +676,73 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
         return respuesta;
     }
     
-    private boolean validarLongitudesTexto() {
+    private boolean validarLongitudesTexto(boolean esValidacionParaBorrador) {
         boolean longitudValida = true;
+        String nombreTrabajoRecepcional = tfNombreTrabajoRecepcional.getText();
+        String ciudad = tfCiudad.getText();
+        String requisitos = tfRequisitos.getText();
+        String duracionAproximada = tfDuracionAproximada.getText();
+        if (esValidacionParaBorrador) {
+            if (nombreTrabajoRecepcional.length() > 300) {
+                longitudValida = false;
+                lbAdvertenciaNombreTR.setText("El número de carácteres no puede ser mayor a 300.");
+            }
+            if (ciudad.length() > 30) {
+                longitudValida = false;
+                lbAdvertenciaCiudad.setText("El número de carácteres no puede ser mayor a 30.");
+            }
+            if (requisitos.length() > 1000) {
+                longitudValida = false;
+                lbAdvertenciaRequisitos.setText("Numero de caracteres no valido.");
+            } 
+            if (duracionAproximada.length() > 15) {
+                longitudValida = false;
+                lbAdvertenciaDuracionAproximada.setText("El numero de caracteres no puede ser mayor a 15");
+            }
+        } else {
+            if (nombreTrabajoRecepcional.length() > 300 || nombreTrabajoRecepcional.length() < 30) {
+                longitudValida = false;
+                lbAdvertenciaNombreTR.setText("El número de carácteres no puede ser mayor a 300 ni menor a 30.");
+            }
+            if (ciudad.length() > 30 || ciudad.length() < 5) {
+                longitudValida = false;
+                lbAdvertenciaCiudad.setText("El número de carácteres no puede ser mayor a 30 ni menor a 3.");
+            }   
+            if (requisitos.length() > 1000 || requisitos.length() < 5) {
+                longitudValida = false;
+                lbAdvertenciaRequisitos.setText("Numero de caracteres no valido. "
+                        + "Use <<Ninguno>> si no existen requisitos");
+            } 
+            if (duracionAproximada.length() > 15 || duracionAproximada.length() < 4) {
+                longitudValida = false;
+                lbAdvertenciaDuracionAproximada.setText("Largo de duracion no valido. Ej. 1 mes, 1 dia, 12 meses.");
+            }
+        }
         if (txaNombreProyectoInvestigacion.getText().length() > 200) {
             longitudValida = false;
             lbAdvertenciaNombreProyecto.setText("El número de carácteres no puede ser mayor a 200.");
-        }
-        if (tfCiudad.getText().length() > 30) {
-            longitudValida = false;
-            lbAdvertenciaCiudad.setText("El número de carácteres no puede ser mayor a 30.");
         }
         if (tfLineaInvestigacion.getText().length() > 300) {
             longitudValida = false;
             lbAdventenciaLineaInvestigacion.setText("El número de carácteres no puede ser mayor a 300.");
         }
-        if (tfDuracionAproximada.getText().length() > 15) {
+        if (txaDescripcionTrabajoRecepcional.getText().length() < 300) {
             longitudValida = false;
-            lbAdvertenciaDuracionAproximada.setText("El número de carácteres no puede ser mayor a 15.");
+            lbAdvertenciaDescripcionTR.setText("La descripcion no puede ser menor a 300 caractéres. "
+                    + "Proporcione una descripción amplia y entendible.");
         }
-        if (tfNombreTrabajoRecepcional.getText().length() > 300) {
-            longitudValida = false;
-            lbAdvertenciaNombreTR.setText("El número de carácteres no puede ser mayor a 300.");
-        }
-        if (tfRequisitos.getText().length() > 1000) {
-            longitudValida = false;
-            lbAdvertenciaRequisitos.setText("El número de carácteres no puede ser mayor a 1000.");
-        } 
         if (txaDescripcionProyectoInvestigacion.getText().length() > 3000) {
             longitudValida = false;
             lbAdvertenciaDescripcionProyecto.setText("El número de carácteres no puede ser mayor a 3000.");
         }
-        if (txaResultados.getText().length() > 3000) {
+        if (txaResultados.getText().length() > 3000 || txaResultados.getText().length() < 20) {
             longitudValida = false;
-            lbAdvertenciaResultados.setText("El número de carácteres no puede ser mayor a 3000.");
+            lbAdvertenciaResultados.setText("El número de carácteres no puede ser mayor a 3000 ni menor a 20.");
         }
-        if (tfBibliografia.getText().length() > 3000) {
+        if (tfBibliografia.getText().length() > 3000 || tfBibliografia.getText().length() < 5) {
             longitudValida = false;
-            lbAdvertenciaBibliografia.setText("El número de carácteres no puede ser mayor a 3000.");
+            lbAdvertenciaBibliografia.setText("El número de carácteres no puede ser mayor a 3000 ni menor a 5."
+                    + "Ingrese <<Ninguna>> en caso si no hay bibliografia recomendada.");
         }
         if (txaNotasExtra.getText().length() > 1000) {
             longitudValida = false;
@@ -738,10 +768,13 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
     
     @FXML
     private void clicBtnGuardarBorrador(ActionEvent event) {
-        if (validarLongitudesTexto()) {
-            if (tfNombreTrabajoRecepcional.getText().trim().isEmpty()) {
+        if (validarLongitudesTexto(true)) {
+            String nombreTrabajoRecepcion = tfNombreTrabajoRecepcional.getText().trim();
+            if (nombreTrabajoRecepcion.isEmpty() 
+                    || nombreTrabajoRecepcion.length() < 30 ) {
                 Utilidades.mostrarDialogoSimple("Acción no permitidad.", 
-                        "Para guardar un borrador debes asignar al menos un nombre al anteproyecto.",
+                        "Para guardar un borrador debes asignar al menos un nombre al anteproyecto "
+                                + "y este debe tener de 30 a 300 caracteres de largo.",
                         Alert.AlertType.INFORMATION);
                 tfNombreTrabajoRecepcional.requestFocus();
             } else {
@@ -761,12 +794,14 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
 
     @FXML
     private void clicBtnEnviarAnteproyecto(ActionEvent event) {
-        if (validarLongitudesTexto()) {
+        if (validarLongitudesTexto(false)) {
             if (validarCamposObligatoriosLLenos()) {
                 Anteproyecto anteproyecto = prepararAnteproyecto("Sin revisar");
                 if (esEdicion) {
                     anteproyecto.setIdAnteproyecto(anteproyectoCorrecion.getIdAnteproyecto());
                     actualizarAnteproyecto(anteproyecto);
+                     Utilidades.mostrarDialogoSimple("Anteproyecto enviado",
+                        "Anteproyecto enviado para su aprobación correctamente.", Alert.AlertType.INFORMATION);
                 } else {
                     guardarAnteproyecto(anteproyecto);
                     Utilidades.mostrarDialogoSimple("Anteproyecto enviado",
