@@ -51,10 +51,26 @@ public class TarjetaEstudiante extends Pane {
     private void inicializarElementos() {
         fondoImagen = new Pane();
         imvIconoEstudiante = new ImageView(new Image("file:src/javafxsastr/recursos/iconos/estudiante.png"));
-        lbNombreEstudiante = new Label(estudiante.toString());
+        lbNombreEstudiante = new Label(obtenerNombreEstudiante());
         lbMatriculaEstudiante = new Label(estudiante.getMatriculaEstudiante());
         lbNombreTrabajoRecepcional = new Label(estudiante.getAnteproyectoEstudiante());
         btnVerAvance = new Button("Ver su avance");
+    }
+    
+    private String obtenerNombreEstudiante() {
+        String nombre = "";
+        String primerApellido = "";
+        String segundoApellido = "";
+        if (estudiante.getNombre() != null) {
+            nombre = estudiante.getNombre();
+        }
+        if (estudiante.getPrimerApellido() != null) {
+            primerApellido = estudiante.getPrimerApellido();
+        } 
+        if (estudiante.getSegundoApellido() != null) {
+            segundoApellido = estudiante.getSegundoApellido();
+        }
+        return nombre + " " + primerApellido + " " + segundoApellido;
     }
     
     private void establecerEstiloPane() {
