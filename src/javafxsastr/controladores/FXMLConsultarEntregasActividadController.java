@@ -1,14 +1,14 @@
 /*
  * Autor: Eduardo García Díaz
  * Fecha de creación: 03/06/2023
- * Descripción: Controlador de la vista de entregas de una actividad
+ * Descripción: Controla la vista de entregas de una actividad,
+ * la que visualiza el Director y Profesor de un curso
  */
 
 package javafxsastr.controladores;
 
 import java.io.IOException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -117,7 +117,7 @@ public class FXMLConsultarEntregasActividadController implements Initializable {
             } else {
                  System.err.println("La actividad que se recibió viene NULA");
             }
-        } catch(DAOException ex) {
+        } catch (DAOException ex) {
             manejarDAOException(ex);
         }
     }
@@ -200,13 +200,15 @@ public class FXMLConsultarEntregasActividadController implements Initializable {
                 }
                 return false;
             });
-        Comparator<Entrega> fechaComparator = Comparator.comparing(Entrega::getFechaEntrega);
-        List<Entrega> listaOrdenada = new ArrayList<>(filtroEntregas);
-        listaOrdenada.sort(fechaComparator.reversed());
-        mostrarEntregas(new SortedList<>(FXCollections.observableList(listaOrdenada), fechaComparator.reversed()), true);
+            Comparator<Entrega> fechaHoraComparator = Comparator.comparing(Entrega::getFechaEntrega).thenComparing(Entrega::getHoraEntrega);
+            List<Entrega> listaOrdenada = new ArrayList<>(filtroEntregas);
+            listaOrdenada.sort(fechaHoraComparator.reversed());
+            mostrarEntregas(new SortedList<>(FXCollections.observableList(listaOrdenada), fechaHoraComparator.reversed()),
+                    true);
         }
-    }    
-    
+    }
+
+
     private void irAVistaAvanceEstudiante() {
         try {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLConsultarAvanceEstudiante.fxml"));
