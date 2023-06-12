@@ -3,6 +3,7 @@
  * Fecha de creación: 04/06/2023
  * Descripción: Controller de la ventana AñadirCuerpoAcademico
  */
+
 package javafxsastr.controladores;
 
 import java.net.URL;
@@ -49,12 +50,9 @@ public class FXMLDesaginarEstudianteAnteproyectoController implements Initializa
     private INotificacionRecargarDatos interfazNotificaiconDesasignacion;
     private Anteproyecto anteproyectoModificacion;
     private boolean esSoloVisto;
-    
-   
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {      
-        
     } 
     
     public void iniciarDesasignacion(Estudiante estudiante,Anteproyecto anteproyecto,INotificacionRecargarDatos interfazNotificacion) {
@@ -122,8 +120,8 @@ public class FXMLDesaginarEstudianteAnteproyectoController implements Initializa
                 int insertDesasignacion = new DesasignacionDAO().guardarDesasignacion(desasignacion);
                 if(insertDesasignacion != -1) {              
                       Utilidades.mostrarDialogoSimple("Desasignacion exitosa",
-                        "Se desasigno exitosamente al estudiante : "+estudianteDesasignar.getNombre()+" "
-                                +estudianteDesasignar.getPrimerApellido(), Alert.AlertType.INFORMATION);
+                        "Se desasigno exitosamente al estudiante : "+estudianteDesasignar.getNombre() + " "
+                                + estudianteDesasignar.getPrimerApellido(), Alert.AlertType.INFORMATION);
                       interfazNotificaiconDesasignacion.notitficacionRecargarDatosPorEdicion(true);
                       cerrarVentana();
                 }                
@@ -171,4 +169,5 @@ public class FXMLDesaginarEstudianteAnteproyectoController implements Initializa
     private void clicBtnGuardar(ActionEvent event) {
         desasignarEstudiante();
     }
+    
 }
