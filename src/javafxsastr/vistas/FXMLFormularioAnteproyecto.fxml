@@ -320,7 +320,7 @@
             <Label layoutX="21.0" layoutY="180.0" prefHeight="52.0" prefWidth="472.0" text="El Vo. Bo. de la coordinación de SS y ER se obtienen en una reunión de la academia que se programa para ello." wrapText="true" />
          </children>
       </Pane>
-      <Pane fx:id="contenedorRubrica" layoutX="1170.0" layoutY="132.0" prefHeight="467.0" prefWidth="514.0" style="-fx-background-color: #efefef; -fx-background-radius: 15;" visible="false">
+      <Pane fx:id="contenedorRubrica" layoutX="1170.0" layoutY="132.0" prefHeight="467.0" prefWidth="514.0" style="-fx-background-color: #efefef; -fx-background-radius: 15;">
          <children>
             <RadioButton disable="true" layoutX="234.0" layoutY="78.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0">
                <toggleGroup>
@@ -370,58 +370,58 @@
             <RadioButton disable="true" layoutX="303.0" layoutY="78.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" toggleGroup="$LGACS" />
             <RadioButton disable="true" layoutX="373.0" layoutY="78.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" toggleGroup="$LGACS" />
             <RadioButton disable="true" layoutX="446.0" layoutY="78.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" toggleGroup="$LGACS" />
-            <RadioButton disable="true" layoutX="446.0" layoutY="125.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0">
+            <RadioButton disable="true" layoutX="234.0" layoutY="125.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0">
                <toggleGroup>
                   <ToggleGroup fx:id="NombreTR" />
                </toggleGroup>
             </RadioButton>
-            <RadioButton disable="true" layoutX="373.0" layoutY="125.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" toggleGroup="$NombreTR" />
-            <RadioButton disable="true" layoutX="303.0" layoutY="125.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" toggleGroup="$NombreTR" />
-            <RadioButton disable="true" layoutX="234.0" layoutY="125.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" toggleGroup="$NombreTR" />
+            <RadioButton disable="true" layoutX="307.0" layoutY="124.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" toggleGroup="$NombreTR" />
+            <RadioButton disable="true" layoutX="371.0" layoutY="124.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" toggleGroup="$NombreTR" />
+            <RadioButton disable="true" layoutX="447.0" layoutY="124.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" toggleGroup="$NombreTR" />
             <RadioButton disable="true" layoutX="234.0" layoutY="175.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0">
                <toggleGroup>
                   <ToggleGroup fx:id="DescripcionTR" />
                </toggleGroup>
             </RadioButton>
             <RadioButton disable="true" layoutX="303.0" layoutY="175.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" toggleGroup="$DescripcionTR" />
-            <RadioButton disable="true" layoutX="373.0" layoutY="175.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" toggleGroup="$DescripcionTR" />
-            <RadioButton disable="true" layoutX="446.0" layoutY="175.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" toggleGroup="$DescripcionTR" />
-            <RadioButton disable="true" layoutX="447.0" layoutY="227.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0">
+            <RadioButton disable="true" layoutX="371.0" layoutY="175.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" toggleGroup="$DescripcionTR" />
+            <RadioButton disable="true" layoutX="234.0" layoutY="227.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0">
                <toggleGroup>
                   <ToggleGroup fx:id="RequisitosAnteproyecto" />
                </toggleGroup>
             </RadioButton>
-            <RadioButton disable="true" layoutX="374.0" layoutY="227.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" toggleGroup="$RequisitosAnteproyecto" />
-            <RadioButton disable="true" layoutX="304.0" layoutY="227.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" toggleGroup="$RequisitosAnteproyecto" />
-            <RadioButton disable="true" layoutX="235.0" layoutY="227.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" toggleGroup="$RequisitosAnteproyecto" />
-            <RadioButton disable="true" layoutX="234.0" layoutY="288.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0">
+            <RadioButton disable="true" layoutX="298.0" layoutY="227.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" toggleGroup="$RequisitosAnteproyecto" />
+            <RadioButton disable="true" layoutX="374.0" layoutY="223.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" toggleGroup="$RequisitosAnteproyecto" />
+            <RadioButton disable="true" layoutX="444.0" layoutY="227.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" toggleGroup="$RequisitosAnteproyecto" />
+            <RadioButton disable="true" layoutX="228.0" layoutY="296.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0">
                <toggleGroup>
                   <ToggleGroup fx:id="ResultadosEsperados" />
                </toggleGroup>
             </RadioButton>
-            <RadioButton disable="true" layoutX="302.0" layoutY="288.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" toggleGroup="$ResultadosEsperados" />
-            <RadioButton disable="true" layoutX="374.0" layoutY="288.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" toggleGroup="$ResultadosEsperados" />
-            <RadioButton disable="true" layoutX="447.0" layoutY="288.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" toggleGroup="$ResultadosEsperados" />
-            <RadioButton disable="true" layoutX="447.0" layoutY="355.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0">
+            <RadioButton disable="true" layoutX="298.0" layoutY="296.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" toggleGroup="$ResultadosEsperados" />
+            <RadioButton disable="true" layoutX="373.0" layoutY="288.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" toggleGroup="$ResultadosEsperados" />
+            <RadioButton disable="true" layoutX="443.0" layoutY="288.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" toggleGroup="$ResultadosEsperados" />
+            <RadioButton disable="true" layoutX="228.0" layoutY="355.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0">
                <toggleGroup>
                   <ToggleGroup fx:id="BibliografiasRecomendadas" />
                </toggleGroup>
             </RadioButton>
-            <RadioButton disable="true" layoutX="374.0" layoutY="355.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" toggleGroup="$BibliografiasRecomendadas" />
-            <RadioButton disable="true" layoutX="304.0" layoutY="355.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" toggleGroup="$BibliografiasRecomendadas" />
-            <RadioButton disable="true" layoutX="235.0" layoutY="355.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" toggleGroup="$BibliografiasRecomendadas" />
-            <RadioButton disable="true" layoutX="237.0" layoutY="409.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0">
+            <RadioButton disable="true" layoutX="298.0" layoutY="355.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" toggleGroup="$BibliografiasRecomendadas" />
+            <RadioButton disable="true" layoutX="371.0" layoutY="345.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" toggleGroup="$BibliografiasRecomendadas" />
+            <RadioButton disable="true" layoutX="443.0" layoutY="355.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" toggleGroup="$BibliografiasRecomendadas" />
+            <RadioButton disable="true" layoutX="228.0" layoutY="415.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0">
                <toggleGroup>
                   <ToggleGroup fx:id="Redaccion" />
                </toggleGroup>
             </RadioButton>
-            <RadioButton disable="true" layoutX="306.0" layoutY="409.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" toggleGroup="$Redaccion" />
-            <RadioButton disable="true" layoutX="376.0" layoutY="409.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" toggleGroup="$Redaccion" />
-            <RadioButton disable="true" layoutX="449.0" layoutY="409.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" toggleGroup="$Redaccion" />
+            <RadioButton disable="true" layoutX="293.0" layoutY="409.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" toggleGroup="$Redaccion" />
+            <RadioButton disable="true" layoutX="371.0" layoutY="409.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" toggleGroup="$Redaccion" />
+            <RadioButton disable="true" layoutX="443.0" layoutY="409.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" toggleGroup="$Redaccion" />
             <Label alignment="CENTER" contentDisplay="CENTER" layoutX="211.0" layoutY="21.0" prefHeight="50.0" prefWidth="62.0" style="-fx-text-alignment: center;" text="Muy bueno" wrapText="true" />
             <Label layoutX="291.0" layoutY="39.0" text="Bueno" />
             <Label layoutX="360.0" layoutY="40.0" text="Regular" />
             <Label layoutX="430.0" layoutY="41.0" text="Corregir" />
+            <RadioButton disable="true" layoutX="445.0" layoutY="176.0" mnemonicParsing="false" toggleGroup="$DescripcionTR" />
          </children>
       </Pane>
       <Pane fx:id="contenedorComentariosProfesor" layoutX="1162.0" layoutY="599.0" prefHeight="237.0" prefWidth="532.0" visible="false">

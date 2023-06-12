@@ -21,6 +21,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafxsastr.JavaFXSASTR;
+import javafxsastr.modelos.dao.AcademicoDAO;
 import javafxsastr.modelos.dao.DAOException;
 import javafxsastr.modelos.dao.EstudianteDAO;
 import javafxsastr.modelos.dao.UsuarioDAO;
@@ -76,10 +77,16 @@ public class FXMLVerUsuarioController implements Initializable {
             lbCorreoInstitucional.setText(usuarioVisualizacion.getCorreoInstitucional());
         }
         try {
-            if (new EstudianteDAO().obtenerEstudiantePorIdUsuario(usuarioVisualizacion.getIdUsuario()).getIdEstudiante()>0) {
+            if (new EstudianteDAO()
+                    .obtenerEstudiantePorIdUsuario(usuarioVisualizacion.getIdUsuario())
+                    .getIdEstudiante() > 0) {
                 lbTipoUsuario.setText("Estudiante");
-            } else {
+            } else if (new AcademicoDAO()
+                    .obtenerAcademicoPorIdUsuario(usuarioVisualizacion.getIdUsuario())
+                    .getIdAcademico() > 0) {
                 lbTipoUsuario.setText("Academico");
+            } else {
+                lbTipoUsuario.setText("Ninguno.");
             }
         } catch (DAOException ex) {
             manejarDAOException(ex);

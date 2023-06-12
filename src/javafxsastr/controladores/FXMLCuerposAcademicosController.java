@@ -80,8 +80,7 @@ public class FXMLCuerposAcademicosController implements Initializable {
         } catch (DAOException ex) {
             manejarDAOException(ex);
         }
-    }
-    
+    } 
     
     private void cargarTarjetasCuerpoAcademico() {
         for (CuerpoAcademico cuerposAcademico : cuerposAcademicos) {
@@ -111,7 +110,7 @@ public class FXMLCuerposAcademicosController implements Initializable {
         obtenerCuerposAcademicos();
         FXCollections.sort(cuerposAcademicos, Comparator.comparing(CuerpoAcademico::getNombreCuerpoAcademico));
         cargarTarjetasCuerpoAcademico();
-     }
+    }
    
     private void cargarLgacs() {
         contenedorTarjetasCuerpoAcademico.getChildren().clear();

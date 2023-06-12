@@ -355,9 +355,10 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
             eliminarRelacionesLgacCA(cuerpoEdicion.getIdCuerpoAcademico());
             for (int i = 0; i < lgacsEdicion.size(); i++) {
                     if (cuerpoAcademicoDao.verificarRelacionCaLgac(lgacsEdicion.get(i).getIdLgac(),
-                            cuerpoEdicion.getIdCuerpoAcademico()) == 0) {
-                            cuerpoAcademicoDao.agregarRelacionCUconLgac(cuerpoEdicion.getIdCuerpoAcademico(),
-                                                                      lgacsEdicion.get(i).getIdLgac());
+                            cuerpoEdicion.getIdCuerpoAcademico()) == 0) {                            
+                        cuerpoAcademicoDao
+                                .agregarRelacionCUconLgac(cuerpoEdicion.getIdCuerpoAcademico(), 
+                                        lgacsEdicion.get(i).getIdLgac());
                     }                    
             }            
             Utilidades.mostrarDialogoSimple("Actualizacion exitosa", "Se actualizo el cuerpo academico exitosamente",
@@ -402,9 +403,9 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
             if (nombreCa.trim().length() > 5 && diciplina.trim().length() > 0 && descripcion.trim().length() > 10 
                 && nombreCa.length() < 100 && diciplina.length() < 200 && descripcion.length() < 600 &&
                 nombreRca.length() > 5  && tblvLgacs.getItems().size() > 0) {
-                 habilitarBtnGuardar();
+                habilitarBtnGuardar();
             } else {
-                 btnGuardar.setDisable(true);
+                btnGuardar.setDisable(true);
             }
         }
      }    
@@ -477,7 +478,7 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
             } else {
                  if (cuerpoAcademicoDao.verificarSiAcademicoEsResponsableDeCA(idAcademicoSeleccionado)) {
                     Utilidades.mostrarDialogoSimple("Error",
-                        "Este Academico ya es Responsable de un Cuerpo Academico actualmente, seleccione otro.",
+                        "Este academico ya es responsable de un cuerpo academico actualmente. Seleccione otro.",
                         Alert.AlertType.WARNING);
                     return false;
                  }                 
@@ -519,12 +520,13 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
             escenario.setTitle("Inicio");
             escenario.show();
         } catch (IOException ex) {
-            Utilidades.mostrarDialogoSimple("Fallo al cargar la venta","No se pudo cargar la ventana de Cuerpos Academicos", Alert.AlertType.ERROR);
+            Utilidades.mostrarDialogoSimple("Fallo al cargar la venta",
+                    "No se pudo cargar la ventana de Cuerpos Academicos", Alert.AlertType.ERROR);
         }
     } 
      
     private void mostraMensajelimiteSuperado(int limiteCaracteres, String campo,  Label etiquetaError) { 
-        etiquetaError.setText("Cuidado, Exediste el limite de caracteres("+limiteCaracteres+") de este campo " + campo);
+        etiquetaError.setText("Cuidado, excediste el limite de caracteres("+limiteCaracteres+") de este campo " + campo);
         btnGuardar.setDisable(true);
     }    
 
@@ -557,7 +559,7 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
     @FXML
     private void clicBtnCancelar(ActionEvent event) {
         if (Utilidades.mostrarDialogoConfirmacion("Cancelar Captura de Cuerpo Academico",
-                "Estas seguro que deseas cancelar el registro del cuerpo academico, se perderan todos los cambios")) {
+                "¿Estas seguro que deseas cancelar el registro del cuerpo academico? Se perderán todos los cambios.")) {
             cerrarVentana();
         }        
     }

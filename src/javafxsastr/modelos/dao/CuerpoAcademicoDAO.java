@@ -23,7 +23,8 @@ public class CuerpoAcademicoDAO {
             + "(SELECT idAcademico FROM cuerpos_academicos WHERE idAcademico = ?) as esResponsableDeCA;";
     private final String OBTENER_CUERPOS_ACADEMICOS = "SELECT "
             + "idCuerpoAcademico, nombreCuerpoAcademico, disciplinaCuerpoAcademico, "
-            + "nombreArea, concat(nombreUsuario,' ', primerApellidoUsuario,' ',segundoApellidoUsuario) as nombreResponsable, "
+            + "nombreArea, concat(nombreUsuario,' ', primerApellidoUsuario,' ',(IFNULL(u.segundoApellidoUsuario, ''))) "
+            + "as nombreResponsable, "
             + "ca.idAcademico, ca.idArea, ca.descripcion "
             + "FROM sastr.cuerpos_academicos ca "
             + "INNER JOIN areas a ON ca.idArea = a.idArea "

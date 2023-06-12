@@ -117,14 +117,6 @@ public class FXMLValidarAnteproyectoController implements Initializable {
     @FXML
     private TextArea txaComentarios;
     @FXML
-    private RadioButton t0;
-    @FXML
-    private RadioButton t1;
-    @FXML
-    private RadioButton t2;
-    @FXML
-    private RadioButton t3;
-    @FXML
     private VBox vbxLgacs;
     @FXML
     private VBox vbxCodirectores;
