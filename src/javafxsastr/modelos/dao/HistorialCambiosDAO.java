@@ -29,7 +29,7 @@ public class HistorialCambiosDAO {
             PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(Consulta_Historial_Cambios);
             sentencia.setInt(1, idActividad);
             ResultSet resultadoConsulta = sentencia.executeQuery();
-            while(resultadoConsulta.next()) {
+            while (resultadoConsulta.next()) {
                 HistorialCambios historialCambios = new HistorialCambios();
                 historialCambios.setFechaDeModificacion(resultadoConsulta.getDate("fechaDeModificacion").toString());
                 historialCambios.setFechaAnterior(resultadoConsulta.getDate("fechaAnterior").toString());
@@ -46,8 +46,7 @@ public class HistorialCambiosDAO {
     }
     
     public int guardarHistorialCambios(HistorialCambios historialNuevo) throws DAOException{
-        int respuestaExito = -1;
-        
+        int respuestaExito = -1;        
             PreparedStatement sentencia;
         try {
             sentencia = ConexionBD.obtenerConexionBD().prepareStatement(Guardar_Historial_Cambios_Nuevo, Statement.RETURN_GENERATED_KEYS);

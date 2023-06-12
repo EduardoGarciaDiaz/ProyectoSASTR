@@ -166,15 +166,15 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
         for (int i = 0; (i < numFilas && numeroEstudiantes != contadorGeneral) || i == 0; i++) {
             HBox fila = new HBox();           
             fila.setSpacing(60);
-            if(i==0){
+            if (i==0){
                 TarjetaAgregarAlumno tarjetaAgregarAlumno = new TarjetaAgregarAlumno();
                 fila.getChildren().add(tarjetaAgregarAlumno);
                 tarjetaAgregarAlumno.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     public void handle(MouseEvent event) {  
-                        if(cursoActual.getIdEstadoCurso() == 2) {
+                        if (cursoActual.getIdEstadoCurso() == 2) {
                             Utilidades.mostrarDialogoSimple("Accion invalida","No puedes asignar estudiantes a un curso inactivo",
                                     Alert.AlertType.WARNING);
-                        }else {
+                        } else {
                             irVistaAgregarAlumno();
                         }
                     }
@@ -184,10 +184,10 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
                 TarjetaEstudianteCurso tarjeta = new TarjetaEstudianteCurso(estudiantes.get(contadorGeneral));
                 tarjeta.getBotonDesactivar().setOnMouseClicked(new EventHandler<MouseEvent>() {
                     public void handle(MouseEvent event) {
-                            if(tarjeta.getEstudiante().getIdEstadoUsuario() == 1) {                                    
+                            if (tarjeta.getEstudiante().getIdEstadoUsuario() == 1) {                                    
                                 desactivarUsuario(tarjeta.getEstudiante());
 
-                            }else {                            
+                            } else {                            
                                  activarUsuario(tarjeta.getEstudiante());
                             }                                
                         }
@@ -256,7 +256,7 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
         if (cursoActual.getIdEstadoCurso()== 1) {
            imvActivar.setImage(new Image("file:src/javafxsastr/recursos/iconos/desactivarCurso.jpg")); 
            crlEstadoCurso.setFill(Color.web("#C3E0BE"));
-        }else {
+        } else {
             imvActivar.setImage(new Image("file:src/javafxsastr/recursos/iconos/activarEstudiante.png")); 
             crlEstadoCurso.setFill(Color.web("#EBE555"));
         }        
@@ -316,13 +316,13 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
     
     @FXML
     private void clicDesactivarCurso(MouseEvent event) {
-        if(cursoActual.getIdEstadoCurso() == 1) {
-            if(Utilidades.mostrarDialogoConfirmacion("Desactivar curso",
+        if (cursoActual.getIdEstadoCurso() == 1) {
+            if (Utilidades.mostrarDialogoConfirmacion("Desactivar curso",
                 "¿Estas seguro que deseas desactivar el curso?")) {
                       desactivarCurso(cursoActual);
             }          
-        }else {
-            if(Utilidades.mostrarDialogoConfirmacion("Activar curso",
+        } else {
+            if (Utilidades.mostrarDialogoConfirmacion("Activar curso",
                 "¿Estas seguro que deseas activar el curso?")) {
                       activarCurso(cursoActual);
             }         
@@ -369,7 +369,7 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
 
     @Override
     public void notificacionRecargarDatosPorEdicion(boolean fueEditado) {
-       if(fueEditado) {
+       if (fueEditado) {
            recargarCurso();
        }
     }

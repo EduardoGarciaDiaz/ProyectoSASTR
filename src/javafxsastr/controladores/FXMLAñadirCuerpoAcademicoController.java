@@ -138,9 +138,9 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
         recuperarAreas();
         inicializarLisneters();  
         inicializarFiltrosDeTexto();
-        if(esVerDetalles) {            
+        if (esVerDetalles) {            
             lbTituloventana.setText("Detalles Cuerpo Academico");
-        }else {
+        } else {
             btnGuardar.setDisable(true);
         }
     }  
@@ -149,14 +149,14 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
         this.esVerDetalles = verDetalles; 
         this.esEdicion = esEdicion;
         this.usuario = usuarioActual;
-        if(esVerDetalles) {
+        if (esVerDetalles) {
             cuerpoAcademicoEdicion = cu;
             responsableOriginalEdicion = cu.getIdAcademico();       
             idAcademicoSeleccionado = cu.getIdAcademico(); 
             CargarInformacionCuerpoAcademico();
-            if(esEdicion) {
+            if (esEdicion) {
                 bloquearCamposEdicion(true);
-            }else{ 
+            } else { 
                 bloquearCamposEdicion(false);
             }  
             
@@ -196,12 +196,12 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
         btnAñadirUsuario.setVisible(esEditable);
         btnCancelar.setVisible(esEditable);
         imvEliminar.setVisible(esEditable);
-        if(esEditable) {
+        if (esEditable) {
             btnGuardar.setText("Guardar CA");
             btnGuardar.setDisable(true);
             cmbAreas.setDisable(false);
             CargarInformacionCuerpoAcademico();
-        }else {
+        } else {
             cmbAreas.setDisable(true);
             btnGuardar.setText("Modificar"); 
             btnGuardar.setDisable(false);
@@ -213,10 +213,10 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
         txfNombreCA.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if(txfNombreCA.getText().length() <= LIM_CARACT_NOMBRE) {
+                if (txfNombreCA.getText().length() <= LIM_CARACT_NOMBRE) {
                     validarBtnGuardar();
                     lbNombre.setText("");
-                }else { 
+                } else { 
                     mostraMensajelimiteSuperado(LIM_CARACT_NOMBRE,"Nombre CA",lbNombre);
                 }                
             }
@@ -229,10 +229,10 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
         txfDiciplinaCA.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                 if(txfDiciplinaCA.getText().length() <= LIM_CARACT_DICIPLINA) {
+                 if (txfDiciplinaCA.getText().length() <= LIM_CARACT_DICIPLINA) {
                     validarBtnGuardar();
                     lbDiciplina.setText("");
-                }else { 
+                } else { 
                     mostraMensajelimiteSuperado(LIM_CARACT_DICIPLINA,"Diciplina", lbDiciplina);
                 }                 
             }
@@ -240,10 +240,10 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
          txaDescripcionCA.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                 if(txaDescripcionCA.getText().length() <= LIM_CARACT_DESCRIPCION) {
+                 if (txaDescripcionCA.getText().length() <= LIM_CARACT_DESCRIPCION) {
                     validarBtnGuardar();
                     lbDescripcion.setText("");
-                }else { 
+                } else { 
                     mostraMensajelimiteSuperado(LIM_CARACT_DESCRIPCION,"Descripcion CA", lbDescripcion);
                 } 
             }
@@ -257,42 +257,42 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
         
         CampoDeBusqueda<Academico> campoDeBusqueda = new CampoDeBusqueda<>(bsdAcademico, lvAcademicos,
                           academicosBusqueda, academico, new INotificacionSeleccionItem<Academico>() {
-            @Override
-            public void notificarSeleccionItem(Academico itemSeleccionado) {
-                academico = itemSeleccionado; 
-                lbCorreoResponsable.requestFocus();
-            }
-            @Override
-            public void notificarPerdidaDelFoco() {
-                if(academico != null) {
-                    lbNombreResponsable.setText(academico.getNombre()+" "+academico.getPrimerApellido()+" "+academico.getSegundoApellido());
-                    lbCorreoResponsable.setText(academico.getCorreoInstitucional());
-                    bsdAcademico.setText("");
-                    idAcademicoSeleccionado = academico.getIdAcademico();
-                    validarBtnGuardar();
-                }                
-            }
+                @Override
+                public void notificarSeleccionItem(Academico itemSeleccionado) {
+                    academico = itemSeleccionado; 
+                    lbCorreoResponsable.requestFocus();
+                }
+                @Override
+                public void notificarPerdidaDelFoco() {
+                    if (academico != null) {
+                        lbNombreResponsable.setText(academico.getNombre()+" "+academico.getPrimerApellido()+" "+academico.getSegundoApellido());
+                        lbCorreoResponsable.setText(academico.getCorreoInstitucional());
+                        bsdAcademico.setText("");
+                        idAcademicoSeleccionado = academico.getIdAcademico();
+                        validarBtnGuardar();
+                    }                
+                }
             }
         );
         CampoDeBusqueda<Lgac> campoDeBusquedaLgca = new CampoDeBusqueda<>(bsdLgac, lvLgac,
             lgacs, lgacSelected, new INotificacionSeleccionItem<Lgac>() {            
-            @Override
-            public void notificarSeleccionItem(Lgac itemSeleccionado) {
-                lgacSelected = itemSeleccionado; 
-                lbCorreoResponsable.requestFocus();
-            }
-            @Override
-            public void notificarPerdidaDelFoco() {
-               if(lgacSelected != null) {
-                    if(verificarTabla()) {
-                        lgacsEntabla.add(lgacSelected);
-                        mostrarLgacEnTabla();                         
-                    }else{
-                        bsdLgac.setText("");
-                    }
-               } 
-               validarBtnGuardar();
-            }
+                @Override
+                public void notificarSeleccionItem(Lgac itemSeleccionado) {
+                    lgacSelected = itemSeleccionado; 
+                    lbCorreoResponsable.requestFocus();
+                }
+                @Override
+                public void notificarPerdidaDelFoco() {
+                   if (lgacSelected != null) {
+                        if(verificarTabla()) {
+                            lgacsEntabla.add(lgacSelected);
+                            mostrarLgacEnTabla();                         
+                        } else {
+                            bsdLgac.setText("");
+                        }
+                   } 
+                   validarBtnGuardar();
+                }
             }
         );    
     }
@@ -325,7 +325,7 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
             cuerpoNuevo.setIdAcademico(idAcademicoSeleccionado);
             cuerpoNuevo.setDescripcion(descripcion);
             int exito = cuerpoAcademicoDao.agregarCuerpoAcademico(cuerpoNuevo);
-            if(exito != -1) {
+            if (exito != -1) {
                 Utilidades.mostrarDialogoSimple("Registro exitoso", "Se registro el cuerpo academico exitosamente",
                                                                                             Alert.AlertType.INFORMATION);
                 cerrarVentana();
@@ -354,7 +354,7 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
             cuerpoAcademicoDao.actualizarCuerpoAcademico(cuerpoEdicion);
             eliminarRelacionesLgacCA(cuerpoEdicion.getIdCuerpoAcademico());
             for (int i = 0; i < lgacsEdicion.size(); i++) {
-                    if(cuerpoAcademicoDao.verificarRelacionCaLgac(lgacsEdicion.get(i).getIdLgac(),
+                    if (cuerpoAcademicoDao.verificarRelacionCaLgac(lgacsEdicion.get(i).getIdLgac(),
                             cuerpoEdicion.getIdCuerpoAcademico()) == 0) {
                             cuerpoAcademicoDao.agregarRelacionCUconLgac(cuerpoEdicion.getIdCuerpoAcademico(),
                                                                       lgacsEdicion.get(i).getIdLgac());
@@ -378,11 +378,11 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
             boolean hayRelacion = false;
             for (int i = 0; i < relacionCaLgac.size(); i++) {
                 for (int j = 0; j < lgacsEdicion.size(); j++) {
-                    if(relacionCaLgac.get(i).getLgac() == lgacsEdicion.get(j).getIdLgac()) {
+                    if (relacionCaLgac.get(i).getLgac() == lgacsEdicion.get(j).getIdLgac()) {
                         hayRelacion = true;                        
                     }
                 }
-                if(!hayRelacion) {
+                if (!hayRelacion) {
                     cuerpoAcademicoDao.eliminarRelacionCuerpoLgac(relacionCaLgac.get(i).getIdCuerpoAcademicoLgac());
                 }
                 hayRelacion = false;
@@ -393,17 +393,17 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
     }  
     
     private void validarBtnGuardar() {  
-        if(!cmbAreas.getSelectionModel().isEmpty()) {
+        if (!cmbAreas.getSelectionModel().isEmpty()) {
             nombreCa = txfNombreCA.getText() ;
             area = cmbAreas.getSelectionModel().getSelectedItem().getIdArea();
             diciplina = txfDiciplinaCA.getText();
             descripcion = txaDescripcionCA.getText();
             nombreRca = lbNombreResponsable.getText(); 
-            if(nombreCa.trim().length() > 5 && diciplina.trim().length() > 0 && descripcion.trim().length() > 10 
+            if (nombreCa.trim().length() > 5 && diciplina.trim().length() > 0 && descripcion.trim().length() > 10 
                 && nombreCa.length() < 100 && diciplina.length() < 200 && descripcion.length() < 600 &&
                 nombreRca.length() > 5  && tblvLgacs.getItems().size() > 0) {
                  habilitarBtnGuardar();
-            }else {
+            } else {
                  btnGuardar.setDisable(true);
             }
         }
@@ -427,14 +427,14 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
     private boolean verificarTabla() {
         lgacsEntabla = tblvLgacs.getItems();
         for (int i = 0; i < lgacsEntabla.size(); i++) {
-            if(lgacsEntabla.get(i).getIdLgac() == lgacSelected.getIdLgac()) return false;           
+            if (lgacsEntabla.get(i).getIdLgac() == lgacSelected.getIdLgac()) return false;           
         }       
         return true;        
     }
     
     private void eliminarLgacTabla(Lgac lgacEliminar) {
         for (int i = 0; i < lgacsEntabla.size(); i++) {
-            if(lgacsEntabla.get(i).getIdLgac() == lgacEliminar.getIdLgac()) 
+            if (lgacsEntabla.get(i).getIdLgac() == lgacEliminar.getIdLgac()) 
                 lgacsEntabla.remove(i);           
         }          
         validarBtnGuardar();
@@ -458,7 +458,7 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
     private boolean validarExistenciaCuerpoAcademico() {   
         try {       
             CuerpoAcademicoDAO cuerpoAcademicoDao = new CuerpoAcademicoDAO();             
-            if(cuerpoAcademicoDao.verificarSiCuerpoAcademicoExiste(nombreCa)) {
+            if (cuerpoAcademicoDao.verificarSiCuerpoAcademicoExiste(nombreCa)) {
                 Utilidades.mostrarDialogoSimple("Error","Este Cuerpo Academico ya existe", 
                                                                         Alert.AlertType.WARNING);
                 return false;
@@ -472,10 +472,10 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
     private boolean validarExistenciaResponsable()  {
         try {
             CuerpoAcademicoDAO cuerpoAcademicoDao = new CuerpoAcademicoDAO();
-            if(responsableOriginalEdicion == idAcademicoSeleccionado) {
+            if (responsableOriginalEdicion == idAcademicoSeleccionado) {
                 return true ;                
-            }else {
-                 if(cuerpoAcademicoDao.verificarSiAcademicoEsResponsableDeCA(idAcademicoSeleccionado)) {
+            } else {
+                 if (cuerpoAcademicoDao.verificarSiAcademicoEsResponsableDeCA(idAcademicoSeleccionado)) {
                     Utilidades.mostrarDialogoSimple("Error",
                         "Este Academico ya es Responsable de un Cuerpo Academico actualmente, seleccione otro.",
                         Alert.AlertType.WARNING);
@@ -535,19 +535,19 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
 
     @FXML
     private void clicBtnGuardar(ActionEvent event) {
-        if(esVerDetalles) { 
-            if(esEdicion) {
-                if(validarExistenciaResponsable()) {
+        if (esVerDetalles) { 
+            if (esEdicion) {
+                if (validarExistenciaResponsable()) {
                  actualizarCuerpoAcademico();
                 } 
-            }else {
+            } else {
                 bloquearCamposEdicion(true);
                 esEdicion = true;
             }
                       
-        }else {
-            if(validarExistenciaCuerpoAcademico()) {
-                if(validarExistenciaResponsable()) {
+        } else {
+            if (validarExistenciaCuerpoAcademico()) {
+                if (validarExistenciaResponsable()) {
                  registrarCuerpoAcademico();
                 }    
             }              
@@ -556,7 +556,7 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
 
     @FXML
     private void clicBtnCancelar(ActionEvent event) {
-        if( Utilidades.mostrarDialogoConfirmacion("Cancelar Captura de Cuerpo Academico",
+        if (Utilidades.mostrarDialogoConfirmacion("Cancelar Captura de Cuerpo Academico",
                 "Estas seguro que deseas cancelar el registro del cuerpo academico, se perderan todos los cambios")) {
             cerrarVentana();
         }        
@@ -584,7 +584,7 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
     @FXML
     private void clicEliminarLgac(ActionEvent event) {
         Lgac lgacEliminar = tblvLgacs.getSelectionModel().getSelectedItem();   
-        if(lgacEliminar!= null) {
+        if (lgacEliminar!= null) {
             eliminarLgacTabla(lgacEliminar);
             mostrarLgacEnTabla();
         }        
@@ -623,7 +623,7 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
 
     @Override
     public void notificacionRecargarDatosPorEdicion(boolean fueEditado) {
-        if(fueEditado)
+        if (fueEditado)
         recuperarDatos();
     }
     

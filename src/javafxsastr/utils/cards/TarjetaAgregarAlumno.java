@@ -15,6 +15,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
 public class TarjetaAgregarAlumno extends Pane{
+    
     private Pane fondo;    
     private Label instruccion;
     private ImageView imvIconoAgregar;

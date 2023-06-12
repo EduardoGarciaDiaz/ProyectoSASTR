@@ -34,7 +34,7 @@ public class ArchivoDAO {
         try {
             PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(CONSULTA_ARCHIVOS);
             ResultSet resultadoConsultaArchivos = sentencia.executeQuery();
-            while(resultadoConsultaArchivos.next()) {
+            while (resultadoConsultaArchivos.next()) {
                 Archivo archivo = new Archivo();
                 archivo.setIdArchivo(resultadoConsultaArchivos.getInt("idArchivo"));
                 archivo.setNombreArchivo(resultadoConsultaArchivos.getString("nombreArchivo"));
@@ -57,7 +57,7 @@ public class ArchivoDAO {
             PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(CONSULTA_ARCHIVO_UNICO);
             sentencia.setInt(1, idArchivo);
             ResultSet resultadoConsultaArchivos = sentencia.executeQuery();
-            if(resultadoConsultaArchivos.next()) {                
+            if (resultadoConsultaArchivos.next()) {                
                 archivo.setIdArchivo(resultadoConsultaArchivos.getInt("idArchivo"));
                 archivo.setNombreArchivo(resultadoConsultaArchivos.getString("nombreArchivo"));
                 archivo.setArchivo(resultadoConsultaArchivos.getBytes("archivo"));
@@ -83,7 +83,7 @@ public class ArchivoDAO {
             sentencia.setInt(4,archivoNuevo.getIdEntrega());
             sentencia.executeUpdate();
             ResultSet resultadoOperacion = sentencia.getGeneratedKeys();
-            if(resultadoOperacion.next()) {
+            if (resultadoOperacion.next()) {
                 respuestaExito = resultadoOperacion.getInt(1);
             }
             ConexionBD.cerrarConexionBD();
@@ -130,7 +130,7 @@ public class ArchivoDAO {
             PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(CONSULTAR_ARCHIVOS_POR_ENTREGA);
             sentencia.setInt(1, idEntrega);
             ResultSet resultadoConsultaArchivos = sentencia.executeQuery();
-            while(resultadoConsultaArchivos.next()) {
+            while (resultadoConsultaArchivos.next()) {
                 Archivo archivo = new Archivo();
                 archivo.setIdArchivo(resultadoConsultaArchivos.getInt("idArchivo"));
                 archivo.setNombreArchivo(resultadoConsultaArchivos.getString("nombreArchivo"));

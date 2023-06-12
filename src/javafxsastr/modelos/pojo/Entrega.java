@@ -22,7 +22,8 @@ public class Entrega {
     public Entrega() {
     }
     
-    public Entrega(int idEntrega, String comentarioAlumno, String fechaEntrega, String horaEntrega, String comentarioDirector, String fechaRevision, String horaRevision, int idActividad, int idAcademico) {
+    public Entrega(int idEntrega, String comentarioAlumno, String fechaEntrega, String horaEntrega, String comentarioDirector,
+                                                String fechaRevision, String horaRevision, int idActividad, int idAcademico) {
         this.idEntrega = idEntrega;
         this.comentarioAlumno = comentarioAlumno;
         this.fechaEntrega = fechaEntrega;

@@ -20,7 +20,8 @@ public class HistorialCambios {
     public HistorialCambios() {
     }
 
-    public HistorialCambios(int idHistorialCambio, String fechaDeModificacion, String fechaAnterior, String horaAnterior, String fechaNueva, String horaNueva, int idActividad) {
+    public HistorialCambios(int idHistorialCambio, String fechaDeModificacion, String fechaAnterior,
+                        String horaAnterior, String fechaNueva, String horaNueva, int idActividad) {
         this.idHistorialCambio = idHistorialCambio;
         this.fechaDeModificacion = fechaDeModificacion;
         this.fechaAnterior = fechaAnterior;

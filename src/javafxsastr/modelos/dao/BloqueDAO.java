@@ -1,7 +1,7 @@
 /*
  * Autor: Tritan Eduardo Suarez Santiago
  * Fecha de creación: 15/05/2023
- * Descripción: Clase DAO de los archivos
+ * Descripción: Clase DAO de los bloques
  */
 
 package javafxsastr.modelos.dao;

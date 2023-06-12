@@ -17,6 +17,7 @@ import javafxsastr.modelos.pojo.Estudiante;
 
 
 public class TarjetaAgregarEstudianteCurso extends Pane {
+    
     private Pane fondo ;
     private  Label nombreEstudiante;
     private  ImageView imvEliminar ;
@@ -30,7 +31,7 @@ public class TarjetaAgregarEstudianteCurso extends Pane {
         establecerEstiloNombreEstudiante();
         nombreEstudiante.setText(estudiante.getNombre()
                +" "+estudiante.getPrimerApellido()+ " "+ estudiante.getSegundoApellido()+ "      " +estudiante.getMatriculaEstudiante());
-        getChildren().addAll(fondo, nombreEstudiante);       
+               getChildren().addAll(fondo, nombreEstudiante);       
     }
     
     public Pane getImagen() {
@@ -50,8 +51,7 @@ public class TarjetaAgregarEstudianteCurso extends Pane {
     private void establecerEstiloPane() {
         setPrefSize(530, 30);
         setLayoutX(20);
-        setLayoutY(20);
-         
+        setLayoutY(20);         
         this.setStyle("-fx-background-color: #F4F4F4");
     }
     

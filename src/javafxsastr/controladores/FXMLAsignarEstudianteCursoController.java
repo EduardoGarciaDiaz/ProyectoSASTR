@@ -59,7 +59,7 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
     
     public void iniciarEstudiantes(ObservableList<Estudiante> estudiantes, Curso curso, INotificacionRecargarDatos interfazN) {
         interfaz = interfazN;
-        if(estudiantes != null) {
+        if (estudiantes != null) {
             estudiantesActuales = FXCollections.observableArrayList((estudiantes));                    
         } 
         recuperarEstudinates();
@@ -82,9 +82,9 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
             }
             @Override
             public void notificarPerdidaDelFoco() {                
-                if(validarEstudianteEnCurso()) {                    
+                if (validarEstudianteEnCurso()) {                    
                     AgregarATabla();
-                }else {
+                } else {
                     Utilidades.mostrarDialogoSimple("Accion invalida", "Este Estudiante ya pertenece a un curso",
                             Alert.AlertType.INFORMATION);                   
                 }
@@ -103,20 +103,20 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
     
     private boolean validarEstudianteEnCurso() {
         CursoDAO  cursoDao= new CursoDAO();
-        if(estudianteSeleccionado != null) {            
+        if (estudianteSeleccionado != null) {            
             for (Estudiante estudiantes : estudiantesActuales) {
                 if (estudiantes.getIdEstudiante() == estudianteSeleccionado.getIdEstudiante()) {
                     return false;
                 }
             }
             try {
-                if(cursoDao.verificarSiEstudiantePerteneceACursoActivo(estudianteSeleccionado.getIdEstudiante())){
+                if (cursoDao.verificarSiEstudiantePerteneceACursoActivo(estudianteSeleccionado.getIdEstudiante())){
                     return false;
                 }
             } catch (DAOException ex) {
                 manejarDAOException(ex);
             }
-            if(estudiantesTabla != null) {
+            if (estudiantesTabla != null) {
                 for (Estudiante estudiante1 : estudiantesTabla) {
                     if (estudiante1.getIdEstudiante() == estudianteSeleccionado.getIdEstudiante()) {
                         return false;
@@ -156,7 +156,7 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
     
     private void recargarVbox() {
         vbxEstudiantesPorAgregar.getChildren().clear();
-        if(estudiantesTabla.size() > 0) {
+        if (estudiantesTabla.size() > 0) {
             for (Estudiante estudianteAgregar : estudiantesTabla) {
                 TarjetaAgregarEstudianteCurso tarjeta = new TarjetaAgregarEstudianteCurso(estudianteSeleccionado);
                 tarjeta.getImagen().setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -166,7 +166,7 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
                      });
                 vbxEstudiantesPorAgregar.getChildren().add(tarjeta);     
              }
-        }else {
+        } else {
             txfEstudianteBusqueda.setDisable(false);
             BtnOtro.setDisable(true);
             btnGuardar.setDisable(true);
@@ -195,7 +195,7 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
     
     @FXML
     private void clicBtnCancelar(ActionEvent event) {
-       if( Utilidades.mostrarDialogoConfirmacion("Cuidado!!",
+       if (Utilidades.mostrarDialogoConfirmacion("Cuidado!!",
                 "¿Estás seguro de que deseas cancelar la adición de un estudiante a un curso?" ))
            cerrarVentana();                
     }

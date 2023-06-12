@@ -95,7 +95,7 @@ public class FXMLDesasignarEstudianteAnteproyectoController implements Initializ
                 if(txaJustificacion.getText().length() > LIMIT_CARAC_JUSTIFICACION) {
                     mostraMensajelimiteSuperado(LIMIT_CARAC_JUSTIFICACION,"Justificacion",lbJustificacion); 
                     btnGuardar.setDisable(true);
-                }else {
+                } else {
                    lbJustificacion.setText(""); 
                    validarCampos();                   
                 }                
@@ -104,10 +104,10 @@ public class FXMLDesasignarEstudianteAnteproyectoController implements Initializ
     }
     
     private void validarCampos() {
-        if(cmbMotivos.getSelectionModel().getSelectedItem() != null && txaJustificacion.getText().trim().length() > 5 
-                && txaJustificacion.getText().trim().length() <= 200) {
+        if (cmbMotivos.getSelectionModel().getSelectedItem() != null && txaJustificacion.getText().trim().length() > 5 
+            && txaJustificacion.getText().trim().length() <= 200) {
             btnGuardar.setDisable(false);
-        }else {
+        } else {
             btnGuardar.setDisable(true);
         }
     }
@@ -116,14 +116,14 @@ public class FXMLDesasignarEstudianteAnteproyectoController implements Initializ
         EstudianteDAO estudianteDao = new EstudianteDAO();
         try {
             int respuesta = estudianteDao.desasignarEstudiante(estudianteDesasignar);
-            if(respuesta != -1){               
+            if (respuesta != -1) {               
                 Desasignacion desasignacion = new Desasignacion();
                 desasignacion.setMotivo(cmbMotivos.getSelectionModel().getSelectedItem());
                 desasignacion.setComentarios(txaJustificacion.getText());
                 desasignacion.setIdEstudiante(estudianteDesasignar.getIdEstudiante());
                 desasignacion.setIdAnteproyecto(anteproyectoModificacion.getIdAnteproyecto());
                 int insertDesasignacion = new DesasignacionDAO().guardarDesasignacion(desasignacion);
-                if(insertDesasignacion != -1) {              
+                if (insertDesasignacion != -1) {              
                       Utilidades.mostrarDialogoSimple("Desasignacion exitosa",
                         "Se desasigno exitosamente al estudiante : "+estudianteDesasignar.getNombre()+" "
                                 +estudianteDesasignar.getPrimerApellido(), Alert.AlertType.INFORMATION);

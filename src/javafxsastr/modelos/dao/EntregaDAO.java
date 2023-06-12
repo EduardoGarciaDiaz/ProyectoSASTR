@@ -41,7 +41,7 @@ public class EntregaDAO {
         try {            
             PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(OBTENER_ENTREGAS);
             ResultSet resultadoConsultaEntregas = sentencia.executeQuery();
-            while(resultadoConsultaEntregas.next()) {
+            while (resultadoConsultaEntregas.next()) {
                 Entrega entrega = new Entrega();
                 entrega.setIdEntrega(resultadoConsultaEntregas.getInt("idEntrega"));
                 entrega.setComentarioAlumno(resultadoConsultaEntregas.getString("comentarioAlumno"));
@@ -68,7 +68,7 @@ public class EntregaDAO {
             PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(OBTENER_ENTREGAS_UNICAS);
             sentencia.setInt(1, idEntrega);
             ResultSet resultadoConsultaEntregaUnica = sentencia.executeQuery();
-            if(resultadoConsultaEntregaUnica.next()) {               
+            if (resultadoConsultaEntregaUnica.next()) {               
                 entregaConsultada.setIdEntrega(idEntrega);
                 entregaConsultada.setComentarioAlumno(resultadoConsultaEntregaUnica.getString("comentarioAlumno"));
                 entregaConsultada.setFechaEntrega(resultadoConsultaEntregaUnica.getString("fechaEntrega"));
@@ -93,7 +93,7 @@ public class EntregaDAO {
             PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(OBTENER_ENTREGAS_POR_ACTIVIDAD);
             sentencia.setInt(1, idActividad);
             ResultSet resultadoConsultaEntregaUnica = sentencia.executeQuery();
-            while(resultadoConsultaEntregaUnica.next()) {               
+            while (resultadoConsultaEntregaUnica.next()) {               
                 Entrega entregaConsultada = new Entrega();
                 entregaConsultada.setIdEntrega(resultadoConsultaEntregaUnica.getInt("idEntrega"));
                 entregaConsultada.setComentarioAlumno(resultadoConsultaEntregaUnica.getString("comentarioAlumno"));
@@ -129,7 +129,7 @@ public class EntregaDAO {
             sentencia.setInt(8,entregaNueva.getIdAcademico());
             sentencia.executeUpdate();
             ResultSet resultadoRegistro  = sentencia.getGeneratedKeys();
-            if(resultadoRegistro.next()) {
+            if (resultadoRegistro.next()) {
                 respuestaExito = resultadoRegistro.getInt(1);
             }                
             ConexionBD.cerrarConexionBD();
@@ -154,7 +154,7 @@ public class EntregaDAO {
             sentencia.setInt(8,entregaEdicion.getIdAcademico());
             sentencia.setInt(9,entregaEdicion.getIdEntrega());
             int filasAfectadas = sentencia.executeUpdate();
-            if(filasAfectadas == 1) {
+            if (filasAfectadas == 1) {
                 respuestaExito = entregaEdicion.getIdEntrega();
             }
             ConexionBD.cerrarConexionBD();
@@ -171,7 +171,7 @@ public class EntregaDAO {
             PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(ELIMINAR_ENTREGA);
             sentencia.setInt(1,idEntrega);
             int filasAfectadas = sentencia.executeUpdate();
-            if(filasAfectadas == 1) {
+            if (filasAfectadas == 1) {
                 respuestaExito = 1;
             }
             ConexionBD.cerrarConexionBD();
@@ -188,7 +188,7 @@ public class EntregaDAO {
             PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(OBTENER_ENTREGAS_UNICAS_EDICION);
             sentencia.setInt(1, idEntrega);
             ResultSet resultadoConsultaEntregaUnica = sentencia.executeQuery();
-            if(resultadoConsultaEntregaUnica.next()) {               
+            if (resultadoConsultaEntregaUnica.next()) {               
                 entregaConsultada.setIdEntrega(idEntrega);
                 entregaConsultada.setComentarioAlumno(resultadoConsultaEntregaUnica.getString("comentarioAlumno"));
                 entregaConsultada.setFechaEntrega(resultadoConsultaEntregaUnica.getString("fechaEntrega"));
