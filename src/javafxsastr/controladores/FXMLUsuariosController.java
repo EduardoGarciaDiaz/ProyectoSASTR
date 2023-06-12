@@ -81,7 +81,6 @@ public class FXMLUsuariosController implements Initializable {
 
     @FXML
     private void clicRegresar(MouseEvent event) {
-        System.out.println(usuario.getIdUsuario());
         irAVentanaInicio(usuario);
     }
 

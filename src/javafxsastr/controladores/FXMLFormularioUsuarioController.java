@@ -272,7 +272,7 @@ public class FXMLFormularioUsuarioController implements Initializable {
         String nombre = tfNombre.getText().trim();
         String primerApellido = tfPrimerApellido.getText().trim();
         String segundoApellido = tfSegundoApellido.getText().trim();
-        String correo = tfCorreoInstitucional.getText().trim();
+        String correo = tfCorreoInstitucional.getText().trim().toLowerCase();
         String contrasena = tfContrasena.getText().trim();
         boolean esAdministrador = chbxEsAdministrador.isSelected();
         int idEstadoUsuario = 1;

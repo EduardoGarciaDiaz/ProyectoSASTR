@@ -11,6 +11,8 @@ package javafxsastr.controladores;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -51,20 +53,14 @@ public class FXMLInicioSesionController implements Initializable {
     @FXML
     private void clicIniciarSesion(ActionEvent event) {
         try {
-            if (tfCorreoUsuario.getText().isEmpty()) {
+            if (tfCorreoUsuario.getText().trim().isEmpty()) {
                 lbCampoCorreoRequerido.setText("Campo requerido");
             } 
-            if (tfContraseñaUsuario.getText().isEmpty()) {
+            if (tfContraseñaUsuario.getText().trim().isEmpty()) {
                 lbCampoContraseñaRequerido.setText("Campo requerido");
             }
-            if (!tfCorreoUsuario.getText().isEmpty() && !tfContraseñaUsuario.getText().isEmpty()) {
-                if (tfCorreoUsuario.getText()
-                        .toLowerCase()
-                        .equals(tfCorreoUsuario.getText())) {
-                    autenticarUsuario(tfCorreoUsuario.getText(), tfContraseñaUsuario.getText());
-                } else {
-                    lbErrorCredenciales.setText("Ingresa el correo en minúsculas, por favor.");
-                }
+            if (!tfCorreoUsuario.getText().trim().isEmpty() && !tfContraseñaUsuario.getText().trim().isEmpty()) {
+                autenticarUsuario(tfCorreoUsuario.getText().toLowerCase(), tfContraseñaUsuario.getText());
             }
         } catch (DAOException ex) {
             manejarDAOException(ex);
@@ -102,30 +98,30 @@ public class FXMLInicioSesionController implements Initializable {
     }
     
     private void agregarListenersACampos() {
-        tfCorreoUsuario.focusedProperty().addListener(
-            (observable, oldValue, newValue) -> {
-                if (newValue) {
+        tfCorreoUsuario.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (!newValue.trim().isEmpty()) {
+                    tfCorreoUsuario.setText(tfCorreoUsuario.getText().toLowerCase());
                     lbCampoCorreoRequerido.setText("");
                     lbErrorCredenciales.setText("");
                 } else {
-                    if (tfCorreoUsuario.getText().isEmpty()) {
-                        lbCampoCorreoRequerido.setText("Campo requerido");
-                    }
+                    lbCampoCorreoRequerido.setText("Campo requerido");
                 }
             }
-        );
-        tfContraseñaUsuario.focusedProperty().addListener(
-            (observable, oldValue, newValue) -> {
-                if (newValue) {
+        });
+        tfContraseñaUsuario.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (!newValue.trim().isEmpty()) {
+                    tfContraseñaUsuario.setText(tfContraseñaUsuario.getText());
                     lbCampoContraseñaRequerido.setText("");
                     lbErrorCredenciales.setText("");
                 } else {
-                    if (tfContraseñaUsuario.getText().isEmpty()) {
-                        lbCampoContraseñaRequerido.setText("Campo requerido");
-                    }
+                    lbCampoContraseñaRequerido.setText("Campo requerido");
                 }
             }
-        );
+        });
     }
 
     @FXML
