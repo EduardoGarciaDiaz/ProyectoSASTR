@@ -320,7 +320,7 @@
             <Label layoutX="21.0" layoutY="180.0" prefHeight="52.0" prefWidth="472.0" text="El Vo. Bo. de la coordinación de SS y ER se obtienen en una reunión de la academia que se programa para ello." wrapText="true" />
          </children>
       </Pane>
-      <Pane fx:id="contenedorRubrica" layoutX="1170.0" layoutY="132.0" prefHeight="467.0" prefWidth="514.0" style="-fx-background-color: #efefef; -fx-background-radius: 15;">
+      <Pane fx:id="contenedorRubrica" layoutX="1170.0" layoutY="132.0" prefHeight="467.0" prefWidth="514.0" style="-fx-background-color: #efefef; -fx-background-radius: 15;" visible="false">
          <children>
             <RadioButton disable="true" layoutX="234.0" layoutY="78.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0">
                <toggleGroup>
