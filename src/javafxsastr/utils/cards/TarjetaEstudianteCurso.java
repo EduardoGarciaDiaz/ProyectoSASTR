@@ -1,7 +1,7 @@
 /*
  * Autor: Tristan Eduardo Suarez Santiago
  * Fecha de creación: 04/06/2023
- * Descripción: Clase para la tarjetas de DetalleCursor.
+ * Descripción: Clase para la tarjetas de Estudinates activos en un curso en la ventana DetalleCursor.
  */
 
 package javafxsastr.utils.cards;
@@ -18,6 +18,7 @@ import javafx.scene.text.TextAlignment;
 import javafxsastr.modelos.pojo.Estudiante;
 
 public class TarjetaEstudianteCurso extends Pane{
+    
     private Pane fondo;
     private Pane fondoEitar;
     private Pane fondoDesactivar;
@@ -35,6 +36,8 @@ public class TarjetaEstudianteCurso extends Pane{
         inicializarElementos();
         establecerEstiloPane();
         establecerEstiloFondoImagen();
+        establecerEstiloFondoImagenEditar();
+        establecerEstiloFondoImagenDesactivar();
         establecerEstiloNombreEstudiante();
         establecerColorEstadoEstudinate(estudiante);
         establecerEstiloCorreo();
@@ -42,7 +45,8 @@ public class TarjetaEstudianteCurso extends Pane{
         lbNombreEstudiante.setWrapText(true);
         lbcorreoEstudinate.setText(estudiante.getCorreoInstitucional());
         lbcorreoEstudinate.setWrapText(true);
-        getChildren().addAll(fondo,fondoEitar,crlEstadoUsuario,fondoDesactivar,lbNombreEstudiante,lbcorreoEstudinate);     
+        getChildren().addAll(fondo,fondoEitar,crlEstadoUsuario,fondoDesactivar,
+                                                       lbNombreEstudiante,lbcorreoEstudinate);     
     }
     
     public Estudiante getEstudiante() {
@@ -81,9 +85,9 @@ public class TarjetaEstudianteCurso extends Pane{
         lbcorreoEstudinate = new Label();
         imvIconoEstudiate = new ImageView(new Image("file:src/javafxsastr/recursos/iconos/iconoEstudianteCurso.jpg")); 
         imvBtnEditar = new ImageView(new Image("file:src/javafxsastr/recursos/iconos/editarCurso.jpg"));   
-        if(estudiante.getIdEstadoUsuario() == 1) {
+        if (estudiante.getIdEstadoUsuario() == 1) {
             imvBtnDesactivar = new ImageView(new Image("file:src/javafxsastr/recursos/iconos/desactivarCurso.jpg")); 
-        }else {
+        } else {
             imvBtnDesactivar = new ImageView(new Image("file:src/javafxsastr/recursos/iconos/activarEstudiante.png")); 
         }        
         crlEstadoUsuario =new Circle(14.46);
@@ -95,7 +99,7 @@ public class TarjetaEstudianteCurso extends Pane{
         this.setStyle("-fx-background-color: #F4F4F4");                
     }
     
-     private void establecerEstiloFondoImagen() {
+    private void establecerEstiloFondoImagen() {
         fondo.setPrefSize(104.0, 104.0);
         fondo.setLayoutX(80.5);
         fondo.setLayoutY(14.0);
@@ -104,8 +108,10 @@ public class TarjetaEstudianteCurso extends Pane{
         imvIconoEstudiate.setFitHeight(100);
         imvIconoEstudiate.setFitWidth(100);
         imvIconoEstudiate.setLayoutX(2.0);
-        imvIconoEstudiate.setLayoutY(21.0);
-        
+        imvIconoEstudiate.setLayoutY(21.0);    
+    }
+    
+    private void establecerEstiloFondoImagenEditar() {
         fondoEitar.setPrefSize(30, 30);
         fondoEitar.setLayoutX(210);
         fondoEitar.setLayoutY(205);
@@ -114,8 +120,10 @@ public class TarjetaEstudianteCurso extends Pane{
         imvBtnEditar.setFitHeight(40);
         imvBtnEditar.setFitWidth(40);
         imvBtnEditar.setLayoutX(0);
-        imvBtnEditar.setLayoutY(0);
-        
+        imvBtnEditar.setLayoutY(0);    
+    }
+    
+    private void establecerEstiloFondoImagenDesactivar() {        
         fondoDesactivar.setPrefSize(30, 30);
         fondoDesactivar.setLayoutX(160);
         fondoDesactivar.setLayoutY(205);
@@ -128,9 +136,9 @@ public class TarjetaEstudianteCurso extends Pane{
     }
      
     private void establecerColorEstadoEstudinate(Estudiante estudiante) {        
-        if(estudiante.getIdEstadoUsuario() == 1) {
+        if (estudiante.getIdEstadoUsuario() == 1) {
              crlEstadoUsuario.setFill(Color.web("#C3E0BE"));
-        }else {
+        } else {
             crlEstadoUsuario.setFill(Color.web("#EBE555"));
         }  
         crlEstadoUsuario.setLayoutX(230);

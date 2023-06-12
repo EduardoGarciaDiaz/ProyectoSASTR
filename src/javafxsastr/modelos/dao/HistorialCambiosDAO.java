@@ -17,11 +17,11 @@ import javafxsastr.utils.Codigos;
 
 public class HistorialCambiosDAO {
     
-    private static String Consulta_Historial_Cambios = "Select idHistorialCambio, fechaDeModificacion, DATE(fechaAnterior) "+
-                                                       "AS fechaAnterior, TIME(fechaAnterior) AS horaAnterior, DATE(fechaNueva) "+
-                                    "AS fechaNueva, TIME(fechaNueva) AS horaNueva FROM historial_cambios WHERE idActividad = ?";
-    private static String Guardar_Historial_Cambios_Nuevo ="INSERT INTO historial_cambios SET fechaDeModificacion = ?, " +
-                                    "fechaAnterior = CONCAT (? ,' ',?), fechaNueva = CONCAT (?,' ', ?), idActividad = ?";
+    private final String Consulta_Historial_Cambios = "Select idHistorialCambio, fechaDeModificacion, DATE(fechaAnterior) "
+            + "AS fechaAnterior, TIME(fechaAnterior) AS horaAnterior, DATE(fechaNueva) "
+            + "AS fechaNueva, TIME(fechaNueva) AS horaNueva FROM historial_cambios WHERE idActividad = ?";
+    private final String Guardar_Historial_Cambios_Nuevo ="INSERT INTO historial_cambios SET fechaDeModificacion = ?, " 
+            + "fechaAnterior = CONCAT (? ,' ',?), fechaNueva = CONCAT (?,' ', ?), idActividad = ?";
     
     public ArrayList<HistorialCambios> obtenerInformacionHistorialCambios(int idActividad) throws DAOException {
         ArrayList<HistorialCambios> historialCambiosConsultados= new ArrayList();
@@ -29,7 +29,7 @@ public class HistorialCambiosDAO {
             PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(Consulta_Historial_Cambios);
             sentencia.setInt(1, idActividad);
             ResultSet resultadoConsulta = sentencia.executeQuery();
-            while(resultadoConsulta.next()) {
+            while (resultadoConsulta.next()) {
                 HistorialCambios historialCambios = new HistorialCambios();
                 historialCambios.setFechaDeModificacion(resultadoConsulta.getDate("fechaDeModificacion").toString());
                 historialCambios.setFechaAnterior(resultadoConsulta.getDate("fechaAnterior").toString());
@@ -46,8 +46,7 @@ public class HistorialCambiosDAO {
     }
     
     public int guardarHistorialCambios(HistorialCambios historialNuevo) throws DAOException{
-        int respuestaExito = -1;
-        
+        int respuestaExito = -1;        
             PreparedStatement sentencia;
         try {
             sentencia = ConexionBD.obtenerConexionBD().prepareStatement(Guardar_Historial_Cambios_Nuevo, Statement.RETURN_GENERATED_KEYS);
@@ -64,7 +63,6 @@ public class HistorialCambiosDAO {
             }
             ConexionBD.cerrarConexionBD();            
         }catch (SQLException ex) {
-            ex.printStackTrace();
             throw new DAOException("Lo sentimos, hubo un problema al registrar esta modificacion", Codigos.ERROR_CONSULTA);
          }
         return respuestaExito;

@@ -6,8 +6,6 @@
 
 package javafxsastr.modelos.pojo;
 
-import java.sql.Blob;
-
 public class Archivo {
     
     private int idArchivo;
@@ -33,9 +31,7 @@ public class Archivo {
         this.archivo = archivo;
         this.esEntrega = esEntrega;
         this.idEntrega = idEntrega;
-    }
-
-   
+    }  
 
     public int getIdArchivo() {
         return idArchivo;
@@ -68,8 +64,6 @@ public class Archivo {
 
     public void setIdEntrega(int idEntrega) {
         this.idEntrega = idEntrega;
-    }
-    
-    
+    } 
     
 }

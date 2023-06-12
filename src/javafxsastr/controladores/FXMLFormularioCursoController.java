@@ -484,7 +484,7 @@ public class FXMLFormularioCursoController implements Initializable {
     }
     
      private void irAVistaDetallesCursos() {
-       interfaz.notitficacionRecargarDatosPorEdicion(true);
+       interfaz.notificacionRecargarDatosPorEdicion(true);
        Stage escenario = (Stage) lbTituloFormulario.getScene().getWindow();
        escenario.close();
     }

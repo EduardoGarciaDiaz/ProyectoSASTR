@@ -68,6 +68,11 @@ public class FXMLAnteproyectosController implements Initializable, INotificacion
     private boolean esInvitado = false;
     private CodigosVentanas ventanaOrigen;
     private CuerpoAcademico cuerpoAcademico;
+    
+    private Academico academico;
+    private ObservableList<Anteproyecto> anteproyectos;
+    private boolean esInvitado = false;
+    private CodigosVentanas ventanaOrigen;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {

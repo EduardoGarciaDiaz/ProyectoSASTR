@@ -56,6 +56,10 @@ public class CursoDAO {
             + "( idCurso, idEstudiante) VALUES (?,?);";
     private final String OBTENER_CURSOS_ACTUALES_DEL_PROFESOR = OBTENER_CURSOS
             + "where a.idAcademico = ? and pe.esActual = 1;";
+    private final String VERIFICAR_SI_ESTUDIANTE_ESTA_EN_CURSO_ACTIVO = "Select exists(select * from cursos_estudiantes \n" +
+                                    "inner join cursos on cursos_estudiantes.idCurso = cursos.idCurso\n" +
+                                    "inner join estudiantes on cursos_estudiantes.idEstudiante = estudiantes.idEstudiante\n" +
+                                    "where estudiantes.idEstudiante = ? and cursos.idEstadoCurso = 1)  as esActivo ";
 
     public ArrayList<Curso> obtenerCursos() throws DAOException {
         ArrayList<Curso> cursos = new ArrayList<>();
@@ -407,6 +411,24 @@ public class CursoDAO {
             throw new DAOException("Error de consulta al obtener los cursos actuales del profesor", Codigos.ERROR_CONSULTA);
         }
         return cursos;
+    }
+    
+     public boolean verificarSiEstudiantePerteneceACursoActivo(int idEstudiante) throws DAOException {
+        boolean esCursoActivo = false;
+        try {
+            PreparedStatement sentencia = ConexionBD.obtenerConexionBD()
+                    .prepareStatement(VERIFICAR_SI_ESTUDIANTE_ESTA_EN_CURSO_ACTIVO);
+            sentencia.setInt(1, idEstudiante);
+            ResultSet resultado = sentencia.executeQuery();
+            if (resultado.next()) {
+                esCursoActivo = resultado.getBoolean("esActivo");
+            }
+            ConexionBD.cerrarConexionBD();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            throw new DAOException("Error de consulta", Codigos.ERROR_CONSULTA);
+        }
+        return esCursoActivo;
     }
 
 }

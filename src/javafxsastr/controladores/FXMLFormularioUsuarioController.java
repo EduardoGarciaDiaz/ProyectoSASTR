@@ -576,13 +576,13 @@ public class FXMLFormularioUsuarioController implements Initializable {
     }
     
     private void irAVistaVerDetallesCursos() {
-       interfaz.notitficacionRecargarDatos();
+       interfaz.notificacionRecargarDatos();
        Stage escenario = (Stage) lbContrasenaVacia.getScene().getWindow();
        escenario.close();
     }
     
     private void irAVistaCuerpoAcademico() {
-       interfaz.notitficacionRecargarDatosPorEdicion(true);
+       interfaz.notificacionRecargarDatosPorEdicion(true);
        Stage escenario = (Stage) lbContrasenaVacia.getScene().getWindow();
        escenario.close();
     }

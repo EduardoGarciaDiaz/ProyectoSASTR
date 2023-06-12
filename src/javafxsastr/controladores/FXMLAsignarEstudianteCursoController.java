@@ -59,11 +59,9 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
     
     public void iniciarEstudiantes(ObservableList<Estudiante> estudiantes, Curso curso, INotificacionRecargarDatos interfazN) {
         interfaz = interfazN;
-        if(estudiantes != null) {
+        if (estudiantes != null) {
             estudiantesActuales = FXCollections.observableArrayList((estudiantes));                    
-        } else {
-            System.out.println("El Observable de estudiantes viene nulo");
-        }
+        } 
         recuperarEstudinates();
         cursoActual = curso;    
         BtnOtro.setDisable(true);
@@ -84,9 +82,9 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
             }
             @Override
             public void notificarPerdidaDelFoco() {                
-                if(validarEstudianteEnCurso()) {                    
+                if (validarEstudianteEnCurso()) {                    
                     AgregarATabla();
-                }else {
+                } else {
                     Utilidades.mostrarDialogoSimple("Accion invalida", "Este Estudiante ya pertenece a un curso",
                             Alert.AlertType.INFORMATION);                   
                 }
@@ -104,16 +102,21 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
     }
     
     private boolean validarEstudianteEnCurso() {
-        if(estudianteSeleccionado != null) {
+        CursoDAO  cursoDao= new CursoDAO();
+        if (estudianteSeleccionado != null) {            
             for (Estudiante estudiantes : estudiantesActuales) {
                 if (estudiantes.getIdEstudiante() == estudianteSeleccionado.getIdEstudiante()) {
                     return false;
                 }
             }
-            if(estudianteSeleccionado.getIdCurso() != 0){
-                return false;
+            try {
+                if (cursoDao.verificarSiEstudiantePerteneceACursoActivo(estudianteSeleccionado.getIdEstudiante())){
+                    return false;
+                }
+            } catch (DAOException ex) {
+                manejarDAOException(ex);
             }
-            if(estudiantesTabla != null) {
+            if (estudiantesTabla != null) {
                 for (Estudiante estudiante1 : estudiantesTabla) {
                     if (estudiante1.getIdEstudiante() == estudianteSeleccionado.getIdEstudiante()) {
                         return false;
@@ -153,7 +156,7 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
     
     private void recargarVbox() {
         vbxEstudiantesPorAgregar.getChildren().clear();
-        if(estudiantesTabla.size() > 0) {
+        if (estudiantesTabla.size() > 0) {
             for (Estudiante estudianteAgregar : estudiantesTabla) {
                 TarjetaAgregarEstudianteCurso tarjeta = new TarjetaAgregarEstudianteCurso(estudianteSeleccionado);
                 tarjeta.getImagen().setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -163,7 +166,7 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
                      });
                 vbxEstudiantesPorAgregar.getChildren().add(tarjeta);     
              }
-        }else {
+        } else {
             txfEstudianteBusqueda.setDisable(false);
             BtnOtro.setDisable(true);
             btnGuardar.setDisable(true);
@@ -172,8 +175,7 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
     
     private void guardarEstudiantes() {
         for (Estudiante estudinateNuevo : estudiantesTabla) {
-            try {
-                System.err.println(cursoActual);
+            try {                
                 int exito = new CursoDAO().guardarRelacionCursoEstudiante(cursoActual.getIdCurso(),
                         estudinateNuevo.getIdEstudiante());
             } catch (DAOException ex) {
@@ -187,28 +189,13 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
     
     private void cerrarVentana() {
         Stage escenarioActual = (Stage) txfEstudianteBusqueda.getScene().getWindow();  
-        interfaz.notitficacionRecargarDatos();
+        interfaz.notificacionRecargarDatos();
         escenarioActual.close();
     }    
     
-    private void manejarDAOException(DAOException ex) {
-        switch (ex.getCodigo()) {
-            case ERROR_CONSULTA:
-                System.out.println("Ocurrió un error de consulta.");
-                ex.printStackTrace();
-                break;
-            case ERROR_CONEXION_BD:
-                Utilidades.mostrarDialogoSimple("Error de conexion", 
-                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", 
-                        Alert.AlertType.ERROR);
-            default:
-                throw new AssertionError();
-        }
-    }
-    
     @FXML
     private void clicBtnCancelar(ActionEvent event) {
-       if( Utilidades.mostrarDialogoConfirmacion("Cuidado!!",
+       if (Utilidades.mostrarDialogoConfirmacion("Cuidado!!",
                 "¿Estás seguro de que deseas cancelar la adición de un estudiante a un curso?" ))
            cerrarVentana();                
     }
@@ -223,6 +210,22 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
        txfEstudianteBusqueda.setDisable(false);
        BtnOtro.setDisable(true);
        btnGuardar.setDisable(true);
+    }    
+     
+    private void manejarDAOException(DAOException ex) {
+        switch (ex.getCodigo()) {
+            case ERROR_CONSULTA:
+                Utilidades.mostrarDialogoSimple("Error de Consulta", 
+                        "Hubo un error al realizar la consulta. Intentelo de nuevo o hagalo mas tarde", 
+                        Alert.AlertType.ERROR);
+                break;
+            case ERROR_CONEXION_BD:
+                Utilidades.mostrarDialogoSimple("Error de conexion", 
+                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", 
+                        Alert.AlertType.ERROR);
+            default:
+                throw new AssertionError();
+        }
     }
     
 }

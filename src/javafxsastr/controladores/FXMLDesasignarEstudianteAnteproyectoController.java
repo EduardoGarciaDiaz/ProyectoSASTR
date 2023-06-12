@@ -31,7 +31,7 @@ import javafxsastr.modelos.pojo.Desasignacion;
 import javafxsastr.modelos.pojo.Estudiante;
 import javafxsastr.utils.Utilidades;
 
-public class FXMLDesaginarEstudianteAnteproyectoController implements Initializable {
+public class FXMLDesasignarEstudianteAnteproyectoController implements Initializable {
 
     @FXML
     private TextArea txaJustificacion;
@@ -47,16 +47,16 @@ public class FXMLDesaginarEstudianteAnteproyectoController implements Initializa
     private final int LIMIT_CARAC_JUSTIFICACION = 200;
     private ObservableList<String> motivos;
     private Estudiante estudianteDesasignar;
-    private INotificacionRecargarDatos interfazNotificaiconDesasignacion;
+    private INotificacionRecargarDatos interfazNotificacionDesasignacion;
     private Anteproyecto anteproyectoModificacion;
     private boolean esSoloVisto;
-
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {      
     } 
     
     public void iniciarDesasignacion(Estudiante estudiante,Anteproyecto anteproyecto,INotificacionRecargarDatos interfazNotificacion) {
-        this.interfazNotificaiconDesasignacion = interfazNotificacion;
+        this.interfazNotificacionDesasignacion = interfazNotificacion;
         this.estudianteDesasignar = estudiante;
         this.anteproyectoModificacion = anteproyecto;
         iniciarListeners();
@@ -64,7 +64,7 @@ public class FXMLDesaginarEstudianteAnteproyectoController implements Initializa
         llenarComboJustificaion();        
     }
     
-    public void verDesasignaicones(boolean esVista, Desasignacion desasignacion) {
+    public void verDesasignaciones(boolean esVista, Desasignacion desasignacion) {
         this.esSoloVisto = esVista;
         cmbMotivos.setValue(desasignacion.getMotivo());
         txaJustificacion.setText(desasignacion.getComentarios());
@@ -73,24 +73,28 @@ public class FXMLDesaginarEstudianteAnteproyectoController implements Initializa
         cmbMotivos.setEditable(false);
         txaJustificacion.setEditable(false);
         btnCancelar.setVisible(false);
-        btnGuardar.setOnAction((event) -> {
-            cerrarVentana();
-        });
+        btnGuardar.setOnAction(
+            (event) -> {
+                cerrarVentana();
+            }
+        );
     }
     
     private void iniciarListeners() {
-        cmbMotivos.valueProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+        cmbMotivos.valueProperty().addListener(
+            (ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
               if (newValue != null) {              
                  validarCampos();            
                }
-        });
+            }
+        );
         txaJustificacion.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 if(txaJustificacion.getText().length() > LIMIT_CARAC_JUSTIFICACION) {
                     mostraMensajelimiteSuperado(LIMIT_CARAC_JUSTIFICACION,"Justificacion",lbJustificacion); 
                     btnGuardar.setDisable(true);
-                }else {
+                } else {
                    lbJustificacion.setText(""); 
                    validarCampos();                   
                 }                
@@ -99,10 +103,10 @@ public class FXMLDesaginarEstudianteAnteproyectoController implements Initializa
     }
     
     private void validarCampos() {
-        if(cmbMotivos.getSelectionModel().getSelectedItem() != null && txaJustificacion.getText().trim().length() > 5 
-                && txaJustificacion.getText().trim().length() <= 200) {
+        if (cmbMotivos.getSelectionModel().getSelectedItem() != null && txaJustificacion.getText().trim().length() > 5 
+            && txaJustificacion.getText().trim().length() <= 200) {
             btnGuardar.setDisable(false);
-        }else {
+        } else {
             btnGuardar.setDisable(true);
         }
     }
@@ -111,30 +115,28 @@ public class FXMLDesaginarEstudianteAnteproyectoController implements Initializa
         EstudianteDAO estudianteDao = new EstudianteDAO();
         try {
             int respuesta = estudianteDao.desasignarEstudiante(estudianteDesasignar);
-            if(respuesta != -1){               
+            if (respuesta != -1) {               
                 Desasignacion desasignacion = new Desasignacion();
                 desasignacion.setMotivo(cmbMotivos.getSelectionModel().getSelectedItem());
                 desasignacion.setComentarios(txaJustificacion.getText());
                 desasignacion.setIdEstudiante(estudianteDesasignar.getIdEstudiante());
                 desasignacion.setIdAnteproyecto(anteproyectoModificacion.getIdAnteproyecto());
                 int insertDesasignacion = new DesasignacionDAO().guardarDesasignacion(desasignacion);
-                if(insertDesasignacion != -1) {              
+                if (insertDesasignacion != -1) {              
                       Utilidades.mostrarDialogoSimple("Desasignacion exitosa",
-                        "Se desasigno exitosamente al estudiante : "+estudianteDesasignar.getNombre() + " "
-                                + estudianteDesasignar.getPrimerApellido(), Alert.AlertType.INFORMATION);
-                      interfazNotificaiconDesasignacion.notitficacionRecargarDatosPorEdicion(true);
+                        "Se desasigno exitosamente al estudiante : "+estudianteDesasignar.getNombre()+" "
+                                +estudianteDesasignar.getPrimerApellido(), Alert.AlertType.INFORMATION);
+                      interfazNotificacionDesasignacion.notificacionRecargarDatosPorEdicion(true);
                       cerrarVentana();
                 }                
             }
         } catch (DAOException ex) {  
-            ex.printStackTrace();
-            Utilidades.mostrarDialogoSimple("Error",
-                        "No se pudo desasignar al estudiante", Alert.AlertType.ERROR);
+            manejarDAOException(ex);
         }        
     }
     
     private void llenarComboJustificaion() {
-        motivos = FXCollections.observableArrayList();
+       motivos = FXCollections.observableArrayList();
        ArrayList<String> justificaciones = new ArrayList();
        justificaciones.add("Desacato");
        justificaciones.add("Retraso en el trabajo");
@@ -168,6 +170,22 @@ public class FXMLDesaginarEstudianteAnteproyectoController implements Initializa
     @FXML
     private void clicBtnGuardar(ActionEvent event) {
         desasignarEstudiante();
+    }
+    
+     private void manejarDAOException(DAOException ex) {
+        switch (ex.getCodigo()) {
+            case ERROR_CONSULTA:
+                Utilidades.mostrarDialogoSimple("Error de Consulta", 
+                        "Hubo un error al realizar la consulta. Intentelo de nuevo o hagalo mas tarde", 
+                        Alert.AlertType.ERROR);
+                break;
+            case ERROR_CONEXION_BD:
+                Utilidades.mostrarDialogoSimple("Error de conexion", 
+                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", 
+                        Alert.AlertType.ERROR);
+            default:
+                throw new AssertionError();
+        }
     }
     
 }

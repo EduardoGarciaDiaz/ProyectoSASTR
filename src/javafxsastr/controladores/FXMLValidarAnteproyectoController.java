@@ -1,7 +1,7 @@
 /*
  * Autor: Tristan Eduardo Suarez Santiago
  * Fecha de creación: 03/06/2023
- * Descripción: Controller de la ventana validar Anteproyecto
+ * Descripción: Controller de la ventana para validar un Anteproyecto
  */
 package javafxsastr.controladores;
 
@@ -160,6 +160,14 @@ public class FXMLValidarAnteproyectoController implements Initializable {
         inicializarListeners();
     }
     
+     public void setAnteproyecto(Anteproyecto anteproyecto) {
+        this.anteproyecto = anteproyecto;
+    }
+    
+    public void setAcademico(Academico academico) {
+        this.academico = academico;
+    }
+    
     private void inicializarListeners() {  
         NombreTR.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {            
             @Override
@@ -206,10 +214,10 @@ public class FXMLValidarAnteproyectoController implements Initializable {
         txaComentarios.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if(txaComentarios.getText().length() > LIM_CARACT_COMENTARIOS) {
+                if (txaComentarios.getText().length() > LIM_CARACT_COMENTARIOS) {
                     mostraMensajelimiteSuperado(LIM_CARACT_COMENTARIOS,"Comentarios",lbComentarios); 
                     btnAprobar.setDisable(true);
-                }else {
+                } else {
                     lbComentarios.setText("");                    
                 } 
                 validarBtnAprobar();
@@ -217,19 +225,12 @@ public class FXMLValidarAnteproyectoController implements Initializable {
         }); 
     }
     
-     private void obtenerEstudiantes() {
+    private void obtenerEstudiantes() {
         try {
             estudiantesRegistrados = FXCollections.observableArrayList(new EstudianteDAO().obtenerEstudiantes());
         } catch (DAOException ex) {
             manejarDAOException(ex);
         }
-    }
-    
-    public void setAnteproyecto(Anteproyecto anteproyecto) {
-        this.anteproyecto = anteproyecto;
-    }
-    public void setAcademico(Academico academico) {
-        this.academico = academico;
     }
     
     private void mostrarDatosAnteproyecto() {
@@ -240,9 +241,7 @@ public class FXMLValidarAnteproyectoController implements Initializable {
             mostrarDatosDescripciones();
             mostrarDatosFinales();  
             mostrarDatosLGACs();
-        } else {
-            System.err.println("El anteproyector recibido viene NULO");
-        }
+        } 
     }
     
     private void mostrarDatosLugarFecha() {
@@ -309,7 +308,7 @@ public class FXMLValidarAnteproyectoController implements Initializable {
     
     private void mostrarCodirectores(ArrayList<Academico> codirectores) {
         vbxCodirectores.getChildren().clear();
-        for(Academico codirector : codirectores) {
+        for (Academico codirector : codirectores) {
             configurarCodirectores(codirector);
         }
     }
@@ -344,12 +343,12 @@ public class FXMLValidarAnteproyectoController implements Initializable {
     }
     
     private void validarBtnAprobar() {
-        if(BibliografiasRecomendadas.getSelectedToggle() != null && DescripcionTR.getSelectedToggle() != null
+        if (BibliografiasRecomendadas.getSelectedToggle() != null && DescripcionTR.getSelectedToggle() != null
                 && LGACS.getSelectedToggle() != null && NombreTR.getSelectedToggle() != null &&
                 Redaccion.getSelectedToggle() != null && RequisitosAnteproyecto.getSelectedToggle() != null
                 && ResultadosEsperados.getSelectedToggle() != null && validarValores()) {
             btnAprobar.setDisable(false);            
-        }else {
+        } else {
             btnAprobar.setDisable(true);
         }
     }
@@ -392,13 +391,13 @@ public class FXMLValidarAnteproyectoController implements Initializable {
         obtenerValoresRubrica();        
         int contRegular=0;
         for (int i = 0; i < valores.size(); i++) {
-            if(valores.get(i)==3) {
+            if (valores.get(i)==3) {
                 return false;
             }
-            if(valores.get(i) == 2) {
+            if (valores.get(i) == 2) {
                 contRegular++;
             }
-            if(contRegular > 2) { 
+            if (contRegular > 2) { 
                 return false;
             }
         }
@@ -417,32 +416,32 @@ public class FXMLValidarAnteproyectoController implements Initializable {
         try {
             int rubricaExistente = new RubricaDAO().obtenerRubricaAnteproyecto(anteproyecto.getIdAnteproyecto());
             int exitoRubrica= -1 ;
-            if(rubricaExistente != -1) {
+            if (rubricaExistente != -1) {
                 rubrica.setIdRubrica(rubricaExistente);
                 exitoRubrica = new RubricaDAO().actualizarRubrica(rubrica);
-            }else{
+            } else {
                  exitoRubrica = new RubricaDAO().guardarRubrica(rubrica);
                  int exitoRelacion = new RevisionAnteproyectoDAO().guardarRelacionRubricaAnteproyecto(txaComentarios.getText(),
                         anteproyecto.getIdAnteproyecto(),exitoRubrica);
             }           
-            if(exitoRubrica != -1) {                
+            if (exitoRubrica != -1) {                
                 int idEstadoSeguimiento = new EstadoSeguimientoDAO().obtenerIdEstadoSeguimiento(estadoSeguimiento);
                 int exitoActualizaicon = new AnteproyectoDAO().actualizarEstadoSeguimiento(anteproyecto.getIdAnteproyecto(),
                             idEstadoSeguimiento);
-                if(exitoActualizaicon == 1) {
-                        if( estadoSeguimiento.equals("Rechazado")) {
-                     Utilidades.mostrarDialogoSimple("Rechazado", 
-                        "Se ha rechazado el anteproyecto correctamente", Alert.AlertType.INFORMATION);
-                        }else {
-                            Utilidades.mostrarDialogoSimple("Aprobado", 
-                            "Se ha aprobado el anteproyecto", Alert.AlertType.INFORMATION);
+                if (exitoActualizaicon == 1) {
+                        if ( estadoSeguimiento.equals("Rechazado")) {
+                            Utilidades.mostrarDialogoSimple("Rechazado", "Se ha rechazado el anteproyecto correctamente",
+                                                                                                Alert.AlertType.INFORMATION);
+                        } else {
+                            Utilidades.mostrarDialogoSimple("Aprobado","Se ha aprobado el anteproyecto",
+                                                                                    Alert.AlertType.INFORMATION);
                     }               
-                }else {
+                } else {
                 Utilidades.mostrarDialogoSimple("Error","Fallo actualizar el estado de seguimiento", 
                         Alert.AlertType.ERROR);
                 }
                cerrarVentana();
-            }else {
+            } else {
                 Utilidades.mostrarDialogoSimple("Error","Fallo al registrar la rubrica", 
                         Alert.AlertType.ERROR);
             }
@@ -455,21 +454,6 @@ public class FXMLValidarAnteproyectoController implements Initializable {
         etiquetaError.setText("Cuidado, Excediste el limite de caracteres("+limiteCaracteres+") de este campo " + campo);
         btnAprobar.setDisable(true);
     }    
-    
-     private void manejarDAOException(DAOException ex) {
-        switch (ex.getCodigo()) {
-            case ERROR_CONSULTA:
-                System.out.println("Ocurrió un error de consulta.");
-                ex.printStackTrace();
-                break;
-            case ERROR_CONEXION_BD:
-                Utilidades.mostrarDialogoSimple("Error de conexion", 
-                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", 
-                        Alert.AlertType.ERROR);
-            default:
-                throw new AssertionError();
-        }
-    }
      
      private void cerrarVentana() {
           try {
@@ -482,7 +466,8 @@ public class FXMLValidarAnteproyectoController implements Initializable {
             escenario.setTitle("Anteproyectos");
             escenario.show();
         } catch (IOException ex) {
-            ex.printStackTrace();
+            Utilidades.mostrarDialogoSimple("Error","Hubo un error al mostrar la vista",
+                                                                   Alert.AlertType.INFORMATION);
         }
     }  
 
@@ -499,6 +484,22 @@ public class FXMLValidarAnteproyectoController implements Initializable {
     @FXML
     private void clicAprobar(ActionEvent event) {
         guardarRevision("Validado");
+    }
+    
+    private void manejarDAOException(DAOException ex) {
+        switch (ex.getCodigo()) {
+            case ERROR_CONSULTA:
+                Utilidades.mostrarDialogoSimple("Error de Consulta", 
+                        "Hubo un error al realizar la consulta. Intentelo de nuevo o hagalo mas tarde", 
+                        Alert.AlertType.ERROR);
+                break;
+            case ERROR_CONEXION_BD:
+                Utilidades.mostrarDialogoSimple("Error de conexion", 
+                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", 
+                        Alert.AlertType.ERROR);
+            default:
+                throw new AssertionError();
+        }
     }
     
 }

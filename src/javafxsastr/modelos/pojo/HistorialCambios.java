@@ -3,6 +3,7 @@
  * Fecha de creación: 15/05/2023
  * Descripción: Clase POJO de el Historial de cambios
  */
+
 package javafxsastr.modelos.pojo;
 
 
@@ -19,7 +20,8 @@ public class HistorialCambios {
     public HistorialCambios() {
     }
 
-    public HistorialCambios(int idHistorialCambio, String fechaDeModificacion, String fechaAnterior, String horaAnterior, String fechaNueva, String horaNueva, int idActividad) {
+    public HistorialCambios(int idHistorialCambio, String fechaDeModificacion, String fechaAnterior,
+                        String horaAnterior, String fechaNueva, String horaNueva, int idActividad) {
         this.idHistorialCambio = idHistorialCambio;
         this.fechaDeModificacion = fechaDeModificacion;
         this.fechaAnterior = fechaAnterior;
@@ -84,9 +86,5 @@ public class HistorialCambios {
     public void setIdActividad(int idActividad) {
         this.idActividad = idActividad;
     }
-    
-    
 
-   
-    
 }

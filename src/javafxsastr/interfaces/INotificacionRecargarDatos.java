@@ -8,8 +8,8 @@ package javafxsastr.interfaces;
 
 public interface INotificacionRecargarDatos {
     
-    public void notitficacionRecargarDatos();
+    public void notificacionRecargarDatos();
     
-    public void notitficacionRecargarDatosPorEdicion(boolean fueEditado);
+    public void notificacionRecargarDatosPorEdicion(boolean fueEditado);
      
 }

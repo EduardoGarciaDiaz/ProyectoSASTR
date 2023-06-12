@@ -72,6 +72,9 @@ public class FXMLActividadesController implements Initializable {
     @FXML
     private ImageView imgBtnShow;
     
+    private Estudiante estudiante;
+    private ObservableList<Actividad> actividades 
+            = FXCollections.observableArrayList();
     TranslateTransition panelDesplegado;
     TranslateTransition panelCerrado;
     private Curso curso;
@@ -288,7 +291,6 @@ public class FXMLActividadesController implements Initializable {
             ex.printStackTrace();
         }
     }
-
     
     private void prepararAnimacionBtnCerrarSesion() {
         panelDesplegado = new TranslateTransition(new Duration(350.0), panelLateral);
@@ -303,7 +305,8 @@ public class FXMLActividadesController implements Initializable {
                 break;
             case ERROR_CONEXION_BD:
                 Utilidades.mostrarDialogoSimple("Error de conexion", 
-                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
+                        "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", 
+                                                                                    Alert.AlertType.ERROR);
                 break;
             default:
                 throw new AssertionError();

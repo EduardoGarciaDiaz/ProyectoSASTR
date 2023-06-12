@@ -3,8 +3,8 @@
  * Fecha de creación: 21/05/2023
  * Descripción: DAO de Cuerpo Academico.
  */
-package javafxsastr.modelos.pojo;
 
+package javafxsastr.modelos.pojo;
 
 public class Area {
     private int idArea;

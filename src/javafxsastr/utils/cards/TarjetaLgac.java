@@ -3,6 +3,7 @@
  * Fecha de creación: 08/06/2023
  * Descripción: Clase para la tarjetas de Lgac.
  */
+
 package javafxsastr.utils.cards;
 
 import javafx.scene.control.Button;
@@ -19,8 +20,7 @@ public class TarjetaLgac extends Pane{
     private Label lbNombreCuerpoLgac;
     private Label lbDescripcionLgac;
     private Pane fondoImagen;
-    private ImageView imvLgac = 
-            new ImageView(new Image("file:src/javafxsastr/recursos/iconos/LgacIcono.jpg"));
+    private ImageView imvLgac = new ImageView(new Image("file:src/javafxsastr/recursos/iconos/LgacIcono.jpg"));
     private Button btnModificarLgac;
     private Font fuente = new Font(20);
     
