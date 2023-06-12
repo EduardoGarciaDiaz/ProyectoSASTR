@@ -156,7 +156,15 @@ public class FXMLCursosController implements Initializable {
         btnTodos.setStyle(ESTILO_SELECCIONADO);
         btnProyectoGuiado.setStyle(ESTILO_NORMAL);
         btnExperienciaRecepcional.setStyle(ESTILO_NORMAL);
-        mostrarCursos(cursos);
+        //mostrarCursos(cursos);            SortedList<Curso> sortedList = new SortedList<>(filtroCursos,
+        FilteredList<Curso> filtroCursos = new FilteredList<>(cursos, p -> true);
+        filtroCursos.setPredicate(curso -> {
+            return true;
+        });
+        SortedList<Curso> sortedList = new SortedList<>(filtroCursos,
+                Comparator.comparing(Curso::getNombreCurso));
+        mostrarCursos(sortedList);
+        configurarBusqueda(sortedList);
     }
 
     @FXML

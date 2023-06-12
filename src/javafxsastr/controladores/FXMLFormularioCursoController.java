@@ -231,10 +231,10 @@ public class FXMLFormularioCursoController implements Initializable {
 
     @FXML
     private void clicBtnCancelar(ActionEvent event) {
-        boolean respuesta = Utilidades.mostrarDialogoConfirmacion("Confirmacion", 
+        boolean respuesta = Utilidades.mostrarDialogoConfirmacion("Confirmación", 
                 "¿Estás seguro de que deseas cancelar la creación del curso");
         if (respuesta) {
-            irAVistaCursos();
+            cerrarVentana();
         }
     }
 
@@ -465,7 +465,7 @@ public class FXMLFormularioCursoController implements Initializable {
 
     @FXML
     private void clicBtnVolver(MouseEvent event) {
-      cerrarVentana();
+        cerrarVentana();
     }
     
     private void irAVistaCursos() {
