@@ -211,9 +211,10 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
     private void mostrarDatosAnteproyecto() {
         if (anteproyecto != null && !anteproyecto.getFechaCreacion().isEmpty()) {
             mostrarDatosResponsableTrabajoRecepcional();
-            validarEsDirector();
-            validarAsignarPrimerEstudiante();
-            validarAsignarOtroEstudiante();
+            if (validarEsDirector()) {
+                validarAsignarPrimerEstudiante();
+                validarAsignarOtroEstudiante();
+            }
             mostrarDatosLugarFecha();
             mostrarDatosProyectoTitulacion();
             mostrarDatosDescripciones();
