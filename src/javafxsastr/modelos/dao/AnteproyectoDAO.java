@@ -19,7 +19,7 @@ import javafxsastr.utils.Codigos;
 
 public class AnteproyectoDAO {
 
-    private final String OBTENER_ANTEPROYECTOS = "SELECT  " 
+    private final String OBTENER_ANTEPROYECTOS = "SELECT " 
             + "A.idAnteproyecto, A.fechaCreacionAnteproyecto, A.nombreProyectoInvestigacion, A.ciudadCreacionAnteproyecto, " 
             + "A.lineaInvestigacion, A.duracionAproximadaAnteproyecto, A.nombreTrabajoRecepcional, A.requisitosAnteproyecto, " 
             + "A.alumnosParticipantesAnteproyecto, A.descripcionProyectoInvestigacion, A.descripcionTrabajoRecepcional, " 
@@ -79,8 +79,8 @@ public class AnteproyectoDAO {
             + "requisitosAnteproyecto, alumnosParticipantesAnteproyecto, descripcionProyectoInvestigacion, "
             + "descripcionTrabajoRecepcional, resultadosEsperadosAnteproyecto, bibliografiasRecomendadasAnteproyecto, "
             + "notasExtraAnteproyecto, idAcademico, idEstadoSeguimiento, idCuerpoAcademico, idModalidad) values "
-            + "(?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-    private final String VERIFICAR_SI_ACADEMICO_ES_DIRECTOR = "SELECT EXISTS"
+            + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+    private final String VERIFICAR_SI_ACADEMICO_ES_DIRECTOR = "SELECT EXISTS "
             + "(SELECT idAcademico FROM anteproyectos WHERE idAcademico = ?) as esDirector;";
     private final String GUARDAR_CODIRECTOR_ANTEPROYECTO = "INSERT INTO `sastr`.`codirectores_anteproyectos` "
             + "(`idAnteproyecto`, `idAcademico`) VALUES (?, ?);";
@@ -91,8 +91,8 @@ public class AnteproyectoDAO {
     private final String ELIMINAR_CODIRECTORES_DE_ANTEPROYECTO 
             = "DELETE FROM `sastr`.`codirectores_anteproyectos` WHERE (`idAnteproyecto` = ?);";
     private final String OBTENER_ANTEPROYECTOS_POR_ESTUDIANTE = OBTENER_ANTEPROYECTOS
-            + " inner join sastr.estudiantes ASE" 
-            + "on A.idAnteproyecto = ASE.idAnteproyecto" 
+            + " inner join sastr.estudiantes ASE " 
+            + "on A.idAnteproyecto = ASE.idAnteproyecto " 
             + "WHERE ASE.idEstudiante = ?;";
     private final String ACTUALIZAR_ESTADO_SEGUMIMIENTO = "UPDATE anteproyectos set idEstadoSeguimiento = ? "
             + "where idAnteproyecto = ?";
