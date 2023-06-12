@@ -230,8 +230,8 @@ public class FXMLFormularioActividadController implements Initializable {
     
     private void registrarActividad() {
         Actividad actividadNueva = new Actividad();
-        actividadNueva.setNombreActividad(txfNombreActividad.getText());
-        actividadNueva.setDetallesActividad(txaDetallesActividad.getText());
+        actividadNueva.setNombreActividad(txfNombreActividad.getText().trim());
+        actividadNueva.setDetallesActividad(txaDetallesActividad.getText().trim());
         actividadNueva.setFechaInicioActividad(dtpInicio.getValue().toString());
         actividadNueva.setFechaFinActividad(dtpFin.getValue().toString());
         actividadNueva.setHoraInicioActividad(txfHoraInicio.getText()+":00");

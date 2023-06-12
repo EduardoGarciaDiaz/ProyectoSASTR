@@ -177,7 +177,7 @@ public class FXMLAñadirLgacController implements Initializable {
                 lgacNuevo.setIdLgac(lgacIdEdicion.getIdLgac());
                 int exito = lgacDao.actualizarLgac(lgacNuevo);
                 if (exito != -1) {
-                    Utilidades.mostrarDialogoSimple("Actualizacion exitoso","La LGAC "+txfNombreLgac.getText()
+                    Utilidades.mostrarDialogoSimple("Actualizacion exitoso","La LGAC " + txfNombreLgac.getText()
                             +" se actualizo correctamente",Alert.AlertType.INFORMATION);   
                     cerrarVentana();
                 } else {               
@@ -187,12 +187,12 @@ public class FXMLAñadirLgacController implements Initializable {
             } else {
                 int exito = lgacDao.guardarLgac(lgacNuevo);
                 if (exito != -1) {
-                    Utilidades.mostrarDialogoSimple("Registro exitoso","La LGAC "+txfNombreLgac.getText()+" se registro correctamente", 
+                    Utilidades.mostrarDialogoSimple("Registro exitoso","La LGAC " + txfNombreLgac.getText()+" se registro correctamente", 
                             Alert.AlertType.INFORMATION);
                     btnGuardar.setDisable(true);
                     limpiarCampos();
                 } else {           
-                    Utilidades.mostrarDialogoSimple("Registro Fallido","Ocurrio un error al registrar la LGAC, intentelo mas tarde",
+                    Utilidades.mostrarDialogoSimple("Registro Fallido", "Ocurrio un error al registrar la LGAC, intentelo mas tarde",
                             Alert.AlertType.ERROR);
                 }
             }            
