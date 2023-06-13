@@ -56,7 +56,6 @@ public class FXMLCursosController implements Initializable {
     
     private ObservableList<Curso> cursos ;
     private Usuario usuario;
-    private Academico academico;
     private Curso cursoConsutla;
     private final String ESTILO_SELECCIONADO = "-fx-background-color: ACACAC;"
                                                 + "-fx-background-radius: 15;";
@@ -67,8 +66,8 @@ public class FXMLCursosController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
     }
     
-    public void setUsuario(Academico academico) {
-        this.academico = academico;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
         obtenerCursos();
     }
     
@@ -120,18 +119,18 @@ public class FXMLCursosController implements Initializable {
                 public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                     vbxCursos.getChildren().clear();
                     filtroCursos.setPredicate(cursoFiltro -> {
-                       if (newValue == null || newValue.isEmpty()) {
-                           return true;
-                       }
-                       String lowerNewValue = newValue.toLowerCase();
-                       if (cursoFiltro.getNombreCurso().toLowerCase().contains(lowerNewValue)) {
-                           return true;
-                       } else if (cursoFiltro.getAcademicoCurso().toLowerCase().contains(lowerNewValue)) {
-                           return true;
-                       } else if (cursoFiltro.getNrcCurso().toLowerCase().contains(lowerNewValue)) {
-                           return true;
-                       }
-                       return false;
+                        if (newValue == null || newValue.isEmpty()) {
+                            return true;
+                        }
+                        String lowerNewValue = newValue.toLowerCase();
+                        if (cursoFiltro.getNombreCurso().toLowerCase().contains(lowerNewValue)) {
+                            return true;
+                        } else if (cursoFiltro.getAcademicoCurso().toLowerCase().contains(lowerNewValue)) {
+                            return true;
+                        } else if (cursoFiltro.getNrcCurso().toLowerCase().contains(lowerNewValue)) {
+                            return true;
+                        }
+                        return false;
                     });
                     SortedList<Curso> sortedListCursos = new SortedList<>(filtroCursos,
                         Comparator.comparing(Curso::getNombreCurso));
@@ -147,7 +146,7 @@ public class FXMLCursosController implements Initializable {
 
     @FXML
     private void clicRegresar(MouseEvent event) {
-        irAVistaInicio(academico);
+        irAVistaInicio(usuario);
     }
 
     @FXML
@@ -156,7 +155,6 @@ public class FXMLCursosController implements Initializable {
         btnTodos.setStyle(ESTILO_SELECCIONADO);
         btnProyectoGuiado.setStyle(ESTILO_NORMAL);
         btnExperienciaRecepcional.setStyle(ESTILO_NORMAL);
-        //mostrarCursos(cursos);            SortedList<Curso> sortedList = new SortedList<>(filtroCursos,
         FilteredList<Curso> filtroCursos = new FilteredList<>(cursos, p -> true);
         filtroCursos.setPredicate(curso -> {
             return true;
@@ -193,7 +191,7 @@ public class FXMLCursosController implements Initializable {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLFormularioCurso.fxml"));
             Parent vista = accesoControlador.load();
             FXMLFormularioCursoController controladorVistaFormularioCurso = accesoControlador.getController();
-            controladorVistaFormularioCurso.setUsuario(academico);
+            controladorVistaFormularioCurso.setUsuario(usuario);
             controladorVistaFormularioCurso.inicializarInformacionFormulario(false, null, null);
             Stage escenario = (Stage) lbTituloVentana.getScene().getWindow();
             escenario.setScene(new Scene(vista));
@@ -204,12 +202,12 @@ public class FXMLCursosController implements Initializable {
         }
     }
     
-    private void irAVistaInicio(Academico academico) {
+    private void irAVistaInicio(Usuario usuario) {
         try {            
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLInicio.fxml"));
             Parent vista = accesoControlador.load();
             FXMLInicioController controladorVistaInicio = accesoControlador.getController();
-            controladorVistaInicio.setUsuario(academico);
+            controladorVistaInicio.setUsuario(usuario);
             Stage escenario = (Stage) lbTituloVentana.getScene().getWindow();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Inicio");
@@ -224,7 +222,7 @@ public class FXMLCursosController implements Initializable {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLDetallesCurso.fxml"));
             Parent vista = accesoControlador.load();
             FXMLDetallesCursoController controladorDetallesCurso = accesoControlador.getController();
-            controladorDetallesCurso.setUsuarioYCurso(academico, cursoConsutla);
+            controladorDetallesCurso.setUsuarioYCurso(usuario, cursoConsutla);
             Stage escenario = (Stage) lbTituloVentana.getScene().getWindow();
             escenario.setScene(new Scene(vista));            
             escenario.setTitle("Detalles curso");

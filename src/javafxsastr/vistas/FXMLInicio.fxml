@@ -60,16 +60,6 @@
             <Font name="System Bold" size="36.0" />
          </font>
       </Label>
-      <AnchorPane fx:id="menuLateral" layoutY="50.0" prefHeight="890.0" prefWidth="350.0" style="-fx-background-color: #15294f;" translateX="-350.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.topAnchor="50.0">
-         <rotationAxis>
-            <Point3D />
-         </rotationAxis>
-         <children>
-            <VBox fx:id="vbxMenuDesplegado" prefHeight="820.0" prefWidth="350.0" spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
-               <padding>
-                  <Insets bottom="18.0" right="18.0" top="18.0" />
-               </padding></VBox>
-         </children></AnchorPane>
       <Pane fx:id="pbnBotonCrearAnteproyecto" layoutX="1430.0" layoutY="834.0" onMouseClicked="#clicCrearAnteproyecto" prefHeight="68.0" prefWidth="244.0" style="-fx-background-color: black; -fx-background-radius: 13;" visible="false">
          <children>
             <Label layoutX="13.0" layoutY="16.0" text="Crear anteproyecto" textFill="WHITE">
@@ -88,5 +78,34 @@
             </Label>
          </children>
       </Pane>
+      <Pane layoutX="118.0" layoutY="149.0" prefHeight="202.0" prefWidth="799.0" style="-fx-background-radius: 15; -fx-background-color: white;">
+         <children>
+            <Label fx:id="lbBienvenida" layoutX="29.0" layoutY="34.0" textFill="#3967b9">
+               <font>
+                  <Font name="Gill Sans MT Bold" size="30.0" />
+               </font>
+            </Label>
+            <Label layoutX="35.0" layoutY="77.0" prefHeight="113.0" prefWidth="727.0" text="En el menú lateral encuentras las funciones que puedes realizar dentro del sistema. En la esquina superior derecha se encuentra el cierre de sesión." wrapText="true">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Label layoutX="124.0" layoutY="78.0" text="Inicio">
+         <font>
+            <Font name="System Bold" size="35.0" />
+         </font>
+      </Label>
+      <AnchorPane fx:id="menuLateral" layoutY="50.0" prefHeight="890.0" prefWidth="350.0" style="-fx-background-color: #15294f;" translateX="-350.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.topAnchor="50.0">
+         <rotationAxis>
+            <Point3D />
+         </rotationAxis>
+         <children>
+            <VBox fx:id="vbxMenuDesplegado" prefHeight="820.0" prefWidth="350.0" spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
+               <padding>
+                  <Insets bottom="18.0" right="18.0" top="18.0" />
+               </padding></VBox>
+         </children></AnchorPane>
    </children>
 </AnchorPane>

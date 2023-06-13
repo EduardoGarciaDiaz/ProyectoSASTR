@@ -69,7 +69,7 @@ public class FXMLFormularioCursoController implements Initializable {
     @FXML
     private Label lbPeriodoActual;    
     
-    private Academico academico;
+    private Usuario usuario;
     private ExperienciaEducativa experienciaEdicion;
     private Nrc nrcEdicion;
     private Seccion secccionEdicion;
@@ -95,8 +95,8 @@ public class FXMLFormularioCursoController implements Initializable {
         inicializarCamposDeBusqueda();
     }    
     
-    public void setUsuario(Academico academico) {
-        this.academico = academico;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
         recuperarDatosCurso();
     }
 
@@ -432,14 +432,10 @@ public class FXMLFormularioCursoController implements Initializable {
     private boolean validarCamposObligatoriosLlenos() {
         boolean camposLlenos = false;
         if ((!tfNombreCurso.getText().trim().isEmpty())
-                && (cmbExperienciasEducativas.getSelectionModel().getSelectedItem()!= null)
-                || (experienciaEdicion != null)
-                && (cmbNrcs.getSelectionModel().getSelectedItem() != null)
-                || (nrcEdicion != null)
-                && (cmbSecciones.getSelectionModel().getSelectedItem() != null)
-                || (secccionEdicion != null)
-                && (cmbBloques.getSelectionModel().getSelectedItem() != null)
-                || (bloqueEdicion != null)
+                && ((cmbExperienciasEducativas.getSelectionModel().getSelectedItem()!= null) || (experienciaEdicion != null))
+                && ((cmbNrcs.getSelectionModel().getSelectedItem() != null) || (nrcEdicion != null))
+                && ((cmbSecciones.getSelectionModel().getSelectedItem() != null) || (secccionEdicion != null))
+                && ((cmbBloques.getSelectionModel().getSelectedItem() != null) || (bloqueEdicion != null))
                 && (profesorSeleccionado != null)
                 && (dpFechaFinClases.getValue() != null)
                 && (dpFechaInicioClases.getValue() != null)) {
@@ -473,7 +469,7 @@ public class FXMLFormularioCursoController implements Initializable {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLCursos.fxml"));
             Parent vista = accesoControlador.load();
             FXMLCursosController controladorVistaCursos = accesoControlador.getController();
-            controladorVistaCursos.setUsuario(academico);
+            controladorVistaCursos.setUsuario(usuario);
             Stage escenario = (Stage) lbTituloFormulario.getScene().getWindow();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Cursos");

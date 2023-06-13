@@ -53,6 +53,8 @@ public class FXMLInicioController implements Initializable, INotificacionClicBot
     private Pane paneCerrarSesion;
     @FXML
     private ImageView imvDesplegarCerrarSesion;
+    @FXML
+    private Label lbBienvenida;
     
     private Usuario usuario;
     private Academico academico = null;
@@ -67,6 +69,7 @@ public class FXMLInicioController implements Initializable, INotificacionClicBot
     public void setUsuario(Usuario usuario) {
         try {
             this.usuario = usuario;
+            lbBienvenida.setText("Bienvenido, ¡" + usuario.toString() + "!");
             Academico academicoConsulta = new AcademicoDAO().obtenerAcademicoPorIdUsuario(this.usuario.getIdUsuario());
             if (academicoConsulta.getIdAcademico() > 0) {
                 this.academico = academicoConsulta;
@@ -253,7 +256,7 @@ public class FXMLInicioController implements Initializable, INotificacionClicBot
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLCursos.fxml"));
             Parent vista = accesoControlador.load();
             FXMLCursosController controladorVistaCuesos = accesoControlador.getController();
-            controladorVistaCuesos.setUsuario(academico);
+            controladorVistaCuesos.setUsuario(usuario);
             Stage escenario = (Stage) menuContraido.getScene().getWindow();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Cursos");

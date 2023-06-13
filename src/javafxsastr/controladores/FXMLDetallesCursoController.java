@@ -76,7 +76,7 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
      
     private final int INACTIVO = 2;
     private final int ACTIVO = 1;
-    private Academico academico;
+    private Usuario usuario;
     private ObservableList<Estudiante> estudiantes;
     private Curso cursoActual;
     private PeriodoEscolar periodoEscolar;
@@ -85,8 +85,8 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
     public void initialize(URL url, ResourceBundle rb) {        
     }
     
-    public void setUsuarioYCurso(Academico academicoN, Curso curso) {
-        this.academico = academicoN;
+    public void setUsuarioYCurso(Usuario usuario, Curso curso) {
+        this.usuario = usuario;
         this.cursoActual = curso;
         setLogoActivo();
         if (cursoActual != null) {
@@ -291,7 +291,7 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
             FXMLFormularioUsuarioController controladorVistaFormularioUsuario = accesoControlador.getController();   
             controladorVistaFormularioUsuario.vieneDeVentanaDetallesCurso(true, this);
             controladorVistaFormularioUsuario.inicializarInformacionFormulario(true, usuario);
-            controladorVistaFormularioUsuario.setUsuario(academico);
+            controladorVistaFormularioUsuario.setUsuario(this.usuario);
             Stage escenario = new Stage();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Modificar Usuario");
@@ -335,7 +335,8 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
         try {              
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLFormularioCurso.fxml"));
             Parent vista = accesoControlador.load();
-            FXMLFormularioCursoController controladorVistaFormularioCurso = accesoControlador.getController();     
+            FXMLFormularioCursoController controladorVistaFormularioCurso = accesoControlador.getController();  
+            controladorVistaFormularioCurso.setUsuario(usuario);
             controladorVistaFormularioCurso.inicializarInformacionFormulario(true, cursoActual,this);
             Stage escenario = new Stage();
             escenario.setScene(new Scene(vista));
@@ -343,7 +344,7 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
             escenario.initModality(Modality.APPLICATION_MODAL);
             escenario.showAndWait();
         } catch (IOException ex) {
-            Utilidades.mostrarDialogoSimple("Error","No se pudo cargar la Escena", Alert.AlertType.ERROR);
+            Utilidades.mostrarDialogoSimple("Error", "No se pudo cargar la Escena", Alert.AlertType.ERROR);
         }
         iniciarVentana();
     }
@@ -353,7 +354,7 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLCursos.fxml"));
             Parent vista = accesoControlador.load();
             FXMLCursosController controladorVistaCursos = accesoControlador.getController();
-            controladorVistaCursos.setUsuario(academico);
+            controladorVistaCursos.setUsuario(usuario);
             Stage escenario = (Stage) lbBloque.getScene().getWindow();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Cursos");
