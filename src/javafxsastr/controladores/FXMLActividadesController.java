@@ -82,7 +82,7 @@ public class FXMLActividadesController implements Initializable {
     private ObservableList<Academico> codirectores;
     private int actividadesPorVencer;
     private int actividadesRealizadas;
-    private int actividadesRevisadas;
+    private int actividadesNoRealizadas;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -167,19 +167,23 @@ public class FXMLActividadesController implements Initializable {
     }
     
     private void obtenerDatosRelacionadoAlEstudiante() {
-        AnteproyectoDAO anteproyectoDao = new AnteproyectoDAO();
+        AnteproyectoDAO anteproyectoDAO = new AnteproyectoDAO();
         CursoDAO cursoDao = new CursoDAO();        
         AcademicoDAO academicoDao = new AcademicoDAO(); 
-        ActividadDAO acatividadesDao = new ActividadDAO();
+        ActividadDAO actividadesDAO = new ActividadDAO();
         try {
             curso = cursoDao.obtenerCursosPorEstudiante(estudiante.getIdEstudiante());
             if (curso != null) {
                 academico = academicoDao.obtenerAcademicoPorId(curso.getIdAcademico());
             }
-            anteproyecto = anteproyectoDao.obtenerAnteproyectosPorEstudiante(estudiante.getIdEstudiante());
-            actividadesPorVencer = acatividadesDao.totalActividades(1,estudiante.getIdEstudiante());
-            actividadesRealizadas = acatividadesDao.totalActividades(2,estudiante.getIdEstudiante());
-            actividadesRevisadas = acatividadesDao.totalActividades(3,estudiante.getIdEstudiante());
+            anteproyecto = anteproyectoDAO.obtenerAnteproyectosPorEstudiante(estudiante.getIdEstudiante());
+            int totalActividades = actividadesDAO
+                    .obtenerNumeroActividadesPorEstudiante(estudiante.getIdEstudiante(), estudiante.getIdAnteproyecto());
+            actividadesRealizadas = actividadesDAO
+                    .obtenerNumeroActividadesCompletadas(estudiante.getIdEstudiante(),estudiante.getIdAnteproyecto());
+            actividadesNoRealizadas = actividadesDAO
+                    .obtenerNumeroActividadesNoCompletadas(estudiante.getIdEstudiante(),estudiante.getIdAnteproyecto());
+            actividadesPorVencer = totalActividades - actividadesNoRealizadas - actividadesRealizadas;
         } catch (DAOException ex) {
             manejarDAOException(ex);
         } 
@@ -205,7 +209,7 @@ public class FXMLActividadesController implements Initializable {
         }
         lbActSinPendientes.setText(actividadesPorVencer + " Actividades pendientes");
         lbActRevisadas.setText(actividadesRealizadas + " Actividades realizadas");
-        lbActPorVencer.setText(actividadesRevisadas + " Actividades sin completar");
+        lbActPorVencer.setText(actividadesNoRealizadas + " Actividades sin completar");
     }
     
     @FXML
