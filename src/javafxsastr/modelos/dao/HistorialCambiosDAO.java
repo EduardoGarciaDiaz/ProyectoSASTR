@@ -1,5 +1,5 @@
 /*
- * Autor: Tritan Eduardo Suarez Santiago
+ * Autor: Tristan Eduardo Suarez Santiago
  * Fecha de creación: 15/05/2023
  * Descripción: Clase DAO de el Historial de cambios
  */

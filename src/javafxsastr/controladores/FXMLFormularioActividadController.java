@@ -186,8 +186,9 @@ public class FXMLFormularioActividadController implements Initializable {
     
    public void validarFechas() { 
         LocalDate fechaInicioActividad = dtpInicio.getValue();
-        LocalDate fechaFinActividad = dtpFin.getValue();           
-        if (fechaInicioActividad.isAfter(fechaFinActividad)) {
+        LocalDate fechaFinActividad = dtpFin.getValue();
+        LocalDate fechaActual =  LocalDate.now();
+        if (fechaInicioActividad.isAfter(fechaFinActividad) || fechaFinActividad.isBefore(fechaActual)) {
            Utilidades.mostrarDialogoSimple("Error","Fechas Invalidas", Alert.AlertType.ERROR);
         } else {
            validarHora(fechaInicioActividad, fechaFinActividad);
