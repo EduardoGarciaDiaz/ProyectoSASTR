@@ -118,7 +118,7 @@ public class FXMLAñadirLgacController implements Initializable {
     }
     
     private void inicializarFiltros() {
-        FiltrosTexto.filtroLetrasNumeros(txfNombreLgac);
+        FiltrosTexto.filtroLetrasNumerosPuntosComasSignosComunes(txfNombreLgac);
         FiltrosTexto.filtroLetrasNumerosPuntosComasSignosComunes(txaDescripcionLgac);
     }
     
@@ -221,9 +221,9 @@ public class FXMLAñadirLgacController implements Initializable {
            } else {
                 FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLCuerposAcademicos.fxml"));
                 Parent vista = accesoControlador.load();
-                FXMLCuerposAcademicosController controladorVista = accesoControlador.getController();  
-                controladorVista.setUsuario(ususarioActual);
-                controladorVista.setterVistaLgacs();
+                FXMLCuerposAcademicosController controladorVistauerposAcademicos = accesoControlador.getController();  
+                controladorVistauerposAcademicos.setUsuario(ususarioActual);
+                controladorVistauerposAcademicos.setterVistaLgacs();
                 escenarioActual.setScene(new Scene(vista));
                 escenarioActual.setTitle("Cuerpos Academicos"); 
                 escenarioActual.show();
