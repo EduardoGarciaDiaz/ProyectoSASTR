@@ -19,8 +19,9 @@ public class RevisionAnteproyectoDAO {
     private final String OBTENER_REVISION_ANTEPROYECTO = "SELECT * FROM sastr.revisiones_anteproyectos where idAnteproyecto = ?;";
     private final String GUARDAR_REVISION_ANTEPROYECTO = "INSERT INTO `sastr`.`revisiones_anteproyectos` "
             + "(`comentarios`, `idRubrica`, `idAnteproyecto`) VALUES (?, ?, ?);";
-    private final String MODIFICAR_REVISION_ANTEPROYECTO = "UPDATE `sastr`.`revisiones_anteproyectos` "
-            + "SET `comentarios` = ?, `idRubrica` = ?, `idAnteproyecto` = ?  WHERE (`idRevisionAnteproyecto` = ?);";
+    private final String MODIFICAR_REVISION_ANTEPROYECTO = "UPDATE sastr.revisiones_anteproyectos "
+            + "SET comentarios = ? "
+            + "WHERE idRevisionAnteproyecto = ? ";
 
     public RevisionAnteproyecto obtenerRevisionAnteproyecto(int idAnteproyecto) throws DAOException {
         RevisionAnteproyecto revisionAnteproyecto = new RevisionAnteproyecto();
@@ -52,11 +53,29 @@ public class RevisionAnteproyectoDAO {
             sentencia.setInt(3, idAnteproyecto);
             sentencia.executeUpdate();
             ResultSet resultado = sentencia.getGeneratedKeys();
-            if(resultado.next()) {
+            if (resultado.next()) {
                 respuesta = resultado.getInt(1);
             }
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
+            throw new DAOException("Lo sentimos, hubo un problema al eliminar el usuario.", Codigos.ERROR_CONSULTA);
+        }
+        return respuesta;
+    }
+    
+    public int actualizarRelacionRubricaAnteproyecto(int idRevisionAnteporyecto, String comentarios) throws DAOException {
+        int respuesta = -1;
+        try {
+            PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(MODIFICAR_REVISION_ANTEPROYECTO);           
+            sentencia.setString(1,comentarios);   
+            sentencia.setInt(2,idRevisionAnteporyecto);                     
+            int resultado = sentencia.executeUpdate();
+            if (resultado != 0) {
+                respuesta = resultado;
+            }
+            ConexionBD.cerrarConexionBD();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
             throw new DAOException("Lo sentimos, hubo un problema al eliminar el usuario.", Codigos.ERROR_CONSULTA);
         }
         return respuesta;

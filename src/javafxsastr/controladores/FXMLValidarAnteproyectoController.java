@@ -48,6 +48,7 @@ import javafxsastr.modelos.pojo.Academico;
 import javafxsastr.modelos.pojo.Anteproyecto;
 import javafxsastr.modelos.pojo.Estudiante;
 import javafxsastr.modelos.pojo.Lgac;
+import javafxsastr.modelos.pojo.RevisionAnteproyecto;
 import javafxsastr.modelos.pojo.Rubrica;
 import javafxsastr.utils.CodigosVentanas;
 import javafxsastr.utils.Utilidades;
@@ -122,6 +123,8 @@ public class FXMLValidarAnteproyectoController implements Initializable {
     private VBox vbxCodirectores;
     @FXML
     private Label lbComentarios;
+    @FXML
+    private Button btnRechazar;
     
     private final int LIM_CARACT_COMENTARIOS = 2000;
     private Anteproyecto anteproyecto;
@@ -149,6 +152,7 @@ public class FXMLValidarAnteproyectoController implements Initializable {
         this.academico = academico;
         mostrarDatosAnteproyecto();
         btnAprobar.setDisable(true);
+        btnRechazar.setDisable(true);
         inicializarListeners();
     }
     
@@ -164,43 +168,43 @@ public class FXMLValidarAnteproyectoController implements Initializable {
         NombreTR.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {            
             @Override
             public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {            
-               validarBtnAprobar();
+               validarBotones();
             }
         });
         LGACS.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {            
             @Override
             public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-               validarBtnAprobar();
+               validarBotones();
             }
         });
         Redaccion.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {            
             @Override
             public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-               validarBtnAprobar();
+               validarBotones();
             }
         });
         ResultadosEsperados.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {            
             @Override
             public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-               validarBtnAprobar();
+               validarBotones();
             }
         });
         DescripcionTR.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {            
             @Override
             public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-               validarBtnAprobar();
+               validarBotones();
             }
         });
         BibliografiasRecomendadas.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {            
             @Override
             public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-               validarBtnAprobar();
+               validarBotones();
             }
         });
         RequisitosAnteproyecto.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {            
             @Override
             public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-               validarBtnAprobar();
+               validarBotones();
             }
         });
         txaComentarios.textProperty().addListener(new ChangeListener<String>() {
@@ -212,7 +216,7 @@ public class FXMLValidarAnteproyectoController implements Initializable {
                 } else {
                     lbComentarios.setText("");                    
                 } 
-                validarBtnAprobar();
+                validarBotones();
             }
         }); 
     }
@@ -334,14 +338,18 @@ public class FXMLValidarAnteproyectoController implements Initializable {
         vbxLgacs.getChildren().add(lbNombreLgac);
     }
     
-    private void validarBtnAprobar() {
+    private void validarBotones() {
         if (BibliografiasRecomendadas.getSelectedToggle() != null && DescripcionTR.getSelectedToggle() != null
                 && LGACS.getSelectedToggle() != null && NombreTR.getSelectedToggle() != null &&
                 Redaccion.getSelectedToggle() != null && RequisitosAnteproyecto.getSelectedToggle() != null
-                && ResultadosEsperados.getSelectedToggle() != null && validarValores()) {
-            btnAprobar.setDisable(false);            
+                && ResultadosEsperados.getSelectedToggle() != null ) {
+            btnRechazar.setDisable(false);
+            if (validarValores()) {
+                btnAprobar.setDisable(false);  
+            }                      
         } else {
             btnAprobar.setDisable(true);
+            btnRechazar.setDisable(true);
         }
     }
  
@@ -411,11 +419,11 @@ public class FXMLValidarAnteproyectoController implements Initializable {
             if (rubricaExistente != -1) {
                 rubrica.setIdRubrica(rubricaExistente);
                 exitoRubrica = new RubricaDAO().actualizarRubrica(rubrica);
+                actualizarRevisonRubrica();
             } else {
                  exitoRubrica = new RubricaDAO().guardarRubrica(rubrica);
                  int exitoRelacion = new RevisionAnteproyectoDAO().guardarRelacionRubricaAnteproyecto(txaComentarios.getText(),
-                        anteproyecto.getIdAnteproyecto(),exitoRubrica);
-            }           
+                        anteproyecto.getIdAnteproyecto(),exitoRubrica);            }           
             if (exitoRubrica != -1) {                
                 int idEstadoSeguimiento = new EstadoSeguimientoDAO().obtenerIdEstadoSeguimiento(estadoSeguimiento);
                 int exitoActualizaicon = new AnteproyectoDAO().actualizarEstadoSeguimiento(anteproyecto.getIdAnteproyecto(),
@@ -442,17 +450,23 @@ public class FXMLValidarAnteproyectoController implements Initializable {
         }
     }
     
+    private void actualizarRevisonRubrica() throws DAOException {        
+        RevisionAnteproyecto revisionAnteproyecto = new RevisionAnteproyectoDAO().obtenerRevisionAnteproyecto(anteproyecto.getIdAnteproyecto());
+        new RevisionAnteproyectoDAO().actualizarRelacionRubricaAnteproyecto(revisionAnteproyecto.getIdRevisionAnteproyecto(), 
+                                                                                                      txaComentarios.getText().trim()); 
+    }
+    
     private void mostraMensajelimiteSuperado(int limiteCaracteres, String campo,  Label etiquetaError) { 
         etiquetaError.setText("Cuidado, Excediste el limite de caracteres("+limiteCaracteres+") de este campo " + campo);
         btnAprobar.setDisable(true);
     }    
      
-     private void cerrarVentana() {
+    private void cerrarVentana() {
           try {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLAnteproyectos.fxml"));
             Parent vista = accesoControlador.load();
-            FXMLAnteproyectosController controladorDetallesAnteproyecto = accesoControlador.getController();
-            controladorDetallesAnteproyecto.setAcademico(academico, true, CodigosVentanas.INICIO);
+            FXMLAnteproyectosController controladorAnteproyectos = accesoControlador.getController();
+            controladorAnteproyectos.setAcademico(academico, true, CodigosVentanas.INICIO);
             Stage escenario = (Stage) lbDuracion.getScene().getWindow();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Anteproyectos");
