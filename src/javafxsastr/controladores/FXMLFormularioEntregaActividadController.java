@@ -274,9 +274,7 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
         boolean seEnviaronTodos = true;
         try {
             if (archivosEntregaSeleccionados.isEmpty()) {
-                for (int i = 0; i < archivosEdicion.size(); i++) {
-                    new ArchivoDAO().borrarArchivosRevision(archivosEdicion.get(i).getIdArchivo());
-                }
+                eliminaArchivosBDsinUsar(0);                
             } else {
                 int contador = 0;
                 for (Archivo archivos : archivosEntregaSeleccionados) {
@@ -323,7 +321,7 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
     private void eliminaArchivosBDsinUsar(int contador) {
         for (int i = contador; i < archivosEdicion.size(); i++) {
             try {
-                new ArchivoDAO().borrarArchivosRevision(archivosEdicion.get(i).getIdArchivo());
+                new ArchivoDAO().borrarArchivosEntrega(archivosEdicion.get(i).getIdArchivo());
             } catch (DAOException ex) {
                 Utilidades.mostrarDialogoSimple("Error en al actuaizar los archivos",
                         "No se pudo actualizar los archivos de la entrega", Alert.AlertType.ERROR);
