@@ -82,6 +82,8 @@ public class FXMLRevisarEntregaController implements Initializable {
     int numeroEntrega;
     @FXML
     private Label lbMensajeErrorPesoArchivo;
+    @FXML
+    private Label lbErrorCaracteresComentarios;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -222,11 +224,12 @@ public class FXMLRevisarEntregaController implements Initializable {
             (observable, oldValue, newValue) -> {
                 if (newValue) {
                     if (validarSiEsDirector()) {
+                        lbErrorCaracteresComentarios.setVisible(false);
                         btnEnviarRevision.setDisable(false);
                     }
                 }
                 if (oldValue) {
-                    if (txaComentariosDirector.getText().isEmpty()) {
+                    if (txaComentariosDirector.getText().trim().isEmpty()) {
                         btnEnviarRevision.setDisable(true);
                     }
                 }
@@ -275,14 +278,14 @@ public class FXMLRevisarEntregaController implements Initializable {
     private void clicBtnEnviarRevision(ActionEvent event) {
         Entrega entregaValida = prepararEntregaValida();
         if (entregaValida.getComentarioDirector().length() < 2000 
-                || entregaValida.getComentarioDirector().length() > 100) {
+                && entregaValida.getComentarioDirector().length() > 10) {
             actualizarEntrega(entregaValida);
             guardarArchivosRevision();
             Utilidades.mostrarDialogoSimple("Revisión enviada", 
                     "Revisión enviada correctamente", Alert.AlertType.INFORMATION);
             irAVistaConsultarEntregasActividad();
         } else {
-            
+            lbErrorCaracteresComentarios.setVisible(true);
         }
     }
     
@@ -298,7 +301,7 @@ public class FXMLRevisarEntregaController implements Initializable {
                 this.entrega.getComentarioAlumno(), 
                 this.entrega.getFechaEntrega(), 
                 this.entrega.getHoraEntrega(), 
-                txaComentariosDirector.getText(), 
+                txaComentariosDirector.getText().trim(), 
                 LocalDate.now().toString(), 
                 LocalTime.now().toString(), 
                 this.entrega.getIdActividad(), 

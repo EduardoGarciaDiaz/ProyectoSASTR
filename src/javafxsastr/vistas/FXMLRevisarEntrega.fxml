@@ -186,5 +186,6 @@
             <Font size="24.0" />
          </font>
       </Button>
+      <Label fx:id="lbErrorCaracteresComentarios" layoutX="1282.0" layoutY="161.0" text="Los comentarios deben tener min. 10 y max. 2000 carácteres." textFill="RED" visible="false" />
    </children>
 </AnchorPane>

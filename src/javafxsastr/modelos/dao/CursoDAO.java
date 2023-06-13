@@ -405,7 +405,6 @@ public class CursoDAO {
                 curso.setAcademicoCurso(resultado.getString("nombreCompletoAcademico"));
                 cursos.add(curso);
             }
-            System.out.println(cursos);
             ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
             throw new DAOException("Error de consulta al obtener los cursos actuales del profesor", Codigos.ERROR_CONSULTA);

@@ -33,7 +33,6 @@ import javafx.stage.Stage;
 import javafxsastr.JavaFXSASTR;
 import javafxsastr.modelos.dao.CursoDAO;
 import javafxsastr.modelos.dao.DAOException;
-import javafxsastr.modelos.pojo.Academico;
 import javafxsastr.modelos.pojo.Curso;
 import javafxsastr.modelos.pojo.Usuario;
 import javafxsastr.utils.Utilidades;

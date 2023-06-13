@@ -195,7 +195,7 @@ public class FXMLFormularioCursoController implements Initializable {
     private void cargarNrcs(int idExperienciaEducativa) {
         try {
             nrcs = FXCollections.observableArrayList(
-                new NrcDAO().obtenerNRCSPorExperienciaEducativa(idExperienciaEducativa)
+                new NrcDAO().obtenerNRCSDisponiblesPorEE(idExperienciaEducativa)
             );
             cmbNrcs.setItems(nrcs);
         } catch (DAOException ex) {

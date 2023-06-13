@@ -198,7 +198,7 @@ public class TarjetaAnteproyecto extends Pane {
         btnPublicar.setStyle("-fx-background-color: #C4DAEF; -fx-background-radius: 15;");
         btnPublicar.setLayoutX(1250);
         btnPublicar.setLayoutY(100);
-        btnPublicar.setPrefWidth(180);
+        btnPublicar.setPrefWidth(250);
         btnPublicar.setOnAction(
             (event) -> {
                 interfaz.notificarClicPublicarAnteproyecto(anteproyecto);
@@ -212,7 +212,7 @@ public class TarjetaAnteproyecto extends Pane {
         btnPublicar.setStyle("-fx-background-color: #C4DAEF; -fx-background-radius: 15;");
         btnPublicar.setLayoutX(1250);
         btnPublicar.setLayoutY(100);
-        btnPublicar.setPrefWidth(180);
+        btnPublicar.setPrefWidth(250);
         btnPublicar.setOnAction(
             (event) -> {
                 interfaz.notificarClicDespublicarAnteproyecto(anteproyecto);

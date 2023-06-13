@@ -69,7 +69,7 @@ public class FXMLInicioController implements Initializable, INotificacionClicBot
     public void setUsuario(Usuario usuario) {
         try {
             this.usuario = usuario;
-            lbBienvenida.setText("Bienvenido, ¡" + usuario.toString() + "!");
+            lbBienvenida.setText("Bienvenido/a, ¡" + usuario.toString() + "!");
             Academico academicoConsulta = new AcademicoDAO().obtenerAcademicoPorIdUsuario(this.usuario.getIdUsuario());
             if (academicoConsulta.getIdAcademico() > 0) {
                 this.academico = academicoConsulta;
@@ -185,7 +185,11 @@ public class FXMLInicioController implements Initializable, INotificacionClicBot
             controladorVistaAnteproyectos.setAcademico(academico, esRCA,CodigosVentanas.INICIO);
             Stage escenario = (Stage) menuContraido.getScene().getWindow();
             escenario.setScene(new Scene(vista));
-            escenario.setTitle("Anteproyectos");
+            if (esRCA) {
+                escenario.setTitle("Validar anteproyectos");
+            } else {
+                escenario.setTitle("Mis anteproyectos");
+            }
             escenario.show();
         } catch (IOException ex) {
             ex.printStackTrace();

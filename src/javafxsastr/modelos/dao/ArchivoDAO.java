@@ -138,7 +138,6 @@ public class ArchivoDAO {
                 archivo.setArchivo(resultadoConsultaArchivos.getBytes("archivo"));
                 archivo.setEsEntrega(resultadoConsultaArchivos.getBoolean("esEntrega"));
                 archivo.setIdEntrega(resultadoConsultaArchivos.getInt("idEntrega"));
-                System.out.println(archivo.getNombreArchivo());
                 archivosEntrega.add(archivo);
             }
             ConexionBD.cerrarConexionBD();
