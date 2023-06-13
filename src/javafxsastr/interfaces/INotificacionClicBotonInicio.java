@@ -29,4 +29,5 @@ public interface INotificacionClicBotonInicio {
     public void notificarClicBotonEstudiantes();
     
     public void notificarClicBotonMiAnteproyecto();
+    
 }

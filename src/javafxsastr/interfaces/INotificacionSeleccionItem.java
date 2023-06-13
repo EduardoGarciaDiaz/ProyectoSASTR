@@ -15,4 +15,5 @@ public interface INotificacionSeleccionItem<E> {
     public void notificarSeleccionItem(E itemSeleccionado);
     
     public void notificarPerdidaDelFoco();
+    
 }

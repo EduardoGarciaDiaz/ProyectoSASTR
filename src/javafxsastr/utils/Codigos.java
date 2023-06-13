@@ -22,4 +22,5 @@ public enum Codigos {
     public String getCodigo() {
         return codigo;
     }
+    
 }
