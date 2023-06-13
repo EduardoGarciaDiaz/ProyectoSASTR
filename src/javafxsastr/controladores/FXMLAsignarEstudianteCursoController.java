@@ -45,6 +45,7 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
     @FXML
     private VBox vbxEstudiantesPorAgregar;
     
+    private final int ESTADO_DESACTIVADO = 2;
     private ObservableList<Estudiante> estudiantesDisponibles;
     private ObservableList<Estudiante> estudiantesActuales;
     private ObservableList<Estudiante> estudiantesTabla;
@@ -62,7 +63,7 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
         if (estudiantes != null) {
             estudiantesActuales = FXCollections.observableArrayList((estudiantes));                    
         } 
-        recuperarEstudinates();
+        recuperarEstudiantes();
         cursoActual = curso;    
         BtnOtro.setDisable(true);
         btnGuardar.setDisable(true);
@@ -81,19 +82,21 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
                 }                          
             }
             @Override
-            public void notificarPerdidaDelFoco() {                
-                if (validarEstudianteEnCurso()) {                    
-                    AgregarATabla();
-                } else {
-                    Utilidades.mostrarDialogoSimple("Accion invalida", "Este Estudiante ya pertenece a un curso",
-                            Alert.AlertType.INFORMATION);                   
-                }
-                txfEstudianteBusqueda.setText("");
+            public void notificarPerdidaDelFoco() {
+                if (estudianteSeleccionado != null){
+                    if (validarEstudianteEnCurso()) {                    
+                    agregarATabla();
+                    } else {
+                        Utilidades.mostrarDialogoSimple("Accion invalida", "Este Estudiante ya pertenece a un curso",
+                                Alert.AlertType.INFORMATION);                   
+                    }
+                    txfEstudianteBusqueda.setText("");
+                }                
             }         
         });        
     }
     
-    private void recuperarEstudinates() {
+    private void recuperarEstudiantes() {
         try {
             estudiantesDisponibles = FXCollections.observableArrayList((new EstudianteDAO().obtenerEstudiantes()));
         } catch (DAOException ex) {
@@ -110,12 +113,15 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
                 }
             }
             try {
-                if (cursoDao.verificarSiEstudiantePerteneceACursoActivo(estudianteSeleccionado.getIdEstudiante())){
+                if (cursoDao.verificarSiEstudiantePerteneceACursoActivo(estudianteSeleccionado.getIdEstudiante())) {
                     return false;
                 }
             } catch (DAOException ex) {
                 manejarDAOException(ex);
             }
+            if (estudianteSeleccionado.getIdEstadoUsuario() == ESTADO_DESACTIVADO) {
+                    return false;
+                }
             if (estudiantesTabla != null) {
                 for (Estudiante estudiante1 : estudiantesTabla) {
                     if (estudiante1.getIdEstudiante() == estudianteSeleccionado.getIdEstudiante()) {
@@ -128,25 +134,29 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
         return false;        
     }
     
-    private void AgregarATabla() {     
+    private void agregarATabla() {     
        estudiantesTabla.add(estudianteSeleccionado);
        vbxEstudiantesPorAgregar.setSpacing(40);      
-       TarjetaAgregarEstudianteCurso tarjeta = new TarjetaAgregarEstudianteCurso(estudianteSeleccionado);
-       tarjeta.getImagen().setOnMouseClicked(new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent event) {              
-                      quitarEstudiante(tarjeta.getEstudinate());                      
-                }
-            });
-       vbxEstudiantesPorAgregar.getChildren().add(tarjeta);     
+       agregarEstudinateATabla(estudianteSeleccionado);           
        txfEstudianteBusqueda.setText("");
        txfEstudianteBusqueda.setDisable(true);
        BtnOtro.setDisable(false);
        btnGuardar.setDisable(false);
     }
     
+    private void agregarEstudinateATabla(Estudiante estudianteAgregar) {
+       TarjetaAgregarEstudianteCurso tarjeta = new TarjetaAgregarEstudianteCurso(estudianteAgregar);
+       tarjeta.getImagen().setOnMouseClicked(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent event) {              
+                      quitarEstudiante(tarjeta.getEstudinate());                      
+                }
+            });
+       vbxEstudiantesPorAgregar.getChildren().add(tarjeta); 
+    }
+    
     private void quitarEstudiante(Estudiante estudianteQuitar) {
         for (Estudiante estudianteEliminar : estudiantesTabla) {
-            if (estudianteEliminar.getIdEstudiante() == estudianteQuitar.getIdEstudiante()) {
+            if (estudianteEliminar.getIdEstudiante() == estudianteQuitar.getIdEstudiante()) {                
                 estudiantesTabla.remove(estudianteEliminar);
                 break;
             }
@@ -158,13 +168,7 @@ public class FXMLAsignarEstudianteCursoController implements Initializable {
         vbxEstudiantesPorAgregar.getChildren().clear();
         if (estudiantesTabla.size() > 0) {
             for (Estudiante estudianteAgregar : estudiantesTabla) {
-                TarjetaAgregarEstudianteCurso tarjeta = new TarjetaAgregarEstudianteCurso(estudianteSeleccionado);
-                tarjeta.getImagen().setOnMouseClicked(new EventHandler<MouseEvent>() {
-                     public void handle(MouseEvent event) {              
-                               quitarEstudiante(tarjeta.getEstudinate());                               
-                         }
-                     });
-                vbxEstudiantesPorAgregar.getChildren().add(tarjeta);     
+                agregarEstudinateATabla(estudianteAgregar);                   
              }
         } else {
             txfEstudianteBusqueda.setDisable(false);

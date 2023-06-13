@@ -103,20 +103,15 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
     public void setNumeroEntrega(int numeroEntrega) {
         this.numeroEntrega = numeroEntrega;
     }
-
-    private void visualizarArchivo(Archivo archivoEntrega) {
-        if (archivoEntrega != null) {
-            agregarArchivo(archivoEntrega);
+    
+    public void inicializarInformacionFormulario(boolean esEdicion, Entrega entregaEdicion) {
+        this.esEdicion = esEdicion;
+        this.entregaEdicion = entregaEdicion;
+        if (esEdicion) {
+            lbEntrega.setText("Modificar entrega");
+            btnEnviar.setText("Guardar cambios");
+            cargarInformacionEdicion();
         }
-    }
-
-    private void agregarArchivo(Archivo archivoEntrega) {
-        archivosEntregaSeleccionados.add(archivoEntrega);
-        configurarBotonArchivo(archivoEntrega);
-    }
-
-    private void eliminarArchivo(Archivo archivoEntrega) {
-        archivosEntregaSeleccionados.remove(archivoEntrega);
     }
 
     public void configurarBotonArchivo(Archivo archivo) {
@@ -150,6 +145,21 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
         });
         hbxContenedorArchivosAlumno.getChildren().add(contenedorArchivo);
     }
+    
+    private void visualizarArchivo(Archivo archivoEntrega) {
+        if (archivoEntrega != null) {
+            agregarArchivo(archivoEntrega);
+        }
+    }
+
+    private void agregarArchivo(Archivo archivoEntrega) {
+        archivosEntregaSeleccionados.add(archivoEntrega);
+        configurarBotonArchivo(archivoEntrega);
+    }
+
+    private void eliminarArchivo(Archivo archivoEntrega) {
+        archivosEntregaSeleccionados.remove(archivoEntrega);
+    }
 
     private void mostrarInformacionActividad(Actividad actividad) {
         if (actividad != null) {
@@ -157,17 +167,7 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
             taDetallesActividad.setText(actividad.getDetallesActividad());
         }
     }
-
-    public void inicializarInformacionFormulario(boolean esEdicion, Entrega entregaEdicion) {
-        this.esEdicion = esEdicion;
-        this.entregaEdicion = entregaEdicion;
-        if (esEdicion) {
-            lbEntrega.setText("Modificar entrega");
-            btnEnviar.setText("Guardar cambios");
-            cargarInformacionEdicion();
-        }
-    }
-
+    
     private void cargarInformacionEdicion() {
         taComentarios.setText(entregaEdicion.getComentarioAlumno());
         ArrayList<Archivo> archivos = obtenerArchivosDeEntrega();

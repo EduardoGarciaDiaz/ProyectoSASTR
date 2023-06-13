@@ -138,13 +138,17 @@ public class FXMLFormularioActividadController implements Initializable {
         txfHoraInicio.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                validarHora(txfHoraInicio);
+                if (validarHora(txfHoraInicio)) {
+                    validarBtnGuardar();
+               } 
             }
         });
         txfHoraFin.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                validarHora(txfHoraFin);
+               if (validarHora(txfHoraFin)) {
+                    validarBtnGuardar();
+               }                
             }
         });
         dtpInicio.onMouseEnteredProperty().addListener(new ChangeListener<EventHandler<? super MouseEvent>>(){
@@ -169,11 +173,11 @@ public class FXMLFormularioActividadController implements Initializable {
     }
     
     private void validarBtnGuardar() {
-        if (txfNombreActividad.getText().trim().length() < 5 || txaDetallesActividad.getText().trim().length() < 10 || 
-                txfNombreActividad.getText().trim().length() > LIMIT_CARAC_NOMBRE || 
-                txaDetallesActividad.getText().trim().length() > LIMIT_CARAC_DETALLES
-                || dtpInicio.getValue() == null || dtpFin.getValue() == null ||
-                txfHoraInicio.getText().isEmpty() || txfHoraFin.getText().isEmpty()) {
+        if (txfNombreActividad.getText().trim().length() < 5 || txaDetallesActividad.getText().trim().length() < 10 
+                || txfNombreActividad.getText().trim().length() > LIMIT_CARAC_NOMBRE 
+                || txaDetallesActividad.getText().trim().length() > LIMIT_CARAC_DETALLES
+                || dtpInicio.getValue() == null || dtpFin.getValue() == null 
+                || !validarHora(txfHoraInicio) || !validarHora(txfHoraFin)) {
             btnGuardar.setDisable(true);
         } else {
             btnGuardar.setDisable(false);
@@ -190,13 +194,14 @@ public class FXMLFormularioActividadController implements Initializable {
         }        
     }
    
-    private void validarHora(TextField textHora) {
-        if (Pattern.matches("^([01]?\\d|2[0-3]):[0-5]\\d$", textHora.getText())){
-            validarBtnGuardar();
+    private boolean validarHora(TextField textHora) {
+        if (Pattern.matches("^([01]?\\d|2[0-3]):[0-5]\\d$", textHora.getText())){            
             textHora.setStyle("-fx-border-width: 2;");
+            return true;
         } else {
             btnGuardar.setDisable(true);
             textHora.setStyle("-fx-border-color:RED; -fx-border-width: 2;");
+            return false;
         }            
     }
     
@@ -256,8 +261,8 @@ public class FXMLFormularioActividadController implements Initializable {
     private void actualizarActividad() {
         Actividad actividadEditada = new Actividad();
         actividadEditada.setIdActividad(actividadEdicion.getIdActividad());
-        actividadEditada.setNombreActividad(txfNombreActividad.getText());
-        actividadEditada.setDetallesActividad(txaDetallesActividad.getText());
+        actividadEditada.setNombreActividad(txfNombreActividad.getText().trim());
+        actividadEditada.setDetallesActividad(txaDetallesActividad.getText().trim());
         actividadEditada.setFechaInicioActividad(dtpInicio.getValue().toString());
         actividadEditada.setFechaFinActividad(dtpFin.getValue().toString());
         actividadEditada.setHoraInicioActividad(txfHoraInicio.getText()+":00");
@@ -266,37 +271,7 @@ public class FXMLFormularioActividadController implements Initializable {
         try {
             int exito = new ActividadDAO().actualizarActividad(actividadEditada);
             if (exito != -1) {
-                HistorialCambiosDAO hisCamDao = new HistorialCambiosDAO();                
-                if (!actividadEditada.getFechaInicioActividad().equals(actividadEdicion.getFechaInicioActividad())) {
-                    HistorialCambios cambioFecha = new HistorialCambios();
-                    cambioFecha.setIdActividad(actividadEdicion.getIdActividad());
-                    String fechaAnterior = actividadEdicion.getFechaInicioActividad();
-                    String fechaNueva = actividadEditada.getFechaInicioActividad();
-                    String fechaModiciacion = LocalDate.now().toString();
-                    String horaAnterior = actividadEdicion.getHoraInicioActividad();   
-                    String horaNueva = actividadEditada.getHoraInicioActividad();
-                    cambioFecha.setFechaAnterior(fechaAnterior);
-                    cambioFecha.setFechaNueva(fechaNueva);
-                    cambioFecha.setFechaDeModificacion(fechaModiciacion);
-                    cambioFecha.setHoraAnterior(horaAnterior);
-                    cambioFecha.setHoraNueva(horaNueva);
-                    hisCamDao.guardarHistorialCambios(cambioFecha);  
-                }
-                if (!actividadEditada.getFechaFinActividad().equals(actividadEdicion.getFechaFinActividad())) {
-                    HistorialCambios cambioFecha = new HistorialCambios();
-                    cambioFecha.setIdActividad(actividadEdicion.getIdActividad());
-                    String fechaAnterior = actividadEdicion.getFechaFinActividad();
-                    String fechaNueva = actividadEditada.getFechaFinActividad();
-                    String fechaModiciacion = LocalDate.now().toString();            
-                    String horaAnterior = actividadEdicion.getHoraFinActividad();                   
-                    String horaNueva = actividadEditada.getHoraFinActividad();           
-                    cambioFecha.setFechaAnterior(fechaAnterior);
-                    cambioFecha.setFechaNueva(fechaNueva);
-                    cambioFecha.setFechaDeModificacion( fechaModiciacion);
-                    cambioFecha.setHoraAnterior(horaAnterior);
-                    cambioFecha.setHoraNueva(horaNueva);
-                    hisCamDao.guardarHistorialCambios(cambioFecha);           
-                }                    
+                guardarHistorialModificacion(actividadEditada);
             }
             Utilidades.mostrarDialogoSimple("Actualizacion Exitoso","Actividad actualizada con exito", 
                     Alert.AlertType.INFORMATION);
@@ -306,6 +281,40 @@ public class FXMLFormularioActividadController implements Initializable {
                     Alert.AlertType.ERROR);
             manejarDAOException(ex);
         }      
+    }
+    
+    private void guardarHistorialModificacion(Actividad actividadEditada) throws DAOException {
+        HistorialCambiosDAO hisCamDao = new HistorialCambiosDAO();                
+        if (!actividadEditada.getFechaInicioActividad().equals(actividadEdicion.getFechaInicioActividad())) {
+            HistorialCambios cambioFecha = new HistorialCambios();
+            cambioFecha.setIdActividad(actividadEdicion.getIdActividad());
+            String fechaAnterior = actividadEdicion.getFechaInicioActividad();
+            String fechaNueva = actividadEditada.getFechaInicioActividad();
+            String fechaModiciacion = LocalDate.now().toString();
+            String horaAnterior = actividadEdicion.getHoraInicioActividad();   
+            String horaNueva = actividadEditada.getHoraInicioActividad();
+            cambioFecha.setFechaAnterior(fechaAnterior);
+            cambioFecha.setFechaNueva(fechaNueva);
+            cambioFecha.setFechaDeModificacion(fechaModiciacion);
+            cambioFecha.setHoraAnterior(horaAnterior);
+            cambioFecha.setHoraNueva(horaNueva);
+            hisCamDao.guardarHistorialCambios(cambioFecha);  
+        }
+        if (!actividadEditada.getFechaFinActividad().equals(actividadEdicion.getFechaFinActividad())) {
+            HistorialCambios cambioFecha = new HistorialCambios();
+            cambioFecha.setIdActividad(actividadEdicion.getIdActividad());
+            String fechaAnterior = actividadEdicion.getFechaFinActividad();
+            String fechaNueva = actividadEditada.getFechaFinActividad();
+            String fechaModiciacion = LocalDate.now().toString();            
+            String horaAnterior = actividadEdicion.getHoraFinActividad();                   
+            String horaNueva = actividadEditada.getHoraFinActividad();           
+            cambioFecha.setFechaAnterior(fechaAnterior);
+            cambioFecha.setFechaNueva(fechaNueva);
+            cambioFecha.setFechaDeModificacion( fechaModiciacion);
+            cambioFecha.setHoraAnterior(horaAnterior);
+            cambioFecha.setHoraNueva(horaNueva);
+            hisCamDao.guardarHistorialCambios(cambioFecha);           
+        }                 
     }
     
     private void limpiarCampos() {

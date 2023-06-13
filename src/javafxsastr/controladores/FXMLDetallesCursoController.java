@@ -335,8 +335,8 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
         try {              
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLFormularioCurso.fxml"));
             Parent vista = accesoControlador.load();
-            FXMLFormularioCursoController controladorVista = accesoControlador.getController();     
-            controladorVista.inicializarInformacionFormulario(true, cursoActual,this);
+            FXMLFormularioCursoController controladorVistaFormularioCurso = accesoControlador.getController();     
+            controladorVistaFormularioCurso.inicializarInformacionFormulario(true, cursoActual,this);
             Stage escenario = new Stage();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Modificar Curso");

@@ -129,10 +129,11 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
     private int responsableOriginalEdicion = -1;
     private Usuario usuario;
     private boolean esEdicion;
-   
+    private final int ESTADO_DESACTIVADO = 2;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        ConfigurarTabla();
+        configurarTabla();
         lgacsEntabla=  FXCollections.observableArrayList();        
         recuperarDatos();
         recuperarAreas();
@@ -152,7 +153,7 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
             cuerpoAcademicoEdicion = cu;
             responsableOriginalEdicion = cu.getIdAcademico();       
             idAcademicoSeleccionado = cu.getIdAcademico(); 
-            CargarInformacionCuerpoAcademico();
+            cargarInformacionCuerpoAcademico();
             if (esEdicion) {
                 bloquearCamposEdicion(true);
             } else { 
@@ -163,7 +164,7 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
         inicializarLisnteners();  
     }
     
-    private void CargarInformacionCuerpoAcademico() {
+    private void cargarInformacionCuerpoAcademico() {
         ObservableList<Lgac> lgacsEdicion = FXCollections.observableArrayList();
         try {
             Academico academicoResponsable = new AcademicoDAO().obtenerAcademicoPorId(
@@ -171,9 +172,9 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
             int idCA = cuerpoAcademicoEdicion.getIdCuerpoAcademico();   
             LgacDAO lgacD = new LgacDAO();
             lgacsEdicion.addAll(lgacD.obtenerInformacionLGACPorCuerpoAcademico(idCA));
-            txfNombreCA.setText(cuerpoAcademicoEdicion.getNombreCuerpoAcademico());
-            txaDescripcionCA.setText(cuerpoAcademicoEdicion.getDescripcion());
-            txfDiciplinaCA.setText(cuerpoAcademicoEdicion.getDisciplinaCuerpoAcademico());
+            txfNombreCA.setText(cuerpoAcademicoEdicion.getNombreCuerpoAcademico().trim());
+            txaDescripcionCA.setText(cuerpoAcademicoEdicion.getDescripcion().trim());
+            txfDiciplinaCA.setText(cuerpoAcademicoEdicion.getDisciplinaCuerpoAcademico().trim());
             cmbAreas.getSelectionModel().select(obtenerAreaPorId(cuerpoAcademicoEdicion.getIdArea()));            
             lbNombreResponsable.setText(cuerpoAcademicoEdicion.getNombreResponsableCA());
             lbCorreoResponsable.setText(academicoResponsable.getCorreoInstitucional()); 
@@ -200,7 +201,7 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
             btnGuardar.setText("Guardar CA");
             btnGuardar.setDisable(true);
             cmbAreas.setDisable(false);
-            CargarInformacionCuerpoAcademico();
+            cargarInformacionCuerpoAcademico();
         } else {
             cmbAreas.setDisable(true);
             btnGuardar.setText("Modificar"); 
@@ -213,7 +214,7 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
         txfNombreCA.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (txfNombreCA.getText().length() <= LIM_CARACT_NOMBRE) {
+                if (txfNombreCA.getText().trim().length() <= LIM_CARACT_NOMBRE) {
                     validarBtnGuardar();
                     lbNombre.setText("");
                 } else { 
@@ -229,7 +230,7 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
         txfDiciplinaCA.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                 if (txfDiciplinaCA.getText().length() <= LIM_CARACT_DICIPLINA) {
+                 if (txfDiciplinaCA.getText().trim().length() <= LIM_CARACT_DICIPLINA) {
                     validarBtnGuardar();
                     lbDiciplina.setText("");
                 } else { 
@@ -240,7 +241,7 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
          txaDescripcionCA.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                 if (txaDescripcionCA.getText().length() <= LIM_CARACT_DESCRIPCION) {
+                 if (txaDescripcionCA.getText().trim().length() <= LIM_CARACT_DESCRIPCION) {
                     validarBtnGuardar();
                     lbDescripcion.setText("");
                 } else { 
@@ -264,8 +265,8 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
                 }
                 @Override
                 public void notificarPerdidaDelFoco() {
-                    if (academico != null) {
-                        lbNombreResponsable.setText(academico.getNombre()+" "+academico.getPrimerApellido()+" "+academico.getSegundoApellido());
+                    if (academico != null) {                      
+                        lbNombreResponsable.setText(academico.toString());                      
                         lbCorreoResponsable.setText(academico.getCorreoInstitucional());
                         bsdAcademico.setText("");
                         idAcademicoSeleccionado = academico.getIdAcademico();
@@ -298,9 +299,9 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
     }
     
     private void inicializarFiltrosDeTexto() {              
-        FiltrosTexto.filtroLetrasNumeros(txfNombreCA);
-        FiltrosTexto.filtroLetrasNumeros(txfDiciplinaCA);
-        FiltrosTexto.filtroLetrasNumerosPuntos(txaDescripcionCA);
+        FiltrosTexto.filtroLetrasNumerosPuntosComasSignosComunes(txfNombreCA);
+        FiltrosTexto.filtroLetrasNumerosPuntosComasSignosComunes(txfDiciplinaCA);
+        FiltrosTexto.filtroLetrasNumerosPuntosComasSignosComunes(txaDescripcionCA);
     }
     
     private void recuperarDatos() {
@@ -414,7 +415,7 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
         btnGuardar.setDisable(false);
     }
     
-    private void ConfigurarTabla() {
+    private void configurarTabla() {
        colLgacNombre.setCellValueFactory(new PropertyValueFactory("nombreLgac"));
        colDescipcionLgac.setCellValueFactory(new PropertyValueFactory("descripcionLgac"));    
        colNoLgac.setCellValueFactory(new PropertyValueFactory("idLgac"));
@@ -481,7 +482,12 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
                         "Este academico ya es responsable de un cuerpo academico actualmente. Seleccione otro.",
                         Alert.AlertType.WARNING);
                     return false;
-                 }                 
+                 } 
+                 if (academico.getIdEstadoUsuario() == ESTADO_DESACTIVADO) {
+                     Utilidades.mostrarDialogoSimple("Error","No puedes Asignar como RCA a un usuario desactivado.",
+                        Alert.AlertType.WARNING);
+                    return false;
+                 }
             }            
         } catch (DAOException ex) {
             manejarDAOException(ex);
@@ -513,8 +519,8 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
         try {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLCuerposAcademicos.fxml"));
             Parent vista = accesoControlador.load();
-            FXMLCuerposAcademicosController controladorVistaInicio = accesoControlador.getController();
-            controladorVistaInicio.setUsuario(usuario);
+            FXMLCuerposAcademicosController controladorVistaCuerposAcademicos = accesoControlador.getController();
+            controladorVistaCuerposAcademicos.setUsuario(usuario);
             Stage escenario = (Stage) lbCorreoResponsable.getScene().getWindow();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Inicio");
@@ -569,9 +575,9 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
         try {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLAñadirLgac.fxml"));
             Parent vista = accesoControlador.load();
-            FXMLAñadirLgacController controladorVistaInicio = accesoControlador.getController();
-            controladorVistaInicio.registroLgacPorCA(true);
-            controladorVistaInicio.instancearInterfaz(this);
+            FXMLAñadirLgacController controladorVistaAñadirLgac = accesoControlador.getController();
+            controladorVistaAñadirLgac.registroLgacPorCA(true);
+            controladorVistaAñadirLgac.instancearInterfaz(this);
             Stage escenario = new Stage();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Registro Lgac");
@@ -605,8 +611,8 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
         try {           
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLFormularioUsuario.fxml"));
             Parent vista = accesoControlador.load();
-            FXMLFormularioUsuarioController controladorVistaVerUsuario = accesoControlador.getController();     
-            controladorVistaVerUsuario.vieneDeVentanaCuerposAcademicos(true, this);
+            FXMLFormularioUsuarioController controladorVistaFormularioUsuario = accesoControlador.getController();     
+            controladorVistaFormularioUsuario.vieneDeVentanaCuerposAcademicos(true, this);
             Stage escenario = new Stage();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Añadir Usuarios");
