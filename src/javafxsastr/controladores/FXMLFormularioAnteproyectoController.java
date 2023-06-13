@@ -699,6 +699,15 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
                 longitudValida = false;
                 lbAdvertenciaDuracionAproximada.setText("El numero de caracteres no puede ser mayor a 15");
             }
+            if (txaResultados.getText().length() > 3000) {
+                longitudValida = false;
+                lbAdvertenciaResultados.setText("El número de carácteres no puede ser mayor a 3000 ni menor a 20.");
+            }
+            if (tfBibliografia.getText().length() > 3000) {
+                longitudValida = false;
+                lbAdvertenciaBibliografia.setText("El número de carácteres no puede ser mayor a 3000 ni menor a 5."
+                    + "Ingrese <<Ninguna>> en caso si no hay bibliografia recomendada.");
+            }
         } else {
             if (nombreTrabajoRecepcional.length() > 300 || nombreTrabajoRecepcional.length() < 30) {
                 longitudValida = false;
@@ -717,6 +726,20 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
                 longitudValida = false;
                 lbAdvertenciaDuracionAproximada.setText("Largo de duracion no valido. Ej. 1 mes, 1 dia, 12 meses.");
             }
+            if (txaDescripcionTrabajoRecepcional.getText().length() < 300) {
+                longitudValida = false;
+                lbAdvertenciaDescripcionTR.setText("La descripcion no puede ser menor a 300 caractéres. "
+                    + "Proporcione una descripción amplia y entendible.");
+            }   
+            if (txaResultados.getText().length() > 3000 || txaResultados.getText().length() < 20) {
+                longitudValida = false;
+                lbAdvertenciaResultados.setText("El número de carácteres no puede ser mayor a 3000 ni menor a 20.");
+            }
+            if (tfBibliografia.getText().length() > 3000 || tfBibliografia.getText().length() < 5) {
+                longitudValida = false;
+                lbAdvertenciaBibliografia.setText("El número de carácteres no puede ser mayor a 3000 ni menor a 5."
+                    + "Ingrese <<Ninguna>> en caso si no hay bibliografia recomendada.");
+            }
         }
         if (txaNombreProyectoInvestigacion.getText().length() > 200) {
             longitudValida = false;
@@ -726,23 +749,9 @@ public class FXMLFormularioAnteproyectoController implements Initializable {
             longitudValida = false;
             lbAdventenciaLineaInvestigacion.setText("El número de carácteres no puede ser mayor a 300.");
         }
-        if (txaDescripcionTrabajoRecepcional.getText().length() < 300) {
-            longitudValida = false;
-            lbAdvertenciaDescripcionTR.setText("La descripcion no puede ser menor a 300 caractéres. "
-                    + "Proporcione una descripción amplia y entendible.");
-        }
         if (txaDescripcionProyectoInvestigacion.getText().length() > 3000) {
             longitudValida = false;
             lbAdvertenciaDescripcionProyecto.setText("El número de carácteres no puede ser mayor a 3000.");
-        }
-        if (txaResultados.getText().length() > 3000 || txaResultados.getText().length() < 20) {
-            longitudValida = false;
-            lbAdvertenciaResultados.setText("El número de carácteres no puede ser mayor a 3000 ni menor a 20.");
-        }
-        if (tfBibliografia.getText().length() > 3000 || tfBibliografia.getText().length() < 5) {
-            longitudValida = false;
-            lbAdvertenciaBibliografia.setText("El número de carácteres no puede ser mayor a 3000 ni menor a 5."
-                    + "Ingrese <<Ninguna>> en caso si no hay bibliografia recomendada.");
         }
         if (txaNotasExtra.getText().length() > 1000) {
             longitudValida = false;

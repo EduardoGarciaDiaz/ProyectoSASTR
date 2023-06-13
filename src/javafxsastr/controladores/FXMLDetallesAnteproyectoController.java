@@ -244,7 +244,7 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
     
     private void validarAsignarPrimerEstudiante() {
         String estadoSeguimiento;
-        if (estudiantesParticipantes.size() < NUMERO_MINIMO_ESTUDIANTES) {            
+        if (estudiantesParticipantes.size() < NUMERO_MINIMO_ESTUDIANTES) {           
             configurarAgregarPrimerEstudiante();
             estadoSeguimiento = "Publicado";
         } else {
@@ -549,7 +549,7 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
     public void desasignarEstudiante(Estudiante estudiante) {
         try {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class
-                    .getResource("vistas/FXMLDesaginarEstudianteAnteproyecto.fxml"));
+                    .getResource("vistas/FXMLDesasignarEstudianteAnteproyecto.fxml"));
             Parent vista = accesoControlador.load();
             FXMLDesasignarEstudianteAnteproyectoController controladorVista = accesoControlador.getController();
             controladorVista.iniciarDesasignacion(estudiante, anteproyecto, this);
@@ -732,9 +732,9 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
         estudiantesParticipantes.clear();
         vbxAlumnosParticipantes.getChildren().clear();
         vbxCodirectores.getChildren().clear();
+        mostrarDatosResponsableTrabajoRecepcional();
         validarAsignarPrimerEstudiante();
         validarAsignarOtroEstudiante();
-        mostrarDatosResponsableTrabajoRecepcional();
     }
     
     private void manejarDAOException(DAOException ex) {

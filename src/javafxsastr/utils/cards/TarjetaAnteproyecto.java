@@ -87,6 +87,7 @@ public class TarjetaAnteproyecto extends Pane {
         lbNombreTrabajoRecepcional.setFont(fuenteTexto);
         lbNombreTrabajoRecepcional.setLayoutX(151);
         lbNombreTrabajoRecepcional.setLayoutY(58);
+        lbNombreTrabajoRecepcional.setStyle("-fx-pref-width: 1000;");
         getChildren().add(tituloNombreTR);
     }
     
@@ -116,7 +117,13 @@ public class TarjetaAnteproyecto extends Pane {
             if (estudiantes.size() > 0) {
                 String cadenaEstudiantes = "";
                 for (Estudiante estudiante : estudiantes) {
-                    cadenaEstudiantes += " " + estudiante.toString();
+                    String segundoApellido = "";
+                    if (estudiante.getSegundoApellido() != null) {
+                        segundoApellido = estudiante.getSegundoApellido();
+                    }
+                    cadenaEstudiantes += " " + estudiante.getNombre() 
+                            + " " + estudiante.getPrimerApellido()
+                            + " " + segundoApellido;
                 }
                 lbEstudiantes.setText(cadenaEstudiantes);
             } else {

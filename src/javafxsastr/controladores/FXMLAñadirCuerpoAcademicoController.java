@@ -161,7 +161,7 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
             }  
             
         }
-        inicializarLisneters();  
+        inicializarLisnteners();  
     }
     
     private void cargarInformacionCuerpoAcademico() {
@@ -210,7 +210,7 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
         }
     }
     
-    private void inicializarLisneters() {       
+    private void inicializarLisnteners() {       
         txfNombreCA.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -310,7 +310,7 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
            lgacs = FXCollections.observableArrayList(new LgacDAO().obtenerInformacionLGCAS());
            lvLgac.setItems(lgacs);
            lvAcademicos.setItems(academicosBusqueda);
-           inicializarLisneters();
+           inicializarLisnteners();
         } catch (DAOException ex) {
             manejarDAOException(ex);
         }        
@@ -396,10 +396,10 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
     
     private void validarBtnGuardar() {  
         if (!cmbAreas.getSelectionModel().isEmpty()) {
-            nombreCa = txfNombreCA.getText() ;
+            nombreCa = txfNombreCA.getText().trim();
             area = cmbAreas.getSelectionModel().getSelectedItem().getIdArea();
-            diciplina = txfDiciplinaCA.getText();
-            descripcion = txaDescripcionCA.getText();
+            diciplina = txfDiciplinaCA.getText().trim();
+            descripcion = txaDescripcionCA.getText().trim();
             nombreRca = lbNombreResponsable.getText(); 
             if (nombreCa.trim().length() > 5 && diciplina.trim().length() > 0 && descripcion.trim().length() > 10 
                 && nombreCa.length() < 100 && diciplina.length() < 200 && descripcion.length() < 600 &&

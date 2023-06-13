@@ -21,7 +21,7 @@ public class ActividadDAO {
             + "INNER JOIN estados_actividad ea ON a.idEstadoActividad = ea.idEstadoActividad";
     private final String OBTENER_ACTIVIDADES_POR_ESTUDIANTE = "SELECT * FROM actividades a "
             + "INNER JOIN estados_actividad ea ON a.idEstadoActividad = ea.idEstadoActividad "
-            + "WHERE a.idEstudiante = ?";
+            + "WHERE a.idEstudiante = ? and a.idAnteproyecto = ?";
     private final String OBTENER_ACTIVIDADES_POR_ESTADO = "SELECT * FROM actividades a "
             + "INNER JOIN estados_actividad ea ON a.idEstadoActividad = ea.idEstadoActividad "
             + "WHERE a.idEstadoActividad = ?";
@@ -42,17 +42,17 @@ public class ActividadDAO {
     private final String OBTENER_NUMERO_ACTIVIDADES_POR_ESTUDIANTE = "SELECT COUNT(a.idActividad) AS numeroActividades "
             + "FROM actividades a " 
             + "INNER JOIN estudiantes e ON a.idEstudiante = e.idEstudiante " 
-            + "WHERE e.idEstudiante = ? ;";
+            + "WHERE e.idEstudiante = ?  and a.idAnteproyecto = ?;";
     private final String OBTENER_NUMERO_ACTIVIDADES_COMPLETADAS = "SELECT COUNT(a.idActividad) AS numeroActividades " 
             + "FROM actividades a "
             + "INNER JOIN estudiantes e ON a.idEstudiante = e.idEstudiante " 
             + "INNER JOIN estados_actividad ea ON a.idEstadoActividad = ea.idEstadoActividad " 
-            + "WHERE e.idEstudiante = ? AND a.idEstadoActividad = 2;";
+            + "WHERE e.idEstudiante = ? AND a.idEstadoActividad = 2 AND a.idAnteproyecto = ?;";
     private final String OBTENER_NUMERO_ACTIVIDADES_NO_COMPLETADAS = "SELECT COUNT(a.idActividad) AS numeroActividades "
             + "FROM actividades a "
             + "INNER JOIN estudiantes e ON a.idEstudiante = e.idEstudiante " 
             + "INNER JOIN estados_actividad ea ON a.idEstadoActividad = ea.idEstadoActividad " 
-            + "WHERE e.idEstudiante = ? AND a.idEstadoActividad = 3;";
+            + "WHERE e.idEstudiante = ? AND a.idEstadoActividad = 3 AND a.idAnteproyecto = ?;";
     private final String OBTENER_NUMERO_ACTIVIDADES_POR_ANTEPROYECTO = "SELECT COUNT(a.idActividad) AS numeroActividades "
             + "FROM actividades a "
             + "INNER JOIN anteproyectos ante ON a.idAnteproyecto= ante.idAnteproyecto " 
@@ -123,12 +123,13 @@ public class ActividadDAO {
         return actividades;
     }
 
-    public int obtenerNumeroActividadesPorEstudiante(int idEstudiante) throws DAOException {
+    public int obtenerNumeroActividadesPorEstudiante(int idEstudiante, int idAnteproyecto) throws DAOException {
         int numeroActividades = -1;
         try {
             PreparedStatement sentencia = ConexionBD.obtenerConexionBD()
                     .prepareStatement(OBTENER_NUMERO_ACTIVIDADES_POR_ESTUDIANTE);
             sentencia.setInt(1, idEstudiante);
+            sentencia.setInt(2, idAnteproyecto);
             ResultSet resultado = sentencia.executeQuery();
             while (resultado.next()) {
                 numeroActividades = resultado.getInt("numeroActividades");
@@ -140,12 +141,13 @@ public class ActividadDAO {
         return numeroActividades;
     }
 
-    public int obtenerNumeroActividadesCompletadas(int idEstudiante) throws DAOException {
+    public int obtenerNumeroActividadesCompletadas(int idEstudiante, int idAnteproyecto) throws DAOException {
         int numeroActividades = -1;
         try {
             PreparedStatement sentencia = ConexionBD.obtenerConexionBD()
                     .prepareStatement(OBTENER_NUMERO_ACTIVIDADES_COMPLETADAS);
             sentencia.setInt(1, idEstudiante);
+            sentencia.setInt(2, idAnteproyecto);
             ResultSet resultado = sentencia.executeQuery();
             while (resultado.next()) {
                 numeroActividades = resultado.getInt("numeroActividades");
@@ -157,12 +159,13 @@ public class ActividadDAO {
         return numeroActividades;
     }
 
-    public int obtenerNumeroActividadesNoCompletadas(int idEstudiante) throws DAOException {
+    public int obtenerNumeroActividadesNoCompletadas(int idEstudiante, int idAnteproyecto) throws DAOException {
         int numeroActividades = -1;
         try {
             PreparedStatement sentencia = ConexionBD.obtenerConexionBD()
                     .prepareStatement(OBTENER_NUMERO_ACTIVIDADES_NO_COMPLETADAS);
             sentencia.setInt(1, idEstudiante);
+            sentencia.setInt(2, idAnteproyecto);
             ResultSet resultado = sentencia.executeQuery();
             while (resultado.next()) {
                 numeroActividades = resultado.getInt("numeroActividades");
@@ -331,11 +334,12 @@ public class ActividadDAO {
         return numeroActividades;
     }
     
-    public ArrayList<Actividad> obtenerActividadesPorEstudiante(int idEstudiante) throws DAOException{
+    public ArrayList<Actividad> obtenerActividadesPorEstudiante(int idEstudiante, int idAnteproyecto) throws DAOException{
         ArrayList<Actividad> actividades = new ArrayList<>();
         try {
             PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(OBTENER_ACTIVIDADES_POR_ESTUDIANTE);
             sentencia.setInt(1, idEstudiante);
+            sentencia.setInt(2, idAnteproyecto);
             ResultSet resultado = sentencia.executeQuery();
             while (resultado.next()) {
                 Actividad actividad = new Actividad();
