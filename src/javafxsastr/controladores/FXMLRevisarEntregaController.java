@@ -80,6 +80,8 @@ public class FXMLRevisarEntregaController implements Initializable {
     private Academico academico;
     private Actividad actividad;
     int numeroEntrega;
+    @FXML
+    private Label lbMensajeErrorPesoArchivo;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -239,6 +241,7 @@ public class FXMLRevisarEntregaController implements Initializable {
 
     @FXML
     private void clicBtnAdjuntarArchivo(ActionEvent event) {
+        lbMensajeErrorPesoArchivo.setText("");
         File archivo;
         FileChooser dialogoSeleccionImg = new FileChooser();
         dialogoSeleccionImg.setTitle("Selecciona un archivo:");
@@ -250,26 +253,37 @@ public class FXMLRevisarEntregaController implements Initializable {
         archivo = dialogoSeleccionImg.showOpenDialog(escenarioPrincipal);
         Archivo archivoRevision = new Archivo();
         if (archivo != null) {
-            try {
-                archivoRevision.setArchivo(Files.readAllBytes(archivo.toPath()));
-            } catch (IOException ex) {
-                System.out.println("Error");
+            long tamañoArchivoMB = (archivo.length() / (1024 * 1024));
+            if (tamañoArchivoMB <= 16) {
+                try {
+                    archivoRevision.setArchivo(Files.readAllBytes(archivo.toPath()));
+                } catch (IOException ex) {
+                    System.out.println("Error");
+                }
+                archivoRevision.setEsEntrega(false);
+                archivoRevision.setNombreArchivo(archivo.getName());
+                archivoRevision.setIdEntrega(entrega.getIdEntrega());
+                archivosRevision.add(archivoRevision);
+                configurarBotonArchivo(archivoRevision);
+            } else {
+                lbMensajeErrorPesoArchivo.setText("El peso del archivo no puede ser mayor a 16MB.");
             }
-            archivoRevision.setEsEntrega(false);
-            archivoRevision.setNombreArchivo(archivo.getName());
-            archivoRevision.setIdEntrega(entrega.getIdEntrega());
-            archivosRevision.add(archivoRevision);
-            configurarBotonArchivo(archivoRevision);
         }
     }
 
     @FXML
     private void clicBtnEnviarRevision(ActionEvent event) {
         Entrega entregaValida = prepararEntregaValida();
-        actualizarEntrega(entregaValida);
-        guardarArchivosRevision();
-        Utilidades.mostrarDialogoSimple("Revisión enviada", "Revisión enviada correctamente", Alert.AlertType.INFORMATION);
-        irAVistaConsultarEntregasActividad();
+        if (entregaValida.getComentarioDirector().length() < 2000 
+                || entregaValida.getComentarioDirector().length() > 100) {
+            actualizarEntrega(entregaValida);
+            guardarArchivosRevision();
+            Utilidades.mostrarDialogoSimple("Revisión enviada", 
+                    "Revisión enviada correctamente", Alert.AlertType.INFORMATION);
+            irAVistaConsultarEntregasActividad();
+        } else {
+            
+        }
     }
     
     @FXML

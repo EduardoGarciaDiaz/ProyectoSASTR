@@ -179,6 +179,7 @@
                   </ImageView>
                </graphic>
             </Button>
+            <Label fx:id="lbMensajeErrorPesoArchivo" layoutX="27.0" layoutY="117.0" prefHeight="21.0" prefWidth="608.0" textFill="RED" />
          </children></Pane>
       <Button fx:id="btnEnviarRevision" layoutX="1447.0" layoutY="823.0" mnemonicParsing="false" onAction="#clicBtnEnviarRevision" prefHeight="31.0" prefWidth="241.0" style="-fx-background-radius: 15; -fx-background-color: black;" text="Enviar revisión" textFill="WHITE">
          <font>
