@@ -100,7 +100,8 @@ public class FXMLConsultarAvanceEstudianteController implements Initializable {
     private void obtenerActividades() {
         try {
             actividades = FXCollections.observableArrayList(
-                    new ActividadDAO().obtenerActividadesPorEstudiante(estudiante.getIdEstudiante())
+                    new ActividadDAO().obtenerActividadesPorEstudiante
+                        (estudiante.getIdEstudiante(), estudiante.getIdAnteproyecto())
             );
         } catch (DAOException ex) {
             manejarDAOException(ex);
@@ -155,9 +156,12 @@ public class FXMLConsultarAvanceEstudianteController implements Initializable {
     
     private void setDatosAvanceGeneral() {
         try {
-            int totalActividades = new ActividadDAO().obtenerNumeroActividadesPorEstudiante(estudiante.getIdEstudiante());
-            int actividadesCompletadas = new ActividadDAO().obtenerNumeroActividadesCompletadas(estudiante.getIdEstudiante());
-            int actividadesNoRealizadas = new ActividadDAO().obtenerNumeroActividadesNoCompletadas(estudiante.getIdEstudiante());
+            int totalActividades = new ActividadDAO()
+                    .obtenerNumeroActividadesPorEstudiante(estudiante.getIdEstudiante(), estudiante.getIdAnteproyecto());
+            int actividadesCompletadas = new ActividadDAO()
+                    .obtenerNumeroActividadesCompletadas(estudiante.getIdEstudiante(), estudiante.getIdAnteproyecto());
+            int actividadesNoRealizadas = new ActividadDAO()
+                    .obtenerNumeroActividadesNoCompletadas(estudiante.getIdEstudiante(), estudiante.getIdAnteproyecto());
             int actividadesRestantes = totalActividades - actividadesCompletadas - actividadesNoRealizadas;
             double porcentajeAvance = 0.0;
             if (totalActividades != 0) {

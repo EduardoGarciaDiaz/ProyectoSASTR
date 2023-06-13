@@ -101,7 +101,7 @@ public class FXMLActividadesController implements Initializable {
     public void obtenerActividadesDelEstudiante() {
         try {
             ObservableList<Actividad> actividadesRecuperadas = FXCollections.observableArrayList(
-                new ActividadDAO().obtenerActividadesPorEstudiante(estudiante.getIdEstudiante())
+                new ActividadDAO().obtenerActividadesPorEstudiante(estudiante.getIdEstudiante(), estudiante.getIdAnteproyecto())
             );
             for (Actividad actividadRecuperada : actividadesRecuperadas) {
                 verificarSiEsNoCompletada(actividadRecuperada);
@@ -205,7 +205,7 @@ public class FXMLActividadesController implements Initializable {
         }
         lbActSinPendientes.setText(actividadesPorVencer + " Actividades pendientes");
         lbActRevisadas.setText(actividadesRealizadas + " Actividades realizadas");
-        lbActPorVencer.setText(actividadesRevisadas + " Actiivdades sin completar");
+        lbActPorVencer.setText(actividadesRevisadas + " Actividades sin completar");
     }
     
     @FXML

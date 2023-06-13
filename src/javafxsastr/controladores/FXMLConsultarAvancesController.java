@@ -94,7 +94,7 @@ public class FXMLConsultarAvancesController implements Initializable {
             estudiantesCurso = new EstudianteDAO().obtenerEstudiantesPorIdCurso(idCurso);
             for (Estudiante e : estudiantesCurso) {
                 String nombreCompleto = obtenerNombreEstudiante(e);
-                Map<String, Integer> actividades = calcularNumeroActividades(e.getIdEstudiante());
+                Map<String, Integer> actividades = calcularNumeroActividades(e.getIdEstudiante(), e.getIdAnteproyecto());
                 int totalActividades = actividades.get("total");
                 int numeroActividadesCompletadas = actividades.get("completadas");
                 int numeroActividadesNoCompletadas = actividades.get("noCompletadas");
@@ -137,13 +137,14 @@ public class FXMLConsultarAvancesController implements Initializable {
         return nombre + " " + primerApellido + " " + segundoApellido;
     }
     
-    private Map<String, Integer> calcularNumeroActividades(int idEstudiante) {
+    private Map<String, Integer> calcularNumeroActividades(int idEstudiante, int idAnteproyecto) {
         Map<String, Integer> actividades = new HashMap<>();
         try {
             ActividadDAO actividadDAO = new ActividadDAO();
-            int totalActividades = actividadDAO.obtenerNumeroActividadesPorEstudiante(idEstudiante);
-            int numeroActividadesCompletadas = actividadDAO.obtenerNumeroActividadesCompletadas(idEstudiante);
-            int numeroActividadesNoCompletadas = actividadDAO.obtenerNumeroActividadesNoCompletadas(idEstudiante);
+            int totalActividades = actividadDAO
+                    .obtenerNumeroActividadesPorEstudiante(idEstudiante, idAnteproyecto);
+            int numeroActividadesCompletadas = actividadDAO.obtenerNumeroActividadesCompletadas(idEstudiante, idAnteproyecto);
+            int numeroActividadesNoCompletadas = actividadDAO.obtenerNumeroActividadesNoCompletadas(idEstudiante, idAnteproyecto);
             int numeroActividadesRestantes = totalActividades - (numeroActividadesCompletadas + numeroActividadesNoCompletadas);
             actividades.put("total", totalActividades);
             actividades.put("completadas", numeroActividadesCompletadas);
