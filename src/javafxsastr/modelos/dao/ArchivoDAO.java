@@ -28,6 +28,7 @@ public class ArchivoDAO {
                             + "From archivos "
                             + "Inner Join entregas On archivos.idEntrega = entregas.idEntrega "
                             + "Where archivos.idEntrega = ?; ";
+     private final String ELIMINAR_ARCHIVO_ENTREGA = "Delete from archivos where idArchivo = ? ";
     
     public ArrayList<Archivo> consultarArchivos() throws DAOException {
         ArrayList<Archivo> archivosConsultados = new ArrayList();
@@ -146,6 +147,19 @@ public class ArchivoDAO {
                                      Codigos.ERROR_CONSULTA);
         }               
         return archivosEntrega;
+    }
+    
+     public int borrarArchivosEntrega(int idArchivoBorrar) throws DAOException {
+        int respuestaExito = -1;
+        try {            
+            PreparedStatement sentencia = ConexionBD.obtenerConexionBD().prepareStatement(ELIMINAR_ARCHIVO_ENTREGA);
+            sentencia.setInt(1, idArchivoBorrar);
+            respuestaExito = sentencia.executeUpdate();
+            ConexionBD.cerrarConexionBD();
+        } catch (SQLException ex) {
+           throw new DAOException("Lo sentimos, hubo un problema al borrar este Archivo.", Codigos.ERROR_CONSULTA);
+        }
+        return respuestaExito;
     }
     
 }
