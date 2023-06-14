@@ -73,6 +73,7 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
     private Entrega entregaEdicion;
     private boolean esEdicion ; 
     private int numeroEntrega;
+    private Entrega entregaNueva = new Entrega();
     private Archivo archivoEntregaSeleccion;
     private ArrayList<Archivo> archivosEntregaSeleccionados = new ArrayList<>();
     private Archivo archivoEntrega;
@@ -169,6 +170,7 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
     }
     
     private void cargarInformacionEdicion() {
+        entregaNueva = entregaEdicion;
         taComentarios.setText(entregaEdicion.getComentarioAlumno());
         ArrayList<Archivo> archivos = obtenerArchivosDeEntrega();
         archivosEdicion.addAll(archivos);
@@ -208,7 +210,6 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
     private void enviarEntrega() {
         int respuesta;
         obtenerAcademicoDelEstudiante();
-        Entrega entregaNueva = new Entrega();
         String comentariosEstudiante = taComentarios.getText();
         LocalDate fechaEntrega = LocalDate.now();
         LocalTime horaEntrega = LocalTime.now();
@@ -405,7 +406,7 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
             FXMLDetallesEntregaController controladorVistaDetallesEntrega = accesoControlador.getController();     
             controladorVistaDetallesEntrega.setEstudiante(estudiante);
             controladorVistaDetallesEntrega.setActividad(actividad);
-            controladorVistaDetallesEntrega.setEntrega(entregaEdicion, numeroEntrega);
+            controladorVistaDetallesEntrega.setEntrega(entregaNueva, numeroEntrega);
             Stage escenario = (Stage) lbEntrega.getScene().getWindow();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Detalles de Entrega");
