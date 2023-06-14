@@ -169,7 +169,8 @@ public class FXMLCuerposAcademicosController implements Initializable {
             }
             escenario.show();
         } catch (IOException ex) {                   
-            ex.printStackTrace();
+            Utilidades.mostrarDialogoSimple("Error Al cargar la ventana", 
+                        "No se pudo cargar la ventana solicitada: " + ex.getMessage(), Alert.AlertType.ERROR);
         }               
     }
     
@@ -192,7 +193,8 @@ public class FXMLCuerposAcademicosController implements Initializable {
             }
             escenario.show();
         } catch (IOException ex) {
-           ex.printStackTrace();
+           Utilidades.mostrarDialogoSimple("Error Al cargar la ventana", 
+                        "No se pudo cargar la ventana solicitada: " + ex.getMessage(), Alert.AlertType.ERROR);
         }
     }
     
@@ -207,7 +209,8 @@ public class FXMLCuerposAcademicosController implements Initializable {
             escenario.setTitle("Inicio");
             escenario.show();
         } catch (IOException ex) {
-            ex.printStackTrace();
+            Utilidades.mostrarDialogoSimple("Error Al cargar la ventana", 
+                        "No se pudo cargar la ventana solicitada: " + ex.getMessage(), Alert.AlertType.ERROR);            
         }
     }
     

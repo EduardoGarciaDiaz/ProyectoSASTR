@@ -20,8 +20,8 @@ public class ConexionBD {
     private static final String NOMBRE_BASE = "sastr";
     private static final String HOSTNAME = "localhost";
     private static final String PUERTO = "3306";
-    private static final String USUARIO = "tristanBD";
-    private static final String PASSWORD = "wachiturroloco1";
+    private static final String USUARIO = "";
+    private static final String PASSWORD = "";
     
     private static final String URL_CONEXION = "jdbc:mysql://" + HOSTNAME + ":" + PUERTO + "/" + NOMBRE_BASE 
             + "?allowPublicKeyRetrieval=true&useSSL=false";
