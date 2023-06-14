@@ -85,7 +85,7 @@ public class FXMLFormularioActividadController implements Initializable {
             actividadEdicion = act;           
             cargarInformacion();
         }
-        btnGuardar.setDisable(false);
+        btnGuardar.setDisable(true);
         obtenerAnteproyecto();        
         inicializarListeners();  
         iniciarFiltros(); 
