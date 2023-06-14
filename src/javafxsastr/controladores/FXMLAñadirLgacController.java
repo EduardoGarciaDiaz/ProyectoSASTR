@@ -55,6 +55,8 @@ public class FXMLAñadirLgacController implements Initializable {
 
     private final int LIMT_CARACT_NOMBRE = 200;
     private final int LIMT_CARACT_DESCRIPCION = 500;
+    private final int MIN_CARACT_NOMBRE = 5;
+    private final int MIN_CARACT_DESCRIPCION = 10;
     private Usuario ususarioActual;
     private ObservableList<Lgac> lgacs;
     private boolean isEdicion = false;
@@ -125,8 +127,8 @@ public class FXMLAñadirLgacController implements Initializable {
     private void validarBtnGuardar() {
        String nombreLgac = txfNombreLgac.getText();
        String descripcionLgac = txaDescripcionLgac.getText();
-        if (nombreLgac.trim().length() > 10 && descripcionLgac.trim().length() > 10 && 
-            nombreLgac.trim().length() < 200 && descripcionLgac.trim().length() < 500) {
+        if (nombreLgac.trim().length() > MIN_CARACT_NOMBRE && descripcionLgac.trim().length() > MIN_CARACT_DESCRIPCION && 
+            nombreLgac.trim().length() < LIMT_CARACT_NOMBRE && descripcionLgac.trim().length() < LIMT_CARACT_DESCRIPCION) {
             habilitarBtnGuardar();
         } else {
             btnGuardar.setDisable(true);

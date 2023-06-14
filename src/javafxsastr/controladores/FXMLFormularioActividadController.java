@@ -72,6 +72,9 @@ public class FXMLFormularioActividadController implements Initializable {
     private final int ESTADO_PROXIMA = 1; 
     private final int LIMIT_CARAC_NOMBRE = 200;
     private final int LIMIT_CARAC_DETALLES = 1000;
+    private final int MIN_CARAC_NOMBRE = 5;
+    private final int MIN_CARAC_DETALLES = 10;
+
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {  
@@ -173,7 +176,8 @@ public class FXMLFormularioActividadController implements Initializable {
     }
     
     private void validarBtnGuardar() {
-        if (txfNombreActividad.getText().trim().length() < 5 || txaDetallesActividad.getText().trim().length() < 10 
+        if (txfNombreActividad.getText().trim().length() < MIN_CARAC_NOMBRE 
+                || txaDetallesActividad.getText().trim().length() < MIN_CARAC_DETALLES
                 || txfNombreActividad.getText().trim().length() > LIMIT_CARAC_NOMBRE 
                 || txaDetallesActividad.getText().trim().length() > LIMIT_CARAC_DETALLES
                 || dtpInicio.getValue() == null || dtpFin.getValue() == null 
@@ -328,7 +332,7 @@ public class FXMLFormularioActividadController implements Initializable {
     }
     
      private void mostraMensajelimiteSuperado(int limiteCaracteres, String campo,  Label etiquetaError) { 
-        etiquetaError.setText("Cuidado, Excediste el limite de caracteres("+limiteCaracteres+") de este campo " + campo);
+        etiquetaError.setText("Cuidado, Excediste el limite de caracteres(" + limiteCaracteres + ") de este campo " + campo);
         btnGuardar.setDisable(true);
     }    
      

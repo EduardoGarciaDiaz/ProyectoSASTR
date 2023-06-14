@@ -112,7 +112,10 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
     private static final Pattern PATRON_NOMBRE_CA = Pattern.compile("^[\\p{L}0-9\\s]+$");
     private final int LIM_CARACT_NOMBRE = 100;
     private final int LIM_CARACT_DICIPLINA = 200;
-    private final int LIM_CARACT_DESCRIPCION = 600;    
+    private final int LIM_CARACT_DESCRIPCION = 600;
+    private final int MIN_CARACT_NOMBRE = 5;
+    private final int MIN_CARACT_DICIPLINA = 0;
+    private final int MIN_CARACT_DESCRIPCION = 10;
     private ObservableList<Lgac> lgacs;
     private ObservableList<Area> areas;
     private ObservableList<Academico> academicosBusqueda;
@@ -401,9 +404,10 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
             diciplina = txfDiciplinaCA.getText().trim();
             descripcion = txaDescripcionCA.getText().trim();
             nombreRca = lbNombreResponsable.getText(); 
-            if (nombreCa.trim().length() > 5 && diciplina.trim().length() > 0 && descripcion.trim().length() > 10 
-                && nombreCa.length() < 100 && diciplina.length() < 200 && descripcion.length() < 600 &&
-                nombreRca.length() > 5  && tblvLgacs.getItems().size() > 0) {
+            if (nombreCa.trim().length() > MIN_CARACT_NOMBRE && diciplina.trim().length() > MIN_CARACT_DICIPLINA 
+                && descripcion.trim().length() > MIN_CARACT_DESCRIPCION && nombreCa.length() < LIM_CARACT_NOMBRE 
+                && diciplina.length() < LIM_CARACT_DICIPLINA && descripcion.length() < LIM_CARACT_DESCRIPCION 
+                && nombreRca.length() > 3  && tblvLgacs.getItems().size() > 0) {
                 habilitarBtnGuardar();
             } else {
                 btnGuardar.setDisable(true);
@@ -526,13 +530,13 @@ public class FXMLAñadirCuerpoAcademicoController implements Initializable, INot
             escenario.setTitle("Inicio");
             escenario.show();
         } catch (IOException ex) {
-            Utilidades.mostrarDialogoSimple("Fallo al cargar la venta",
-                    "No se pudo cargar la ventana de Cuerpos Academicos", Alert.AlertType.ERROR);
+           Utilidades.mostrarDialogoSimple("Error Al cargar la ventana", 
+                        "No se pudo cargar la ventana solicitada: " + ex.getMessage(), Alert.AlertType.ERROR);
         }
     } 
      
     private void mostraMensajelimiteSuperado(int limiteCaracteres, String campo,  Label etiquetaError) { 
-        etiquetaError.setText("Cuidado, excediste el limite de caracteres("+limiteCaracteres+") de este campo " + campo);
+        etiquetaError.setText("Cuidado, excediste el limite de caracteres(" + limiteCaracteres + ") de este campo " + campo);
         btnGuardar.setDisable(true);
     }    
 

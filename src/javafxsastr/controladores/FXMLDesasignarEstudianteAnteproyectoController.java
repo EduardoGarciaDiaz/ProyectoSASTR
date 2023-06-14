@@ -45,6 +45,7 @@ public class FXMLDesasignarEstudianteAnteproyectoController implements Initializ
     private Label lbJustificacion;
     
     private final int LIMIT_CARAC_JUSTIFICACION = 200;
+    private final int MIN_CARAC_JUSTIFICACION = 5;
     private ObservableList<String> motivos;
     private Estudiante estudianteDesasignar;
     private INotificacionRecargarDatos interfazNotificacionDesasignacion;
@@ -103,8 +104,9 @@ public class FXMLDesasignarEstudianteAnteproyectoController implements Initializ
     }
     
     private void validarCampos() {
-        if (cmbMotivos.getSelectionModel().getSelectedItem() != null && txaJustificacion.getText().trim().length() > 5 
-            && txaJustificacion.getText().trim().length() <= 200) {
+        if (cmbMotivos.getSelectionModel().getSelectedItem() != null 
+            && txaJustificacion.getText().trim().length() > MIN_CARAC_JUSTIFICACION 
+            && txaJustificacion.getText().trim().length() <= LIMIT_CARAC_JUSTIFICACION) {
             btnGuardar.setDisable(false);
         } else {
             btnGuardar.setDisable(true);
