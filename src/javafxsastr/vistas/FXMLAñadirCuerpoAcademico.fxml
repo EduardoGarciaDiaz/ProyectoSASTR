@@ -78,7 +78,6 @@
                         <Font name="System Bold" size="30.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="bsdUsuario" layoutX="52.0" layoutY="564.0" prefHeight="31.0" prefWidth="472.0" style="-fx-background-color: F4F4F4; -fx-background-radius: 113;" visible="false" />
                   <Label layoutX="52.0" layoutY="517.0" prefHeight="36.0" prefWidth="177.0" text="Buscar Usuario">
                      <font>
                         <Font size="25.0" />
@@ -128,7 +127,7 @@
                         </ImageView>
                      </children>
                   </Pane>
-                  <TextField fx:id="bsdAcademico" layoutX="55.0" layoutY="567.0" prefHeight="31.0" prefWidth="472.0" style="-fx-background-radius: 13; -fx-background-color: F4F4F4;" />
+                  <TextField fx:id="tfAcademico" layoutX="55.0" layoutY="567.0" prefHeight="31.0" prefWidth="472.0" style="-fx-background-radius: 13; -fx-background-color: F4F4F4;" />
                   <ImageView fitHeight="31.0" fitWidth="38.0" layoutX="489.0" layoutY="568.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../recursos/buacdr..jpg" />
@@ -166,7 +165,7 @@
             </Button>
             <Pane layoutX="1007.0" layoutY="131.0" prefHeight="728.0" prefWidth="716.0">
                <children>
-                  <TextField fx:id="bsdLgac" layoutX="23.0" layoutY="133.0" prefHeight="31.0" prefWidth="398.0" style="-fx-background-radius: 13; -fx-background-color: F4F4F4;" />
+                  <TextField fx:id="tfLgac" layoutX="23.0" layoutY="133.0" prefHeight="31.0" prefWidth="398.0" style="-fx-background-radius: 13; -fx-background-color: F4F4F4;" />
                   <Label layoutY="24.0" prefHeight="45.0" prefWidth="847.0" text="Lineas de aplicacion y generacion del conocimiento (LGAC)">
                      <font>
                         <Font name="System Bold" size="23.0" />

@@ -34,7 +34,7 @@
             </Pane>
             <Pane layoutX="75.0" layoutY="50.0" prefHeight="63.0" prefWidth="369.0">
                <children>
-                  <Label fx:id="lbTituloventana" layoutX="27.0" layoutY="5.0" text="Detalles Curso" textFill="#434343">
+                  <Label layoutX="27.0" layoutY="5.0" text="Detalles Curso" textFill="#434343">
                      <font>
                         <Font name="System Bold" size="36.0" />
                      </font>
@@ -130,7 +130,7 @@
                   </Label>
                </children>
             </Pane>
-            <ScrollPane fx:id="slpAlamcenEstudinates" hbarPolicy="NEVER" layoutX="100.0" layoutY="335.0" maxHeight="586.0" prefWidth="1574.0" style="-fx-background-color: white; -fx-background-radius: 15;">
+            <ScrollPane hbarPolicy="NEVER" layoutX="100.0" layoutY="335.0" maxHeight="586.0" prefWidth="1574.0" style="-fx-background-color: white; -fx-background-radius: 15;">
                <content>
                   <VBox fx:id="hbxAlmacenEstdantes" prefWidth="1575.0" style="-fx-background-color: white;" />
                </content>

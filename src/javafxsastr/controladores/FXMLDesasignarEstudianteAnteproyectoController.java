@@ -50,7 +50,6 @@ public class FXMLDesasignarEstudianteAnteproyectoController implements Initializ
     private Estudiante estudianteDesasignar;
     private INotificacionRecargarDatos interfazNotificacionDesasignacion;
     private Anteproyecto anteproyectoModificacion;
-    private boolean esSoloVisto;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {      
@@ -65,8 +64,7 @@ public class FXMLDesasignarEstudianteAnteproyectoController implements Initializ
         llenarComboJustificaion();        
     }
     
-    public void verDesasignaciones(boolean esVista, Desasignacion desasignacion) {
-        this.esSoloVisto = esVista;
+    public void verDesasignaciones(Desasignacion desasignacion) {
         cmbMotivos.setValue(desasignacion.getMotivo());
         txaJustificacion.setText(desasignacion.getComentarios());
         btnGuardar.setStyle("-fx-background-color: #D9D9D9");  
@@ -104,9 +102,9 @@ public class FXMLDesasignarEstudianteAnteproyectoController implements Initializ
     }
     
     private void validarCampos() {
-        if (cmbMotivos.getSelectionModel().getSelectedItem() != null 
-            && txaJustificacion.getText().trim().length() > MIN_CARAC_JUSTIFICACION 
-            && txaJustificacion.getText().trim().length() <= LIMIT_CARAC_JUSTIFICACION) {
+        if ((cmbMotivos.getSelectionModel().getSelectedItem() != null)
+            && (txaJustificacion.getText().trim().length() > MIN_CARAC_JUSTIFICACION)
+            && (txaJustificacion.getText().trim().length() <= LIMIT_CARAC_JUSTIFICACION)) {
             btnGuardar.setDisable(false);
         } else {
             btnGuardar.setDisable(true);
@@ -151,7 +149,7 @@ public class FXMLDesasignarEstudianteAnteproyectoController implements Initializ
     }
     
     private void mostraMensajelimiteSuperado(int limiteCaracteres, String campo,  Label etiquetaError) { 
-        etiquetaError.setText("Cuidado, Exediste el limite de caracteres("+limiteCaracteres+") de este campo " + campo);
+        etiquetaError.setText("Cuidado, Excediste el limite de caracteres(" + limiteCaracteres + ") de este campo " + campo);
         btnGuardar.setDisable(true);
     }    
     

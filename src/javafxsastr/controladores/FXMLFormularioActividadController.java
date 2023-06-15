@@ -80,12 +80,12 @@ public class FXMLFormularioActividadController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {  
     } 
     
-    public void iniciarFormularioNUevo(Estudiante estudianteN, boolean edicion, Actividad act ) {        
+    public void iniciarFormularioNUevo(Estudiante estudiante, boolean edicion, Actividad actividad ) {        
         isEdicion = edicion;
-        this.estudiante = estudianteN;
+        this.estudiante = estudiante;
         if (isEdicion) {
             lbTtituloVentana.setText("Modificar actividad");
-            actividadEdicion = act;           
+            actividadEdicion = actividad;           
             cargarInformacion();
         }
         btnGuardar.setDisable(true);
@@ -116,58 +116,50 @@ public class FXMLFormularioActividadController implements Initializable {
     }
     
     private void inicializarListeners() {
-        txfNombreActividad.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+        txfNombreActividad.textProperty().addListener(
+            (ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
                 if (txfNombreActividad.getText().length() <= LIMIT_CARAC_NOMBRE) {
                     validarBtnGuardar();
                     lbNombreLgac.setText("");
-                } else { 
+                } else {
                     mostraMensajelimiteSuperado(LIMIT_CARAC_NOMBRE,"Nombre Actividad",lbNombreLgac);
-                }            
+                }
             }
-        });        
-        txaDetallesActividad.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+        );        
+        txaDetallesActividad.textProperty().addListener(
+            (ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
                 if (txaDetallesActividad.getText().length() <= LIMIT_CARAC_DETALLES) {
                     validarBtnGuardar();
                     lbDescirpcionLgac.setText("");
-                } else { 
+                } else {
                     mostraMensajelimiteSuperado(LIMIT_CARAC_DETALLES,"Detalles Actividad",lbDescirpcionLgac);
-                }  
+                }
             }
-        });
-        txfHoraInicio.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+        );
+        txfHoraInicio.textProperty().addListener(
+            (ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
                 if (validarHora(txfHoraInicio)) {
                     validarBtnGuardar();
-               } 
+                }
             }
-        });
-        txfHoraFin.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-               if (validarHora(txfHoraFin)) {
+        );
+        txfHoraFin.textProperty().addListener(
+            (ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+                if (validarHora(txfHoraFin)) {
                     validarBtnGuardar();
-               }                
+                }
             }
-        });
-        dtpInicio.onMouseEnteredProperty().addListener(new ChangeListener<EventHandler<? super MouseEvent>>(){
-            @Override
-            public void changed(ObservableValue<? extends EventHandler<? super MouseEvent>> observable,
-                    EventHandler<? super MouseEvent> oldValue, EventHandler<? super MouseEvent> newValue) {
+        );
+        dtpInicio.onMouseEnteredProperty().addListener(
+            (ObservableValue<? extends EventHandler<? super MouseEvent>> observable, EventHandler<? super MouseEvent> oldValue, EventHandler<? super MouseEvent> newValue) -> {
                 validarBtnGuardar();
             }
-        });
-        dtpFin.onMouseEnteredProperty().addListener(new ChangeListener<EventHandler<? super MouseEvent>>(){
-            @Override
-            public void changed(ObservableValue<? extends EventHandler<? super MouseEvent>> observable,
-                    EventHandler<? super MouseEvent> oldValue, EventHandler<? super MouseEvent> newValue) {
+        );
+        dtpFin.onMouseEnteredProperty().addListener(
+            (ObservableValue<? extends EventHandler<? super MouseEvent>> observable, EventHandler<? super MouseEvent> oldValue, EventHandler<? super MouseEvent> newValue) -> {
                 validarBtnGuardar();
             }
-        });        
+        );        
     }
     
     private void iniciarFiltros() {
@@ -176,12 +168,12 @@ public class FXMLFormularioActividadController implements Initializable {
     }
     
     private void validarBtnGuardar() {
-        if (txfNombreActividad.getText().trim().length() < MIN_CARAC_NOMBRE 
-                || txaDetallesActividad.getText().trim().length() < MIN_CARAC_DETALLES
-                || txfNombreActividad.getText().trim().length() > LIMIT_CARAC_NOMBRE 
-                || txaDetallesActividad.getText().trim().length() > LIMIT_CARAC_DETALLES
-                || dtpInicio.getValue() == null || dtpFin.getValue() == null 
-                || !validarHora(txfHoraInicio) || !validarHora(txfHoraFin)) {
+        if ((txfNombreActividad.getText().trim().length() < MIN_CARAC_NOMBRE)
+                || (txaDetallesActividad.getText().trim().length() < MIN_CARAC_DETALLES)
+                || (txfNombreActividad.getText().trim().length() > LIMIT_CARAC_NOMBRE)
+                || (txaDetallesActividad.getText().trim().length() > LIMIT_CARAC_DETALLES)
+                || (dtpInicio.getValue() == null) || (dtpFin.getValue() == null)
+                || (!validarHora(txfHoraInicio)) || (!validarHora(txfHoraFin))) {
             btnGuardar.setDisable(true);
         } else {
             btnGuardar.setDisable(false);
@@ -252,7 +244,7 @@ public class FXMLFormularioActividadController implements Initializable {
         actividadNueva.setEstadoActividad("Proxima");
         actividadNueva.setIdEstadoActividad(ESTADO_PROXIMA);
         try {
-            int exito = new ActividadDAO().guardarActividad(actividadNueva);
+            new ActividadDAO().guardarActividad(actividadNueva);
             Utilidades.mostrarDialogoSimple("Registro Exitoso","Actividad agregada con exito", 
                     Alert.AlertType.INFORMATION);
             limpiarCampos();

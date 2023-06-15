@@ -53,10 +53,6 @@ public class FXMLDetallesEntregaController implements Initializable {
     @FXML
     private Label lbHoraEnvio;
     @FXML
-    private Label lbEstadoActividad;
-    @FXML
-    private Label lbNumeroEntregas;
-    @FXML
     private HBox hbxContenedorArchivosEstudiante;
     @FXML
     private Label lbEvaluacionDirector;
@@ -136,7 +132,7 @@ public class FXMLDetallesEntregaController implements Initializable {
         contenedorArchivo.setPrefSize(285, 20);
         contenedorArchivo.setStyle("-fx-background-color: #C4DAEF; -fx-background-radius: 15");
         ImageView imgIconoArchivo = new ImageView(new Image("file:src/javafxsastr/recursos/iconos/archivo.png"));
-        ImageView imgIconoEliminarArchivo = new ImageView(new Image("file:src/javafxsastr/recursos/iconos/descargas.png"));
+        ImageView imgIconoDescargarArchivo = new ImageView(new Image("file:src/javafxsastr/recursos/iconos/descargas.png"));
         contenedorArchivo.getChildren().add(imgIconoArchivo);
         imgIconoArchivo.setFitHeight(40);
         imgIconoArchivo.setFitWidth(40);
@@ -150,12 +146,12 @@ public class FXMLDetallesEntregaController implements Initializable {
         contenedorArchivo.getChildren().add(lbPesoArchivo);
         lbPesoArchivo.setLayoutX(75);
         lbPesoArchivo.setLayoutY(40);
-        contenedorArchivo.getChildren().add(imgIconoEliminarArchivo);
-        imgIconoEliminarArchivo.setFitHeight(35);
-        imgIconoEliminarArchivo.setFitWidth(35);
-        imgIconoEliminarArchivo.setLayoutX(240);
-        imgIconoEliminarArchivo.setLayoutY(12);
-        imgIconoEliminarArchivo.setOnMouseClicked(
+        contenedorArchivo.getChildren().add(imgIconoDescargarArchivo);
+        imgIconoDescargarArchivo.setFitHeight(35);
+        imgIconoDescargarArchivo.setFitWidth(35);
+        imgIconoDescargarArchivo.setLayoutX(240);
+        imgIconoDescargarArchivo.setLayoutY(12);
+        imgIconoDescargarArchivo.setOnMouseClicked(
             (event) -> {
                 descargarArchivo(archivo);
             }

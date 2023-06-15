@@ -103,9 +103,10 @@ public class FXMLConsultarAvancesController implements Initializable {
                 if (totalActividades > 0) {
                     porcentaje = (numeroActividadesCompletadas * 100) / totalActividades;
                 }
-                String actividadesCompletadas = String.valueOf(numeroActividadesCompletadas)+" / "+String.valueOf(totalActividades);
-                String actividadesNoCompletadas = String.valueOf(numeroActividadesNoCompletadas)+" / "+String.valueOf(totalActividades);
-                String actividadesRestantes = String.valueOf(numeroActividadesRestantes)+" / "+String.valueOf(totalActividades);
+                String actividadesCompletadas = String.valueOf(numeroActividadesCompletadas) + " / " + String.valueOf(totalActividades);
+                String actividadesNoCompletadas = String.valueOf(numeroActividadesNoCompletadas) 
+                        + " / " + String.valueOf(totalActividades);
+                String actividadesRestantes = String.valueOf(numeroActividadesRestantes) + " / " + String.valueOf(totalActividades);
                 TarjetaAvanceEstudiante tarjeta = new TarjetaAvanceEstudiante(e.getIdEstudiante(), nombreCompleto,
                         e.getMatriculaEstudiante(), e.getAnteproyectoEstudiante(), porcentaje,
                         actividadesCompletadas, actividadesNoCompletadas, actividadesRestantes);

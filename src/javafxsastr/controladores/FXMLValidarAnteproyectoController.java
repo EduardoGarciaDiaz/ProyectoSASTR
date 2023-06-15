@@ -56,8 +56,6 @@ import javafxsastr.utils.Utilidades;
 public class FXMLValidarAnteproyectoController implements Initializable {
 
     @FXML
-    private Pane contenedorRubrica;
-    @FXML
     private ToggleGroup LGACS;
     @FXML
     private ToggleGroup NombreTR;
@@ -76,8 +74,6 @@ public class FXMLValidarAnteproyectoController implements Initializable {
     @FXML
     private Label lbAnio;
     @FXML
-    private VBox vbxCards;
-    @FXML
     private Label lbCuerpoAcademico;
     @FXML
     private Label lbNombreProyectoInvestigacion;
@@ -93,12 +89,6 @@ public class FXMLValidarAnteproyectoController implements Initializable {
     private Label lbRequisitos;
     @FXML
     private Label lbDirector;
-    @FXML
-    private VBox vbxAlumnosParticipantes;
-    @FXML
-    private Label lbEstudianteParticipante;
-    @FXML
-    private Label lbEstudianteParticipante2;
     @FXML
     private Label lbDescripcionProyectoInvestigacion;
     @FXML
@@ -165,60 +155,52 @@ public class FXMLValidarAnteproyectoController implements Initializable {
     }
     
     private void inicializarListeners() {  
-        NombreTR.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {            
-            @Override
-            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {            
-               validarBotones();
-            }
-        });
-        LGACS.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {            
-            @Override
-            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-               validarBotones();
-            }
-        });
-        Redaccion.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {            
-            @Override
-            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-               validarBotones();
-            }
-        });
-        ResultadosEsperados.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {            
-            @Override
-            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-               validarBotones();
-            }
-        });
-        DescripcionTR.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {            
-            @Override
-            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-               validarBotones();
-            }
-        });
-        BibliografiasRecomendadas.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {            
-            @Override
-            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-               validarBotones();
-            }
-        });
-        RequisitosAnteproyecto.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {            
-            @Override
-            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-               validarBotones();
-            }
-        });
-        txaComentarios.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (txaComentarios.getText().length() > LIM_CARACT_COMENTARIOS) {
-                    mostraMensajelimiteSuperado(LIM_CARACT_COMENTARIOS,"Comentarios",lbComentarios); 
-                    btnAprobar.setDisable(true);
-                } else {
-                    lbComentarios.setText("");                    
-                } 
+        NombreTR.selectedToggleProperty().addListener(
+            (ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) -> {
                 validarBotones();
             }
-        }); 
+        );
+        LGACS.selectedToggleProperty().addListener(
+            (ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) -> {
+                validarBotones();
+            }
+        );
+        Redaccion.selectedToggleProperty().addListener(
+            (ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) -> {
+                validarBotones();
+            }
+        );
+        ResultadosEsperados.selectedToggleProperty().addListener(
+            (ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) -> {
+                validarBotones();
+            }
+        );
+        DescripcionTR.selectedToggleProperty().addListener(
+            (ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) -> {
+                validarBotones();
+            }
+        );
+        BibliografiasRecomendadas.selectedToggleProperty().addListener(
+            (ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) -> {
+                validarBotones();
+            }
+        );
+        RequisitosAnteproyecto.selectedToggleProperty().addListener(
+            (ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) -> {
+                validarBotones();
+            }
+        );
+        txaComentarios.textProperty().addListener(
+            (ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+                if (txaComentarios.getText().length() > LIM_CARACT_COMENTARIOS) {
+                    mostraMensajelimiteSuperado(LIM_CARACT_COMENTARIOS,"Comentarios",lbComentarios);
+                    btnAprobar.setDisable(true);
+                } else {
+                    lbComentarios.setText("");
+                }
+                validarBotones();
+            }
+        ); 
     }
     
     private void obtenerEstudiantes() {
@@ -339,9 +321,12 @@ public class FXMLValidarAnteproyectoController implements Initializable {
     }
     
     private void validarBotones() {
-        if (BibliografiasRecomendadas.getSelectedToggle() != null && DescripcionTR.getSelectedToggle() != null
-                && LGACS.getSelectedToggle() != null && NombreTR.getSelectedToggle() != null &&
-                Redaccion.getSelectedToggle() != null && RequisitosAnteproyecto.getSelectedToggle() != null
+        if (BibliografiasRecomendadas.getSelectedToggle() != null 
+                && DescripcionTR.getSelectedToggle() != null
+                && LGACS.getSelectedToggle() != null 
+                && NombreTR.getSelectedToggle() != null 
+                && Redaccion.getSelectedToggle() != null 
+                && RequisitosAnteproyecto.getSelectedToggle() != null
                 && ResultadosEsperados.getSelectedToggle() != null ) {
             btnRechazar.setDisable(false);
             if (validarValores()) {

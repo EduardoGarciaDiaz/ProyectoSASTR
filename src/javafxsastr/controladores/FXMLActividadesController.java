@@ -239,7 +239,7 @@ public class FXMLActividadesController implements Initializable {
             panelDesplegado.play();
             imgBtnHide.setVisible(true);
             imgBtnShow.setVisible(false);
-        }else{
+        } else {
             panelCerrado.setToX(433);
             panelCerrado.play();
             imgBtnHide.setVisible(false);

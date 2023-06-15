@@ -49,7 +49,6 @@ public class FXMLEstudiantesAsignadosController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
     }    
     
     public void setDirector(Academico academico) {

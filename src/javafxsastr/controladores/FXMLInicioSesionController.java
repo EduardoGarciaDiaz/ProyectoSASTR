@@ -44,6 +44,8 @@ public class FXMLInicioSesionController implements Initializable {
     private Label lbCampoContraseñaRequerido;
     @FXML
     private Label lbErrorCredenciales;
+    
+    private int USUARIO_ACTIVO = 1;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -70,7 +72,7 @@ public class FXMLInicioSesionController implements Initializable {
     private void autenticarUsuario(String correoUsuario, String contraseña) throws DAOException {
         Usuario usuario = new UsuarioDAO().obtenerUsuario(correoUsuario, contraseña);
         if (usuario.getIdUsuario() > 0) {
-            if (usuario.getIdEstadoUsuario() == 1) {
+            if (usuario.getIdEstadoUsuario() == USUARIO_ACTIVO) {
                 irAVistaInicio(usuario);
             } else {
                 Utilidades.mostrarDialogoSimple("Acceso denegado",
@@ -98,9 +100,8 @@ public class FXMLInicioSesionController implements Initializable {
     }
     
     private void agregarListenersACampos() {
-        tfCorreoUsuario.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+        tfCorreoUsuario.textProperty().addListener(
+            (ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
                 if (!newValue.trim().isEmpty()) {
                     tfCorreoUsuario.setText(tfCorreoUsuario.getText().toLowerCase());
                     lbCampoCorreoRequerido.setText("");
@@ -109,10 +110,9 @@ public class FXMLInicioSesionController implements Initializable {
                     lbCampoCorreoRequerido.setText("Campo requerido");
                 }
             }
-        });
-        tfContraseñaUsuario.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+        );
+        tfContraseñaUsuario.textProperty().addListener(
+            (ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
                 if (!newValue.trim().isEmpty()) {
                     tfContraseñaUsuario.setText(tfContraseñaUsuario.getText());
                     lbCampoContraseñaRequerido.setText("");
@@ -121,7 +121,7 @@ public class FXMLInicioSesionController implements Initializable {
                     lbCampoContraseñaRequerido.setText("Campo requerido");
                 }
             }
-        });
+        );
     }
 
     @FXML
@@ -149,8 +149,7 @@ public class FXMLInicioSesionController implements Initializable {
                 Utilidades.mostrarDialogoSimple("Error de conexion", 
                         "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
             default:
-                System.out.println("Error desconocido");
-                
+                System.out.println("Error desconocido");         
         }
     }
     

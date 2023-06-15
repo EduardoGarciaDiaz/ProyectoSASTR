@@ -36,7 +36,6 @@ import javafxsastr.modelos.dao.DAOException;
 import javafxsastr.modelos.dao.EstudianteDAO;
 import javafxsastr.modelos.dao.PeriodoEscolarDAO;
 import javafxsastr.modelos.dao.UsuarioDAO;
-import javafxsastr.modelos.pojo.Academico;
 import javafxsastr.modelos.pojo.Curso;
 import javafxsastr.modelos.pojo.Estudiante;
 import javafxsastr.modelos.pojo.PeriodoEscolar;
@@ -47,8 +46,6 @@ import javafxsastr.utils.cards.TarjetaEstudianteCurso;
 
 public class FXMLDetallesCursoController implements Initializable, INotificacionRecargarDatos {
 
-    @FXML
-    private Label lbTituloventana;
     @FXML
     private Circle crlEstadoCurso;
     @FXML
@@ -65,8 +62,6 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
     private Label lbNrc;
     @FXML
     private Label lbSeccion;
-    @FXML
-    private ScrollPane slpAlamcenEstudinates;
     @FXML
     private VBox hbxAlmacenEstdantes;
     @FXML
@@ -169,8 +164,8 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
             if (i==0){
                 TarjetaAgregarAlumno tarjetaAgregarAlumno = new TarjetaAgregarAlumno();
                 fila.getChildren().add(tarjetaAgregarAlumno);
-                tarjetaAgregarAlumno.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    public void handle(MouseEvent event) {  
+                tarjetaAgregarAlumno.setOnMouseClicked(
+                    (MouseEvent event) -> {
                         if (cursoActual.getIdEstadoCurso() == 2) {
                             Utilidades.mostrarDialogoSimple("Accion invalida","No puedes asignar estudiantes a un curso inactivo",
                                     Alert.AlertType.WARNING);
@@ -178,25 +173,25 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
                             irVistaAgregarAlumno();
                         }
                     }
-                });
+                );
             }           
             for (int j = 0; j < elementosPorFila && numeroEstudiantes != contadorGeneral && estudiantes.size() != 0; j++) {
                 TarjetaEstudianteCurso tarjeta = new TarjetaEstudianteCurso(estudiantes.get(contadorGeneral));
-                tarjeta.getBotonDesactivar().setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    public void handle(MouseEvent event) {
-                            if (tarjeta.getEstudiante().getIdEstadoUsuario() == 1) {                                    
-                                desactivarUsuario(tarjeta.getEstudiante());
+                tarjeta.getBotonDesactivar().setOnMouseClicked(
+                    (MouseEvent event) -> {
+                        if (tarjeta.getEstudiante().getIdEstadoUsuario() == 1) {
+                            desactivarUsuario(tarjeta.getEstudiante());
 
-                            } else {                            
-                                 activarUsuario(tarjeta.getEstudiante());
-                            }                                
+                        } else {
+                            activarUsuario(tarjeta.getEstudiante());
                         }
-                    });
-                tarjeta.getBotonEditar().setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    public void handle(MouseEvent event) {
-                            editarUsuario(tarjeta.getEstudiante());
-                        }
-                    });                 
+                    }
+                );
+                tarjeta.getBotonEditar().setOnMouseClicked((
+                    MouseEvent event) -> {
+                        editarUsuario(tarjeta.getEstudiante());
+                    }
+                );                 
                 fila.getChildren().add(tarjeta);
                 contadorGeneral++;                          
             }
@@ -279,7 +274,7 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
             escenarioFormulario.initModality(Modality.APPLICATION_MODAL);
             escenarioFormulario.showAndWait();
         } catch (IOException ex) {            
-            Utilidades.mostrarDialogoSimple("Error","No se pudo cargar la Escena", Alert.AlertType.ERROR);
+            Utilidades.mostrarDialogoSimple("Error", "No se pudo cargar la Escena", Alert.AlertType.ERROR);
         }        
     }
     
@@ -298,7 +293,7 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
             escenario.initModality(Modality.APPLICATION_MODAL);
             escenario.showAndWait();
         } catch (IOException ex) {
-            Utilidades.mostrarDialogoSimple("Error","No se pudo cargar la Escena", Alert.AlertType.ERROR);
+            Utilidades.mostrarDialogoSimple("Error", "No se pudo cargar la Escena", Alert.AlertType.ERROR);
         } catch (DAOException ex) {
             manejarDAOException(ex);
         }
@@ -360,7 +355,7 @@ public class FXMLDetallesCursoController implements Initializable, INotificacion
             escenario.setTitle("Cursos");
             escenario.show();
         } catch (IOException ex) {
-            Utilidades.mostrarDialogoSimple("Error","No se pudo cargar la Escena", Alert.AlertType.ERROR);
+            Utilidades.mostrarDialogoSimple("Error", "No se pudo cargar la Escena", Alert.AlertType.ERROR);
         }
     }
 

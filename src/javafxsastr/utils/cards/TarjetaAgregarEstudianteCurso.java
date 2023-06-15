@@ -38,7 +38,7 @@ public class TarjetaAgregarEstudianteCurso extends Pane {
         return this.fondo;
     }
     
-    public Estudiante getEstudinate() {
+    public Estudiante getEstudiante() {
         return estudianteTarjeta; 
     }
     

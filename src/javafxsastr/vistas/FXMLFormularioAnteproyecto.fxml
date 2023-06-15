@@ -129,7 +129,7 @@
                               </AnchorPane>
                           </content>
                         </ScrollPane>
-                        <TextArea fx:id="tfRequisitos" layoutX="39.0" layoutY="499.0" prefHeight="133.0" prefWidth="500.0">
+                        <TextArea fx:id="tfRequisitos" layoutX="39.0" layoutY="499.0" prefHeight="133.0" prefWidth="500.0" wrapText="true">
                            <font>
                               <Font size="18.0" />
                            </font></TextArea>
@@ -202,7 +202,7 @@
                               <Font size="25.0" />
                            </font>
                         </Label>
-                        <TextArea fx:id="tfBibliografia" layoutX="36.0" layoutY="59.0" prefHeight="189.0" prefWidth="944.0">
+                        <TextArea fx:id="tfBibliografia" layoutX="36.0" layoutY="59.0" prefHeight="189.0" prefWidth="944.0" wrapText="true">
                            <font>
                               <Font size="18.0" />
                            </font></TextArea>

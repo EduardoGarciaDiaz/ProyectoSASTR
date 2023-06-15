@@ -71,6 +71,10 @@ public class FXMLRevisarEntregaController implements Initializable {
     private Button btnEnviarRevision;
     @FXML
     private Button btnAdjuntarArchivo;
+    @FXML
+    private Label lbMensajeErrorPesoArchivo;
+    @FXML
+    private Label lbErrorCaracteresComentarios;
     
     private ObservableList<Archivo> archivosRevision = FXCollections.observableArrayList();
     private ConsultarAvanceEstudianteSingleton consultarAvanceEstudiante = ConsultarAvanceEstudianteSingleton
@@ -80,10 +84,6 @@ public class FXMLRevisarEntregaController implements Initializable {
     private Academico academico;
     private Actividad actividad;
     int numeroEntrega;
-    @FXML
-    private Label lbMensajeErrorPesoArchivo;
-    @FXML
-    private Label lbErrorCaracteresComentarios;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -277,8 +277,7 @@ public class FXMLRevisarEntregaController implements Initializable {
     @FXML
     private void clicBtnEnviarRevision(ActionEvent event) {
         Entrega entregaValida = prepararEntregaValida();
-        if (entregaValida.getComentarioDirector().length() < 2000 
-                && entregaValida.getComentarioDirector().length() > 10) {
+        if ((entregaValida.getComentarioDirector().length() < 2000) && (entregaValida.getComentarioDirector().length() > 10)) {
             actualizarEntrega(entregaValida);
             guardarArchivosRevision();
             Utilidades.mostrarDialogoSimple("Revisión enviada", 

@@ -45,8 +45,6 @@ public class FXMLDetallesActividadController implements Initializable {
     @FXML
     private TextArea taDetallesActividad;
     @FXML
-    private ImageView ivArchivo;
-    @FXML
     private VBox vbxEntregas;
     @FXML
     private Label lbFechaActividad;
@@ -64,7 +62,6 @@ public class FXMLDetallesActividadController implements Initializable {
     private ObservableList<Entrega> entregas;
     private final DateTimeFormatter FORMATO_FECHA_COMPLETA = DateTimeFormatter.ofPattern("EEEE ',' dd 'de' MMMM 'de' yyyy",
         new Locale("es"));
-    private final DateTimeFormatter FORMATO_HORA = DateTimeFormatter.ofPattern("HH:mm a");
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {

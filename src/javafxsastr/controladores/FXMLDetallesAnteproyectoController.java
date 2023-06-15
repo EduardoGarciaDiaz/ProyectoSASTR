@@ -709,7 +709,7 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLDesasignarEstudianteAnteproyecto.fxml"));
             Parent vista = accesoControlador.load();
             FXMLDesasignarEstudianteAnteproyectoController controladorVista = accesoControlador.getController();
-            controladorVista.verDesasignaciones(true, desasignacionVer);
+            controladorVista.verDesasignaciones(desasignacionVer);
             Stage escenario = new Stage();
             escenario.setScene(new Scene(vista));
             escenario.setTitle("Desasignar Estudiante");

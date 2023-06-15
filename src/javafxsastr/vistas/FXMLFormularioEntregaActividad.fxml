@@ -140,6 +140,5 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <ImageView fx:id="ivArchivo" fitHeight="86.0" fitWidth="100.0" layoutX="10.0" layoutY="497.0" pickOnBounds="true" preserveRatio="true" />
    </children>
 </AnchorPane>

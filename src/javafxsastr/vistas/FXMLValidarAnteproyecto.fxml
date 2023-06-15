@@ -12,7 +12,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="940.0" prefWidth="1728.0" style="-fx-background-color: EFEFEF;" styleClass="edge-to-edge" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxsastr.controladores.FXMLValidarAnteproyectoController">
    <children>
-       <Pane fx:id="contenedorRubrica" layoutX="1190.0" layoutY="68.0" prefHeight="467.0" prefWidth="514.0" style="-fx-background-color: white; -fx-background-radius: 15;">
+       <Pane layoutX="1190.0" layoutY="68.0" prefHeight="467.0" prefWidth="514.0" style="-fx-background-color: white; -fx-background-radius: 15;">
          <children>
             <RadioButton layoutX="234.0" layoutY="78.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="29.0" text="0" textFill="WHITE">
                <toggleGroup>
@@ -182,7 +182,7 @@
       </Pane>
       <ScrollPane layoutX="56.0" layoutY="270.0" maxHeight="1835.0" prefHeight="666.0" prefWidth="1101.0" style="-fx-background-radius: 15; -fx-border-radius: 15;" styleClass="edge-to-egde">
          <content>
-            <VBox fx:id="vbxCards" prefWidth="1082.0" spacing="8.0" style="-fx-background-radius: 15; -fx-border-radius: 15; -fx-border-color: transparent; -fx-background-color: EFEFEF;">
+            <VBox prefWidth="1082.0" spacing="8.0" style="-fx-background-radius: 15; -fx-border-radius: 15; -fx-border-color: transparent; -fx-background-color: EFEFEF;">
                <children>
                   <VBox prefWidth="100.0">
                      <children>
@@ -364,12 +364,12 @@
                               </HBox>
                            </children>
                         </VBox>
-                        <VBox fx:id="vbxAlumnosParticipantes" prefWidth="100.0" style="-fx-background-color: white;">
+                        <VBox prefWidth="100.0" style="-fx-background-color: white;">
                            <children>
                               <HBox prefWidth="200.0">
                                  <children>
                                     <Pane prefWidth="422.0" />
-                                    <Label fx:id="lbEstudianteParticipante" prefHeight="30.0" prefWidth="460.0" wrapText="true">
+                                    <Label prefHeight="30.0" prefWidth="460.0" wrapText="true">
                                        <font>
                                           <Font size="20.0" />
                                        </font>
@@ -378,7 +378,7 @@
                               </HBox>
                               <HBox prefWidth="200.0">
                                  <children>
-                                    <Label fx:id="lbEstudianteParticipante2" prefHeight="30.0" prefWidth="459.0" wrapText="true">
+                                    <Label prefHeight="30.0" prefWidth="459.0" wrapText="true">
                                        <font>
                                           <Font size="20.0" />
                                        </font>

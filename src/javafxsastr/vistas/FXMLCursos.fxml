@@ -11,7 +11,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="940.0" prefWidth="1728.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxsastr.controladores.FXMLCursosController">
    <children>
-      <TextField fx:id="tfCampoBusqueda" layoutX="1186.0" layoutY="91.0" onKeyTyped="#filtrarCursos" prefHeight="31.0" prefWidth="461.0" promptText="Buscar curso" style="-fx-background-radius: 15;" />
+      <TextField fx:id="tfCampoBusqueda" layoutX="1186.0" layoutY="91.0" prefHeight="31.0" prefWidth="461.0" promptText="Buscar curso" style="-fx-background-radius: 15;" />
       <Label fx:id="lbTituloVentana" layoutX="79.0" layoutY="82.0" prefHeight="40.0" prefWidth="172.0" text="Cursos">
          <font>
             <Font size="32.0" />

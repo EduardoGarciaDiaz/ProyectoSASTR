@@ -115,7 +115,7 @@ public class FXMLConsultarEntregasActividadController implements Initializable {
                 lbNumeroEntregas.setText(entregas.size() + " Entregas enviadas");
                 mostrarEntregas(entregas, false);
             } else {
-                 System.err.println("La actividad que se recibió viene NULA");
+                System.err.println("La actividad que se recibió viene NULA");
             }
         } catch (DAOException ex) {
             manejarDAOException(ex);
@@ -168,7 +168,7 @@ public class FXMLConsultarEntregasActividadController implements Initializable {
                     vbxCardsCambios.getChildren().add(new TarjetaCambioActividad(cambioHecho, fechaModificacionFormateada));
                 } 
             } else {
-                    System.err.println("La actividad que se recibió viene NULA");
+                System.err.println("La actividad que se recibió viene NULA");
             }
         } catch (DAOException ex) {
             manejarDAOException(ex);
@@ -215,13 +215,12 @@ public class FXMLConsultarEntregasActividadController implements Initializable {
         try {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLConsultarAvanceEstudiante.fxml"));
             Parent vista = accesoControlador.load();
-            FXMLConsultarAvanceEstudianteController controladorVistaAvanceEstudiante 
-                    = accesoControlador.getController();
+            FXMLConsultarAvanceEstudianteController controladorVistaAvanceEstudiante = accesoControlador.getController();
             controladorVistaAvanceEstudiante.setEstudianteAcademico(
-                    consultarAvanceEstudiante.getEstudiante(),
-                    consultarAvanceEstudiante.getAcademico(),
-                    consultarAvanceEstudiante.getVentanaOrigen(),
-                    consultarAvanceEstudiante.getCurso()
+                consultarAvanceEstudiante.getEstudiante(),
+                consultarAvanceEstudiante.getAcademico(),
+                consultarAvanceEstudiante.getVentanaOrigen(),
+                consultarAvanceEstudiante.getCurso()
             );
             Stage escenario = (Stage) lbDetallesActividad.getScene().getWindow();
             escenario.setScene(new Scene(vista));

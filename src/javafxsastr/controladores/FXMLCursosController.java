@@ -97,12 +97,14 @@ public class FXMLCursosController implements Initializable {
         vbxCursos.getChildren().clear();
         if (cursos.size() > 0) {
             FilteredList<Curso> filtroCursos = new FilteredList<>(cursos, p -> true);
-            filtroCursos.setPredicate(curso -> {
-                if (nombreExperiencia.equals(curso.getExperienciaEducativaCurso())) {   
-                    return true;
+            filtroCursos.setPredicate(
+                curso -> {
+                    if (nombreExperiencia.equals(curso.getExperienciaEducativaCurso())) {   
+                        return true;
+                    }
+                    return false;
                 }
-                return false;
-            });
+            );
             SortedList<Curso> sortedList = new SortedList<>(filtroCursos,
                     Comparator.comparing(Curso::getNombreCurso));
             mostrarCursos(sortedList);
@@ -117,30 +119,28 @@ public class FXMLCursosController implements Initializable {
                 @Override
                 public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                     vbxCursos.getChildren().clear();
-                    filtroCursos.setPredicate(cursoFiltro -> {
-                        if (newValue == null || newValue.isEmpty()) {
-                            return true;
+                    filtroCursos.setPredicate(
+                        cursoFiltro -> {
+                            if (newValue == null || newValue.isEmpty()) {
+                                return true;
+                            }
+                            String lowerNewValue = newValue.toLowerCase();
+                            if (cursoFiltro.getNombreCurso().toLowerCase().contains(lowerNewValue)) {
+                                return true;
+                            } else if (cursoFiltro.getAcademicoCurso().toLowerCase().contains(lowerNewValue)) {
+                                return true;
+                            } else if (cursoFiltro.getNrcCurso().toLowerCase().contains(lowerNewValue)) {
+                                return true;
+                            }
+                            return false;
                         }
-                        String lowerNewValue = newValue.toLowerCase();
-                        if (cursoFiltro.getNombreCurso().toLowerCase().contains(lowerNewValue)) {
-                            return true;
-                        } else if (cursoFiltro.getAcademicoCurso().toLowerCase().contains(lowerNewValue)) {
-                            return true;
-                        } else if (cursoFiltro.getNrcCurso().toLowerCase().contains(lowerNewValue)) {
-                            return true;
-                        }
-                        return false;
-                    });
+                    );
                     SortedList<Curso> sortedListCursos = new SortedList<>(filtroCursos,
                         Comparator.comparing(Curso::getNombreCurso));
                     mostrarCursos(sortedListCursos);
                 }
             });
         }
-    }
-
-    @FXML
-    private void filtrarCursos(KeyEvent event) {
     }
 
     @FXML
@@ -155,9 +155,11 @@ public class FXMLCursosController implements Initializable {
         btnProyectoGuiado.setStyle(ESTILO_NORMAL);
         btnExperienciaRecepcional.setStyle(ESTILO_NORMAL);
         FilteredList<Curso> filtroCursos = new FilteredList<>(cursos, p -> true);
-        filtroCursos.setPredicate(curso -> {
-            return true;
-        });
+        filtroCursos.setPredicate(
+            curso -> {
+                return true;
+            }
+        );
         SortedList<Curso> sortedList = new SortedList<>(filtroCursos,
                 Comparator.comparing(Curso::getNombreCurso));
         mostrarCursos(sortedList);

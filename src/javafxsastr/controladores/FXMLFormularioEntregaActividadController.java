@@ -63,8 +63,6 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
     @FXML
     private HBox hbxContenedorArchivosAlumno;
     @FXML
-    private ImageView ivArchivo;
-    @FXML
     private Label lbErrorArchivos;
     @FXML
     private TextArea taDetallesActividad;
@@ -139,11 +137,13 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
         imgIconoEliminarArchivo.setFitWidth(35);
         imgIconoEliminarArchivo.setLayoutX(240);
         imgIconoEliminarArchivo.setLayoutY(12);
-        imgIconoEliminarArchivo.setOnMouseClicked((event) -> {
-            eliminarArchivo(archivo);
-            contenedorArchivo.setVisible(false);
-            hbxContenedorArchivosAlumno.getChildren().remove(contenedorArchivo);
-        });
+        imgIconoEliminarArchivo.setOnMouseClicked(
+            (event) -> {
+                eliminarArchivo(archivo);
+                contenedorArchivo.setVisible(false);
+                hbxContenedorArchivosAlumno.getChildren().remove(contenedorArchivo);
+            }
+        );
         hbxContenedorArchivosAlumno.getChildren().add(contenedorArchivo);
     }
     
@@ -193,9 +193,8 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
         if (!taComentarios.getText().trim().isEmpty()) {
             btnEnviar.setDisable(false);
         }
-        taComentarios.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+        taComentarios.textProperty().addListener(
+            (ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
                 if (!newValue.trim().isEmpty()) {
                     lbCampoComentariosError.setText("");
                     btnEnviar.setDisable(false);
@@ -204,7 +203,7 @@ public class FXMLFormularioEntregaActividadController implements Initializable {
                     lbCampoComentariosError.setText("Campo obligatorio");
                 }
             }
-        });
+        );
     }
 
     private void enviarEntrega() {

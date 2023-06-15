@@ -11,7 +11,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="940.0" prefWidth="1728.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxsastr.controladores.FXMLAnteproyectosController">
    <children>
-      <TextField fx:id="tfCampoBusqueda" layoutX="1147.0" layoutY="91.0" onKeyTyped="#filtrarAnteproyectos" prefHeight="51.0" prefWidth="504.0" promptText="Buscar anteproyecto" style="-fx-background-radius: 15;">
+      <TextField fx:id="tfCampoBusqueda" layoutX="1147.0" layoutY="91.0" prefHeight="51.0" prefWidth="504.0" promptText="Buscar anteproyecto" style="-fx-background-radius: 15;">
          <font>
             <Font size="18.0" />
          </font></TextField>

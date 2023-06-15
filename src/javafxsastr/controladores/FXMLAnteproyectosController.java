@@ -151,33 +151,35 @@ public class FXMLAnteproyectosController implements Initializable, INotificacion
     private void configurarBusqueda(ObservableList<Anteproyecto> elementos) {
         if (elementos.size() > 0) {
             FilteredList<Anteproyecto> filtroAnteproyectos = new FilteredList(elementos, p -> true );
-            tfCampoBusqueda.textProperty().addListener(new ChangeListener<String>() {
-                @Override
-                public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                    contenedorTarjetasAnteproyectos.getChildren().clear();
-                    filtroAnteproyectos.setPredicate(
-                        anteproyectoFiltro -> {
-                            if (newValue == null || newValue.isEmpty()) {
-                                return true;
+            tfCampoBusqueda.textProperty().addListener(
+                new ChangeListener<String>() {
+                    @Override
+                    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                        contenedorTarjetasAnteproyectos.getChildren().clear();
+                        filtroAnteproyectos.setPredicate(
+                            anteproyectoFiltro -> {
+                                if (newValue == null || newValue.isEmpty()) {
+                                    return true;
+                                }
+                                String lowerNewValue = newValue.toLowerCase();
+                                if (anteproyectoFiltro.getNombreTrabajoRecepcional()
+                                        .toLowerCase()
+                                        .contains(lowerNewValue)) {
+                                    return true;
+                                } else if (anteproyectoFiltro.getNombreProyectoInvestigacion()
+                                        .toLowerCase()
+                                        .contains(lowerNewValue)) {
+                                    return true;
+                                }
+                                return false;
                             }
-                            String lowerNewValue = newValue.toLowerCase();
-                            if (anteproyectoFiltro.getNombreTrabajoRecepcional()
-                                    .toLowerCase()
-                                    .contains(lowerNewValue)) {
-                                return true;
-                            } else if (anteproyectoFiltro.getNombreProyectoInvestigacion()
-                                    .toLowerCase()
-                                    .contains(lowerNewValue)) {
-                                return true;
-                            }
-                            return false;
-                        }
-                    );
-                    SortedList<Anteproyecto> sortedListAlumnos = new SortedList<>(filtroAnteproyectos, 
-                            Comparator.comparing(Anteproyecto::getNombreTrabajoRecepcional));
-                    cargarTarjetasAnteproyectos(sortedListAlumnos);
+                        );
+                        SortedList<Anteproyecto> sortedListAlumnos = new SortedList<>(filtroAnteproyectos, 
+                                Comparator.comparing(Anteproyecto::getNombreTrabajoRecepcional));
+                        cargarTarjetasAnteproyectos(sortedListAlumnos);
+                    }
                 }
-            });
+            );
         }
     }
 
@@ -187,16 +189,16 @@ public class FXMLAnteproyectosController implements Initializable, INotificacion
         if (anteproyectos.size() > 0) {
             FilteredList<Anteproyecto> filtroAnteproyectosAsignados = new FilteredList<>(anteproyectos, p -> true);
             filtroAnteproyectosAsignados.setPredicate(
-                    anteproyecto -> {
-                        try {
-                            if (new EstudianteDAO().verificarSiAnteproyectoEstaAsignado(anteproyecto.getIdAnteproyecto())) {   
-                                return true;
-                            }
-                        } catch (DAOException ex) {
-                            manejarDAOException(ex);
+                anteproyecto -> {
+                    try {
+                        if (new EstudianteDAO().verificarSiAnteproyectoEstaAsignado(anteproyecto.getIdAnteproyecto())) {   
+                            return true;
                         }
-                        return false;
+                    } catch (DAOException ex) {
+                        manejarDAOException(ex);
                     }
+                    return false;
+                }
             );
             SortedList<Anteproyecto> sortedList = new SortedList<>(filtroAnteproyectosAsignados, 
                     Comparator.comparing(Anteproyecto::getNombreTrabajoRecepcional));
@@ -280,10 +282,6 @@ public class FXMLAnteproyectosController implements Initializable, INotificacion
         } catch (DAOException ex) {
             manejarDAOException(ex);
         }
-    }
-
-    @FXML
-    private void filtrarAnteproyectos(KeyEvent event) {
     }
 
     @FXML

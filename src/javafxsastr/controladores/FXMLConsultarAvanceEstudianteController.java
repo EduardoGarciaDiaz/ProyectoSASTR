@@ -100,8 +100,7 @@ public class FXMLConsultarAvanceEstudianteController implements Initializable {
     private void obtenerActividades() {
         try {
             actividades = FXCollections.observableArrayList(
-                    new ActividadDAO().obtenerActividadesPorEstudiante
-                        (estudiante.getIdEstudiante(), estudiante.getIdAnteproyecto())
+                new ActividadDAO().obtenerActividadesPorEstudiante(estudiante.getIdEstudiante(), estudiante.getIdAnteproyecto())
             );
         } catch (DAOException ex) {
             manejarDAOException(ex);
@@ -136,7 +135,8 @@ public class FXMLConsultarAvanceEstudianteController implements Initializable {
     }
     
     private String obtenerNombreEstudiante() {
-        String nombreCompletoEstudiante = estudiante.getNombre() + " " + estudiante.getPrimerApellido() 
+        String nombreCompletoEstudiante = estudiante.getNombre() 
+                + " " + estudiante.getPrimerApellido() 
                 + " " + estudiante.getSegundoApellido();
         if(nombreCompletoEstudiante.contains("null")) {
             nombreCompletoEstudiante = nombreCompletoEstudiante.replaceAll("null", " ");
@@ -213,8 +213,7 @@ public class FXMLConsultarAvanceEstudianteController implements Initializable {
     
     private void irAVistaEstudiantesAsignados(Academico academico) {
         try {
-            FXMLLoader accesoControlador 
-                    = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLEstudiantesAsignados.fxml"));
+            FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLEstudiantesAsignados.fxml"));
             Parent vista = accesoControlador.load();
             FXMLEstudiantesAsignadosController controladorVistaEstudiantes = accesoControlador.getController();
             controladorVistaEstudiantes.setDirector(academico);

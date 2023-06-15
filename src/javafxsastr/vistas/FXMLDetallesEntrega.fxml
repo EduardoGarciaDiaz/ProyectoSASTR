@@ -83,16 +83,6 @@
          <image>
             <Image url="@../recursos/iconos/editar.png" />
          </image></ImageView>
-      <Label fx:id="lbEstadoActividad" layoutX="1403.0" layoutY="72.0">
-         <font>
-            <Font size="22.0" />
-         </font>
-      </Label>
-      <Label fx:id="lbNumeroEntregas" layoutX="1014.0" layoutY="72.0" prefHeight="32.0" prefWidth="248.0">
-         <font>
-            <Font name="System Bold" size="22.0" />
-         </font>
-      </Label>
       <Pane layoutX="96.0" layoutY="342.0" prefHeight="136.0" prefWidth="1536.0" style="-fx-background-radius: 15; -fx-background-color: white;">
          <children>
             <Label layoutX="587.0" layoutY="58.0" prefHeight="30.0" prefWidth="179.0">

@@ -97,15 +97,14 @@ public class FXMLFormularioUsuarioController implements Initializable {
         lbUsuario.requestFocus();
         agregarListenersCamposVacios();
         btnGuardar.setDisable(true);
-        cbTipoUsuario.valueProperty().addListener(new ChangeListener<String>(){
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+        cbTipoUsuario.valueProperty().addListener(
+            (ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
                 if (newValue != null){
                     String tipoUsuarioSeleccionado = cbTipoUsuario.getSelectionModel().getSelectedItem();
                     mostrarCampoIdentificadorTipoUsuario(tipoUsuarioSeleccionado);
                 }
             }
-        });
+        );
     }    
     
     public void setUsuario(Usuario usuario) {
@@ -114,15 +113,14 @@ public class FXMLFormularioUsuarioController implements Initializable {
         lbUsuario.requestFocus();
         agregarListenersCamposVacios();
         btnGuardar.setDisable(true);
-        cbTipoUsuario.valueProperty().addListener(new ChangeListener<String>(){
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+        cbTipoUsuario.valueProperty().addListener(
+            (ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
                 if (newValue != null){
                     String tipoUsuarioSeleccionado = cbTipoUsuario.getSelectionModel().getSelectedItem();
                     mostrarCampoIdentificadorTipoUsuario(tipoUsuarioSeleccionado);
                 }
             }
-        });
+        );
     }
     
     public void mostrarCampoIdentificadorTipoUsuario(String tipoUsuario) {
@@ -202,32 +200,33 @@ public class FXMLFormularioUsuarioController implements Initializable {
     }
     
     private void agregarListenerComboBoxVacio(ComboBox combo, Label etiqueta){
-        combo.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            if (newValue) {
-                combo.setStyle("-fx-border-color: gray");
-                etiqueta.setText("");
-                tfIdentificadorTipoUsuario.setText("");
-            }
-            if (oldValue) {
-                if (combo.getSelectionModel().getSelectedIndex()==-1) {
-                    combo.setStyle("-fx-border-color: red");
-                    etiqueta.setText("Campo obligatorio");
+        combo.focusedProperty().addListener(
+            (ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+                if (newValue) {
+                    combo.setStyle("-fx-border-color: gray");
+                    etiqueta.setText("");
+                    tfIdentificadorTipoUsuario.setText("");
                 }
-                if (validarCamposObligatoriosLLenos()) {
-                    btnGuardar.setDisable(false);
-                } else {
-                    btnGuardar.setDisable(true);
-                    llenarMatriculaAutomatico();
+                if (oldValue) {
+                    if (combo.getSelectionModel().getSelectedIndex()==-1) {
+                        combo.setStyle("-fx-border-color: red");
+                        etiqueta.setText("Campo obligatorio");
+                    }
+                    if (validarCamposObligatoriosLLenos()) {
+                        btnGuardar.setDisable(false);
+                    } else {
+                        btnGuardar.setDisable(true);
+                        llenarMatriculaAutomatico();
+                    }
                 }
             }
-        });
+        );
     }
     
     private void agregarListenerCampoVacio(TextInputControl campoTexto, Label etiqueta){
-        campoTexto.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (!newValue.trim().isEmpty()) {
+        campoTexto.textProperty().addListener(
+            (ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            if (!newValue.trim().isEmpty()) {
                     campoTexto.setStyle("-fx-border-color: gray");
                     etiqueta.setText("");
                     if (validarCamposObligatoriosLLenos()) {
@@ -241,7 +240,7 @@ public class FXMLFormularioUsuarioController implements Initializable {
                     btnGuardar.setDisable(true);
                 }
             }
-        });
+        );
     }
     
     private boolean validarCamposObligatoriosLLenos() {
@@ -520,7 +519,7 @@ public class FXMLFormularioUsuarioController implements Initializable {
                 "¿Estás seguro de que deseas cancelar el registro del usuario?");
             if (cancelarRegistro) {
                 cerrarVentana();
-             }
+            }
         }        
     }
     
@@ -550,7 +549,7 @@ public class FXMLFormularioUsuarioController implements Initializable {
         validarCampos();
     }
     
-    private void irAVistaUsuarios(Usuario usuario) { //Cambiar nombre, no es a inicio
+    private void irAVistaUsuarios(Usuario usuario) {
         try {
             FXMLLoader accesoControlador = new FXMLLoader(JavaFXSASTR.class.getResource("vistas/FXMLUsuarios.fxml"));
             Parent vista = accesoControlador.load();
@@ -595,11 +594,9 @@ public class FXMLFormularioUsuarioController implements Initializable {
     private void manejarDAOException(DAOException ex) {
         switch (ex.getCodigo()) {
             case ERROR_CONSULTA:
-                ex.printStackTrace();
                 System.out.println("Ocurrió un error de consulta.");
                 break;
             case ERROR_CONEXION_BD:
-                ex.printStackTrace();
                 Utilidades.mostrarDialogoSimple("Error de conexion", 
                         "No se pudo conectar a la base de datos. Inténtelo de nuevo o hágalo más tarde.", Alert.AlertType.ERROR);
             default:

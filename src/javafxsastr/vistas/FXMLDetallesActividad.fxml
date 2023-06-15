@@ -79,7 +79,6 @@
             </Label>
          </children>
       </Pane>
-      <ImageView fx:id="ivArchivo" fitHeight="86.0" fitWidth="100.0" layoutX="10.0" layoutY="497.0" pickOnBounds="true" preserveRatio="true" />
       <Pane fx:id="paneEnviarEntrega" layoutX="105.0" layoutY="366.0" onMouseClicked="#clicEnviarEntrega" prefHeight="131.0" prefWidth="1516.0" style="-fx-background-color: white; -fx-background-radius: 15;" AnchorPane.leftAnchor="105.0" AnchorPane.rightAnchor="105.0" AnchorPane.topAnchor="366.0">
          <children>
             <Pane layoutX="694.0" layoutY="5.0" prefHeight="99.0" prefWidth="100.0" style="-fx-background-color: D9D9D9; -fx-background-radius: 100;">
