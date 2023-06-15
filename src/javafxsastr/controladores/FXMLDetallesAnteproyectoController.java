@@ -230,14 +230,10 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
             btnAsignarOtroEstudiante.setVisible(false);
             esDirector = false;
         } else {
-            if (academico.getIdAcademico() == anteproyecto.getIdAcademico()
-                    && (anteproyecto.getIdEstadoSeguimiento() == ANTEPROYECTO_APROBADO || 
-                    anteproyecto.getIdEstadoSeguimiento() == ANTEPROYECTO_EN_DESARROLLO ||
-                    anteproyecto.getIdEstadoSeguimiento() == ANTEPROYECTO_PUBLICADO)) {
-                
-            } else {
-                esDirector = false;
-            }
+            esDirector = academico.getIdAcademico() == anteproyecto.getIdAcademico()
+                    && (anteproyecto.getIdEstadoSeguimiento() == ANTEPROYECTO_APROBADO
+                    || anteproyecto.getIdEstadoSeguimiento() == ANTEPROYECTO_EN_DESARROLLO
+                    || anteproyecto.getIdEstadoSeguimiento() == ANTEPROYECTO_PUBLICADO);
         }
         return esDirector;
     }
@@ -722,7 +718,7 @@ public class FXMLDetallesAnteproyectoController implements Initializable, INotif
 
     @Override
     public void notificacionRecargarDatos() {
-       //metodo de la intefaz sin uso en esta clase
+       
     }
 
     @Override
